@@ -1,0 +1,666 @@
+
+.about__edit__panel__box {
+    position: fixed;
+    z-index: 505;
+    top: 8rem;
+    left: 8rem;
+    width: 20%;
+    text-align: center;
+}
+
+
+.backoffice__desktop__gallery__buttons {
+    position: absolute;
+    z-index: 87;
+    left: 5%;
+    top: 25rem;
+    width: 20%;
+    text-align: center;
+}
+
+.backoffice__mobile__gallery__buttons {
+    position: absolute;
+    z-index: 87;
+    left: 5%;
+    top: 30rem;
+    width: 20%;
+    text-align: center;
+}
+
+
+.about__edit__panel {
+    width: 94rem;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.workshop__edit__panel {
+    position: fixed;
+    z-index: 275;
+    top: 8rem;
+    left: 8rem;
+    text-align: left;
+}
+
+
+.backoffice_icon {
+    width: 2rem;
+    cursor: pointer;
+}
+
+.backoffice__events__header__main__buttons {
+    position: absolute;
+    left: -8rem;
+    top: 0;
+}
+
+.backoffice__events__header__buttons {
+    position: absolute;
+    right: 36vw;
+    top: 5rem;
+}
+
+.backoffice__events__header__save__button {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 718;
+    width: 2rem;
+    height: 2rem;
+    left: 3rem;
+    cursor: pointer;
+}
+
+.backoffice__events__header__save__icon {
+    width: 3rem;
+    margin-right: -1.3rem;
+    margin-top: -1.3rem;
+    border: none;
+    background: none;
+}
+
+.backoffice__events__header__save__icon:hover {
+    border: 1px solid $gray;
+}
+
+.backoffice__events__header__save__icon:active {
+    background: green;
+}
+
+.backoffice__events__events__buttons {
+    position: absolute;
+    z-index: 717;
+    left: 7rem;
+    top: 2rem;
+}
+
+.backoffice__events__events__buttons__fixed {
+    position: fixed;
+    z-index: 717;
+    width: 3rem;
+    height: 3rem;
+    left: 7rem;
+    top: 23rem;
+}
+
+.backoffice__about__images__buttons {
+    position: absolute;
+    z-index: 717;
+    left: -10vw;
+    top: 0;
+}
+
+.backoffice__about__images__text {
+    color: $gray;
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    text-align: right;
+    font-size: 1.8rem;
+    line-height: 2.2rem;
+    border: none;
+    resize: none;
+    margin-left: 4vw;
+    margin-right: 4vw;
+    padding-bottom: 4rem;
+}
+
+.backoffice__about__images__text__eng {
+    font-size: 1.6rem;
+    line-height: 1.8rem;
+    text-align: left;
+}
+
+.backoffice__events__images__buttons {
+    position: absolute;
+    z-index: 717;
+    left: -2rem;
+    top: 2rem;
+}
+
+.backoffice__events__events__save__button {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 203;
+    width: 2rem;
+    height: 2rem;
+    left: 0rem;
+    cursor: pointer;
+}
+
+.backoffice__events__events__save__icon {
+    width: 3rem;
+    margin-right: -1.3rem;
+    margin-top: -1.3rem;
+    border: none;
+    background: none;
+}
+
+.backoffice__events__events__save__icon:hover {
+    border: 1px solid $gray;
+}
+
+.backoffice__events__events__save__icon:active {
+    background: green;
+}
+
+
+.backoffice__events__events__add__button {
+    position:absolute;
+    background: none;
+    border: none;
+    z-index: 203;
+    width: 2rem;
+    height: 2rem;
+    left: -3rem;
+}
+
+.backoffice__events__events__save__icon:hover {
+    border: 1px solid $gray;
+}
+
+.backoffice__events__events__save__icon:active {
+    background: green;
+}
+
+.backoffice__events__events__add__icon {
+    width: 3rem;
+    margin-right: -1.3rem;
+    margin-top: -1.3rem;
+}
+
+.backoffice__events__events__add__icon:hover {
+    border: 1px solid $gray;
+}
+
+.backoffice__events__events__add__icon:active {
+    background: green;
+}
+
+
+
+.backoffice__events__tabs__buttons {
+    position: absolute;
+    left: -9rem;
+    top: -0.5rem;
+}
+
+.backoffice__edit__events__tabs__box {
+    width: 75vw;
+    margin-top: 3rem;
+    text-align: right;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.backoffice__edit__events__tabs__in__box {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.backoffice__edit__events__tabs__box input {
+    font-family: $font;
+    font-weight: $fontRegular;
+    font-size: 1.5rem;
+    line-height: 0.5rem;
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    margin-top: 0.5rem;
+    width: 4rem;
+}
+
+.backoffice__events__tabs__order__box input {
+    font-family: $font;
+    font-weight: $fontRegular;
+    background: $white;
+    color: $gray;
+    border: 1px solid $gray;
+    height: 1.9rem;
+    font-size: 1.5rem;
+    line-height: 0.5rem;
+    padding: 0;
+    margin: 0;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    margin-left: 0.5rem;
+}
+
+.backoffice__events__tabs__update__box {
+    width: 100%;
+    text-align: center;
+}
+
+.backoffice__events__tabs__update {
+    width: 7rem;
+    height: 3.5rem;
+    font-size: 1.6rem;
+}
+
+.backoffice__events__tabs__remove {
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    margin-left: 0.3rem;
+}
+
+.backoffice__show__icon {
+    width: 1.6rem;
+}
+
+.backoffice__add__button {
+    position:absolute;
+    background: none;
+    border: none;
+    z-index: 203;
+    width: 2rem;
+    height: 2rem;
+    left: 0rem;
+    cursor: pointer;
+}
+
+.backoffice__add__icon {
+    width: 3rem;
+    margin-right: -1.3rem;
+    margin-top: -1.3rem;
+    background: none;
+    border: none;
+}
+
+.backoffice__add__icon:hover {
+    border: 1px solid $gray;
+}
+
+.backoffice__add__icon:active {
+    background: green;
+}
+
+.backoffice__edit__button {
+    position:absolute;
+    background: none;
+    border: none;
+    z-index: 203;
+    width: 2rem;
+    height: 2rem;
+    left: 3rem;
+    cursor: pointer;
+}
+
+.backoffice__customers__strip__edit__button {
+    position:absolute;
+    background: none;
+    border: none;
+    z-index: 203;
+    width: 2rem;
+    height: 2rem;
+    left: 0.5rem;
+    cursor: pointer;
+}
+
+.backoffice__edit__icon {
+    width: 3rem;
+    margin-right: -1.3rem;
+    margin-top: -1.3rem;
+}
+
+.backoffice__edit__icon:hover {
+    border: 1px solid $gray;
+}
+
+.backoffice__edit__icon:active {
+    background: green;
+}
+
+
+
+
+.custom-overlay {
+  background-color: $lightblue;
+}
+.custom-modal {
+  background: $white;
+  max-width: 90vw;
+  max-height: 80vh;
+  width: 90vw;
+  height: 80vh;
+  text-align: right;
+}
+
+.custom-close-button{
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    display: flex;
+}
+
+.backoffice__events__event__box {
+    position: absolute;
+    z-index: 261;
+    width: 18rem;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    top: 0rem;
+    left: 3.5rem;
+    background: $white;
+    border: $gray;
+}
+
+.backoffice__events__event__image__box {
+    position: absolute;
+    z-index: 261;
+    width: 7rem;
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    top: 1rem;
+    left: 1rem;
+    background: none;
+    border: none;
+}
+
+.backoffice__events__event__box__all {
+    background: transparent;
+    border: none;
+}
+
+.backoffice__events__event__remove {
+    display: inline-block;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    _margin-left: 0.3rem;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.backoffice__item__order__box {
+    display: inline-block;
+    width: 4rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+}
+
+.backoffice__item__upload__image__button {
+    height: 2.5rem;
+    display: inline-block;
+    background: $white;
+    border: none;
+}
+
+.backoffice__item__order__box input {
+    height: 2.5rem;
+    margin-top: 0.5rem;
+    width: 4rem;
+}
+
+
+
+.backoffice__event__image__box {
+    position: relative;
+}
+
+.backoffice__event__image__order__box {
+    position: absolute;
+    z-index:5001;
+    width: 4rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+}
+
+
+
+
+.backoffice__seo__modal {
+    width: 800px;
+}
+
+.backoffice__seo__modal textarea {
+    font-family: $font;
+    font-weight: 400;
+    position: relative;
+    height: 6.7rem;
+    width: 650px;
+    text-align: right;
+    color: $gray;
+    background: #f1f1f1;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    padding: 0.5rem;
+    margin: 0;
+    resize: none;
+}
+
+.backoffice__seo__modal input {
+    font-family: $font;
+    font-weight: 400;
+    position: relative;
+    height: 3rem;
+    width: 650px;
+    text-align: right;
+    color: $gray;
+    background: #f1f1f1;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    padding: 0.5rem;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    resize: none;
+}
+
+.backoffice__seo__modal__left {
+    display: inline-block;
+    width: 650px;
+}
+
+.backoffice__seo__modal__right {
+    display: inline-block;
+    width: 80px;
+}
+
+.backoffice__seo__modal__right textarea {
+    font-family: $font;
+    font-weight: 400;
+    position: relative;
+    height: 6.7rem;
+    width: 80px;
+    text-align: left;
+    color: $gray;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    padding: 0.5rem;
+    margin: 0;
+    resize: none;
+}
+
+.backoffice__seo__modal__right input {
+    font-family: $font;
+    font-weight: 400;
+    position: relative;
+    height: 3rem;
+    width: 80px;
+    text-align: left;
+    color: $gray;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    padding: 0.5rem;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    resize: none;
+}
+
+.backoffice__seo__button {
+    display: block;
+}
+
+.backoffice_button {
+    border: none;
+    background: $white;
+    width: 4rem;
+    cursor: pointer;
+}
+
+.backoffice_button:hover {
+    border: 1px solid $gray;
+}
+
+.backoffice_button:active {
+    background: green;
+}
+
+
+
+
+.backoffice__gallery__modal {
+    width: 800px;
+    top: 100rem;
+}
+
+.backoffice__gallery__modal__in__box {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    width: 750px;
+}
+
+
+.backoffice__gallery__modal input {
+    font-family: $font;
+    font-weight: 400;
+    position: relative;
+    height: 3rem;
+    width: 4rem;
+    text-align: right;
+    color: $gray;
+    border: 1px solid $gray;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    padding: 0.5rem;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    resize: none;
+}
+
+.backoffice__gallery__image__container {
+    width: 200px;
+}
+
+
+.homepage__event-item__upload-button {
+    position: absolute;
+    z-index: 251;
+    top: 10rem;
+    left: 0.5rem;
+    background: $white;
+    border: none;
+}
+
+.homepage__event-item__upload-button__image {
+    width: 3rem;
+    height: 3rem;
+}
+
+.common__image__upload-button {
+    position: absolute;
+    z-index: 251;
+    top: 10rem;
+    left: 0.5rem;
+    background: $white;
+    border: none;
+}
+
+.common__image__upload-button__image {
+    width: 3rem;
+    height: 3rem;
+}
+
+.homepage__tell__upload-button {
+    position: absolute;
+    z-index: 251;
+    top: 12rem;
+    left: 69rem;
+    background: $white;
+    border: none;
+}
+
+.homepage__tell__upload-button__image {
+    width: 2rem;
+    height: 2rem;
+}
+
+
+
+
+@media (max-width: $mobileMaxWidth) {
+    .about__edit__panel {
+        width: 98%;
+    }
+
+    .homepage__tell__upload-button {
+        left: 69%;
+    }
+
+    .about__edit__panel__box {
+        left: 0rem;
+    }
+
+    .backoffice__events__events__buttons {
+        left: 3rem;
+        top: -2rem;
+    }
+
+    .backoffice__events__event__box {
+        right: 0rem;
+    }
+
+    .custom-modal {
+        background: $white;
+        max-width: 90vw;
+        max-height: 90vh;
+        width: 90vw;
+        height: 90vh;
+        padding-top: 15vh;
+    }
+}

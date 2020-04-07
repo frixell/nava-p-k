@@ -1,0 +1,133 @@
+.customers__strip {
+    position: relative;
+}
+
+.backoffice__customers__strip__buttons {
+    position: absolute;
+    z-index: 1203;
+    left: 3rem;
+    top: 2rem;
+}
+
+.customers__next__arrow {
+    display: inline-block;
+    position: absolute;
+    left: 4%;
+    top: 7rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    background-image: url('/images/customersStrip/nextArrow.svg');
+    background-repeat: no-repeat;
+    background-size: 1.8rem 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.customers__next__arrow:hover {
+    width: 2rem;
+    height: 2rem;
+    background-size: 2rem 2rem;
+}
+
+.customers__prev__arrow {
+    display: inline-block;
+    position: absolute;
+    left: 95%;
+    top: 7rem;
+    width: 1.8rem;
+    height: 1.8rem;
+    background-image: url('/images/customersStrip/prevArrow.svg');
+    background-repeat: no-repeat;
+    background-size: 1.8rem 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.customers__prev__arrow:hover {
+    width: 2rem;
+    height: 2rem;
+    background-size: 2rem 2rem;
+}
+
+.customers__slider {
+    width: 100%;
+}
+
+.slick-list {
+    width: 84%;
+    left: 7%;
+}
+
+.slick-slide {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.slick-slide div div {
+    height: 14.8rem;
+    vertical-align: middle;
+    display: flex !important;
+    justify-content: center;
+    align-content: center;
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+    _border: 1px solid black;
+}
+
+.slick-slide div div img {
+    align-self: center;
+    max-width: 75%;
+    max-height: 75%
+}
+
+
+
+
+@media (max-width: $mobileMaxWidth) {
+$costumerArrowSize: 2.8rem;
+    .customers__next__arrow {
+        left: 2%;
+        top: 3.4rem;
+        width: $costumerArrowSize;
+        height: $costumerArrowSize;
+        background-size: $costumerArrowSize $costumerArrowSize;
+        margin-bottom: 1rem;
+    }
+
+    .customers__next__arrow:hover {
+        width: 2rem;
+        height: 2rem;
+        background-size: 2rem 2rem;
+    }
+
+    .customers__prev__arrow {
+        left: 91%;
+        top: 3.4rem;
+        width: $costumerArrowSize;
+        height: $costumerArrowSize;
+        background-size: $costumerArrowSize $costumerArrowSize;
+        margin-bottom: 1rem;
+    }
+
+    .customers__prev__arrow:hover {
+        width: 3.8rem;
+        height: 3.8rem;
+        background-size: 3.8rem 3.8rem;
+    }
+
+    .slick-list {
+        width: 76%;
+        left: 12%;
+    }
+
+    .slick-slide div div {
+        height: 9.6rem;
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+    }
+
+    .slick-slide div div img {
+        max-width: 75%;
+        max-height: 75%
+    }
+
+}

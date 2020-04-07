@@ -1,0 +1,76 @@
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+class ContactContact extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    gotoFacebook = () => {
+        console.log('in facebook');
+        if (typeof(window) !== "undefined") {
+            window.open('https://www.facebook.com/profile.php?id=100010955083493');
+        }
+    }
+    gotoInstagram = () => {
+        console.log('in facebook');
+        if (typeof(window) !== "undefined") {
+            window.open('https://www.instagram.com/ziva_kainer_art/');
+        }
+    }
+
+    gotoMail = () => {
+        console.log('in facebook');
+        if (typeof(window) !== "undefined") {
+            window.location = 'mailto:zivakainerart@gmail.com';
+        }
+    }
+    gotoPhone = () => {
+        console.log('in facebook');
+        if (typeof(window) !== "undefined") {
+            window.location = 'tel:+972505684454';
+        }
+    }
+
+    render() {
+        //console.log(this.props.event);
+        const dirLang = this.props.lang === 'he' ? 'rtl' : 'ltr';
+        return (
+
+            <div className={this.props.lang === 'he' ? `contact__contact__box--${this.props.style}` : `contact__contact__box--${this.props.style} contact__contact__box__eng--${this.props.style}`}>
+                
+                <div className={`contact__contact__text__line--${this.props.style}`} dir={dirLang} onClick={this.gotoPhone}>
+                    <p className={`contact__contact__text--${this.props.style} Heebo-Regular`} dir='ltr'>+972505684454</p>
+                </div>
+
+                <div className={`contact__contact__text__line--${this.props.style}`} dir={dirLang} onClick={this.gotoMail}>
+                    <p className={`contact__contact__text--${this.props.style} Heebo-Regular`} dir={dirLang}>zivakainerart@gmail.com</p>
+                </div>
+
+                
+
+                <div className={`contact__follow__icon__box--${this.props.style}`} onClick={this.gotoFacebook}>
+                    <div className={`contact__follow__facebook__icon--${this.props.style}`} />
+                </div>
+
+            </div>
+        )
+    }
+};
+
+ContactContact.contextTypes = {
+  t: PropTypes.func.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    lang: state.i18nState.lang
+});
+
+export default connect(mapStateToProps)(ContactContact);
+
+
+
+// <div className={`contact__follow__icon__box--${this.props.style}`} onClick={this.gotoInstagram}>
+//                     <div className={`contact__follow__instagram__icon--${this.props.style}`} />
+//                 </div>

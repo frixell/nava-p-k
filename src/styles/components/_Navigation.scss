@@ -1,0 +1,552 @@
+.nav__body {
+    margin-top: 0rem;
+}
+
+.navbar-light {
+    height: 5.5rem;
+    background: $white;
+}
+
+.navbar__header__container {
+    position: absolute;
+    z-index: 10000;
+    display: inline-block;
+    width: auto !important;
+    background: none;
+    right: 0;
+}
+
+.navbar__header__container__eng {
+    position: absolute;
+    z-index: 10000;
+    display: inline-block;
+    width: auto !important;
+    background: none;
+    left: 0;
+}
+
+
+.navbar__shadow {
+    box-shadow: 0 4px 4px -4px $lightblue;
+}
+
+.navbar__header {
+    display: inline-block;
+    width: auto !important;
+    background:none;
+    height: 5.5rem;
+}
+
+
+
+.fakeNav {
+    height: 5rem;
+    display: none;
+}
+
+.navbar__brand {
+    border: 0.2rem solid rgba(0, 0, 0, 0);
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+    color: $lightblue;
+    font-family: $font;
+    font-weight: $fontRegular;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px $blue;
+    letter-spacing: 0.1px;
+    min-height: 2.2rem;
+    padding-top: 0rem;
+    padding-top: 1vw;
+    padding-bottom: 0rem;
+    padding-left: 0.3rem;
+    padding-right: 6vw;
+    float: right;
+}
+
+.navbar__brand__eng {
+    border: 0.2rem solid rgba(0, 0, 0, 0);
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+    color: $lightblue;
+    font-family: $font;
+    font-weight: $fontRegular;
+    font-size: 1.8rem;
+    text-shadow: 1px 1px $blue;
+    letter-spacing: 0.1px;
+    min-height: 2.2rem;
+    padding-top: 0rem;
+    padding-top: 1vw;
+    padding-bottom: 0rem;
+    padding-right: 0.3rem;
+    padding-left: 6vw;
+    float: left;
+}
+
+.navbar__brand:hover {
+    color: $darkblue;
+}
+
+.navbar-light .navbar-brand {
+    color: $lightblue;
+}
+
+.navbar__nav {
+    margin-top: 0.5rem;
+}
+
+.navbar-light .navbar-nav {
+    margin-left: 6vw;
+    margin-right: 3vw;
+}
+
+.nav__logo {
+    margin-top: 0.5rem;
+    width: 10rem;
+}
+
+.nav__link--accessibility {
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -0.7rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    cursor: pointer;
+}
+
+
+
+.accessibility-color--dark {
+    fill: $gray !important;
+}
+
+.nav-item--accessibility {
+    padding-top: 2.6rem;
+}
+
+
+.carousel_logo {
+    position: absolute;
+    z-index: 10002;
+    width: 12%;
+    _height: 55%;
+    bottom: 2%;
+    left: 44%;
+}
+
+.carousel__button {
+    position: absolute;
+    background: none;
+    border: none;
+    z-index: 10005;
+    width: 6%;
+    height: 12%;
+    top: 90%;
+    left: 47%;
+}
+
+
+
+.enable-button-close{
+    display: none !important;
+}
+
+
+
+.nav-item {
+    padding-top: 1vw;
+}
+
+.nav__link {
+    border: 0.2rem solid rgba(0, 0, 0, 0);
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+    color: $lightblue;
+    font-family: $font;
+    font-weight: $fontRegular;
+    font-size: 1.4rem;
+    text-shadow: 1px 1px $blue;
+    letter-spacing: 0.1px;
+    min-height: 2.2rem;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    text-align: center;
+}
+
+
+
+.nav__link:hover {
+    /*border: 0.2rem solid;
+    border-image-source: url('/images/navigation/nav_item_bg.svg');
+    border-image-slice: 1.5 1.5 1.5 1.5; 
+    border-image-repeat: repeat;*/
+    border: 0.2rem dotted $lightblue;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    color: $lightblue;
+    text-decoration: none;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+}
+
+
+
+.nav__link--active {
+    /*border: 0.2rem solid;
+    border-image-source: url('/images/navigation/nav_item_bg.svg');
+    border-image-slice: 1.5 1.5 1.5 1.5; 
+    border-image-repeat: repeat;*/
+    border: 0.2rem dotted $lightblue;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+    color: $lightblue;
+    text-decoration: none;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+}
+
+
+@media all and (-ms-high-contrast:none){
+    .nav__link { border: 0.15rem solid rgba(0, 0, 0, 0); }
+    .nav__link:hover { border: 0.15rem dotted $lightblue; } 
+    .nav__link--active { border: 0.15rem dotted $lightblue; }
+    *::-ms-backdrop, .nav__link { border: 0.15rem solid rgba(0, 0, 0, 0); }
+    *::-ms-backdrop, .nav__link:hover { border: 0.15rem dotted $lightblue; }
+    *::-ms-backdrop, .nav__link--active { border: 0.15rem dotted $lightblue; }
+}
+
+/*----MS Edge Browser CSS Start----*/
+@supports ( position:-ms-page ) {
+    .nav__link { border: 0.15rem solid rgba(0, 0, 0, 0); }
+    .nav__link:hover { border: 0.15rem dotted $lightblue; }
+    .nav__link--active { border: 0.15rem dotted $lightblue; }
+}
+/*----MS Edge Browser CSS End----*/
+
+
+
+.svg-icon {
+    pointer-events: none;
+    fill: $lightblue;
+}
+
+// .accessibility-color--light {
+//     background: $gray !important;
+// }
+
+.nav__link--padding-top {
+    padding-top: 0rem;
+}
+
+
+
+.nav__accessibility {
+    width: 2.8rem;
+    margin-top: 0rem;
+    margin-left: 0.2rem;
+}
+
+
+.accessibility-color--dark {
+    fill:#3e3939;
+}
+
+.accessibility-color--light {
+    fill:#fff;
+}
+
+
+
+
+
+
+
+
+
+@media (max-width: $tabletMaxWidth) {
+    .nav__logo {
+        width: 6rem;
+    }
+
+    .nav__link--accessibility {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .nav__link {
+        font-size: 1.65rem;
+    }
+}
+
+
+
+
+
+
+
+@media (max-width: $mobileMaxWidth) {
+
+    .carousel_logo {
+        width: 48%;
+        bottom: 3%;
+        left: 26%;
+    }
+
+    .navbar-light {
+        position: absolute;
+        z-index: 10001;
+        left: 0;
+        top: 100vh;
+    }
+
+    .fakeNav {
+        height: 17vw;
+        display: block;
+    }
+
+    .nav-item--accessibility {
+        padding-top: 1.8rem;
+    }
+
+    .nav__link--accessibility {
+        width: 3rem;
+        height: 3rem;
+        margin-top: -0.5rem;
+        padding-top: 0rem;
+    }
+
+    .navbar__header__container {
+        position: absolute;
+        z-index: 0;
+        background: none;
+        width: 100vw !important;
+        height: 17vw;
+    }
+
+    .navbar__header__container__eng {
+        position: absolute;
+        z-index: 0;
+        background: none;
+        width: 100vw !important;
+        height: 17vw;
+    }
+
+    #navbarM {
+        background: $white;
+        height: 8rem;
+    }
+
+    .navbar__header {
+        height: 8rem;
+    }
+
+    .navbar__header__mobile {
+        
+        //////////////////////////////////////////////////////////////////////
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .navbar__brand {
+        visibility: visible;
+        margin-left: auto;
+        margin-right: 4rem;
+        font-size: 3rem;
+        padding-top: 0.4rem;
+        padding-right: 0;
+    }
+
+    .navbar__lang {
+        font-size: 2.7rem;
+        padding-top: 1.2rem;
+        padding-left: 0.5rem;
+        padding-right: 1vw;
+        color: $lightblue;
+        font-family: $font;
+        font-weight: $fontRegular;
+        text-shadow: 1px 1px $blue;
+        letter-spacing: 0.1px;
+    }
+
+    .nav__logo {
+        margin-top: 0.5rem;
+        width: 10.2rem;
+    }
+
+    .nav-item {
+        padding-top: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .nav__link {
+        font-size: 3.5rem;
+        letter-spacing: -0.1px;
+        min-height: 2rem;
+        padding-top: 0rem;
+        padding-bottom: 0rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .nav__link--active {
+        /*border: 0.45rem solid;
+        border-image-source: url('/images/navigation/nav_item_bg.svg');
+        border-image-repeat: repeat;
+        border-image-slice: 3.5;*/
+        border: 0.45rem dotted $lightblue;
+        margin-left: 0.7rem;
+        margin-right: 0.7rem;
+        padding-left: 0.3rem;
+        padding-right: 0.3rem;
+    }
+
+    .nav__link__accessibility__mobile {
+        margin-top: 3.6rem;
+        margin-left: 2.5rem;
+        margin-right: 1rem;
+        width: 2.5rem;
+    }
+
+    .nav__link__phone__mobile {
+        margin-top: 0rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        width: 2.5rem;
+    }
+
+    .nav__lang__mobile {
+        border: none;
+        background: none;
+    }
+
+    .nav__phone__mobile {
+        height: 3.5rem;
+        margin-top: 1rem;
+        max-width: 5rem;
+        border: none;
+        background: none;
+    }
+
+    .nav__link__facebook__mobile {
+        width: 1.7rem;
+    }
+
+    .nav__link__instagram__mobile {
+        width: 3.5rem;
+        margin-left: 0.5rem;
+    }
+
+    .nav__link__mail__mobile {
+        width: 3.5rem;
+        margin-left: 0.8rem;
+    }
+
+    .nav__social__box {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+
+    .nav__social__seperator {
+        width: 35vw;
+        display: block;
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+    }
+
+    .nav__mobile__seperator {
+        margin-left: 0.8rem;
+        margin-top: 2rem;
+        width: 0.35rem;
+    }
+
+    .navbar {
+        margin-top: 0rem;
+        height: 17vw;
+        width: 100%;
+    }
+
+    .navbar-light .navbar-toggler-icon {  
+        background-image: url('/images/navigation/nav_collapse.png');
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .navbar-light .navbar-toggler {
+        padding: 0;
+        color: rgba(0, 0, 0, 0);
+        border-color: rgba(0, 0, 0, 0);
+        margin-top: 1.3rem;
+        width: 3rem;
+        height: 3rem;
+        align-self: start;
+        margin-right: 1.8rem;
+        border: 0;
+    }
+
+    .navbar__collapse {
+        margin-top: 0;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .navbar-light .navbar-nav {
+        width: 100.5vw;
+        height: 100.5vh;
+        background: $offwhite;
+        padding-top: 5rem;
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 0rem;
+    }
+}
+
+
+
+@media screen and (max-width: 767px) and (orientation: landscape) {
+    .navbar__header__mobile {
+        background-size: 60%;
+        background-repeat: repeat-x;
+    }
+
+    .nav-item {
+        padding-top: 0.1rem;
+        margin-top: 0.1rem;
+    }
+
+    .nav__link {
+        font-size: 1.9rem;
+    }
+
+    .navbar-light .navbar-nav {
+        padding-top: 10rem;
+    }
+
+    .nav__link__accessibility__mobile {
+        padding-top: 3vw;
+    }
+
+    .fakeNav {
+        height: 11vw;
+    }
+
+    .homepage__event-item-box textarea {
+        height: 34vw;
+        width: 80vw;
+        font-size: 2.1rem;
+        line-height: 1.3;
+    }
+}

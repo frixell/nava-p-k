@@ -1,0 +1,92 @@
+.hidden {
+    display: none;
+}
+
+.desktop {
+    display: block;
+}
+
+.desktop_inline {
+    display: inline-block;
+}
+
+.desktop_flex {
+    display: flex;
+}
+
+.mobile {
+    display: none;
+}
+
+.mobile_inline {
+    display: none;
+}
+
+.mobile_flex {
+    display: none;
+}
+
+
+
+@media (max-width: $mobileMaxWidth) {
+    .desktop {
+        display: none;
+    }
+
+    .desktop_inline {
+        display: none;
+    }
+
+    .desktop_flex {
+        display: none;
+    }
+
+    .mobile{
+        display: block;
+    }
+
+    .mobile_inline {
+        display: inline-block;
+    }
+
+    .mobile_flex {
+        display: flex;
+    }
+}
+
+
+.btn_accessibility{
+    display: none !important;
+}
+
+.backoffice__gray__text {
+    color: $gray;
+}
+
+.cursor__hand {
+    cursor: pointer;
+}
+
+.eng__text textarea {
+    text-align: left;
+    margin-left: -1rem;
+}
+
+
+
+.react-parallax-bgimage {
+    width: 100% !important;
+    height: auto !important;
+}
+
+@media (max-width: $mobileMaxWidth) {
+    .react-parallax-bgimage {
+        width: 100% !important;
+        height: auto !important;
+        top: 22% !important;
+    }
+}
+
+.enable-toolbar-content button {
+    right: 0;
+}
