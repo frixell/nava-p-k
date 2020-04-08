@@ -3,6 +3,10 @@ import { Prompt } from "react-router-dom";
 import {Helmet} from 'react-helmet';
 import { Map } from '@esri/react-arcgis';
 import { Scene } from '@esri/react-arcgis';
+
+
+
+
 //esri/views/SceneView
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
@@ -150,6 +154,7 @@ class HomePage extends React.Component {
           
 
     render() {
+        
         return (
             <div className="container-fluid">
                 
@@ -169,17 +174,14 @@ class HomePage extends React.Component {
                     
                 </Helmet>
 
-                
-
-               
-                
                 <Navigation 
                     {...this.props}
                     langLink='/עב'
                     langLinkEng='/en'
                     categories={this.props.eventsCategories}
                 />
-                <div style={{height: $( window ).height() - 132, width: $( window ).width() }}>
+                
+                <div style={{height: $( window ).height() - 100, width: $( window ).width() }}>
                     
                     <Scene
                         style={{ width: '100%', height: '100%', fontSize: 3, color: '#000' }}
@@ -189,7 +191,9 @@ class HomePage extends React.Component {
                             zoom: 2
                         }}
                     />
+                    
                 </div>
+                
                 <Footer lang={this.props.lang} />
             </div>
         );

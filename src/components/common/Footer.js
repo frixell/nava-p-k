@@ -13,7 +13,7 @@ class Footer extends React.Component {
         return (
 
             <div className="footer__box">
-                <HomePageIntouch />
+                {/*<HomePageIntouch />*/}
                 <p className="footer__text Heebo-Regular desktop" dir={dirLang}>
                     {this.context.t("allRightsReserved")} | {this.context.t("programmingBy")}
                 </p>
