@@ -16,14 +16,14 @@ class ContactContact extends React.Component {
     gotoInstagram = () => {
         console.log('in facebook');
         if (typeof(window) !== "undefined") {
-            window.open('https://www.instagram.com/ziva_kainer_art/');
+            window.open('https://www.instagram.com/nava_persov_kainer/');
         }
     }
 
     gotoMail = () => {
         console.log('in facebook');
         if (typeof(window) !== "undefined") {
-            window.location = 'mailto:zivakainerart@gmail.com';
+            window.location = 'mailto:nava-p-k@gmail.com';
         }
     }
     gotoPhone = () => {
@@ -45,7 +45,7 @@ class ContactContact extends React.Component {
                 </div>
 
                 <div className={`contact__contact__text__line--${this.props.style}`} dir={dirLang} onClick={this.gotoMail}>
-                    <p className={`contact__contact__text--${this.props.style} Heebo-Regular`} dir={dirLang}>zivakainerart@gmail.com</p>
+                    <p className={`contact__contact__text--${this.props.style} Heebo-Regular`} dir={dirLang}>nava-p-k@gmail.com</p>
                 </div>
 
                 

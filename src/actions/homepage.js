@@ -64,7 +64,7 @@ export const startSetHomePage = (done) => {
 
     return (dispatch) => {
         var method = 'GET';
-        var action = 'https://ziva-art.firebaseio.com/website/homepage.json';
+        var action = 'https://nava-p-k.firebaseio.com/website/homepage.json';
         var xhr = new XMLHttpRequest();
         var data = '';
         xhr.open(method, action);

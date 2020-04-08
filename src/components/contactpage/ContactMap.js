@@ -134,15 +134,15 @@ class ContactMap extends React.Component {
         >
           <Marker
             onClick = { this.onMarkerClick }
-            title = { 'Ziva Kainer Artist' }
+            title = { 'Nava Persov Kainer' }
             position = {{ lat: 32.7018506, lng: 34.9814115 }}
-            name = { 'ziva kainer artist ein hod' }
+            name = { 'nava persov kainer ein hod' }
           />
           <InfoWindow
             marker = { this.state.activeMarker }
             visible = { this.state.showingInfoWindow }
           >
-            <h2>Ziva Kainer</h2>
+            <h2>Nava Persov Kainer</h2>
           </InfoWindow>
         </Map>
       );

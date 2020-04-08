@@ -1,6 +1,6 @@
 export const translations = {
   "he": {
-    "homepageEventsTitle": "זיוה קיינר - אמנית",
+    "homepageEventsTitle": "נאוה פרסוב קיינר",
     "readMore": "<< קראו עוד",
     "discoverMore": "<< גלו עוד",
     "update": "עדכון",
@@ -16,12 +16,12 @@ export const translations = {
     "messagePlaceholder": "הודעה:",
     "sendMessage": "שלחו הודעה",
     "send": "שלח",
-    "allRightsReserved": "© כל הזכויות שמורות לזיוה קיינר",
+    "allRightsReserved": "© כל הזכויות שמורות לנאוה פרסוב קיינר",
     "programmingBy": "אתר של frixell",
-    "joinNewsletter": "הצטרפו לרשימת התפוצה של זיוה קיינר"
+    "joinNewsletter": "הצטרפו לרשימת התפוצה של נאוה פרסוב קיינר"
   },
   "en": {
-    "homepageEventsTitle": "Ziva Kainer - Artist",
+    "homepageEventsTitle": "Nava Persov Kainer",
     "readMore": "Read More >>",
     "discoverMore": "Discover More >>",
     "update": "update",
@@ -37,8 +37,8 @@ export const translations = {
     "messagePlaceholder": "Message:",
     "sendMessage": "Send message",
     "send": "Send",
-    "allRightsReserved": "© All rights reserved to Ziva Kainer",
+    "allRightsReserved": "© All rights reserved to Nava Persov Kainer",
     "programmingBy": "Website by frixell",
-    "joinNewsletter": "Join Ziva Kainer's mailinglist"
+    "joinNewsletter": "Join Nava Persov Kainer's mailinglist"
   }
 }

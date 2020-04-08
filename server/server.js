@@ -30,7 +30,7 @@ app.use(function forceHTTPS(req, res, next) {
   console.log(www);
 
   if (schema !== 'https' || www.indexOf('www') < 0) {
-    return res.redirect('https://www.zivakainer.com' + local);
+    return res.redirect('https://www.navapersovkainer.com' + local);
   }
 
   return next();
@@ -40,9 +40,9 @@ app.use(function forceHTTPS(req, res, next) {
 
 
 var allowedOrigins = ['http://localhost:8080',
-                      'https://www.zivakainer.com',
-                      'http://ziva-art.herokuapp.com',
-                      'https://ziva-art.herokuapp.com'];
+                      'https://www.navapersovkainer.com',
+                      'http://nava-p-k.herokuapp.com',
+                      'https://nava-p-k.herokuapp.com'];
 app.use(cors({
   origin: function(origin, callback){
     if(!origin) return callback(null, true);
@@ -98,7 +98,7 @@ admin.initializeApp({
 
 app.get('/sitemap.xml', function(req, res) {
     let urls = [];
-    var root_path = 'https://ziva-art.herokuapp.com/';
+    var root_path = 'https://nava-p-k.herokuapp.com/';
     var db = admin.database();
     var refCategories = db.ref('eventsCategories/');
     var refSubcategories = db.ref('eventsSubcategories/');
@@ -217,7 +217,7 @@ app.get('/:category?/:subCategory?/:event?/:toomuch?', function(request, respons
                       data = data.replace(/\$OG_TITLE/g, seo.title);
                       data = data.replace(/\$OG_DESCRIPTION/g, seo.description);
                       data = data.replace(/\$OG_KEYWORDS/g, seo.keyWords);
-                      data = data.replace(/\$OG_IMAGE/g, 'https://ziva-art.herokuapp.com/images/og_image.jpg');
+                      data = data.replace(/\$OG_IMAGE/g, 'https://nava-p-k.herokuapp.com/images/og_image.jpg');
                       response.send(data);
                     }, function (errorObject) {
                       console.log("The read failed: " + errorObject.code);
@@ -394,7 +394,7 @@ app.post("/sendEmail", bodyParser.urlencoded({ extended: true }), function(reque
     if(request.body.name){
         mailOptions = {
           from: 'message@frixell.net',
-          to: 'ziva.einhod.art@gmail.com',
+          to: 'nava-p-k@gmail.com',
           subject: request.body.email,
           text: request.body.name + '\r\n' + request.body.email + '\r\n' + request.body.message
         };
