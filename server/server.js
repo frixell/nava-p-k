@@ -29,9 +29,9 @@ app.use(function forceHTTPS(req, res, next) {
   console.log(schema);
   console.log(www);
 
-  if (schema !== 'https' || www.indexOf('www') < 0) {
-    return res.redirect('https://www.navapersovkainer.com' + local);
-  }
+  // if (schema !== 'https' || www.indexOf('www') < 0) {
+  //   return res.redirect('https://www.navapersovkainer.com' + local);
+  // }
 
   return next();
 
