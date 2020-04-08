@@ -4,8 +4,10 @@ import {Helmet} from 'react-helmet';
 import { Map } from '@esri/react-arcgis';
 import { Scene } from '@esri/react-arcgis';
 
-
-
+import BermudaTriangle from './BermudaTriangle';
+//import WebMapView from './WebMapView';
+import MapTest from './MapTest';
+import PointTest from './PointTest';
 
 //esri/views/SceneView
 import Footer from '../components/common/Footer';
@@ -183,14 +185,9 @@ class HomePage extends React.Component {
                 
                 <div style={{height: $( window ).height() - 100, width: $( window ).width() }}>
                     
-                    <Scene
-                        style={{ width: '100%', height: '100%', fontSize: 3, color: '#000' }}
-                        mapProperties={{ basemap: 'topo-vector' }} // 'satellite'
-                        viewProperties={{
-                            center: [-122.4443, 47.2529],
-                            zoom: 2
-                        }}
-                    />
+                    
+                    
+                    <PointTest />
                     
                 </div>
                 
@@ -220,6 +217,31 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+
+
+
+
+
+
+// <Scene
+//                         style={{ width: '100%', height: '100%', fontSize: 3, color: '#000' }}
+//                         mapProperties={{ basemap: 'topo-vector' }} // 'satellite'
+//                         viewProperties={{
+//                             center: [-122.4443, 47.2529],
+//                             zoom: 2
+//                         }}
+//                     >
+//                         <BermudaTriangle />
+//                     </Scene>
+                    
+//                     <WebMapView />
+
+
+
+
+
+
+
 
 
 
