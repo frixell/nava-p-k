@@ -264,43 +264,7 @@ class Navigation extends React.Component {
               <NavItem>
                 <div onClick={this.setLang} className="nav__link nav__link--padding-top">{this.props.lang === 'he' ? 'EN' : 'עב'}</div>
               </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/צרו_קשר' : '/contact'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/סדנאות' : '/workshops'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'סדנאות' : 'Workshops'}</NavLink>
-              </NavItem>
-              {
-                this.props.lang === 'he' ?
-                  this.state.eventsCategoriesReverse !== [] ?
-                      this.state.eventsCategoriesReverse.map((category) => {
-                          if(category.navbar === true) {
-                            return <NavItem key={category.id}>
-                                      <NavLink to={`/${stringReplace(category.name, ' ', '_')}`} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? category.name : category.nameEng}</NavLink>
-                                  </NavItem>
-                          } else {
-                            return null;
-                          }
-                      })
-                  :
-                      null
-                :
-                  this.state.eventsCategoriesReverse !== [] ?
-                      this.state.eventsCategoriesReverse.map((category) => {
-                          if(category.navbar === true) {
-                            return <NavItem key={category.id}>
-                                      <NavLink to={`/${stringReplace(category.nameEng, ' ', '_')}`} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? category.name : category.nameEng}</NavLink>
-                                  </NavItem>
-                          } else {
-                            return null;
-                          }
-                      })
-                  :
-                      null
-              }
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/אודות' : '/about'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
-              </NavItem>
+              
               <NavItem>
                 <NavLink exact to="/" className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'דף הבית' : 'Homepage'}</NavLink>
               </NavItem>
@@ -356,43 +320,7 @@ class Navigation extends React.Component {
                 </button>
                 <img className="nav__social__seperator" src="/images/navigation/nav-social-seperator.png" alt="קו הפרדה" />
               </div>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/צרו_קשר' : '/contact'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/סדנאות' : '/workshops'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'סדנאות' : 'Workshops'}</NavLink>
-              </NavItem>
-              {
-                this.props.lang === 'he' ?
-                  this.state.eventsCategoriesReverse !== [] ?
-                      this.state.eventsCategoriesReverse.map((category) => {
-                          if(category.navbar === true) {
-                            return <NavItem key={category.id}>
-                                      <NavLink to={`/${stringReplace(category.name, ' ', '_')}`} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? category.name : category.nameEng}</NavLink>
-                                  </NavItem>
-                          } else {
-                            return null;
-                          }
-                      })
-                  :
-                      null
-                :
-                  this.state.eventsCategoriesReverse !== [] ?
-                      this.state.eventsCategoriesReverse.map((category) => {
-                          if(category.navbar === true) {
-                            return <NavItem key={category.id}>
-                                      <NavLink to={`/${stringReplace(category.nameEng, ' ', '_')}`} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? category.name : category.nameEng}</NavLink>
-                                  </NavItem>
-                          } else {
-                            return null;
-                          }
-                      })
-                  :
-                      null
-              }
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/אודות' : '/about'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
-              </NavItem>
+              
               <NavItem>
                 <NavLink exact to="/" className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'דף הבית' : 'Homepage'}</NavLink>
               </NavItem>

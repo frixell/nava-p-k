@@ -4,7 +4,7 @@
 
 .navbar-light {
     height: 5.5rem;
-    background: $white;
+    background: $black;
 }
 
 .navbar__header__container {
@@ -27,7 +27,7 @@
 
 
 .navbar__shadow {
-    box-shadow: 0 4px 4px -4px $lightblue;
+    box-shadow: 0 4px 4px -4px $white;
 }
 
 .navbar__header {
@@ -49,11 +49,11 @@
     margin-left: 0.4rem;
     margin-right: 0.4rem;
     vertical-align: middle;
-    color: $lightblue;
+    color: $white;
     font-family: $font;
     font-weight: $fontRegular;
     font-size: 1.8rem;
-    text-shadow: 1px 1px $blue;
+    text-shadow: 1px 1px $white;
     letter-spacing: 0.1px;
     min-height: 2.2rem;
     padding-top: 0rem;
@@ -69,11 +69,11 @@
     margin-left: 0.4rem;
     margin-right: 0.4rem;
     vertical-align: middle;
-    color: $lightblue;
+    color: $white;
     font-family: $font;
     font-weight: $fontRegular;
     font-size: 1.8rem;
-    text-shadow: 1px 1px $blue;
+    text-shadow: 1px 1px $white;
     letter-spacing: 0.1px;
     min-height: 2.2rem;
     padding-top: 0rem;
@@ -85,11 +85,11 @@
 }
 
 .navbar__brand:hover {
-    color: $darkblue;
+    color: $white !important;
 }
 
 .navbar-light .navbar-brand {
-    color: $lightblue;
+    color: $white !important;
 }
 
 .navbar__nav {
@@ -126,7 +126,7 @@
 
 
 .accessibility-color--dark {
-    fill: $gray !important;
+    fill: $white !important;
 }
 
 .nav-item--accessibility {
@@ -171,11 +171,11 @@
     margin-left: 0.4rem;
     margin-right: 0.4rem;
     vertical-align: middle;
-    color: $lightblue;
+    color: $white;
     font-family: $font;
     font-weight: $fontRegular;
     font-size: 1.4rem;
-    text-shadow: 1px 1px $blue;
+    text-shadow: 1px 1px $white;
     letter-spacing: 0.1px;
     min-height: 2.2rem;
     padding-top: 0rem;
@@ -192,10 +192,10 @@
     border-image-source: url('/images/navigation/nav_item_bg.svg');
     border-image-slice: 1.5 1.5 1.5 1.5; 
     border-image-repeat: repeat;*/
-    border: 0.2rem dotted $lightblue;
+    border: 0.2rem dotted $white;
     margin-left: 0.4rem;
     margin-right: 0.4rem;
-    color: $lightblue;
+    color: $white;
     text-decoration: none;
     padding-left: 0.3rem;
     padding-right: 0.3rem;
@@ -208,10 +208,10 @@
     border-image-source: url('/images/navigation/nav_item_bg.svg');
     border-image-slice: 1.5 1.5 1.5 1.5; 
     border-image-repeat: repeat;*/
-    border: 0.2rem dotted $lightblue;
+    border: 0.2rem dotted $white;
     margin-left: 0.4rem;
     margin-right: 0.4rem;
-    color: $lightblue;
+    color: $white;
     text-decoration: none;
     padding-left: 0.3rem;
     padding-right: 0.3rem;
@@ -505,7 +505,7 @@
     .navbar-light .navbar-nav {
         width: 100.5vw;
         height: 100.5vh;
-        background: $offwhite;
+        background: $black;
         padding-top: 5rem;
         flex-direction: column-reverse;
         justify-content: center;

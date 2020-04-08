@@ -179,10 +179,10 @@ class HomePage extends React.Component {
                     langLinkEng='/en'
                     categories={this.props.eventsCategories}
                 />
-                <div style={{height: $( window ).height() - 135, width: $( window ).width() }}>
+                <div style={{height: $( window ).height() - 132, width: $( window ).width() }}>
                     
                     <Scene
-                        style={{ width: '100%', height: '100%', fontSize: 3, color: '#fff' }}
+                        style={{ width: '100%', height: '100%', fontSize: 3, color: '#000' }}
                         mapProperties={{ basemap: 'topo-vector' }} // 'satellite'
                         viewProperties={{
                             center: [-122.4443, 47.2529],
