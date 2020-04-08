@@ -20,39 +20,76 @@ class PointTest extends Component {
     }
 
     componentDidMount() {
-            loadModules(["esri/Map", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic"])
-                .then(([Map, SceneView, GraphicsLayer, Graphic]) => {
+            loadModules(["esri/Map", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/BasemapGallery", "esri/widgets/Locate", "esri/widgets/Search"])
+                .then(([Map, SceneView, GraphicsLayer, Graphic, BasemapGallery, Locate, Search]) => {
                     var map = new Map({
-                        basemap: "hybrid"
-                      });
-              
-                      var view = new SceneView({
+                        basemap: "streets"
+                    });
+                    
+                    var view = new SceneView({
                         container: "viewDiv",
                         map: map,
-              
                         camera: {
-                          // autocasts as new Camera()
-                          position: {
+                        // autocasts as new Camera()
+                        position: {
                             // autocasts as new Point()
                             x: -0.17746710975334712,
                             y: 51.38543992422466,
                             z: 2566.7049653716385
-                          },
-                          heading: 0.37445102566290225,
-                          tilt: 82.95536300536367
+                        },
+                        heading: 0.37445102566290225,
+                        tilt: 82.95536300536367
                         }
+                    });
+                    
+                    const searchWidget = new Search({
+                        view: view
+                    });
+                    // Adds the search widget below other elements in
+                    // the top left corner of the view
+                    view.ui.add(searchWidget, {
+                        position: "bottom-left",
+                        index: 2
+                    });
+                      
+                    var locateWidget = new Locate({
+                        view: view,   // Attaches the Locate button to the view
+                        graphic: new Graphic({
+                          symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
+                          // graphic placed at the location of the user when found
+                        })
+                    });
+                      
+                    view.ui.add(locateWidget, "top-right");
+                    
+                    var basemapGallery = new BasemapGallery({
+                        view: view
                       });
-              
-                      /*********************
-                       * Add graphics layer
-                       *********************/
-              
-                      var graphicsLayer = new GraphicsLayer();
-                      map.add(graphicsLayer);
-              
-                      /*************************
-                       * Add a 3D point graphic
-                       *************************/
+                      // Add widget to the top right corner of the view
+                      view.ui.add(basemapGallery, {
+                        position: "bottom-right"
+                      });
+                    
+                    // // 1 - Create the widget
+                    // var toggle = new BasemapToggle({
+                    //     // 2 - Set properties
+                    //     view: view, // view that provides access to the map's 'topo' basemap
+                    //     nextBasemap: "hybrid" // allows for toggling to the 'hybrid' basemap
+                    // });
+
+                    // // Add widget to the top right corner of the view
+                    // view.ui.add(toggle, "bottom-right");
+            
+                    /*********************
+                     * Add graphics layer
+                     *********************/
+            
+                    var graphicsLayer = new GraphicsLayer();
+                    map.add(graphicsLayer);
+            
+                    /*************************
+                     * Add a 3D point graphic
+                     *************************/
               
                     let points = [
                         {

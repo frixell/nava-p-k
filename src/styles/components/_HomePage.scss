@@ -487,7 +487,9 @@ input[type="email"]::-webkit-input-placeholder {
     text-align: left;
 }
 
-
+.esri-basemap-gallery {
+    max-height: 120px !important;
+}
 
 .homepage__intouch__button {
     width: 5rem;
