@@ -23,7 +23,7 @@ class PointTest extends Component {
             loadModules(["esri/Map", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/BasemapGallery", "esri/widgets/Locate", "esri/widgets/Search"])
                 .then(([Map, SceneView, GraphicsLayer, Graphic, BasemapGallery, Locate, Search]) => {
                     var map = new Map({
-                        basemap: "streets"
+                        basemap: "hybrid"
                     });
                     
                     var view = new SceneView({
@@ -60,14 +60,14 @@ class PointTest extends Component {
                         })
                     });
                       
-                    view.ui.add(locateWidget, "top-right");
+                    view.ui.add(locateWidget, "bottom-right");
                     
                     var basemapGallery = new BasemapGallery({
                         view: view
                       });
                       // Add widget to the top right corner of the view
                       view.ui.add(basemapGallery, {
-                        position: "bottom-right"
+                        position: "top-right"
                       });
                     
                     // // 1 - Create the widget

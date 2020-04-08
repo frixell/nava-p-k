@@ -183,7 +183,7 @@ class HomePage extends React.Component {
                     categories={this.props.eventsCategories}
                 />
                 
-                <div style={{height: $( window ).height() - 100, width: $( window ).width() }}>
+                <div style={{height: $( window ).height() - 60, width: $( window ).width() }}>
                     
                     
                     
