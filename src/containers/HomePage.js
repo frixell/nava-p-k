@@ -8,6 +8,7 @@ import BermudaTriangle from './BermudaTriangle';
 //import WebMapView from './WebMapView';
 import MapTest from './MapTest';
 import PointTest from './PointTest';
+import BuildingTest from './BuildingTest';
 
 //esri/views/SceneView
 import Footer from '../components/common/Footer';
@@ -183,9 +184,12 @@ class HomePage extends React.Component {
                     categories={this.props.eventsCategories}
                 />
                 
-                <div style={{height: $( window ).height() - 60, width: $( window ).width() }}>
+                <div style={{ float: 'left', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() * 0.49 }}>
                     
+                    <BuildingTest />
                     
+                </div>
+                <div style={{ float: 'right', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() * 0.49 }}>
                     
                     <PointTest />
                     

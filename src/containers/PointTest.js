@@ -26,8 +26,12 @@ class PointTest extends Component {
                         basemap: "hybrid"
                     });
                     
+                    map.on('click', (event) => {
+                        console.log('event', event);
+                    });
+                    
                     var view = new SceneView({
-                        container: "viewDiv",
+                        container: "pointTestViewDiv",
                         map: map,
                         camera: {
                         // autocasts as new Camera()
@@ -202,8 +206,10 @@ class PointTest extends Component {
     render() {
         return ( 
             <div style = { styles.container } >
-            <div id = 'viewDiv' style = { styles.mapDiv } >
-            </div> </div>
+                <div id = 'pointTestViewDiv' style = { styles.mapDiv } >
+                    
+                </div>
+            </div>
         );
     }
 }
