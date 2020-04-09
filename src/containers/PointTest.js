@@ -129,7 +129,7 @@ class PointTest extends Component {
                                 type: "point", // autocasts as new Point()
                                 x: event.mapPoint.longitude,
                                 y: event.mapPoint.latitude,
-                                z: 1010
+                                z: 500
                             };
                             this.props.addPoint(point);
                             this.setState(points);
@@ -137,7 +137,7 @@ class PointTest extends Component {
                                 type: "polyline", // autocasts as new Polyline()
                                 paths: [
                                 [event.mapPoint.longitude, event.mapPoint.latitude, 0],
-                                [event.mapPoint.longitude, event.mapPoint.latitude, 1000]
+                                [event.mapPoint.longitude, event.mapPoint.latitude, 490]
                                 ]
                             };
                     
@@ -185,7 +185,7 @@ class PointTest extends Component {
                             type: "polyline", // autocasts as new Polyline()
                             paths: [
                             [point.x, point.y, 0],
-                            [point.x, point.y, 1000]
+                            [point.x, point.y, 490]
                             ]
                         };
                 
