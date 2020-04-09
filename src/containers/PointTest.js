@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {loadModules} from 'esri-loader'
  
-
+let view = null;
+let camera = null;
 const styles = {
     container: {
         height: '100%',
@@ -16,34 +17,56 @@ const styles = {
 
 class PointTest extends Component {
     state ={
-        coordinates: []
+        coordinates: [],
+        points: this.props.points
+    }
+
+    onGoTo = () => {
+        camera = {
+            position: {
+                x: -0.17746710975334712,
+                y: 51.44543992422466,
+                z: 1266.7049653716385
+            },
+            heading: 0.34445102566290225,
+            tilt: 82.95536300536367
+        };
+        view.goTo(camera);
+    }
+    
+    onGoToEinHod = () => {
+        camera = {
+            position: {
+                x: 34.97992814784823,
+                y: 32.559655621247935,
+                z: 2500
+            },
+            heading: 0.37445102566290225,
+            tilt: 82.95536300536367
+        };
+        view.goTo(camera);
     }
 
     componentDidMount() {
-            loadModules(["esri/Map", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/BasemapGallery", "esri/widgets/Locate", "esri/widgets/Search"])
-                .then(([Map, SceneView, GraphicsLayer, Graphic, BasemapGallery, Locate, Search]) => {
+            loadModules(["esri/Map", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/BasemapGallery", "esri/widgets/Locate", "esri/widgets/Search", "esri/Camera"])
+                .then(([Map, SceneView, GraphicsLayer, Graphic, BasemapGallery, Locate, Search, Camera]) => {
                     var map = new Map({
                         basemap: "hybrid"
                     });
-                    
-                    map.on('click', (event) => {
-                        console.log('event', event);
+
+                    camera = new Camera({
+                        position: {
+                            x: 34.97992814784823,
+                            y: 32.559655621247935,
+                            z: 2500
+                        },
+                        heading: 0.34445102566290225,
+                        tilt: 82.95536300536367
                     });
-                    
-                    var view = new SceneView({
+                    view = new SceneView({
                         container: "pointTestViewDiv",
                         map: map,
-                        camera: {
-                        // autocasts as new Camera()
-                        position: {
-                            // autocasts as new Point()
-                            x: -0.17746710975334712,
-                            y: 51.38543992422466,
-                            z: 2566.7049653716385
-                        },
-                        heading: 0.37445102566290225,
-                        tilt: 82.95536300536367
-                        }
+                        camera: camera
                     });
                     
                     const searchWidget = new Search({
@@ -55,16 +78,18 @@ class PointTest extends Component {
                         position: "bottom-left",
                         index: 2
                     });
+                    
+                    
                       
-                    var locateWidget = new Locate({
-                        view: view,   // Attaches the Locate button to the view
-                        graphic: new Graphic({
-                          symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
-                          // graphic placed at the location of the user when found
-                        })
-                    });
+                    // var locateWidget = new Locate({
+                    //     view: view,   // Attaches the Locate button to the view
+                    //     graphic: new Graphic({
+                    //       symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
+                    //       // graphic placed at the location of the user when found
+                    //     })
+                    // });
                       
-                    view.ui.add(locateWidget, "bottom-right");
+                    // view.ui.add(locateWidget, "bottom-right");
                     
                     var basemapGallery = new BasemapGallery({
                         view: view
@@ -95,67 +120,90 @@ class PointTest extends Component {
                      * Add a 3D point graphic
                      *************************/
               
-                    let points = [
-                        {
-                            type: "point", // autocasts as new Point()
-                            x: -0.178,
-                            y: 51.48791,
-                            z: 1010
-                        },
-                        {
-                            type: "point", // autocasts as new Point()
-                            x: -0.278,
-                            y: 51.58991,
-                            z: 1010
-                        },
-                        {
-                            type: "point", // autocasts as new Point()
-                            x: -0.078,
-                            y: 51.68991,
-                            z: 1010
-                        },
-                        {
-                            type: "point", // autocasts as new Point()
-                            x: -0.128,
-                            y: 51.46991,
-                            z: 1010
-                        }
-                    ];
+                    let points = this.state.points;
               
-                      var markerSymbol = {
+                    view.on('click', (event) => {
+                        console.log("click event: ", event.mapPoint);
+                        if (this.props.allowAddPoint) {
+                            let point = {
+                                type: "point", // autocasts as new Point()
+                                x: event.mapPoint.longitude,
+                                y: event.mapPoint.latitude,
+                                z: 1010
+                            };
+                            this.props.addPoint(point);
+                            this.setState(points);
+                            var polyline = {
+                                type: "polyline", // autocasts as new Polyline()
+                                paths: [
+                                [event.mapPoint.longitude, event.mapPoint.latitude, 0],
+                                [event.mapPoint.longitude, event.mapPoint.latitude, 1000]
+                                ]
+                            };
+                    
+                            /****************************
+                             * Add a 3D polyline graphic
+                             ****************************/
+                        
+                            var lineSymbol = {
+                                type: "simple-line", // autocasts as SimpleLineSymbol()
+                                color: [226, 119, 40],
+                                width: 4
+                            };
+                    
+                            var polylineGraphic = new Graphic({
+                                geometry: polyline,
+                                symbol: lineSymbol
+                            });
+                    
+                            graphicsLayer.add(polylineGraphic);
+                            
+                            
+                            var pointGraphic = new Graphic({
+                                geometry: point,
+                                symbol: markerSymbol
+                            });
+                            
+                            graphicsLayer.add(pointGraphic);
+                        }
+                        
+                    });
+                    
+                    var markerSymbol = {
                         type: "simple-marker", // autocasts as new SimpleMarkerSymbol()
                         color: [226, 119, 40],
                         outline: {
-                          // autocasts as new SimpleLineSymbol()
-                          color: [255, 255, 255],
-                          width: 2
+                        // autocasts as new SimpleLineSymbol()
+                        color: [255, 255, 255],
+                        width: 2
                         }
-                      };
+                    };
               
-                      points.forEach(point => {
+                    console.log('this.state.points', this.state.points);
+                    this.state.points.forEach(point => {
                         var polyline = {
                             type: "polyline", // autocasts as new Polyline()
                             paths: [
-                              [point.x, point.y, 0],
-                              [point.x, point.y, 1000]
+                            [point.x, point.y, 0],
+                            [point.x, point.y, 1000]
                             ]
                         };
-                  
+                
                         /****************************
-                       * Add a 3D polyline graphic
-                       ****************************/
-                      
+                     * Add a 3D polyline graphic
+                     ****************************/
+                    
                         var lineSymbol = {
                             type: "simple-line", // autocasts as SimpleLineSymbol()
                             color: [226, 119, 40],
                             width: 4
                         };
-                  
+                
                         var polylineGraphic = new Graphic({
                             geometry: polyline,
                             symbol: lineSymbol
                         });
-                  
+                
                         graphicsLayer.add(polylineGraphic);
                         
                         
@@ -166,7 +214,7 @@ class PointTest extends Component {
                         
                         graphicsLayer.add(pointGraphic);
                         
-                      })
+                    })
               
               
                       /***************************
@@ -206,6 +254,12 @@ class PointTest extends Component {
     render() {
         return ( 
             <div style = { styles.container } >
+                <div style={{position: 'absolute', fontSize: 14, zIndex: 15019, top: '2rem', left: '75vw', color: '#fff'}} onClick={this.onGoTo}>
+                    לונדון
+                </div>
+                <div style={{position: 'absolute', fontSize: 14, zIndex: 15019, top: '2rem', left: '72vw', color: '#fff'}} onClick={this.onGoToEinHod}>
+                    עין הוד
+                </div>
                 <div id = 'pointTestViewDiv' style = { styles.mapDiv } >
                     
                 </div>

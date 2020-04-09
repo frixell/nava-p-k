@@ -15,18 +15,39 @@ import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
-import {
-    startEditHomePage,
-    startSetHomePage,
-    startAddHomePageTell,
-    startEditHomePageSeo,
-    startDeleteHomePageImage
-} from '../actions/homepage';
+import { startAddPoint } from '../actions/points';
 
 import isEqual from 'lodash.isequal';
 import { setLanguage } from "redux-i18n";
 
 import ReactGA from 'react-ga';
+
+// [
+//     {
+//         type: "point",
+//         x: -0.178,
+//         y: 51.48791,
+//         z: 1010
+//     },
+//     {
+//         type: "point",
+//         x: -0.278,
+//         y: 51.58991,
+//         z: 1010
+//     },
+//     {
+//         type: "point",
+//         x: -0.078,
+//         y: 51.68991,
+//         z: 1010
+//     },
+//     {
+//         type: "point", // autocasts as new Point()
+//         x: -0.128,
+//         y: 51.46991,
+//         z: 1010
+//     }
+// ]
 
 function initializeReactGA(url) {
     ReactGA.initialize('UA-128960221-1');
@@ -60,7 +81,9 @@ class HomePage extends React.Component {
             tellOrigin: [],
             tell: [],
             localTell: [],
-            localTellOrigin: []
+            localTellOrigin: [],
+            points: this.props.points,
+            allowAddPoint: false
         }
     }
 
@@ -149,12 +172,23 @@ class HomePage extends React.Component {
     }
 
     componentDidMount = () => {
-
+        console.log('mounted');
         this.setUrlLang();
 
         this.setGoogleAnalytics();
     }
-          
+    
+    addPoint = (point) => {
+        let points = this.state.points;
+        points.push(point);
+        this.setState({points, allowAddPoint: false});
+        console.log('adding point', point);
+        this.props.startAddPoint(point);
+    }
+    
+    allowAddPoint = () => {
+        this.setState({allowAddPoint: true});
+    }
 
     render() {
         
@@ -184,14 +218,30 @@ class HomePage extends React.Component {
                     categories={this.props.eventsCategories}
                 />
                 
+                {
+                    this.props.isAuthenticated ?
+                        <div style={{position: 'absolute', zIndex: 15009, top: '2rem', left: '45vw', color: '#fff'}} onClick={this.allowAddPoint}>
+                            הוספה
+                        </div>
+                    :
+                        null
+                }
+                
+                
+                {/*
                 <div style={{ float: 'left', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() * 0.49 }}>
                     
                     <BuildingTest />
                     
                 </div>
-                <div style={{ float: 'right', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() * 0.49 }}>
+                */}
+                <div style={{ float: 'right', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() }}>
                     
-                    <PointTest />
+                    <PointTest
+                        points={this.state.points}
+                        addPoint={this.addPoint}
+                        allowAddPoint={this.state.allowAddPoint}
+                    />
                     
                 </div>
                 
@@ -205,6 +255,7 @@ class HomePage extends React.Component {
 const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.uid,
     eventsCategories: state.eventspage,
+    points: state.points,
     homepage: state.homepage,
     navigation: state.navigation,
     lang: state.i18nState.lang
@@ -212,12 +263,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     startLogout: () => dispatch(startLogout()),
-    startAddHomePageTell: (homepage, tellData) => dispatch(startAddHomePageTell(homepage, tellData)),
-    startSetHomePage: (done) => dispatch(startSetHomePage(done)),
-    startEditHomePage: (updates) => dispatch(startEditHomePage(updates)),
-    startEditHomePageSeo: (seo) => dispatch(startEditHomePageSeo(seo)),
-    startDeleteHomePageImage: ( homepage, publicid ) => dispatch(startDeleteHomePageImage( homepage, publicid )),
-    setLanguage: (lang) => dispatch(setLanguage(lang))
+    setLanguage: (lang) => dispatch(setLanguage(lang)),
+    startAddPoint: (point) => dispatch(startAddPoint(point))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

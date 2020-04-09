@@ -10,6 +10,9 @@ import {
     startSetAllEvents
 } from './actions/eventspage';
 import {
+    startGetPoints
+} from './actions/points';
+import {
     startSetCostumers
 } from './actions/costumers';
 import {
@@ -145,12 +148,13 @@ if (typeof(window) !== "undefined") {
     }
 }
 
-
-store.dispatch(startSetCategories()).then(() => {
-    store.dispatch(startSetDesktopGallery()).then(() => {
-        store.dispatch(startSetMobileGallery()).then(() => {
-            store.dispatch(startSetCostumers()).then(() => {
-                renderApp();
+store.dispatch(startGetPoints()).then(() => {
+    store.dispatch(startSetCategories()).then(() => {
+        store.dispatch(startSetDesktopGallery()).then(() => {
+            store.dispatch(startSetMobileGallery()).then(() => {
+                store.dispatch(startSetCostumers()).then(() => {
+                    renderApp();
+                });
             });
         });
     });
