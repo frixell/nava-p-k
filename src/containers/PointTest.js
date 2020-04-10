@@ -21,8 +21,8 @@ class PointTest extends Component {
         points: this.props.points
     }
     
-    componentDidUpdate() {
-        if (this.props.sidebarClickedItemId) {
+    componentDidUpdate(prevProps) {
+        if (this.props.sidebarClickedItemId !== prevProps.sidebarClickedItemId) {
             let selectedPoint = null;
             this.props.points.map(point => {
                 console.log(point);

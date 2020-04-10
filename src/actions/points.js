@@ -35,12 +35,14 @@ export const addPoint = (point) => ({
 export const startAddPoint = (pointData={}) => {
     return (dispatch, getState) => {
         const {
+            title = 'title',
             type = 'point',
             x = '0',
             y = '0',
             z = '0'
         } = pointData;
         const point = {
+            title,
             type,
             x,
             y,
