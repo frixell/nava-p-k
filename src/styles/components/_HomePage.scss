@@ -488,8 +488,36 @@ input[type="email"]::-webkit-input-placeholder {
 }
 
 .esri-basemap-gallery {
-    max-height: 130px !important;
-    max-width: 300px !important;
+    max-height: 85px !important;
+    max-width: 240px !important;
+}
+
+.esri-basemap-gallery__item-title {
+    display: none;
+}
+
+.esri-basemap-gallery__item-thumbnail {
+    margin-bottom: 0 !important;
+}
+
+.sidebar__listItem {
+    width: 100%;
+    color: $white;
+    font-size: 12px;
+    padding: 5px;
+    margin-left: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.esri-basemap-gallery__item {
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0px !important;
+    padding-top: 10px !important;
+    padding-left: 10px !important;
 }
 
 .homepage__intouch__button {

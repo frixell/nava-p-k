@@ -83,10 +83,10 @@ class HomePage extends React.Component {
             localTell: [],
             localTellOrigin: [],
             points: this.props.points,
-            allowAddPoint: false
+            allowAddPoint: false,
+            sidebarClickedItemId: null
         }
     }
-
 
     setData = (e) => {
 		const { value, dataset } = e.target;
@@ -131,8 +131,6 @@ class HomePage extends React.Component {
             }
         }
 	}
-
-    
 
     unloadFunc = (e) => {
         var confirmationMessage = "o/";
@@ -189,6 +187,13 @@ class HomePage extends React.Component {
     allowAddPoint = () => {
         this.setState({allowAddPoint: true});
     }
+    
+    handleSidebarClick = (event) => {
+        console.log(event.target.dataset.id);
+        this.setState({
+            sidebarClickedItemId: event.target.dataset.id
+        })
+    }
 
     render() {
         
@@ -235,9 +240,19 @@ class HomePage extends React.Component {
                     
                 </div>
                 */}
-                <div style={{ float: 'right', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() }}>
+                <div style={{ float: 'left', display: 'inline-block', paddingTop: "2rem", height: $( window ).height() - 60, width: '125px' }}>
+                    {
+                        this.state.points.map((point, index) => {
+                            return (
+                                <div onClick={this.handleSidebarClick} data-id={point.id} className="sidebar__listItem" key={index}>{point.title}</div>
+                            );
+                        })
+                    }
+                </div>
+                <div style={{ float: 'right', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() - 135 }}>
                     
                     <PointTest
+                        sidebarClickedItemId={this.state.sidebarClickedItemId}
                         points={this.state.points}
                         addPoint={this.addPoint}
                         allowAddPoint={this.state.allowAddPoint}
