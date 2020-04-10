@@ -84,7 +84,9 @@ class HomePage extends React.Component {
             localTellOrigin: [],
             points: this.props.points,
             allowAddPoint: false,
-            sidebarClickedItemId: null
+            sidebarClickedItemId: null,
+            selectedProject: null,
+            showSelectedProject: false
         }
     }
 
@@ -181,7 +183,7 @@ class HomePage extends React.Component {
         points.push(point);
         this.setState({points, allowAddPoint: false});
         console.log('adding point', point);
-        this.props.startAddPoint(point);
+        //this.props.startAddPoint(point);
     }
     
     allowAddPoint = () => {
@@ -193,6 +195,21 @@ class HomePage extends React.Component {
         this.setState({
             sidebarClickedItemId: event.target.dataset.id
         })
+    }
+    
+    handleExpandProject = (selectedProject) => {
+        console.log('selectedProject', selectedProject);
+        this.setState({
+            selectedProject: selectedProject,
+            showSelectedProject: true
+        })
+    }
+    
+    setSelectedProject = (selectedProject) => {
+        console.log('in selectedProject', selectedProject);
+        // this.setState({
+        //     selectedProject: selectedProject
+        // })
     }
 
     render() {
@@ -249,6 +266,35 @@ class HomePage extends React.Component {
                         })
                     }
                 </div>
+                {
+                    this.state.selectedProject ?
+                        <div style={{ position: 'absolute', zIndex: 5, background: '#fff', padding: '20px', right: 0, top: '60px', height: $( window ).height() - 60, width: $( window ).width() - 135 }}>
+                            <div style={{
+                                display: 'inline-block',
+                                color: '#fff',
+                                fontWheight: 'bold',
+                                fontSize: 20,
+                                textAlign: 'center',
+                                background: '#6c7680',
+                                width: '48%',
+                                height: '3rem',
+                                float: 'left'
+                            }}>
+                                {this.state.selectedProject.extendedContent.title}
+                            </div>
+                            <div style={{
+                                color: '#000',
+                                fontSize: 14,
+                                width: '48%',
+                                float: 'right'
+                            }}>
+                                {this.state.selectedProject.extendedContent.content}
+                            </div>
+                        </div>
+                    :
+                        null
+                }
+                
                 <div style={{ float: 'right', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() - 135 }}>
                     
                     <PointTest
@@ -256,6 +302,8 @@ class HomePage extends React.Component {
                         points={this.state.points}
                         addPoint={this.addPoint}
                         allowAddPoint={this.state.allowAddPoint}
+                        setSelectedProject={this.setSelectedProject}
+                        handleExpandProject={this.handleExpandProject}
                     />
                     
                 </div>

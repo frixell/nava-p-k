@@ -13,29 +13,36 @@ const styles = {
         mapDiv: {
         height: '100%',
     },
-}
+};
+
+const markerSymbol = {
+    type: "simple-marker",
+    color: [226, 119, 40],
+    outline: {
+    color: [255, 255, 255],
+    width: 2
+    }
+};
 
 class PointTest extends Component {
     state ={
         coordinates: [],
-        points: this.props.points
+        points: this.props.points,
+        selectedPoint: null
     }
     
     componentDidUpdate(prevProps) {
         if (this.props.sidebarClickedItemId !== prevProps.sidebarClickedItemId) {
             let selectedPoint = null;
             this.props.points.map(point => {
-                console.log(point);
                 if (point.id === this.props.sidebarClickedItemId) {
-                    console.log('point');
                     selectedPoint = point;
                 }
             });
-            console.log(selectedPoint);
             camera = {
                 position: {
                     x: selectedPoint.x,
-                    y: selectedPoint.y - 0.15,
+                    y: selectedPoint.y - 0.1,
                     z: 2500
                 },
                 heading: 0.37445102566290225,
@@ -88,16 +95,6 @@ class PointTest extends Component {
         
                 var graphicsLayer = new GraphicsLayer();
                 map.add(graphicsLayer);
-                
-                // view.popup = {
-                //     dockEnabled: true,
-                //     dockOptions: {
-                //     // Disables the dock button from the popup
-                //     buttonEnabled: false,
-                //     // Ignore the default sizes that trigger responsive docking
-                //     breakpoint: true
-                //     }
-                // };
             
                 var editThisAction = {
                     title: 'Edit',
@@ -116,19 +113,20 @@ class PointTest extends Component {
                 view.popup.on("trigger-action", function(event) {
                     // Execute the measureThis() function if the measure-this action is clicked
                     if (event.action.id === "edit-this") {
-                        editThis();
+                        editThis(event);
                     }
                     if (event.action.id === "expand-this") {
-                        expandThis();
+                        expandThis(event);
                     }
                 });
                 
-                let editThis = () => {
-                    console.log('edit');
+                let editThis = (event) => {
+                    console.log('edit', event);
                 }
                 
-                let expandThis = () => {
-                    console.log('expand');
+                let expandThis = (event) => { 
+                    console.log('expand', event.target.project);
+                    this.props.handleExpandProject(event.target.project);
                 }
                 
                 view.on('click', (event) => {
@@ -141,7 +139,7 @@ class PointTest extends Component {
                             z: 500
                         };
                         this.props.addPoint(point);
-                        this.setState(points);
+                        this.setState({points});
                         var polyline = {
                             type: "polyline",
                             paths: [
@@ -171,36 +169,34 @@ class PointTest extends Component {
                         
                         graphicsLayer.add(pointGraphic);
                     }
-                    
+
                     view.hitTest(event).then(function(response) {
-                        console.log('response', response);
+                        
                         // check if a graphic is returned from the hitTest
                         if (response.results[0].graphic) {
                             let title = response.results[0].graphic.point.title;
                             let content = response.results[0].graphic.point.content;
+
                             view.popup.open({
                                 // Set the popup's title to the coordinates of the location
+                                project: response.results[0].graphic.point,
                                 title: title,
                                 location: event.mapPoint, // Set the location of the popup to the clicked location
                                 content: content,
                                 actions: [editThisAction, expandThisAction]
                             });
+                            
+                            //this.props.addPoint(response.results[0].graphic.point);
+                            //this.props.setSelectedProject(response.results[0].graphic.point);
+                            //this.setState({selectedPoint: response.results[0].graphic.point});
                         }
-                        });
+                    });
                     
                 });
                 
-                var markerSymbol = {
-                    type: "simple-marker",
-                    color: [226, 119, 40],
-                    outline: {
-                    color: [255, 255, 255],
-                    width: 2
-                    }
-                };
+                
             
                 this.state.points.forEach(point => {
-                    console.log('point', point);
                     var polyline = {
                         type: "polyline",
                         paths: [
