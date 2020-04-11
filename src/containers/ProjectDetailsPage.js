@@ -92,7 +92,7 @@ class ProjectDetailsPage extends React.Component {
                         {this.props.selectedProject.extendedContent.title}
                     </div>
                     <div style={{
-                        color: '#000',
+                        color: '#6c7680',
                         fontSize: 11,
                         width: '100%',
                         float: 'left',
@@ -190,9 +190,9 @@ class ProjectDetailsPage extends React.Component {
                 </div>
                 <div style={{
                     display: 'inline-block',
-                    color: '#000',
+                    color: '#6c7680',
                     fontSize: 14,
-                    lineHeight: '16px',
+                    lineHeight: '17px',
                     width: '48%',
                     float: 'right',
                     paddingTop: '2px'

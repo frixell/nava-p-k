@@ -500,11 +500,20 @@ input[type="email"]::-webkit-input-placeholder {
     margin-bottom: 0 !important;
 }
 
+.esri-ui-top-left {  
+    right: 0;  
+    top: 20px;  
+    left: unset;  
+}
+
+.esri-ui-manual-container>.esri-component {
+    background: transparent;
+}
 
 
 .toolbarClassName {
-    font-size: 1.3rem;
-    line-height: 1.6rem;
+    font-size: 14px;
+    line-height: 16px;
     padding: 0;
     margin: 0;
     margin-top: -32px;
@@ -513,17 +522,22 @@ input[type="email"]::-webkit-input-placeholder {
     flex-wrap: nowrap;
 }
 
+.editor__line__height > span > p {
+    margin-bottom: 14px !important;
+    line-height: 16px !important;
+}
+
 .wrapperClassName {
-    font-size: 1.3rem;
-    line-height: 1.6rem;
+    font-size: 14px;
+    line-height: 16px;
     margin-right: 10px;
     padding: 0;
     margin: 0;
 }
 
 .editorClassName {
-    font-size: 1.3rem;
-    line-height: 1.6rem;
+    font-size: 14px;
+    line-height: 16px;
     width: 100%;
     color: $gray;
     padding: 0;
@@ -647,15 +661,7 @@ input[type="email"]::-webkit-input-placeholder {
     width: 162px;
 }
 
-.esri-ui-top-left {  
-    right: 0;  
-    top: 20px;  
-    left: unset;  
-}
 
-.esri-ui-manual-container>.esri-component {
-    background: transparent;
-}
 
 .homepage__intouch__button:hover
 {
