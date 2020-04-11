@@ -10,6 +10,9 @@ import {
 import {
     startGetPoints
 } from './actions/points';
+import {
+    startGetTableTemplate
+} from './actions/tableTemplate';
 
 import { login, logout } from './actions/auth';
 if (typeof(window) !== "undefined") {
@@ -105,13 +108,11 @@ if (typeof(window) !== "undefined") {
     }
 }
 
-store.dispatch(startGetPoints()).then(() => {
-    store.dispatch(startSetCategories()).then(() => {
-        
-                
-                    renderApp();
-                
-            
+store.dispatch(startGetTableTemplate()).then(() => {
+    store.dispatch(startGetPoints()).then(() => {
+        store.dispatch(startSetCategories()).then(() => {
+            renderApp();
+        });
     });
 });
 

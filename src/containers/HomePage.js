@@ -8,7 +8,7 @@ import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
-import { startAddPoint } from '../actions/points';
+import { startAddPoint, startEditProject } from '../actions/points';
 import isEqual from 'lodash.isequal';
 import { setLanguage } from "redux-i18n";
 import ReactGA from 'react-ga';
@@ -40,47 +40,37 @@ class HomePage extends React.Component {
 
     setData = (e) => {
 		const { value, dataset } = e.target;
-		const { name, index, field, action, order } = dataset;
-		const homepage = JSON.parse(JSON.stringify(this.state.homepage));
-        const tell = JSON.parse(JSON.stringify(this.state.tell));
-
+		const { name, index, action } = dataset;
+		const selectedProject = JSON.parse(JSON.stringify(this.state.selectedProject));
 
         console.log(name);
-        console.log(index);
-        console.log(field);
+        console.log(value);
         console.log(action);
 
         switch (action) {
 			case "setString":
-                if (field) {
-                    if( name === "tell" ) {
-                        homepage[name][index][field] = value;
-                        tell[order][field] = value;
-                    } else {
-                        homepage[name][index][field] = value;
-                    }
+                if(name === 'content') {
+                    selectedProject.extendedContent[name] = value;
                 } else {
-                    homepage[name] = value;
-                }
+                    selectedProject[name] = value;
+                }   
                 break;
 			default:
 				break;
         };
 
         this.setState({
-            homepage,
-            tell
+            selectedProject
         });
 
-        this.setLocalTell(JSON.parse(JSON.stringify(homepage)));
-        if (typeof(window) !== "undefined") {     
-            if(isEqual(this.state.homepageOrigin, homepage)){ 
-                window.removeEventListener("beforeunload", this.unloadFunc);
-            } else {
-                window.addEventListener("beforeunload", this.unloadFunc);
-            }
-        }
-	}
+        // if (typeof(window) !== "undefined") {     
+        //     if(isEqual(this.state.homepageOrigin, homepage)){ 
+        //         window.removeEventListener("beforeunload", this.unloadFunc);
+        //     } else {
+        //         window.addEventListener("beforeunload", this.unloadFunc);
+        //     }
+        // }
+    }
 
     unloadFunc = (e) => {
         var confirmationMessage = "o/";
@@ -90,19 +80,16 @@ class HomePage extends React.Component {
 
     // update database
 
-    onUpdateHomePage = () => {
-        const homepage = JSON.parse(JSON.stringify(this.state.homepage));
-        this.props.startEditHomePage({
-            homepage: homepage
+    onUpdateProject = () => {
+        const project = JSON.parse(JSON.stringify(this.state.selectedProject));
+        this.props.startEditProject({
+            project: project
         });
-        this.setState(() => ({ homepageOrigin: homepage }));
-        this.setTell(JSON.parse(JSON.stringify(homepage)));
-        this.setLocalTell(JSON.parse(JSON.stringify(homepage)));
+        this.setState(() => ({ projectOrigin: project }));
         if (typeof(window) !== "undefined") {
             window.removeEventListener("beforeunload", this.unloadFunc);
         }
     }
-
 
     setUrlLang = () => {
         if (this.props.urlLang !== undefined && this.props.lang !== this.props.urlLang) {
@@ -120,17 +107,14 @@ class HomePage extends React.Component {
             for (var key in this.state.selectedProject.extendedContent.table) {
                 
                 let categoryObject = this.state.selectedProject.extendedContent.table[key];
-                console.log('categoryObject', categoryObject);
                 let category = {
                     color: categoryObject.color,
                     name: categoryObject.name,
                     subcategories: []
                 };
                 let subcategories = categoryObject.categories;
-                console.log('subcategories', subcategories);
                 for (var key1 in subcategories) {
                     let subcategoryObject = subcategories[key1];
-                    console.log('subcategoryObject', subcategoryObject);
                     let subcategory = {
                         name: subcategoryObject.name,
                         options: []
@@ -139,13 +123,10 @@ class HomePage extends React.Component {
                     for (var key2 in options) {
                         let optionObject = options[key2];
                         subcategory.options.push(optionObject);
-                        console.log('subcategory', subcategory);
                     }
                     category.subcategories.push(subcategory);
-                    console.log('category', category);
                 }
                 tableArray.push(category);
-                console.log('tableArray', tableArray);
             }
             if ( !isEqual(tableArray, this.state.table)) {
                 this.setState({table: tableArray});
@@ -156,9 +137,7 @@ class HomePage extends React.Component {
     addPoint = (point) => {
         let points = this.state.points;
         points.push(point);
-        //this.setState({points, allowAddPoint: false});
         this.setState({allowAddPoint: false});
-        console.log('adding point', point);
         this.props.startAddPoint(point);
     }
     
@@ -222,6 +201,15 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated ?
+                        <div style={{position: 'absolute', zIndex: 15009, top: '2rem', left: '40vw', color: '#fff'}} onClick={this.onUpdateProject}>
+                            שמירה
+                        </div>
+                    :
+                        null
+                }
+                
+                {
+                    this.props.isAuthenticated ?
                         <div style={{position: 'absolute', zIndex: 15009, top: '2rem', left: '45vw', color: '#fff'}} onClick={this.allowAddPoint}>
                             הוספה
                         </div>
@@ -256,7 +244,10 @@ class HomePage extends React.Component {
                             <ProjectDetailsPage
                                 hideProject={this.hideProject}
                                 table={this.state.table}
+                                tableTemplate={this.props.tableTemplate}
                                 selectedProject={this.state.selectedProject}
+                                isAuthenticated={this.props.isAuthenticated}
+                                onChange={this.setData}
                             />
                         </div>
                     :
@@ -287,6 +278,7 @@ const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.uid,
     eventsCategories: state.eventspage,
     points: state.points,
+    tableTemplate: state.tableTemplate,
     homepage: state.homepage,
     navigation: state.navigation,
     lang: state.i18nState.lang
@@ -295,7 +287,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     startLogout: () => dispatch(startLogout()),
     setLanguage: (lang) => dispatch(setLanguage(lang)),
-    startAddPoint: (point) => dispatch(startAddPoint(point))
+    startAddPoint: (point) => dispatch(startAddPoint(point)),
+    startEditProject: (project) => dispatch(startEditProject(project))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

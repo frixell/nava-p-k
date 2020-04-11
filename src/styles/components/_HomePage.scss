@@ -500,6 +500,89 @@ input[type="email"]::-webkit-input-placeholder {
     margin-bottom: 0 !important;
 }
 
+
+
+.toolbarClassName {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    padding: 0;
+    margin: 0;
+    margin-top: -32px;
+    background: none;
+    border: none;
+    flex-wrap: nowrap;
+}
+
+.wrapperClassName {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    margin-right: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+.editorClassName {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    width: 100%;
+    color: $gray;
+    padding: 0;
+    margin: 0;
+    padding-right: 10px;
+    padding-top: 0px;
+    padding-bottom: 20px;
+    overflow: hidden;
+}
+
+.blockTypeClassName {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    padding: 0;
+    margin: 0;
+    margin-left: 2px;
+    width: 80px;
+}
+
+.fontSizeClassName {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    padding: 0;
+    margin: 0;
+    margin-left: 2px;
+    width: 40px;
+}
+
+.fontFamilyClassName {
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    margin-left: 2px;
+    width: 120px;
+}
+
+.public-DraftStyleDefault-block {
+    margin: 0 !important;
+}
+
+.demo-icon {
+    width: 30px !important;
+    height: 30px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.rdw-link-wrapper {
+    width: 30px !important;
+    height: 30px !important;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+
 .sidebar__listItem {
     width: 100%;
     color: $white;

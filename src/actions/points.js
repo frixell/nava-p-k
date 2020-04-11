@@ -2,7 +2,6 @@ var firebase = require("firebase/app");
 require("firebase/database");
 
 
-
 export const getPoints = (points) => ({
     type: "GET_POINTS",
     points
@@ -23,7 +22,23 @@ export const startGetPoints = () => {
     };
 };
 
+export const editProject = ( project ) => ({
+    type: 'EDIT_PROJECT',
+    project
+});
 
+export const startEditProject = ( projectObj ) => {
+    console.log('project', projectObj);
+    let id = projectObj.project.id;
+    let project = projectObj.project;
+    console.log(id);
+    console.log(project);
+    return (dispatch) => {
+        return firebase.database().ref(`points/${id}`).update(project).then(() => {
+            dispatch(editProject( project ));
+        })
+    };
+};
 
 // ADD_POINT
 
