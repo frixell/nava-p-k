@@ -255,7 +255,7 @@ class Navigation extends React.Component {
         <Navbar id="navbarD" light className={`container-fluid navbar__shadow desktop`} expand="md" fixed={this.state.fixed} dir={this.langDir}>
           <div className={this.props.lang === 'he' ? 'container-fluid navbar__header__container' : 'container-fluid navbar__header__container__eng'} dir={this.props.lang === 'he' ? 'ltr' : 'rtl'}>
             <div className="container-fluid navbar__header">
-              <NavbarBrand className={this.props.lang === 'he' ? 'navbar__brand' : 'navbar__brand__eng'} href="/">{this.props.lang === 'he' ? 'נאוה פרסוב קיינר' : 'Nava Persov Kainer'}</NavbarBrand>
+              <NavbarBrand className={this.props.lang === 'he' ? 'navbar__brand' : 'navbar__brand__eng'} href="/">{this.props.lang === 'he' ? 'נאוה קיינר-פרסוב' : 'Nava Kainer-Persov'}</NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
             </div>
           </div>
@@ -292,7 +292,7 @@ class Navigation extends React.Component {
               >
                   <img className="nav__link__phone__mobile" src="/images/navigation/phone_mobile.png" alt="טלפון" />
               </button>
-              <NavbarBrand className="navbar__brand" href="/">{this.props.lang === 'he' ? 'נאוה פרסוב קיינר' : 'Nava Persov Kainer'}</NavbarBrand>
+              <NavbarBrand className="navbar__brand" href="/">{this.props.lang === 'he' ? 'נאוה קיינר-פרסוב' : 'Nava Kainer-Persov'}</NavbarBrand>
               <NavbarToggler className="navbar__toggler ml-auto" onClick={this.toggle} />
             </div>
           </div>

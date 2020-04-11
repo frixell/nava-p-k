@@ -1,6 +1,6 @@
 export const translations = {
   "he": {
-    "homepageEventsTitle": "נאוה פרסוב קיינר",
+    "homepageEventsTitle": "נאוה קיינר-פרסוב",
     "readMore": "<< קראו עוד",
     "discoverMore": "<< גלו עוד",
     "update": "עדכון",
@@ -16,12 +16,12 @@ export const translations = {
     "messagePlaceholder": "הודעה:",
     "sendMessage": "שלחו הודעה",
     "send": "שלח",
-    "allRightsReserved": "© כל הזכויות שמורות לנאוה פרסוב קיינר",
+    "allRightsReserved": "© כל הזכויות שמורות לנאוה קיינר-פרסוב",
     "programmingBy": "אתר של frixell",
-    "joinNewsletter": "הצטרפו לרשימת התפוצה של נאוה פרסוב קיינר"
+    "joinNewsletter": "הצטרפו לרשימת התפוצה של נאוה קיינר-פרסוב"
   },
   "en": {
-    "homepageEventsTitle": "Nava Persov Kainer",
+    "homepageEventsTitle": "Nava Kainer-Persov",
     "readMore": "Read More >>",
     "discoverMore": "Discover More >>",
     "update": "update",
@@ -37,8 +37,8 @@ export const translations = {
     "messagePlaceholder": "Message:",
     "sendMessage": "Send message",
     "send": "Send",
-    "allRightsReserved": "© All rights reserved to Nava Persov Kainer",
+    "allRightsReserved": "© All rights reserved to Nava Kainer-Persov",
     "programmingBy": "Website by frixell",
-    "joinNewsletter": "Join Nava Persov Kainer's mailinglist"
+    "joinNewsletter": "Join Nava Kainer-Persov's mailinglist"
   }
 }

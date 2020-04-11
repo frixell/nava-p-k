@@ -199,9 +199,9 @@ app.get('/:category?/:subCategory?/:event?/:toomuch?', function(request, respons
                 var ref = db.ref(dbString);
                 ref.once("value", function(snapshot) {
                     let seo = {
-                      title: 'נאוה פרסוב קיינר - עין הוד',
-                      description: 'נאוה פרסוב קיינר - עין הוד',
-                      keyWords: 'נאוה פרסוב קיינר - עין הוד'
+                      title: 'נאוה קיינר-פרסוב - עין הוד',
+                      description: 'נאוה קיינר-פרסוב - עין הוד',
+                      keyWords: 'נאוה קיינר-פרסוב - עין הוד'
                     };
                     if(snapshot.val() !== null) {
                       seo = snapshot.val().seo;
@@ -229,9 +229,9 @@ app.get('/:category?/:subCategory?/:event?/:toomuch?', function(request, respons
                 var ref = db.ref(dbString);
                 ref.once("value", function(snapshot) {
                     let seo = {
-                      title: 'נאוה פרסוב קיינר - עין הוד',
-                      description: 'נאוה פרסוב קיינר - עין הוד',
-                      keyWords: 'נאוה פרסוב קיינר - עין הוד'
+                      title: 'נאוה קיינר-פרסוב - עין הוד',
+                      description: 'נאוה קיינר-פרסוב - עין הוד',
+                      keyWords: 'נאוה קיינר-פרסוב - עין הוד'
                     };
                     if(snapshot.val() !== null) {
                       seo = snapshot.val().seo;
@@ -262,9 +262,9 @@ app.get('/:category?/:subCategory?/:event?/:toomuch?', function(request, respons
                 var ref = db.ref(dbString);
                 ref.once("value", function(snapshot) {
                     let seo = {
-                      title: 'נאוה פרסוב קיינר - עין הוד',
-                      description: 'נאוה פרסוב קיינר - עין הוד',
-                      keyWords: 'נאוה פרסוב קיינר - עין הוד'
+                      title: 'נאוה קיינר-פרסוב - עין הוד',
+                      description: 'נאוה קיינר-פרסוב - עין הוד',
+                      keyWords: 'נאוה קיינר-פרסוב - עין הוד'
                     };
                     if(snapshot.val() !== null) {
                       seo = snapshot.val().seo;
@@ -295,9 +295,9 @@ app.get('/:category?/:subCategory?/:event?/:toomuch?', function(request, respons
                 var ref = db.ref(dbString);
                 ref.once("value", function(snapshot) {
                     let seo = {
-                      title: 'נאוה פרסוב קיינר - עין הוד',
-                      description: 'נאוה פרסוב קיינר - עין הוד',
-                      keyWords: 'נאוה פרסוב קיינר - עין הוד'
+                      title: 'נאוה קיינר-פרסוב - עין הוד',
+                      description: 'נאוה קיינר-פרסוב - עין הוד',
+                      keyWords: 'נאוה קיינר-פרסוב - עין הוד'
                     };
                     if(snapshot.val() !== null) {
                       seo = snapshot.val().seo;

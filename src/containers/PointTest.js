@@ -59,14 +59,24 @@ class PointTest extends Component {
                     basemap: "hybrid"
                 });
 
+                // camera = new Camera({
+                //     position: {
+                //         x: 34.97992814784823,
+                //         y: 32.559655621247935,
+                //         z: 2500
+                //     },
+                //     heading: 0.34445102566290225,
+                //     tilt: 82.95536300536367
+                // });
+                
                 camera = new Camera({
                     position: {
-                        x: 34.97992814784823,
-                        y: 32.559655621247935,
-                        z: 2500
+                        x: -42,
+                        y: 38,
+                        z: 10000000
                     },
-                    heading: 0.34445102566290225,
-                    tilt: 82.95536300536367
+                    heading: 0,
+                    tilt: 15
                 });
                 
                 view = new SceneView({

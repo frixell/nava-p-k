@@ -49,6 +49,7 @@ export const startAddPoint = (pointData={}) => {
             z
         };
         console.log('in action');
+        let points = [];
         return firebase.database().ref('points').push(point).then((ref) => {
             console.log('ref', ref);
             if(ref) {
@@ -56,7 +57,7 @@ export const startAddPoint = (pointData={}) => {
                     id: ref.key,
                     ...point
                 }
-                //points.push(localPoint);
+                points.push(localPoint);
                 dispatch(addPoint(point));
                 return points;
             }
