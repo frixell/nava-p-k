@@ -48,17 +48,20 @@ class PointTest extends Component {
                 heading: 0.37445102566290225,
                 tilt: 82.95536300536367
             };
+            view.popup.close();
             view.goTo(camera);
         }
     }
 
     componentDidMount() {
-        loadModules(["esri/Map", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/BasemapGallery", "esri/widgets/Locate", "esri/widgets/Search", "esri/Camera", "esri/widgets/Editor", "esri/popup/content/TextContent"])
-            .then(([Map, SceneView, GraphicsLayer, Graphic, BasemapGallery, Locate, Search, Camera, Editor, TextContent]) => {
+        loadModules(["esri/Map", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/BasemapGallery", "esri/widgets/Locate", "esri/widgets/Search", "esri/Camera", "esri/widgets/Editor", "esri/popup/content/TextContent", "esri/widgets/Expand"])
+            .then(([Map, SceneView, GraphicsLayer, Graphic, BasemapGallery, Locate, Search, Camera, Editor, TextContent, Expand]) => {
                 var map = new Map({
                     basemap: "hybrid"
                 });
-
+                
+                {
+                // ein hod
                 // camera = new Camera({
                 //     position: {
                 //         x: 34.97992814784823,
@@ -68,6 +71,7 @@ class PointTest extends Component {
                 //     heading: 0.34445102566290225,
                 //     tilt: 82.95536300536367
                 // });
+                }
                 
                 camera = new Camera({
                     position: {
@@ -85,23 +89,33 @@ class PointTest extends Component {
                     camera: camera
                 }); 
                     
+                
+                // BaseMap Widget
+                
+                var basemapGallery = new BasemapGallery({
+                    view: view
+                });
+                
+                var bgExpand = new Expand({
+                    view: view,
+                    content: basemapGallery
+                  });
+
+                view.ui.add(bgExpand, {
+                    position: "bottom-right"
+                });
+                
+                
+                // Search Widget
+                
                 const searchWidget = new Search({
                     view: view
                 });
 
                 view.ui.add(searchWidget, {
-                    position: "bottom-left",
+                    position: "bottom-right",
                     index: 2
                 });
-                
-                var basemapGallery = new BasemapGallery({
-                    view: view
-                });
-
-                view.ui.add(basemapGallery, {
-                    position: "bottom-right"
-                });
-                
         
                 var graphicsLayer = new GraphicsLayer();
                 map.add(graphicsLayer);
@@ -136,6 +150,7 @@ class PointTest extends Component {
                 
                 let expandThis = (event) => { 
                     console.log('expand', event.target.project);
+                    view.popup.close();
                     this.props.handleExpandProject(event.target.project);
                 }
                 

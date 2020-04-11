@@ -1,53 +1,18 @@
 import React from 'react';
 import { Prompt } from "react-router-dom";
 import {Helmet} from 'react-helmet';
-import { Map } from '@esri/react-arcgis';
-import { Scene } from '@esri/react-arcgis';
-
-import BermudaTriangle from './BermudaTriangle';
-//import WebMapView from './WebMapView';
-import MapTest from './MapTest';
 import PointTest from './PointTest';
+import SideBar from './SideBar';
 import BuildingTest from './BuildingTest';
-
-//esri/views/SceneView
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
 import { startAddPoint } from '../actions/points';
-
 import isEqual from 'lodash.isequal';
 import { setLanguage } from "redux-i18n";
-
 import ReactGA from 'react-ga';
-
-// [
-//     {
-//         type: "point",
-//         x: -0.178,
-//         y: 51.48791,
-//         z: 1010
-//     },
-//     {
-//         type: "point",
-//         x: -0.278,
-//         y: 51.58991,
-//         z: 1010
-//     },
-//     {
-//         type: "point",
-//         x: -0.078,
-//         y: 51.68991,
-//         z: 1010
-//     },
-//     {
-//         type: "point", // autocasts as new Point()
-//         x: -0.128,
-//         y: 51.46991,
-//         z: 1010
-//     }
-// ]
+import ProjectDetailsPage from './ProjectDetailsPage';
 
 function initializeReactGA(url) {
     ReactGA.initialize('UA-128960221-1');
@@ -58,30 +23,12 @@ function initializeReactGA(url) {
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
-        const tempTell = [];
         this.state = {
-            ratio: 1,
-            ratioFacebook: 1,
-            ratioInstagram: 1,
-            ratioMail: 1,
-            ratioPhone: 1,
-            ratioGreenArrow: 1,
-            homepageOrigin: {},
-            homepage: {},
-            tellIndex: 0,
-            pageupImageClassName: 'pageup__image__absolute__homepage',
-            navigation: {},
-            seoHomepageModalIsOpen: false,
             seo: {
-                title: '',
-                description: '',
-                keyWords: '',
+                title: 'נאוה קיינר-פרסוב',
+                titleEng: 'Nava Kainer-Persov'
             },
-            hideTellEditPanel: true,
-            tellOrigin: [],
-            tell: [],
-            localTell: [],
-            localTellOrigin: [],
+            navigation: {},
             points: this.props.points,
             allowAddPoint: false,
             sidebarClickedItemId: null,
@@ -163,20 +110,8 @@ class HomePage extends React.Component {
         }
     }
 
-    setGoogleAnalytics = () => {
-        if (this.props.urlLang !== undefined && this.props.lang !== this.props.urlLang) {
-            initializeReactGA(`/${this.props.urlLang}`);
-        } else {
-            initializeReactGA('/');
-        }
-        
-    }
-
     componentDidMount = () => {
-        console.log('mounted');
         this.setUrlLang();
-
-        this.setGoogleAnalytics();
     }
     
     componentDidUpdate = (prevProps, prevState) => {
@@ -231,15 +166,13 @@ class HomePage extends React.Component {
         this.setState({allowAddPoint: true});
     }
     
-    handleSidebarClick = (event) => {
-        console.log(event.target.dataset.id);
+    handleSideBarClick = (event) => {
         this.setState({
             sidebarClickedItemId: event.target.dataset.id
         })
     }
     
     handleExpandProject = (selectedProject) => {
-        console.log('selectedProject', selectedProject);
         this.setState({
             selectedProject: selectedProject,
             showSelectedProject: true
@@ -304,166 +237,27 @@ class HomePage extends React.Component {
                     
                 </div>
                 */}
-                <div style={{
-                    float: 'left',
-                    display: 'inline-block',
-                    paddingTop: "2rem",
-                    height: $( window ).height() - 60,
-                    width: '162px' }}
+                <div
+                    className="homepage__sidebar__container"
+                    style={{
+                        height: $( window ).height() - 60
+                    }}
                 >
-                    {
-                        this.state.points.map((point, index) => {
-                            return (
-                                <div onClick={this.handleSidebarClick} data-id={point.id} className="sidebar__listItem" key={index}>{point.title}</div>
-                            );
-                        })
-                    }
+                    <SideBar 
+                        handleSideBarClick={this.handleSideBarClick}
+                        points={this.state.points}
+                    />
                 </div>
                 {
                     this.state.selectedProject ?
-                        <div style={{ 
-                            position: 'absolute',
-                            zIndex: 5,
-                            background: '#fff',
-                            padding: '20px',
-                            paddingTop: '30px',
-                            right: 0,
-                            top: '60px',
-                            height: $( window ).height() - 60,
-                            width: $( window ).width() - 170 }}
+                        <div
+                            className="homepage__project__details__container"
+                            style={{ 
+                                height: $( window ).height() - 60,
+                                width: $( window ).width() - 170
+                            }}
                         >
-                            <div style={{
-                                    display: 'inline-block',
-                                    width: '50%'
-                                }}>
-                                <div
-                                    className='customers__next__arrow'
-                                    onClick={this.hideProject}
-                                    style={{
-                                        position: 'absolute',
-                                        top: '0.5rem',
-                                        left: '20px',
-                                        zIndex: 5897
-                                    }} 
-                                />
-                                <div style={{
-                                    color: '#fff',
-                                    fontWheight: 'bold',
-                                    fontSize: 20,
-                                    textAlign: 'center',
-                                    background: '#6c7680',
-                                    width: '100%',
-                                    height: '3rem',
-                                    float: 'left'
-                                }}>
-                                    {this.state.selectedProject.extendedContent.title}
-                                </div>
-                                <div style={{
-                                    color: '#000',
-                                    fontSize: 11,
-                                    width: '100%',
-                                    float: 'left',
-                                    borderTop: '1px solid black',
-                                    borderLeft: '1px solid black',
-                                    borderRight: '1px solid black',
-                                    display: 'flex',
-                                    flexDirection: 'column'
-                                }}>
-                                    {
-                                        this.state.table && this.state.table.map((category, index) => {
-                                            return (
-                                                <div key={`a${index}`} style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'row'
-                                                }}>
-                                                    <div style={{
-                                                        background: category.color,
-                                                        fontSize: 14,
-                                                        fontWeight: 'bold',
-                                                        width: '20%',
-                                                        minHeight: '50px',
-                                                        padding: 5,
-                                                        borderRight: '1px solid black',
-                                                        borderBottom: '1px solid black'
-                                                    }}>
-                                                        {category.name}
-                                                    </div>
-                                                    <div style={{
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                        width: '80%'
-                                                    }}>
-                                                        {
-                                                            category.subcategories.map((subcategory, index) => {
-                                                                return (
-                                                                    <div key={`b${index}`} style={{
-                                                                        width: '100%',
-                                                                        height: '100%',
-                                                                        display: 'flex',
-                                                                        flexDirection: 'row',
-                                                                        borderBottom: '1px solid black',
-                                                                    }}>
-                                                                        <div style={{
-                                                                            fontWeight: 'bold',
-                                                                            width: '40%',
-                                                                            height: '100%',
-                                                                            padding: 5,
-                                                                            borderRight: '1px solid black',
-                                                                            lineHeight: '12px'
-                                                                        }}>
-                                                                            {subcategory.name}
-                                                                        </div>
-                                                                        <div style={{
-                                                                            display: 'flex',
-                                                                            flexDirection: 'column',
-                                                                            width: '60%'
-                                                                        }}>
-                                                                            {
-                                                                                subcategory.options.map((option, index) => {
-                                                                                    if (option.show) {
-                                                                                        return (
-                                                                                            <div key={`c${index}`} style={{
-                                                                                                width: '100%',
-                                                                                                height: '100%',
-                                                                                                padding: 5,
-                                                                                                lineHeight: '12px'
-                                                                                            }}>
-                                                                                                {option.name}
-                                                                                            </div>
-                                                                                        )
-                                                                                    }
-                                                                                })
-                                                                            }
-                                                                        </div>
-                                                                    </div>
-                                                                )
-                                                            })
-                                                        }
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                                <div style={{
-                                    width: '100%',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    paddingTop: 10
-                                }}>
-                                    <img width="100%" src={this.state.selectedProject.extendedContent.image} />
-                                </div>
-                            </div>
-                            <div style={{
-                                display: 'inline-block',
-                                color: '#000',
-                                fontSize: 14,
-                                width: '48%',
-                                float: 'right'
-                            }}>
-                                {this.state.selectedProject.extendedContent.content}
-                            </div>
+                            <ProjectDetailsPage hideProject={this.hideProject} table={this.state.table} selectedProject={this.state.selectedProject} />
                         </div>
                     :
                         null

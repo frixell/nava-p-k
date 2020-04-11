@@ -488,12 +488,12 @@ input[type="email"]::-webkit-input-placeholder {
 }
 
 .esri-basemap-gallery {
-    max-height: 85px !important;
-    max-width: 240px !important;
+    max-height: 500px !important;
+    max-width: 260px !important;
 }
 
 .esri-basemap-gallery__item-title {
-    display: none;
+    _display: none;
 }
 
 .esri-basemap-gallery__item-thumbnail {
@@ -537,6 +537,32 @@ input[type="email"]::-webkit-input-placeholder {
     -moz-transform: scale(1);
     transition: all $buttonScaleTime ease-in;
     transform: scale(1);   
+}
+
+.homepage__project__details__container {
+    position: absolute;
+    z-index: 5;
+    background: $white;
+    padding: 20px;
+    padding-top: 30px;
+    right: 0;
+    top: 60px;
+}
+
+.homepage__sidebar__container {
+    display: inline-block;
+    padding-top: 2rem;
+    width: 162px;
+}
+
+.esri-ui-top-left {  
+    right: 0;  
+    top: 20px;  
+    left: unset;  
+}
+
+.esri-ui-manual-container>.esri-component {
+    background: transparent;
 }
 
 .homepage__intouch__button:hover
