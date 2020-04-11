@@ -512,6 +512,15 @@ input[type="email"]::-webkit-input-placeholder {
     cursor: pointer;
 }
 
+.sidebar__listItem:hover {
+    background: $gray;
+}
+
+.sidebar__listItem--selected {
+    color: $black;
+    background: $gray;
+}
+
 .esri-basemap-gallery__item {
     width: auto !important;
     margin: 0 !important;
@@ -551,7 +560,7 @@ input[type="email"]::-webkit-input-placeholder {
 
 .homepage__sidebar__container {
     display: inline-block;
-    padding-top: 2rem;
+    padding-top: 20px;
     width: 162px;
 }
 

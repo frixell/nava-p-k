@@ -249,6 +249,13 @@ class PointTest extends Component {
                         symbol: markerSymbol
                     });
                     graphicsLayer.add(pointGraphic);
+                    graphicsLayer
+                        .when(function() {
+                            return graphicsLayer.queryExtent();
+                        })
+                        .then(function(response) {
+                            view.goTo(response.extent);
+                        });
                 })
             })
     }

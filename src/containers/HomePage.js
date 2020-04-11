@@ -237,17 +237,13 @@ class HomePage extends React.Component {
                     
                 </div>
                 */}
-                <div
-                    className="homepage__sidebar__container"
-                    style={{
-                        height: $( window ).height() - 60
-                    }}
-                >
-                    <SideBar 
-                        handleSideBarClick={this.handleSideBarClick}
-                        points={this.state.points}
-                    />
-                </div>
+                
+                <SideBar
+                    sidebarClickedItemId={this.state.sidebarClickedItemId}
+                    handleSideBarClick={this.handleSideBarClick}
+                    points={this.state.points}
+                />
+                
                 {
                     this.state.selectedProject ?
                         <div
@@ -257,7 +253,11 @@ class HomePage extends React.Component {
                                 width: $( window ).width() - 170
                             }}
                         >
-                            <ProjectDetailsPage hideProject={this.hideProject} table={this.state.table} selectedProject={this.state.selectedProject} />
+                            <ProjectDetailsPage
+                                hideProject={this.hideProject}
+                                table={this.state.table}
+                                selectedProject={this.state.selectedProject}
+                            />
                         </div>
                     :
                         null

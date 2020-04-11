@@ -10,17 +10,20 @@ class SideBar extends React.Component {
     
     render() {
         return (
-            <div style={{
-                height: '100%',
-                width: '100%'
-            }}>
+            <div
+                className="homepage__sidebar__container"
+                style={{
+                    height: $( window ).height() - 60
+                }}
+            >
                 {
                     this.props.points.map((point, index) => {
                         return (
                             <div
                                 onClick={this.props.handleSideBarClick}
                                 data-id={point.id}
-                                className="sidebar__listItem" key={index}
+                                className={`sidebar__listItem${this.props.sidebarClickedItemId === point.id ? ' sidebar__listItem--selected' : ''}`}
+                                key={index}
                             >
                                 {point.title}
                             </div>

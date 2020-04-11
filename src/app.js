@@ -5,22 +5,12 @@ import { Provider } from 'react-redux';
 import AppRouter, { history } from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import {
-    startSetCategories,
-    startSetAllSubcategories,
-    startSetAllEvents
+    startSetCategories
 } from './actions/eventspage';
 import {
     startGetPoints
 } from './actions/points';
-import {
-    startSetCostumers
-} from './actions/costumers';
-import {
-    startSetDesktopGallery
-} from './actions/desktopGallery';
-import {
-    startSetMobileGallery
-} from './actions/mobileGallery';
+
 import { login, logout } from './actions/auth';
 if (typeof(window) !== "undefined") {
     //import 'normalize.css/normalize.css';
@@ -83,39 +73,6 @@ function ipLookUp () {
 ipLookUp();
 
 
-
-
-//   get geolocation if needed  -----------------------------------
-
-// var options = {
-//   enableHighAccuracy: true,
-//   timeout: 5000,
-//   maximumAge: 0
-// };
-
-// function success(pos) {
-//   var crd = pos.coords;
-
-//   console.log('Your current position is:');
-//   console.log(`Latitude : ${crd.latitude}`);
-//   console.log(`Longitude: ${crd.longitude}`);
-//   console.log(`More or less ${crd.accuracy} meters.`);
-// }
-
-// function error(err) {
-//   console.warn(`ERROR(${err.code}): ${err.message}`);
-// }
-
-// navigator.geolocation.getCurrentPosition(success, error, options);
-
-//  ---------------------------------------------------------------------------------
-
-
-
-
-
-
-
 const store = configureStore();
 // initialLang="he" fallbackLang="en"
 
@@ -150,22 +107,18 @@ if (typeof(window) !== "undefined") {
 
 store.dispatch(startGetPoints()).then(() => {
     store.dispatch(startSetCategories()).then(() => {
-        store.dispatch(startSetDesktopGallery()).then(() => {
-            store.dispatch(startSetMobileGallery()).then(() => {
-                store.dispatch(startSetCostumers()).then(() => {
+        
+                
                     renderApp();
-                });
-            });
-        });
+                
+            
     });
 });
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         store.dispatch(login(user.uid));
-        store.dispatch(startSetAllSubcategories()).then(() => {
-            store.dispatch(startSetAllEvents());
-        });
+        
     } else {
         store.dispatch(logout());
     }
