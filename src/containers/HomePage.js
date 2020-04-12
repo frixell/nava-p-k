@@ -43,24 +43,23 @@ class HomePage extends React.Component {
 		const { value, dataset } = e.target;
 		const { name, index, action } = dataset;
 		const selectedProject = JSON.parse(JSON.stringify(this.state.selectedProject));
-
         // console.log(name);
         // console.log(value);
         // console.log(action);
-        console.log(selectedProject.extendedContent[name]);
+        
+        console.log(selectedProject.extendedContent && selectedProject.extendedContent[name]);
         switch (action) {
 			case "setString":
-                if(name === 'content' || name === 'tableOptions' || name === 'image') {
                     selectedProject.extendedContent[name] = value;
-                } else {
+                if(name === 'content' || name === 'title') {
                     selectedProject[name] = value;
-                }   
+                } 
                 break;
 			default:
 				break;
         };
 
-        console.log(selectedProject.extendedContent[name]);
+        console.log(selectedProject.extendedContent && selectedProject.extendedContent[name]);
         this.setState({
             selectedProject,
             needSave: true

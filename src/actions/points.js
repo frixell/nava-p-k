@@ -49,8 +49,16 @@ export const addPoint = (point) => ({
 
 export const startAddPoint = (pointData={}) => {
     return (dispatch, getState) => {
+        const defaultExtendedContent = {
+            content: '',
+            image: '',
+            tableOptions: '',
+            title: ''
+        }
         const {
             title = 'title',
+            content = 'content',
+            extendedContent = defaultExtendedContent,
             type = 'point',
             x = '0',
             y = '0',
@@ -58,6 +66,8 @@ export const startAddPoint = (pointData={}) => {
         } = pointData;
         const point = {
             title,
+            content,
+            extendedContent,
             type,
             x,
             y,

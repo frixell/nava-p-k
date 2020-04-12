@@ -29,9 +29,9 @@ class TableOptionsEditor extends React.Component {
     handleOptionStatus = (e) => {
         console.log(e.target.dataset.id);
         let optionId = e.target.dataset.id;
-        console.log('tableOptions 0', this.props.selectedProject.extendedContent.tableOptions);
-        let projectOptionsArray = this.props.selectedProject.extendedContent.tableOptions.split(',');
-        if (this.props.selectedProject.extendedContent.tableOptions.includes(optionId)) {
+        console.log('tableOptions 0', this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.tableOptions);
+        let projectOptionsArray = this.props.selectedProject.extendedContent ? this.props.selectedProject.extendedContent.tableOptions.split(',') : [];
+        if (this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.tableOptions.includes(optionId)) {
             let result = projectOptionsArray.filter(option => option !== optionId);
             projectOptionsArray = result;
         } else {
@@ -111,7 +111,7 @@ class TableOptionsEditor extends React.Component {
                                                                     <input
                                                                         data-id={option.id}
                                                                         type="checkbox"
-                                                                        checked={this.props.selectedProject.extendedContent.tableOptions.includes(option.id)}
+                                                                        checked={this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.tableOptions && this.props.selectedProject.extendedContent.tableOptions.includes(option.id)}
                                                                         onChange={this.handleOptionStatus}
                                                                     />
                                                                         

@@ -5,7 +5,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
-
+import AutosizeInput from 'react-input-autosize';
 import TableOptionsEditor from './TableOptionsEditor';
 
 class ProjectDetailsPage extends React.Component {
@@ -61,6 +61,19 @@ class ProjectDetailsPage extends React.Component {
         }
         this.props.onChange(e);
     };
+    
+    setProjectTitle = (event) => {
+        let e = {
+            target: {
+                value: event.target.value,
+                dataset: {
+                    action: 'setString',
+                    name: 'title'
+                }
+            }
+        }
+        this.props.onChange(e);
+    }
     
     setTableOptions = (tableOptions) => {
         let e = {
@@ -128,7 +141,7 @@ class ProjectDetailsPage extends React.Component {
                             zIndex: 5897
                         }} 
                     />
-                    <div style={{
+                    {/*<div style={{
                         color: '#fff',
                         fontWheight: 'bold',
                         fontSize: 20,
@@ -139,7 +152,37 @@ class ProjectDetailsPage extends React.Component {
                         float: 'left'
                     }}>
                         {this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.title}
-                    </div>
+                        
+                </div>*/}
+                    {
+                        this.props.isAuthenticated === true ?
+                            <div style={{
+                                    color: '#fff',
+                                    fontWheight: 'bold',
+                                    fontSize: 20,
+                                    textAlign: 'center',
+                                    background: '#6c7680',
+                                    width: '100%',
+                                    height: '3rem',
+                                    float: 'left'
+                                }}
+                            >
+                                <AutosizeInput
+                                    className="event__header__input Heebo-Regular"
+                                    name="title"
+                                    data-name="title"
+                                    data-index={this.props.categoryId}
+                                    data-field='title'
+                                    data-action={'setString'}
+                                    placeholder="Project Title"
+                                    value={this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.title}
+                                    onChange={this.setProjectTitle}
+                                    dir={'ltr'}
+                                />
+                            </div>
+                        :
+                            <h2 className=" event__headerHeebo-Regular">{this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.title}</h2>
+                    }
                     <div style={{
                         color: '#6c7680',
                         fontSize: 11,
@@ -195,7 +238,10 @@ class ProjectDetailsPage extends React.Component {
                                                             }}>
                                                                 {subcategory.name}
                                                             </div>
-                                                            <div style={{
+                                                            <div
+                                                                onClick={this.props.isAuthenticated ? this.setSelectedSubcategoryName : null}
+                                                                data-name={subcategory.name}
+                                                                style={{
                                                                 display: 'flex',
                                                                 flexDirection: 'column',
                                                                 width: '60%'
@@ -204,7 +250,7 @@ class ProjectDetailsPage extends React.Component {
                                                                     subcategory.options.map((option, index) => {
                                                                         if (this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.tableOptions.includes(option.id)) {
                                                                             return (
-                                                                                <div onClick={this.setSelectedSubcategoryName} data-name={subcategory.name} key={`c${index}`} style={{
+                                                                                <div key={`c${index}`} style={{
                                                                                     width: '100%',
                                                                                     height: '100%',
                                                                                     padding: 5,
@@ -241,7 +287,7 @@ class ProjectDetailsPage extends React.Component {
                             this.props.isAuthenticated === true ? 
                                 <div className="backoffice__about__images__buttons">
                                     <button className="backoffice__events__events__add__button" onClick={this.props.uploadWidget}>
-                                        <img className="backoffice__events__events__add__icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת תת קטגוריה" />
+                                        <img className="backoffice__events__events__add__icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת תת קטגוריה" /> Image
                                     </button>
                                 </div>
                             :
