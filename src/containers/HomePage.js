@@ -257,7 +257,7 @@ class HomePage extends React.Component {
                 />
                 {
                     this.props.isAuthenticated ?
-                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: '35vw', color: '#fff', cursor: 'pointer'}} onClick={this.props.startLogout}>
+                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: $( window ).width() / 2 - 85, color: '#fff', cursor: 'pointer'}} onClick={this.props.startLogout}>
                             יציאה
                         </div>
                     :
@@ -265,8 +265,8 @@ class HomePage extends React.Component {
                 }
                 
                 {
-                    this.props.isAuthenticated ?
-                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: '40vw', color: this.state.needSave ? 'red' : '#fff', cursor: 'pointer'}} onClick={this.onUpdateProject}>
+                    this.props.isAuthenticated && this.state.selectedProject ?
+                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: $( window ).width() / 2 + 50, color: this.state.needSave ? 'red' : '#fff', cursor: 'pointer'}} onClick={this.onUpdateProject}>
                             שמירה
                         </div>
                     :
@@ -274,8 +274,8 @@ class HomePage extends React.Component {
                 }
                 
                 {
-                    this.props.isAuthenticated ?
-                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: '45vw', color: this.state.allowAddPoint ? 'red' : '#fff', cursor: 'pointer'}} onClick={this.allowAddPoint}>
+                    this.props.isAuthenticated && !this.state.selectedProject ?
+                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: $( window ).width() / 2 + 50, color: this.state.allowAddPoint ? 'red' : '#fff', cursor: 'pointer'}} onClick={this.allowAddPoint}>
                             הוספה
                         </div>
                     :

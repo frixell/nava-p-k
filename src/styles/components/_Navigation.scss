@@ -46,8 +46,6 @@
 
 .navbar__brand {
     border: 0.2rem solid rgba(0, 0, 0, 0);
-    margin-left: 0.4rem;
-    margin-right: 0.4rem;
     vertical-align: middle;
     color: $white;
     font-family: $font;
@@ -59,15 +57,11 @@
     padding-top: 0rem;
     padding-top: 1vw;
     padding-bottom: 0rem;
-    padding-left: 0.3rem;
-    padding-right: 6vw;
     float: right;
 }
 
 .navbar__brand__eng {
     border: 0.2rem solid rgba(0, 0, 0, 0);
-    margin-left: 0.4rem;
-    margin-right: 0.4rem;
     vertical-align: middle;
     color: $white;
     font-family: $font;
@@ -79,8 +73,6 @@
     padding-top: 0rem;
     padding-top: 1vw;
     padding-bottom: 0rem;
-    padding-right: 0.3rem;
-    padding-left: 6vw;
     float: left;
 }
 
@@ -97,8 +89,8 @@
 }
 
 .navbar-light .navbar-nav {
-    margin-left: 6vw;
-    margin-right: 3vw;
+    margin-left: 0vw;
+    margin-right: 0vw;
 }
 
 .nav__logo {

@@ -264,10 +264,6 @@ class Navigation extends React.Component {
               <NavItem>
                 <div onClick={this.setLang} className="nav__link nav__link--padding-top">{this.props.lang === 'he' ? 'EN' : 'עב'}</div>
               </NavItem>
-              
-              <NavItem>
-                <NavLink exact to="/" className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'דף הבית' : 'Homepage'}</NavLink>
-              </NavItem>
             </Nav>
           </Collapse>
         </Navbar>
@@ -320,10 +316,6 @@ class Navigation extends React.Component {
                 </button>
                 <img className="nav__social__seperator" src="/images/navigation/nav-social-seperator.png" alt="קו הפרדה" />
               </div>
-              
-              <NavItem>
-                <NavLink exact to="/" className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'דף הבית' : 'Homepage'}</NavLink>
-              </NavItem>
               
             </Nav>
           </Collapse>
