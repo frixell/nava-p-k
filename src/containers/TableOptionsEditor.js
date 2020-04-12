@@ -80,7 +80,8 @@ class TableOptionsEditor extends React.Component {
                                                         fontSize: '14px',
                                                         fonWeight: 'bold',
                                                         background: '#6c7680',
-                                                        color: '#fff'
+                                                        color: '#fff',
+                                                        cursor: 'pointer'
                                                     }} 
                                                     onClick={this.props.hideTableOptions}
                                                 >

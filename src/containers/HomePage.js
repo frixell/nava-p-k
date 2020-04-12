@@ -47,10 +47,10 @@ class HomePage extends React.Component {
         // console.log(name);
         // console.log(value);
         // console.log(action);
-
+        console.log(selectedProject.extendedContent[name]);
         switch (action) {
 			case "setString":
-                if(name === 'content' || name === 'tableOptions') {
+                if(name === 'content' || name === 'tableOptions' || name === 'image') {
                     selectedProject.extendedContent[name] = value;
                 } else {
                     selectedProject[name] = value;
@@ -60,6 +60,7 @@ class HomePage extends React.Component {
 				break;
         };
 
+        console.log(selectedProject.extendedContent[name]);
         this.setState({
             selectedProject,
             needSave: true
@@ -92,6 +93,59 @@ class HomePage extends React.Component {
         if (typeof(window) !== "undefined") {
             window.removeEventListener("beforeunload", this.unloadFunc);
         }
+    }
+    
+    uploadWidget = (e) => {
+        const { dataset } = e.target;
+        const { id } = dataset;
+        const eventId = this.state.eventId;
+        var myUploadWidget;
+        myUploadWidget = cloudinary.openUploadWidget({ 
+            cloud_name: 'dewafmxth', 
+            upload_preset: 'ml_default', 
+            sources: [
+                "local",
+                "url",
+                "image_search",
+                "facebook",
+                "dropbox",
+                "instagram",
+                "camera"
+            ],
+            fonts: {
+                default: null,
+                "'Cute Font', cursive": "https://fonts.googleapis.com/css?family=Cute+Font",
+                "'Gamja Flower', cursive": "https://fonts.googleapis.com/css?family=Gamja+Flower|PT+Serif"
+            }
+        },
+            (error, result) => {
+                if (error) {
+                    console.log(error);
+                }
+                if (result.event === "success") {
+                    const image = {
+                        publicId: result.info.public_id,
+                        src: result.info.secure_url,
+                        width: result.info.width,
+                        height: result.info.height,
+                        alt: '',
+                    };
+                        
+                    let e = {
+                        target: {
+                            value: image.src,
+                            dataset: {
+                                action: 'setString',
+                                name: 'image'
+                            }
+                        }
+                    }
+                    this.setData(e);
+                    myUploadWidget.close();
+                }
+            }
+        );
+        myUploadWidget.open();
     }
 
     setUrlLang = () => {
@@ -259,7 +313,7 @@ class HomePage extends React.Component {
                                 selectedProject={this.state.selectedProject}
                                 isAuthenticated={this.props.isAuthenticated}
                                 onChange={this.setData}
-                                
+                                uploadWidget={this.uploadWidget}
                             />
                         </div>
                     :

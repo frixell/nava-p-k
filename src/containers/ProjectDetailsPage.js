@@ -228,13 +228,25 @@ class ProjectDetailsPage extends React.Component {
                             })
                         }
                     </div>
+                    
                     <div style={{
                         width: '100%',
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        paddingTop: 10
+                        paddingTop: 10,
+                        position: 'relative'
                     }}>
+                        { 
+                            this.props.isAuthenticated === true ? 
+                                <div className="backoffice__about__images__buttons">
+                                    <button className="backoffice__events__events__add__button" onClick={this.props.uploadWidget}>
+                                        <img className="backoffice__events__events__add__icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת תת קטגוריה" />
+                                    </button>
+                                </div>
+                            :
+                                null
+                        }
                         <img width="100%" src={this.props.selectedProject.extendedContent.image} />
                     </div>
                 </div>
