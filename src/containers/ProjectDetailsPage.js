@@ -244,13 +244,14 @@ class ProjectDetailsPage extends React.Component {
                                                                 style={{
                                                                 display: 'flex',
                                                                 flexDirection: 'column',
-                                                                width: '60%'
+                                                                width: '60%',
+                                                                cursor: this.props.isAuthenticated ? 'pointer' : 'normal'
                                                             }}>
                                                                 {
                                                                     subcategory.options.map((option, index) => {
                                                                         if (this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.tableOptions.includes(option.id)) {
                                                                             return (
-                                                                                <div key={`c${index}`} style={{
+                                                                                <div data-name={subcategory.name} key={`c${index}`} style={{
                                                                                     width: '100%',
                                                                                     height: '100%',
                                                                                     padding: 5,
