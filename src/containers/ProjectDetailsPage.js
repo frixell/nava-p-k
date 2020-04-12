@@ -21,7 +21,7 @@ class ProjectDetailsPage extends React.Component {
     
     componentDidMount = () => {
         //console.log('here 0', this.props.selectedProject.extendedContent.content);
-        const html = this.props.selectedProject.extendedContent.content || '';
+        const html = this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.content || '';
         const contentBlock = htmlToDraft(html);
         if (contentBlock) {
             const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
@@ -138,7 +138,7 @@ class ProjectDetailsPage extends React.Component {
                         height: '3rem',
                         float: 'left'
                     }}>
-                        {this.props.selectedProject.extendedContent.title}
+                        {this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.title}
                     </div>
                     <div style={{
                         color: '#6c7680',
@@ -202,7 +202,7 @@ class ProjectDetailsPage extends React.Component {
                                                             }}>
                                                                 {
                                                                     subcategory.options.map((option, index) => {
-                                                                        if (this.props.selectedProject.extendedContent.tableOptions.includes(option.id)) {
+                                                                        if (this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.tableOptions.includes(option.id)) {
                                                                             return (
                                                                                 <div onClick={this.setSelectedSubcategoryName} data-name={subcategory.name} key={`c${index}`} style={{
                                                                                     width: '100%',
@@ -247,7 +247,7 @@ class ProjectDetailsPage extends React.Component {
                             :
                                 null
                         }
-                        <img width="100%" src={this.props.selectedProject.extendedContent.image} />
+                        <img width="100%" src={this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.image} />
                     </div>
                 </div>
                 <div style={{
@@ -299,7 +299,7 @@ class ProjectDetailsPage extends React.Component {
                         </div>
                         :
                         <div>
-                            <span dangerouslySetInnerHTML={{ __html: this.props.selectedProject.extendedContent.content }} />
+                            <span dangerouslySetInnerHTML={{ __html: this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.content }} />
                         </div>
                     }
                 </div>
