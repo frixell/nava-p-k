@@ -34,7 +34,8 @@ class HomePage extends React.Component {
             sidebarClickedItemId: null,
             selectedProject: null,
             showSelectedProject: false,
-            table: []
+            table: [],
+            needSave: false
         }
     }
 
@@ -43,13 +44,13 @@ class HomePage extends React.Component {
 		const { name, index, action } = dataset;
 		const selectedProject = JSON.parse(JSON.stringify(this.state.selectedProject));
 
-        console.log(name);
-        console.log(value);
-        console.log(action);
+        // console.log(name);
+        // console.log(value);
+        // console.log(action);
 
         switch (action) {
 			case "setString":
-                if(name === 'content') {
+                if(name === 'content' || name === 'tableOptions') {
                     selectedProject.extendedContent[name] = value;
                 } else {
                     selectedProject[name] = value;
@@ -60,7 +61,8 @@ class HomePage extends React.Component {
         };
 
         this.setState({
-            selectedProject
+            selectedProject,
+            needSave: true
         });
 
         // if (typeof(window) !== "undefined") {     
@@ -85,7 +87,8 @@ class HomePage extends React.Component {
         this.props.startEditProject({
             project: project
         });
-        this.setState(() => ({ projectOrigin: project }));
+        
+        this.setState(() => ({ projectOrigin: project, needSave: false }));
         if (typeof(window) !== "undefined") {
             window.removeEventListener("beforeunload", this.unloadFunc);
         }
@@ -142,7 +145,7 @@ class HomePage extends React.Component {
     }
     
     allowAddPoint = () => {
-        this.setState({allowAddPoint: true});
+        this.setState({allowAddPoint: !this.state.allowAddPoint});
     }
     
     handleSideBarClick = (event) => {
@@ -166,7 +169,7 @@ class HomePage extends React.Component {
     }
     
     setSelectedProject = (selectedProject) => {
-        console.log('in selectedProject', selectedProject);
+        //console.log('in selectedProject', selectedProject);
         // this.setState({
         //     selectedProject: selectedProject
         // })
@@ -198,10 +201,18 @@ class HomePage extends React.Component {
                     langLinkEng='/en'
                     categories={this.props.eventsCategories}
                 />
+                {
+                    this.props.isAuthenticated ?
+                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: '35vw', color: '#fff', cursor: 'pointer'}} onClick={this.props.startLogout}>
+                            יציאה
+                        </div>
+                    :
+                        null
+                }
                 
                 {
                     this.props.isAuthenticated ?
-                        <div style={{position: 'absolute', zIndex: 15009, top: '2rem', left: '40vw', color: '#fff'}} onClick={this.onUpdateProject}>
+                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: '40vw', color: this.state.needSave ? 'red' : '#fff', cursor: 'pointer'}} onClick={this.onUpdateProject}>
                             שמירה
                         </div>
                     :
@@ -210,7 +221,7 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated ?
-                        <div style={{position: 'absolute', zIndex: 15009, top: '2rem', left: '45vw', color: '#fff'}} onClick={this.allowAddPoint}>
+                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: '45vw', color: this.state.allowAddPoint ? 'red' : '#fff', cursor: 'pointer'}} onClick={this.allowAddPoint}>
                             הוספה
                         </div>
                     :
@@ -248,6 +259,7 @@ class HomePage extends React.Component {
                                 selectedProject={this.state.selectedProject}
                                 isAuthenticated={this.props.isAuthenticated}
                                 onChange={this.setData}
+                                
                             />
                         </div>
                     :
