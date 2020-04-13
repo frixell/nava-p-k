@@ -67,6 +67,16 @@ class MapViewTest extends Component {
                 });
                 
                 view = new MapView({
+                    popup: {
+                        dockEnabled: true,
+                        dockOptions: {
+                        // Disables the dock button from the popup
+                        buttonEnabled: false,
+                        // Ignore the default sizes that trigger responsive docking
+                        breakpoint: false,
+                        position: 'top-left'
+                        }
+                    },
                     container: "pointTestViewDiv", // Reference to the scene div created in step 5
                     map: map, // Reference to the map object created before the scene
                     zoom: 3, // Sets zoom level based on level of detail (LOD)
