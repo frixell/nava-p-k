@@ -510,6 +510,9 @@ input[type="email"]::-webkit-input-placeholder {
     background: transparent;
 }
 
+.esri-popup__main-container {
+    width: 600px !important;
+}
 
 .toolbarClassName {
     font-size: 14px;

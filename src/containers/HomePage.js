@@ -2,6 +2,8 @@ import React from 'react';
 import { Prompt } from "react-router-dom";
 import {Helmet} from 'react-helmet';
 import PointTest from './PointTest';
+import DomPopup from './DomPopup';
+import MapViewTest from './MapViewTest';
 import SideBar from './SideBar';
 import BuildingTest from './BuildingTest';
 import Footer from '../components/common/Footer';
@@ -322,7 +324,16 @@ class HomePage extends React.Component {
                 
                 <div style={{ float: 'right', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() - 170 }}>
                     
-                    <PointTest
+                    {/*<PointTest
+                        sidebarClickedItemId={this.state.sidebarClickedItemId}
+                        points={this.state.points}
+                        addPoint={this.addPoint}
+                        allowAddPoint={this.state.allowAddPoint}
+                        setSelectedProject={this.setSelectedProject}
+                        handleExpandProject={this.handleExpandProject}
+                    />*/}
+                    
+                    <MapViewTest 
                         sidebarClickedItemId={this.state.sidebarClickedItemId}
                         points={this.state.points}
                         addPoint={this.addPoint}
@@ -330,6 +341,14 @@ class HomePage extends React.Component {
                         setSelectedProject={this.setSelectedProject}
                         handleExpandProject={this.handleExpandProject}
                     />
+                    {/*<DomPopup 
+                        sidebarClickedItemId={this.state.sidebarClickedItemId}
+                        points={this.state.points}
+                        addPoint={this.addPoint}
+                        allowAddPoint={this.state.allowAddPoint}
+                        setSelectedProject={this.setSelectedProject}
+                        handleExpandProject={this.handleExpandProject}
+                    />*/}
                     
                 </div>
                 

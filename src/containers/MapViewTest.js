@@ -24,7 +24,7 @@ const markerSymbol = {
     }
 };
 
-class PointTest extends Component {
+class MapViewTest extends Component {
     state ={
         coordinates: [],
         points: this.props.points,
@@ -32,87 +32,64 @@ class PointTest extends Component {
     }
     
     componentDidUpdate(prevProps) {
-        if (this.props.points.length !== prevProps.points.length) {
-            console.log('length changed !');
-        }
-        if (this.props.sidebarClickedItemId !== prevProps.sidebarClickedItemId) {
-            let selectedPoint = null;
-            this.props.points.map(point => {
-                if (point.id === this.props.sidebarClickedItemId) {
-                    selectedPoint = point;
-                }
-            });
-            camera = {
-                position: {
-                    x: selectedPoint.x,
-                    y: selectedPoint.y - 0.1,
-                    z: 2500
-                },
-                heading: 0.37445102566290225,
-                tilt: 82.95536300536367
-            };
-            view.popup.close();
-            view.goTo(camera);
-        }
+        // if (this.props.points.length !== prevProps.points.length) {
+        //     console.log('length changed !');
+        // }
+        // if (this.props.sidebarClickedItemId !== prevProps.sidebarClickedItemId) {
+        //     let selectedPoint = null;
+        //     this.props.points.map(point => {
+        //         if (point.id === this.props.sidebarClickedItemId) {
+        //             selectedPoint = point;
+        //         }
+        //     });
+        //     camera = {
+        //         position: {
+        //             x: selectedPoint.x,
+        //             y: selectedPoint.y - 0.1,
+        //             z: 2500
+        //         },
+        //         heading: 0.37445102566290225,
+        //         tilt: 82.95536300536367
+        //     };
+        //     view.popup.close();
+        //     view.goTo(camera);
+        // }
     }
     
-    
+    //  "esri/WebScene" -- makes trouble with MapView
     
 
     componentDidMount() {
-        loadModules(["esri/Map", "esri/WebMap", "esri/WebScene", "esri/views/MapView", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/BasemapGallery", "esri/widgets/Locate", "esri/widgets/Search", "esri/Camera", "esri/widgets/Editor", "esri/popup/content/TextContent", "esri/widgets/Expand"])
-            .then(([Map, WebMap, MapView, WebScene, SceneView, GraphicsLayer, Graphic, BasemapGallery, Locate, Search, Camera, Editor, TextContent, Expand]) => {
+        loadModules(["esri/Map", "esri/views/MapView", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/Search", "esri/Camera", "esri/widgets/Editor", "esri/popup/content/TextContent", "esri/widgets/Expand"]) // "esri/widgets/BasemapGallery", "esri/widgets/Locate",
+            .then(([Map, MapView, SceneView, GraphicsLayer, Graphic, Search, Expand]) => { // BasemapGallery,
                 var map = new Map({
-                    basemap: "hybrid"
+                    basemap: "streets"
                 });
                 
-                {
-                // ein hod
-                // camera = new Camera({
-                //     position: {
-                //         x: 34.97992814784823,
-                //         y: 32.559655621247935,
-                //         z: 2500
-                //     },
-                //     heading: 0.34445102566290225,
-                //     tilt: 82.95536300536367
-                // });
-                }
-                
-                camera = new Camera({
-                    position: {
-                        x: -20,
-                        y: 30,
-                        z: 23000000
-                    },
-                    heading: 0,
-                    tilt: 1
+                view = new MapView({
+                    container: "pointTestViewDiv", // Reference to the scene div created in step 5
+                    map: map, // Reference to the map object created before the scene
+                    zoom: 3, // Sets zoom level based on level of detail (LOD)
+                    center: [-20, 35] // Sets center point of view using longitude,latitude
                 });
                 
-                view = new SceneView({
-                    container: "pointTestViewDiv",
-                    map: map,
-                    camera: camera
-                }); 
-                
-                
-                
-                    
+                var graphicsLayer = new GraphicsLayer();
+                map.add(graphicsLayer);
                 
                 // BaseMap Widget
                 
-                var basemapGallery = new BasemapGallery({
-                    view: view
-                });
+                // var basemapGallery = new BasemapGallery({
+                //     view: view
+                // });
                 
-                var bgExpand = new Expand({
-                    view: view,
-                    content: basemapGallery
-                  });
+                // var bgExpand = new Expand({
+                //     view: view,
+                //     content: basemapGallery
+                //   });
 
-                view.ui.add(bgExpand, {
-                    position: "bottom-right"
-                });
+                // view.ui.add(bgExpand, {
+                //     position: "bottom-right"
+                // });
                 
                 
                 // Search Widget
@@ -126,14 +103,7 @@ class PointTest extends Component {
                     index: 2
                 });
         
-                var graphicsLayer = new GraphicsLayer();
-                map.add(graphicsLayer);
-            
-                // var editThisAction = {
-                //     title: 'Edit',
-                //     id: 'edit-this',
-                //     className: 'esri-icon-edit'
-                // };
+                
                 
                 var expandThisAction = {
                     title: 'Expand',
@@ -147,18 +117,10 @@ class PointTest extends Component {
                 
                 view.popup.autoOpenEnabled = false;
                 view.popup.on("trigger-action", function(event) {
-                    // Execute the measureThis() function if the measure-this action is clicked
-                    // if (event.action.id === "edit-this") {
-                    //     editThis(event);
-                    // }
                     if (event.action.id === "expand-this") {
                         expandThis(event);
                     }
                 });
-                
-                // let editThis = (event) => {
-                //     console.log('edit', event);
-                // }
                 
                 let expandThis = (event) => { 
                     console.log('expand', event.target.project);
@@ -182,26 +144,26 @@ class PointTest extends Component {
                             
                             points.push(respoint);
                             this.setState({points});
-                            var polyline = {
-                                type: "polyline",
-                                paths: [
-                                [event.mapPoint.longitude, event.mapPoint.latitude, 0],
-                                [event.mapPoint.longitude, event.mapPoint.latitude, 490]
-                                ]
-                            };
+                            // var polyline = {
+                            //     type: "polyline",
+                            //     paths: [
+                            //     [event.mapPoint.longitude, event.mapPoint.latitude, 0],
+                            //     [event.mapPoint.longitude, event.mapPoint.latitude, 490]
+                            //     ]
+                            // };
                         
-                            var lineSymbol = {
-                                type: "simple-line",
-                                color: [226, 119, 40],
-                                width: 4
-                            };
+                            // var lineSymbol = {
+                            //     type: "simple-line",
+                            //     color: [226, 119, 40],
+                            //     width: 4
+                            // };
                     
-                            var polylineGraphic = new Graphic({
-                                geometry: polyline,
-                                symbol: lineSymbol
-                            });
+                            // var polylineGraphic = new Graphic({
+                            //     geometry: polyline,
+                            //     symbol: lineSymbol
+                            // });
                     
-                            graphicsLayer.add(polylineGraphic);
+                            // graphicsLayer.add(polylineGraphic);
                             
                             
                             var pointGraphic = new Graphic({
@@ -243,26 +205,26 @@ class PointTest extends Component {
                 
             
                 this.state.points.forEach(point => {
-                    var polyline = {
-                        type: "polyline",
-                        paths: [
-                            [point.x, point.y, 0],
-                            [point.x, point.y, 490]
-                        ]
-                    };
+                    // var polyline = {
+                    //     type: "polyline",
+                    //     paths: [
+                    //         [point.x, point.y, 0],
+                    //         [point.x, point.y, 490]
+                    //     ]
+                    // };
                 
-                    var lineSymbol = {
-                        type: "simple-line",
-                        color: [226, 119, 40],
-                        width: 4
-                    };
+                    // var lineSymbol = {
+                    //     type: "simple-line",
+                    //     color: [226, 119, 40],
+                    //     width: 4
+                    // };
             
-                    var polylineGraphic = new Graphic({
-                        geometry: polyline,
-                        symbol: lineSymbol
-                    });
+                    // var polylineGraphic = new Graphic({
+                    //     geometry: polyline,
+                    //     symbol: lineSymbol
+                    // });
             
-                    graphicsLayer.add(polylineGraphic);
+                    // graphicsLayer.add(polylineGraphic);
                     
                     var pointGraphic = new Graphic({
                         point: point,
@@ -283,8 +245,8 @@ class PointTest extends Component {
  
     render() {
         return ( 
-            <div style = { styles.container } >
-                <div id = 'pointTestViewDiv' style = { styles.mapDiv } >
+            <div style={ styles.container } >
+                <div id='pointTestViewDiv' style={ styles.mapDiv } >
                     
                 </div>
             </div>
@@ -292,4 +254,4 @@ class PointTest extends Component {
     }
 }
 
-export default PointTest;
+export default MapViewTest;
