@@ -191,10 +191,11 @@ class HomePage extends React.Component {
     }
     
     addPoint = (point) => {
-        let points = this.state.points;
-        points.push(point);
         this.setState({allowAddPoint: false});
-        this.props.startAddPoint(point);
+        return this.props.startAddPoint(point).then(res => {
+            return res;
+        });
+        
     }
     
     allowAddPoint = () => {
@@ -293,7 +294,7 @@ class HomePage extends React.Component {
                 <SideBar
                     sidebarClickedItemId={this.state.sidebarClickedItemId}
                     handleSideBarClick={this.handleSideBarClick}
-                    points={this.state.points}
+                    points={this.props.points}
                 />
                 
                 {

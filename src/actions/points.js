@@ -73,18 +73,15 @@ export const startAddPoint = (pointData={}) => {
             y,
             z
         };
-        console.log('in action');
-        let points = [];
+        //let points = [];
         return firebase.database().ref('points').push(point).then((ref) => {
-            console.log('ref', ref);
             if(ref) {
                 const localPoint = {
                     id: ref.key,
                     ...point
                 }
-                points.push(localPoint);
-                dispatch(addPoint(point));
-                return points;
+                dispatch(addPoint(localPoint));
+                return localPoint;
             }
             
         });
