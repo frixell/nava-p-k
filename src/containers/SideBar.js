@@ -5,19 +5,32 @@ class SideBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isEditable: false
+            isEditable: false,
+            openCategories: []
         }
     }
     
     componentDidUpdate = (prevProps) => {
         if (!isEqual(this.props.points, prevProps.points)) {
-            console.log('change');
+            //.log('change');
         }
     }
     
+    handleSideBarCategoryClick = (e) => {
+        let id = e.target.dataset.id;
+        //console.log('id', id);
+        const openCategories = this.state.openCategories;
+        if ( openCategories.includes(id) ) {
+            openCategories.splice(openCategories.indexOf(id), 1);
+        } else {
+            openCategories.push(id);
+        }
+        this.setState({openCategories});
+    }
+    
     render() {
-        console.log('sidebar', this.props.points);
-        console.log('sidebar', this.props.points.length);
+        // console.log('sidebar', this.props.points);
+        // console.log('sidebar', this.props.points.length);
         return (
             <div
                 className="homepage__sidebar__container"
@@ -26,17 +39,53 @@ class SideBar extends React.Component {
                 }}
             >
                 {
-                    this.props.points.map((point, index) => {
+                    this.props.categories.map((category, index) => {
                         return (
+                            <div key={index}>
                             <div
-                                onClick={this.props.handleSideBarClick}
-                                data-id={point.id}
-                                className={`sidebar__listItem${this.props.sidebarClickedItemId === point.id ? ' sidebar__listItem--selected' : ''}`}
-                                key={index}
+                                onClick={this.handleSideBarCategoryClick}
+                                data-id={category.id}
+                                className={`sidebar__listCategory${this.props.sidebarClickedCategoryId === category.id ? ' sidebar__listItem--selected' : ''}`}
+                                
                             >
-                                {point.title}
+                                <div className={`sidebar__arrow${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`} /> {category.name}
+                            </div>
+                            {
+                                this.state.openCategories.includes(category.id) && this.props.points.map((point, index) => {
+                                    if ( point.categories && point.categories.includes(category.id) ) {
+                                        return (
+                                            <div
+                                                onClick={this.props.handleSideBarClick}
+                                                data-id={point.id}
+                                                className={`sidebar__listItem${this.props.sidebarClickedItemId === point.id ? ' sidebar__listCategory--selected' : ''}`}
+                                                key={index}
+                                            >
+                                                - {point.title}
+                                            </div>
+                                        );
+                                    }
+                                    
+                                })
+                            }
                             </div>
                         );
+                    })
+                }
+                {
+                    this.props.points.map((point, index) => {
+                        if( !point.categories || point.categories.length === 0) {
+                            return (
+                                <div
+                                    onClick={this.props.handleSideBarClick}
+                                    data-id={point.id}
+                                    className={`sidebar__listItem${this.props.sidebarClickedItemId === point.id ? ' sidebar__listItem--selected' : ''}`}
+                                    key={index}
+                                >
+                                    {point.title}
+                                </div>
+                            );
+                        }
+                        
                     })
                 }
             </div>

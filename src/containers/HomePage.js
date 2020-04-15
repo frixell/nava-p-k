@@ -1,9 +1,16 @@
 import React from 'react';
+import Modal from 'react-responsive-modal';
 import { Prompt } from "react-router-dom";
 import {Helmet} from 'react-helmet';
+import AutosizeInput from 'react-input-autosize';
+import Button from 'react-bootstrap/lib/Button';
 import PointTest from './PointTest';
 import DomPopup from './DomPopup';
+//online version
 import MapViewTest from './MapViewTest';
+//offline version
+//import LayerSaveTest from './LayerSaveTest';
+
 import SideBar from './SideBar';
 import BuildingTest from './BuildingTest';
 import Footer from '../components/common/Footer';
@@ -15,6 +22,12 @@ import isEqual from 'lodash.isequal';
 import { setLanguage } from "redux-i18n";
 import ReactGA from 'react-ga';
 import ProjectDetailsPage from './ProjectDetailsPage';
+
+import {
+    startAddCategory,
+    startEditCategories,
+    startToggleShowCategory,
+} from '../actions/categories';
 
 function initializeReactGA(url) {
     ReactGA.initialize('UA-128960221-1');
@@ -37,7 +50,11 @@ class HomePage extends React.Component {
             selectedProject: null,
             showSelectedProject: false,
             table: [],
-            needSave: false
+            needSave: false,
+            hideCategoriesEditPanel: true,
+            newCategoryNameModalIsOpen: false,
+            newCategoryName: '',
+            categories: this.props.categories
         }
     }
 
@@ -49,11 +66,11 @@ class HomePage extends React.Component {
         // console.log(value);
         // console.log(action);
         
-        console.log(selectedProject.extendedContent && selectedProject.extendedContent[name]);
+        //console.log(selectedProject.extendedContent && selectedProject.extendedContent[name]);
         switch (action) {
 			case "setString":
                     selectedProject.extendedContent[name] = value;
-                if(name === 'content' || name === 'title') {
+                if(name === 'content' || name === 'title' || name === 'categories') {
                     selectedProject[name] = value;
                 } 
                 break;
@@ -61,7 +78,7 @@ class HomePage extends React.Component {
 				break;
         };
 
-        console.log(selectedProject.extendedContent && selectedProject.extendedContent[name]);
+        //console.log(selectedProject.extendedContent && selectedProject.extendedContent[name]);
         this.setState({
             selectedProject,
             needSave: true
@@ -160,6 +177,9 @@ class HomePage extends React.Component {
     }
     
     componentDidUpdate = (prevProps, prevState) => {
+        if (!isEqual(this.props.categories, prevProps.categories)) {
+            this.setState({categories: this.props.categories});
+        }
         if (this.state.selectedProject && !isEqual(this.state.selectedProject, prevState.selectedProject) && this.state.selectedProject.extendedContent && this.state.selectedProject.extendedContent.table) {
             let tableArray = [];
             for (var key in this.state.selectedProject.extendedContent.table) {
@@ -230,10 +250,272 @@ class HomePage extends React.Component {
         //     selectedProject: selectedProject
         // })
     }
+    
+    
+    
+    
+    
+    
+    startEditCategory = () => {
+        this.setState({
+            hideCategoriesEditPanel: !this.state.hideCategoriesEditPanel
+        });
+    }
+    
+    toggleShowCategory = (e) => {
+        const categoryId = e.target.dataset.id;
+        let visible = null;
+        if (e.target.dataset.visible === "true") {
+            visible = false;
+        } else {
+            visible = true;
+        }
+        this.props.startToggleShowCategory(categoryId, visible).then((res) => {
+            this.setState({
+                categories: this.props.categories
+            });
+        });
+    }
+    
+    onCategoryOrderChange = (e) => {
+        const categories = this.state.categories;
+        const categoryId = e.target.dataset.id;
+        let categoryIndex = null;
+        categories.map((category, index) => {
+            if (category.id === categoryId) categoryIndex = index;
+        })
+        let newOrder = e.target.value;
+        if (newOrder > categories.length) newOrder = categories.length;
+        if (newOrder < 1) newOrder = 1;
+        categories[categoryIndex].order = Number(newOrder);
+        this.setState({
+            categories
+        });
+    }
+    
+    onCategoryOrderBlur = (e) => {
+        const categories = this.state.categories;
+        //const categoryId = e.target.dataset.id;
+        let newOrder = e.target.value;
+        if (newOrder > categories.length) {
+            newOrder = categories.length;
+        }
+        if (newOrder < 1) {
+            newOrder = 1;
+        }
+        const oldOrder = Number(e.target.dataset.index)+1;
+        const id = e.target.dataset.id;
+        if ( Number(newOrder) > Number(oldOrder) ) {
+            for (let i = 0; i < categories.length; i++) {
+                if (id !== categories[i].id) {
+                    if (categories[i].order <= newOrder && categories[i].order > oldOrder) {
+                        categories[i].order = categories[i].order-1;
+                    }
+                }
+            }
+        } else if ( Number(newOrder) < Number(oldOrder) ) {
+            for (let i = 0; i < categories.length; i++) {
+                
+                if (id !== categories[i].id) {
+                    if (categories[i].order < oldOrder && categories[i].order >= newOrder) {
+                        categories[i].order = Number(categories[i].order)+1;
+                    }
+                }
+            }
+        }
+        categories.sort((a, b) => {
+            return a.order > b.order ? 1 : -1;
+        });
+        this.setState({
+            categories
+        });
+        // if (typeof(window) !== "undefined") {
+        //     if(isEqual(this.state.categoryOrigin, this.state.category) && isEqual(this.state.subCategoriesOrigin, subCategories) && isEqual(this.state.itemsCurrentCheck, this.state.itemsCurrentOrigin)){ 
+        //         window.removeEventListener("beforeunload", this.unloadFunc);
+        //     } else {
+        //         window.addEventListener("beforeunload", this.unloadFunc);
+        //     }
+        // }
+    }
+    
+    onCategoryOrderKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.onCategoryOrderBlur(e);
+        }
+    }
+    
+    onCategoryNameChange = (e) => {
+        const index = e.target.dataset.index;
+        const categoryNewName = e.target.value;
+        const categories = this.state.categories;
+        categories[index].name = categoryNewName;
+        this.setState({
+            categories
+        });
+        // if (typeof(window) !== "undefined") {
+        //     if(isEqual(this.state.categoryOrigin, this.state.category) && isEqual(this.state.subCategoriesOrigin, subCategories) && isEqual(this.state.itemsCurrentCheck, this.state.itemsCurrentOrigin)){ 
+        //         window.removeEventListener("beforeunload", this.unloadFunc);
+        //     } else {
+        //         window.addEventListener("beforeunload", this.unloadFunc);
+        //     }
+        // }
+    }
+
+    onCategoryNameBlur = (e) => {
+        let nameFlag = false;
+        let oldName = '';
+        const categories = this.state.categories;
+        const categoryNewName = e.target.value;
+        const categoryId = e.target.dataset.id;
+        categories.map((category, index) => {
+            if (category.id === categoryId) {
+                oldName = category.name;
+            }
+        })
+        categories.map((category, index) => {
+            if (category.name === categoryNewName && category.id !== categoryId) {
+                nameFlag = true;
+            }
+        })
+        if (nameFlag === true) {
+            alert("שם קטגוריה קיים במערכת");
+            e.target.value = oldName;
+            categories.map((category, index) => {
+                if (category.id === categoryId) {
+                    categories[index].name = oldName;
+                    this.setState({
+                        categories
+                    });
+                }
+            })
+        }
+        // } else {
+        //     if (typeof(window) !== "undefined") {
+        //         if(isEqual(this.state.categoryOrigin, this.state.category) && isEqual(this.state.subCategoriesOrigin, subCategories) && isEqual(this.state.itemsCurrentCheck, this.state.itemsCurrentOrigin)){ 
+        //             window.removeEventListener("beforeunload", this.unloadFunc);
+        //         } else {
+        //             window.addEventListener("beforeunload", this.unloadFunc);
+        //         }
+        //     }
+        // }
+    }
+    
+    updateCategories = () => {
+        const categories = this.state.categories;
+        const fbCategories = {};
+        categories.map((category, index) => {
+            fbCategories[category.id] = category;
+        })
+        this.props.startEditCategories(fbCategories, categories);
+
+        this.setState({
+            categoriesOrigin: categories
+        });
+        // if (typeof(window) !== "undefined") {
+        //     if(isEqual(this.state.categoryOrigin, this.state.category) && isEqual(this.state.itemsCurrentCheck, this.state.itemsCurrentOrigin)){ 
+        //         window.removeEventListener("beforeunload", this.unloadFunc);
+        //     } else {
+        //         window.addEventListener("beforeunload", this.unloadFunc);
+        //     }
+        // }
+    }
+    
+    addNewCategory = () => {
+        let nameFlag = false;
+        this.props.categories && this.props.categories.map((category, index) => {
+            if(category.name === this.state.newCategoryName) {
+                nameFlag = true;
+            }
+        })
+
+        if(nameFlag === true) {
+            this.setState({
+                newCategoryNameModalAlert: 'שם קטגוריה קיים במערכת'
+            });
+        } else if (this.state.newCategoryName === '') {
+            this.setState({
+                newCategoryNameModalAlert: 'שם קטגוריה חייב לכלול אות אחת לפחות'
+            });
+        } else {
+            const name = this.state.newCategoryName;
+            const order = this.props.categories ? this.props.categories.length+1 : 1;
+            const category = {
+                name,
+                order,
+                isVisible: false,
+                type: 'category'
+            };
+            this.props.startAddCategory(category, order).then((categories)=> {
+                //this.getAllData(categoryId, categoryId);
+                console.log('categories', categories);
+                this.setState({
+                    newCategoryNameModalIsOpen: false,
+                    newCategoryName: ''
+                });
+            });
+        }
+        
+    }
+
+    onNewCategoryNameChange = (e) => {
+        const newCategoryName = e.target.value;
+        this.setState({
+            newCategoryName
+        });
+    }
+
+    onToggleNewCategoryName = () => {
+        this.setState({
+            newCategoryNameModalIsOpen: !this.state.newCategoryNameModalIsOpen
+        });
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     render() {
         return (
             <div className="container-fluid">
+                
+                <Modal
+                    open={this.state.newCategoryNameModalIsOpen}
+                    onClose={this.onToggleNewCategoryName}
+                    center
+                    classNames={{
+                        overlay: 'custom-overlay',
+                        modal: 'custom-modal',
+                        closeButton: 'custom-close-button'                     
+                    }}
+                >
+                    <h2 className="Heebo-Medium">הוספת קטגוריה חדשה</h2>
+                    <h4 className="Heebo-Regular">נא למלא שם לקטגוריה החדשה</h4>
+                    <h4 className="Heebo-Regular">{this.state.newCategoryNameModalAlert}</h4>
+                    <div dir="rtl" style={{marginTop: '2rem', paddingBottom: '2rem'}}>
+                        <AutosizeInput
+                            className="events__tabs__button"
+                            type="text"
+                            placeholder="שם הקטגוריה"
+                            value={this.state.newCategoryName}
+                            onChange={this.onNewCategoryNameChange}
+                        />
+                        <Button bsStyle="success" onClick={this.addNewCategory}>המשך</Button>
+                    </div>
+                </Modal>
                 
                 <Prompt
                     style={{background: "red"}}
@@ -255,7 +537,7 @@ class HomePage extends React.Component {
                     {...this.props}
                     langLink='/עב'
                     langLinkEng='/en'
-                    categories={this.props.eventsCategories}
+                    categories={null}
                 />
                 {
                     this.props.isAuthenticated ?
@@ -292,10 +574,99 @@ class HomePage extends React.Component {
                     
                 </div>
                 */}
-                
+                {this.props.isAuthenticated ? 
+                (
+                    <div className="backoffice__toolbar__buttons">
+                        <div className="backoffice__toolbar__label">
+                            ניהול קטגוריות
+                        </div>
+                        <button
+                            className="backoffice__add__button"
+                            onClick={
+                                this.onToggleNewCategoryName
+                            }
+                        >
+                            <img
+                                className="backoffice__add__icon"
+                                src="/images/eventspage/add-eventSubcategory-icon.svg"
+                                alt="הוספת קטגוריה"
+                            />
+                        </button>
+                        <button
+                            className="backoffice__edit__button"
+                            onClick={
+                                this.startEditCategory
+                            }
+                        >
+                            <img
+                                className="backoffice__edit__icon"
+                                src="/images/backoffice/edit.svg"
+                                alt="עריכה"
+                            />
+                        </button>
+                    </div>
+                ) : null}
+                { 
+                    this.props.isAuthenticated === true ? 
+                        <div className="backoffice__edit__navigation__box" hidden={this.state.hideCategoriesEditPanel}>
+                            {
+                                this.state.categories && this.state.categories.length > 0 ?
+                                    this.state.categories.map((category, index) => {
+                                        return  <div className="backoffice__edit__events__tabs__in__box" key={category.id} dir="rtl">
+                                                    <Button
+                                                        id="btn-show"
+                                                        data-id={category.id}
+                                                        data-visible={category.isVisible}
+                                                        className={`backoffice__events__tabs__remove${category.isVisible === true ? ' btn-success' : ' btn-danger'}`}
+                                                        onClick={this.toggleShowCategory}
+                                                    >
+                                                        <img
+                                                            data-id={category.id}
+                                                            data-visible={category.isVisible}
+                                                            className="backoffice__show__icon"
+                                                            src={`/images/backoffice/${category.isVisible === true ? 'show' : 'hide'}.svg`}
+                                                            alt={category.isVisible === true ? 'הצג' : 'הסתר'}
+                                                        />
+                                                    </Button>
+                                                    <div className="backoffice__events__tabs__order__box">
+                                                        <input
+                                                            id="number"
+                                                            data-id={category.id}
+                                                            type="number"
+                                                            value={category.order || 0}
+                                                            data-index={index}
+                                                            onChange={this.onCategoryOrderChange}
+                                                            onKeyPress={this.onCategoryOrderKeyPress}
+                                                            onBlur={this.onCategoryOrderBlur}
+                                                        />
+                                                    </div>
+                                                    <AutosizeInput
+                                                        data-id={category.id}
+                                                        data-index={index}
+                                                        className="events__tabs__button"
+                                                        type="text"
+                                                        placeholder="שם תת קטגוריה"
+                                                        value={category.name}
+                                                        onChange={this.onCategoryNameChange}
+                                                        onBlur={this.onCategoryNameBlur}
+                                                    />
+                                                </div>
+                                    })
+                                    
+                                :
+                                    null
+                            }
+                            <div className="backoffice__events__tabs__update__box">
+                                <Button className="backoffice__events__tabs__update btn-success" onClick={this.updateCategories}>עדכון</Button>
+                            </div>
+                        </div>
+                    :
+                        null
+                }
                 <SideBar
                     sidebarClickedItemId={this.state.sidebarClickedItemId}
                     handleSideBarClick={this.handleSideBarClick}
+                    categories={this.state.categories}
                     points={this.props.points}
                 />
                 
@@ -310,6 +681,7 @@ class HomePage extends React.Component {
                         >
                             <ProjectDetailsPage
                                 hideProject={this.hideProject}
+                                categories={this.state.categories}
                                 table={this.state.table}
                                 tableTemplate={this.props.tableTemplate}
                                 selectedProject={this.state.selectedProject}
@@ -333,6 +705,7 @@ class HomePage extends React.Component {
                         handleExpandProject={this.handleExpandProject}
                     />*/}
                     
+                    {/*MapViewTest  LayerSaveTest*/}
                     <MapViewTest 
                         sidebarClickedItemId={this.state.sidebarClickedItemId}
                         points={this.state.points}
@@ -361,7 +734,7 @@ class HomePage extends React.Component {
 
 const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.uid,
-    eventsCategories: state.eventspage,
+    categories: state.categories,
     points: state.points,
     tableTemplate: state.tableTemplate,
     homepage: state.homepage,
@@ -373,47 +746,10 @@ const mapDispatchToProps = (dispatch) => ({
     startLogout: () => dispatch(startLogout()),
     setLanguage: (lang) => dispatch(setLanguage(lang)),
     startAddPoint: (point) => dispatch(startAddPoint(point)),
-    startEditProject: (project) => dispatch(startEditProject(project))
+    startEditProject: (project) => dispatch(startEditProject(project)),
+    startToggleShowCategory: (categoryId, visible) => dispatch(startToggleShowCategory(categoryId, visible)),
+    startEditCategories: (fbCategories, categories) => dispatch(startEditCategories(fbCategories, categories)),
+    startAddCategory: (category) => dispatch(startAddCategory(category))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
-
-
-
-
-
-
-// <Scene
-//                         style={{ width: '100%', height: '100%', fontSize: 3, color: '#000' }}
-//                         mapProperties={{ basemap: 'topo-vector' }} // 'satellite'
-//                         viewProperties={{
-//                             center: [-122.4443, 47.2529],
-//                             zoom: 2
-//                         }}
-//                     >
-//                         <BermudaTriangle />
-//                     </Scene>
-                    
-//                     <WebMapView />
-
-
-
-
-
-
-
-
-
-
-//{this.state.seo.title ? (window.prerenderReady = true) : null}
-
-
-
-// <Map
-//                         mapProperties={{ basemap: 'topo-vector' }} // 'satellite'
-//                         viewProperties={{
-//                             center: [-70, 25],
-//                             zoom: 4
-//                         }}>
-                        
-//                     </Map>

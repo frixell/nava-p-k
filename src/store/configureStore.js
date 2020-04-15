@@ -12,6 +12,7 @@ import messagesReducer from '../reducers/messages';
 import desktopGalleryReducer from '../reducers/desktopGallery';
 import mobileGalleryReducer from '../reducers/mobileGallery';
 import pointsReducer from '../reducers/points';
+import categoriesReducer from '../reducers/categories';
 import tableTemplateReducer from '../reducers/tableTemplate';
 import {i18nState} from "redux-i18n";
 
@@ -29,6 +30,7 @@ export default () => {
     const store = createStore(
         combineReducers({
             points: pointsReducer,
+            categories: categoriesReducer,
             tableTemplate: tableTemplateReducer,
             aboutpage: aboutpageReducer,
             auth: authReducer,

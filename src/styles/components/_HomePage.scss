@@ -500,11 +500,11 @@ input[type="email"]::-webkit-input-placeholder {
     margin-bottom: 0 !important;
 }
 
-.esri-ui-top-left {  
-    right: 0;  
+/*.esri-ui-top-left {  
+    ight: 0;  
     top: 20px;  
-    left: unset;  
-}
+    left: unset; 
+}*/ 
 
 .esri-ui-manual-container>.esri-component {
     background: transparent;
@@ -514,6 +514,106 @@ input[type="email"]::-webkit-input-placeholder {
     width: 600px !important;
 }
 
+#sidebarDiv {
+    width: 240px;
+    padding: 10px;
+    height: 200px;
+  }
+
+  #overlayDiv {
+    z-index: 1;
+    position: absolute;
+    margin: auto auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 280px;
+    height: 180px;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid grey;
+    visibility: hidden;
+  }
+
+  input[type="text"] {
+    width: 100%;
+  }
+  
+  
+  // save styles
+  
+  #formDiv {
+    width: 100%;
+  }
+
+  .esri-item-list__scroller {
+    overflow-y: visible;
+  }
+
+  .editArea-container {
+    background: #fff;
+    line-height: 1.5em;
+    overflow: auto;
+    padding: 12px 15px;
+    width: 300px;
+  }
+
+  .list-heading {
+    font-weight: normal;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #323232;
+  }
+
+  .or-wrap {
+    background-color: #e0e0e0;
+    height: 1px;
+    margin: 2em 0;
+    overflow: visible;
+  }
+
+  .or-text {
+    background: #fff;
+    line-height: 0;
+    padding: 0 1em;
+    position: relative;
+    bottom: 0.75em;
+  }
+
+  /* override default styles */
+  .esri-feature-form {
+    background: #fff;
+  }
+
+  .esri-feature-templates {
+    width: 400px;
+  }
+
+  .esri-feature-templates__section-header {
+    display: none;
+  }
+
+  .esri-feature-templates__section {
+    box-shadow: none;
+  }
+
+  .esri-feature-templates__scroller {
+    max-height: 200px;
+  }
+  
+  // end save styles
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 .toolbarClassName {
     font-size: 14px;
     line-height: 16px;
@@ -617,12 +717,82 @@ input[type="email"]::-webkit-input-placeholder {
     align-items: stretch;
 }
 
-
-.sidebar__listItem {
+.sidebar__listCategory {
+    position: relative;
     width: 100%;
     color: $white;
     font-size: 14px;
     padding: 5px;
+    padding-left: 12px;
+    margin-left: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.sidebar__arrow {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    background-image: url('/images/customersStrip/prevArrow.svg');
+    color: #fff;
+    background-repeat: no-repeat;
+    background-size: 8px 8px;
+    transition: .3s all;
+}
+
+.projects__arrow {
+    display: flex;
+    position: absolute;
+    left: 4%;
+    top: 7rem;
+    width: 60px;
+    height: 1.5rem;
+    background-image: url('/images/customersStrip/nextArrow.svg');
+    background-repeat: no-repeat;
+    background-size: 1.5rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.projects__set {
+    color: $gray;
+    font-size: 12px;
+}
+
+.projects__back {
+    padding-left: 16px;
+    padding-bottom: 6px;
+    font-size: 12px;
+    color: $gray;
+}
+
+.sidebar__arrow--open {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.sidebar__listCategory:hover {
+    background: $gray;
+}
+
+.sidebar__listCategory--selected {
+    color: $black;
+    background: $gray;
+}
+
+.sidebar__listItem {
+    width: 100%;
+    color: $white;
+    font-size: 12px;
+    padding: 5px;
+    padding-left: 12px;
     margin-left: 6px;
     white-space: nowrap;
     overflow: hidden;

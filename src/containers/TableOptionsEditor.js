@@ -10,26 +10,13 @@ class TableOptionsEditor extends React.Component {
     }
     
     componentDidMount = () => {
-        console.log('here 0', this.props);        
+        //console.log('here 0', this.props);        
     }
-    // componentDidUpdate = (prevProps) => {
-    //     if (this.props.selectedProject.extendedContent.content !== prevProps.selectedProject.extendedContent.content) {
-    //         console.log('here', this.props.selectedProject.extendedContent.content);
-    //         //const html = '<p>Hey this <strong>editor</strong> rocks 😀</p>';
-    //         const html = this.props.selectedProject.extendedContent.content || '';
-    //         const contentBlock = htmlToDraft(html);
-    //         if (contentBlock) {
-    //             const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-    //             const editorState = EditorState.createWithContent(contentState);
-    //             this.setState({ editorState });
-    //         }            
-    //     }
-    // }
-
+    
     handleOptionStatus = (e) => {
-        console.log(e.target.dataset.id);
+        //console.log(e.target.dataset.id);
         let optionId = e.target.dataset.id;
-        console.log('tableOptions 0', this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.tableOptions);
+        //console.log('tableOptions 0', this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.tableOptions);
         let projectOptionsArray = this.props.selectedProject.extendedContent ? this.props.selectedProject.extendedContent.tableOptions.split(',') : [];
         if (this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.tableOptions.includes(optionId)) {
             let result = projectOptionsArray.filter(option => option !== optionId);
@@ -38,7 +25,7 @@ class TableOptionsEditor extends React.Component {
             projectOptionsArray.push(optionId);
         }
         let tableOptions = projectOptionsArray.join(',');
-        console.log('tableOptions', tableOptions);
+        //console.log('tableOptions', tableOptions);
         this.props.setTableOptions(tableOptions);
     }
     

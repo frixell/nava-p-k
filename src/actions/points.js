@@ -28,11 +28,11 @@ export const editProject = ( project ) => ({
 });
 
 export const startEditProject = ( projectObj ) => {
-    console.log('project', projectObj);
+    //console.log('project', projectObj);
     let id = projectObj.project.id;
     let project = projectObj.project;
-    console.log(id);
-    console.log(project);
+    //console.log(id);
+    //console.log(project);
     return (dispatch) => {
         return firebase.database().ref(`points/${id}`).update(project).then(() => {
             dispatch(editProject( project ));

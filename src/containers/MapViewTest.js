@@ -32,28 +32,32 @@ class MapViewTest extends Component {
     }
     
     componentDidUpdate(prevProps) {
-        // if (this.props.points.length !== prevProps.points.length) {
-        //     console.log('length changed !');
-        // }
-        // if (this.props.sidebarClickedItemId !== prevProps.sidebarClickedItemId) {
-        //     let selectedPoint = null;
-        //     this.props.points.map(point => {
-        //         if (point.id === this.props.sidebarClickedItemId) {
-        //             selectedPoint = point;
-        //         }
-        //     });
-        //     camera = {
-        //         position: {
-        //             x: selectedPoint.x,
-        //             y: selectedPoint.y - 0.1,
-        //             z: 2500
-        //         },
-        //         heading: 0.37445102566290225,
-        //         tilt: 82.95536300536367
-        //     };
-        //     view.popup.close();
-        //     view.goTo(camera);
-        // }
+        if (this.props.points.length !== prevProps.points.length) {
+            //console.log('length changed !');
+        }
+        if (this.props.sidebarClickedItemId !== prevProps.sidebarClickedItemId) {
+            //console.log('side bar clicked');
+            let selectedPoint = null;
+            this.props.points.map(point => {
+                if (point.id === this.props.sidebarClickedItemId) {
+                    selectedPoint = point;
+                }
+            });
+            
+            view.popup.close();
+            
+            // view.center = [selectedPoint.x, selectedPoint.y];
+            // view.zoom = 13;
+            view.goTo({
+                center: [selectedPoint.x, selectedPoint.y],
+                zoom: 10
+              })
+              .catch(function(error) {
+                if (error.name != "AbortError") {
+                   console.error(error);
+                }
+              });
+        }
     }
     
     //  "esri/WebScene" -- makes trouble with MapView
@@ -133,13 +137,13 @@ class MapViewTest extends Component {
                 });
                 
                 let expandThis = (event) => { 
-                    console.log('expand', event.target.project);
+                    //console.log('expand', event.target.project);
                     view.popup.close();
                     this.props.handleExpandProject(event.target.project);
                 }
                 
                 view.on('click', (event) => {
-                    console.log('in click');
+                    //console.log('in click');
                     if (this.props.allowAddPoint) {
                         let point = {
                             project: {},
@@ -150,7 +154,7 @@ class MapViewTest extends Component {
                             z: 500
                         };
                         this.props.addPoint(point).then(respoint => {
-                            console.log(respoint);
+                            //console.log(respoint);
                             
                             points.push(respoint);
                             this.setState({points});
@@ -191,7 +195,7 @@ class MapViewTest extends Component {
                         // check if a graphic is returned from the hitTest
                         let results = response.results[0].graphic
                         if (results) {
-                            console.log('in click graphic', response.results[0]);
+                            //console.log('in click graphic', response.results[0]);
                             let title = (results.point && results.point.title) || 'Edit this';
                             let content = (results.point && results.point.content) || 'Edit this';
                             

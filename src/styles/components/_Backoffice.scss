@@ -290,10 +290,24 @@
 
 .backoffice__add__icon {
     width: 3rem;
-    margin-right: -1.3rem;
-    margin-top: -1.3rem;
-    background: none;
+    background: aqua;
     border: none;
+}
+
+.backoffice__toolbar__buttons {
+    position: fixed;
+    left: 8vw;
+    top: 0.5vh;
+    z-index: 15001;
+}
+
+.backoffice__toolbar__label {
+    display: block;
+    height: 18px;
+    width: 120px;
+    text-align: left;
+    color: aqua;
+    font-size: 14px;
 }
 
 .backoffice__add__icon:hover {
@@ -328,8 +342,7 @@
 
 .backoffice__edit__icon {
     width: 3rem;
-    margin-right: -1.3rem;
-    margin-top: -1.3rem;
+    background: aqua;
 }
 
 .backoffice__edit__icon:hover {

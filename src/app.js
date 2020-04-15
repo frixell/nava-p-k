@@ -7,6 +7,7 @@ import configureStore from './store/configureStore';
 import {
     startSetCategories
 } from './actions/eventspage';
+import { startGetCategories } from './actions/categories';
 import {
     startGetPoints
 } from './actions/points';
@@ -109,9 +110,11 @@ if (typeof(window) !== "undefined") {
 }
 
 store.dispatch(startGetTableTemplate()).then(() => {
-    store.dispatch(startGetPoints()).then(() => {
-        store.dispatch(startSetCategories()).then(() => {
-            renderApp();
+    store.dispatch(startGetCategories()).then(() => {
+        store.dispatch(startGetPoints()).then(() => {
+            store.dispatch(startSetCategories()).then(() => {
+                renderApp();
+            });
         });
     });
 });
