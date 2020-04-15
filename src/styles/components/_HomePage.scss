@@ -732,7 +732,6 @@ input[type="email"]::-webkit-input-placeholder {
 }
 
 .sidebar__arrow {
-    display: inline-block;
     position: absolute;
     left: 0;
     top: 10px;
@@ -743,6 +742,15 @@ input[type="email"]::-webkit-input-placeholder {
     background-repeat: no-repeat;
     background-size: 8px 8px;
     transition: .3s all;
+    pointer-events: none;
+}
+
+.sidebar__arrow--open {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 
 .projects__arrow {
@@ -768,14 +776,6 @@ input[type="email"]::-webkit-input-placeholder {
     padding-bottom: 6px;
     font-size: 12px;
     color: $gray;
-}
-
-.sidebar__arrow--open {
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    transform: rotate(90deg);
 }
 
 .sidebar__listCategory:hover {

@@ -176,7 +176,8 @@ class ProjectDetailsPage extends React.Component {
                         style={{
                             top: '0.5rem',
                             left: '20px',
-                            zIndex: 5897
+                            zIndex: 5897,
+                            cursor: 'pointer'
                         }} 
                     >
                          <span className='projects__back'>Back</span>
@@ -188,7 +189,8 @@ class ProjectDetailsPage extends React.Component {
                             position: 'absolute',
                             top: '0.5rem',
                             left: '100px',
-                            zIndex: 5898
+                            zIndex: 5898,
+                            cursor: 'pointer'
                         }} 
                     >
                         Categories

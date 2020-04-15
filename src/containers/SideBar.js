@@ -1,5 +1,6 @@
 import React from 'react';
 import isEqual from 'lodash.isequal';
+import { addQuarters } from 'date-fns';
 
 class SideBar extends React.Component {
     constructor(props) {
@@ -29,8 +30,12 @@ class SideBar extends React.Component {
     }
     
     render() {
-        // console.log('sidebar', this.props.points);
-        // console.log('sidebar', this.props.points.length);
+        let hasUnconectedProjects = false;
+        this.props.points.map((point, index) => {
+            if( !point.categories || point.categories.length === 0) {
+                hasUnconectedProjects = true;
+            }
+        })
         return (
             <div
                 className="homepage__sidebar__container"
@@ -42,43 +47,58 @@ class SideBar extends React.Component {
                     this.props.categories.map((category, index) => {
                         return (
                             <div key={index}>
-                            <div
-                                onClick={this.handleSideBarCategoryClick}
-                                data-id={category.id}
-                                className={`sidebar__listCategory${this.props.sidebarClickedCategoryId === category.id ? ' sidebar__listItem--selected' : ''}`}
-                                
-                            >
-                                <div className={`sidebar__arrow${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`} /> {category.name}
-                            </div>
-                            {
-                                this.state.openCategories.includes(category.id) && this.props.points.map((point, index) => {
-                                    if ( point.categories && point.categories.includes(category.id) ) {
-                                        return (
-                                            <div
-                                                onClick={this.props.handleSideBarClick}
-                                                data-id={point.id}
-                                                className={`sidebar__listItem${this.props.sidebarClickedItemId === point.id ? ' sidebar__listCategory--selected' : ''}`}
-                                                key={index}
-                                            >
-                                                - {point.title}
-                                            </div>
-                                        );
-                                    }
+                                <div
+                                    onClick={this.handleSideBarCategoryClick}
+                                    data-id={category.id}
+                                    className={`sidebar__listCategory${this.props.sidebarClickedCategoryId === category.id ? ' sidebar__listItem--selected' : ''}`}
                                     
-                                })
-                            }
+                                >
+                                    <div
+                                        className={`sidebar__arrow${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`} 
+                                    /> {category.name}
+                                </div>
+                                {
+                                    this.state.openCategories.includes(category.id) && this.props.points.map((point, index) => {
+                                        if ( point.categories && point.categories.includes(category.id) ) {
+                                            return (
+                                                <div
+                                                    onClick={this.props.handleSideBarClick}
+                                                    data-id={point.id}
+                                                    className={`sidebar__listItem${this.props.sidebarClickedItemId === point.id ? ' sidebar__listCategory--selected' : ''}`}
+                                                    key={index}
+                                                >
+                                                    - {point.title}
+                                                </div>
+                                            );
+                                        }
+                                        
+                                    })
+                                }
                             </div>
                         );
                     })
                 }
                 {
-                    this.props.points.map((point, index) => {
+                    this.props.isAuthenticated && hasUnconectedProjects ? 
+                        <div
+                            className='sidebar__listCategory'
+                            style={{color: 'aqua', paddingLeft: '0px', marginTop: '20px'}}
+                        >
+                            Unconnected Projects
+                        </div>
+                    :
+                    null
+                    
+                }
+                {
+                    this.props.isAuthenticated && this.props.points.map((point, index) => {
                         if( !point.categories || point.categories.length === 0) {
                             return (
                                 <div
                                     onClick={this.props.handleSideBarClick}
                                     data-id={point.id}
                                     className={`sidebar__listItem${this.props.sidebarClickedItemId === point.id ? ' sidebar__listItem--selected' : ''}`}
+                                    style={{color: 'aqua', paddingLeft: '0px', paddingTop: index === 0 ? '20px' : 0}}
                                     key={index}
                                 >
                                     {point.title}

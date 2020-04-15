@@ -541,8 +541,14 @@ class HomePage extends React.Component {
                 />
                 {
                     this.props.isAuthenticated ?
-                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: $( window ).width() / 2 - 85, color: '#fff', cursor: 'pointer'}} onClick={this.props.startLogout}>
-                            יציאה
+                    
+                        <div className="backoffice__toolbar__buttons" style={{position: 'absolute', zIndex: 15009, left: '60px', color: '#fff'}}>{/* $( window ).width() / 2 - 85 */}
+                            <div className="backoffice__toolbar__label">
+                                יציאה
+                            </div>
+                            <button className="backoffice_button" onClick={this.props.startLogout}>
+                                <img className="backoffice_icon" src="/images/backoffice/exit.svg" alt="יציאה" />
+                            </button>
                         </div>
                     :
                         null
@@ -550,8 +556,13 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && this.state.selectedProject ?
-                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: $( window ).width() / 2 + 50, color: this.state.needSave ? 'red' : '#fff', cursor: 'pointer'}} onClick={this.onUpdateProject}>
-                            שמירה
+                        <div className="backoffice__toolbar__buttons" style={{position: 'absolute', zIndex: 15009, left: '240px'}}>{/* $( window ).width() / 2 - 85 */}
+                            <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua',}}>
+                                שמירת פרוייקט
+                            </div>
+                            <button className="backoffice_button" onClick={this.onUpdateProject}>
+                                <img className="backoffice_icon" src="/images/backoffice/save.svg" alt="שמירת פרוייקט" />
+                            </button>
                         </div>
                     :
                         null
@@ -559,8 +570,13 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && !this.state.selectedProject ?
-                        <div style={{position: 'absolute', zIndex: 15009, top: '1.7rem', left: $( window ).width() / 2 + 50, color: this.state.allowAddPoint ? 'red' : '#fff', cursor: 'pointer'}} onClick={this.allowAddPoint}>
-                            הוספה
+                        <div className="backoffice__toolbar__buttons" style={{position: 'absolute', zIndex: 15009, left: '240px'}}>{/* $( window ).width() / 2 - 85 */}
+                            <div className="backoffice__toolbar__label" style={{color: this.state.allowAddPoint ? 'red' : 'aqua',}}>
+                                הוספת פרוייקט
+                            </div>
+                            <button className="backoffice_button" onClick={this.allowAddPoint}>
+                                <img className="backoffice_icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת פרוייקט" />
+                            </button>
                         </div>
                     :
                         null
@@ -668,6 +684,7 @@ class HomePage extends React.Component {
                     handleSideBarClick={this.handleSideBarClick}
                     categories={this.state.categories}
                     points={this.props.points}
+                    isAuthenticated={this.props.isAuthenticated}
                 />
                 
                 {
