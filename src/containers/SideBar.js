@@ -67,7 +67,7 @@ class SideBar extends React.Component {
                                                     key={index}
                                                     dir={this.props.lang === 'en' ? ' ltr' : 'rtl'}
                                                 >
-                                                    - {point.title}
+                                                    - {this.props.lang === 'en' ? point.title : point.titleHebrew || point.title}
                                                 </div>
                                             );
                                         }

@@ -269,6 +269,9 @@ class HomePage extends React.Component {
     
     
     startEditCategory = () => {
+        if (this.state.hideCategoriesEditPanel) {
+            this.hideProject();
+        }
         this.setState({
             hideCategoriesEditPanel: !this.state.hideCategoriesEditPanel
         });
