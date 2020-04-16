@@ -15,12 +15,21 @@ const styles = {
     },
 };
 
-const markerSymbol = {
+
+
+//let categoryColors = ['#409191', '#5eae88', '#a6c98d', '#e8e2a4', '#e5b682', '#db8976', '#c1617e']
+
+let categoryColors = [[64,145,145], [94,174,136], [166,201,141], [232,226,164], [229,182,130], [219,137,118], [193,97,126]]
+
+
+
+
+let markerSymbol = {
     type: "simple-marker",
     color: [226, 119, 40],
     outline: {
-    color: [255, 255, 255],
-    width: 2
+        color: [255, 255, 255],
+        width: 2
     }
 };
 
@@ -89,6 +98,7 @@ class MapViewTest extends Component {
                 
                 var graphicsLayer = new GraphicsLayer();
                 map.add(graphicsLayer);
+                
                 
                 // BaseMap Widget
                 
@@ -219,27 +229,25 @@ class MapViewTest extends Component {
                 
             
                 this.state.points.forEach(point => {
-                    // var polyline = {
-                    //     type: "polyline",
-                    //     paths: [
-                    //         [point.x, point.y, 0],
-                    //         [point.x, point.y, 490]
-                    //     ]
-                    // };
-                
-                    // var lineSymbol = {
-                    //     type: "simple-line",
-                    //     color: [226, 119, 40],
-                    //     width: 4
-                    // };
-            
-                    // var polylineGraphic = new Graphic({
-                    //     geometry: polyline,
-                    //     symbol: lineSymbol
-                    // });
-            
-                    // graphicsLayer.add(polylineGraphic);
-                    
+                    let pointCategories = point.categories.split(',');
+                    let markerSymbolColor = [226, 119, 40];
+                    if (pointCategories.length > 0) {
+                        let colorIndex = 0;
+                        this.props.categories.map((category, index) => {
+                            if (category.id === pointCategories[0]) {
+                                colorIndex = index;
+                            }
+                        });
+                        markerSymbolColor = categoryColors[colorIndex];
+                    }
+                    let markerSymbol = {
+                        type: "simple-marker",
+                        color: markerSymbolColor,
+                        outline: {
+                            color: [255, 255, 255],
+                            width: 2
+                        }
+                    };
                     var pointGraphic = new Graphic({
                         point: point,
                         geometry: point,

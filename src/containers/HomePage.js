@@ -764,7 +764,8 @@ class HomePage extends React.Component {
                     />*/}
                     
                     {/*MapViewTest  LayerSaveTest*/}
-                    <MapViewTest 
+                    <MapViewTest
+                        categories={this.props.categories}
                         sidebarClickedItemId={this.state.sidebarClickedItemId}
                         points={this.state.points}
                         addPoint={this.addPoint}
