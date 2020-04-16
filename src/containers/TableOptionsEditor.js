@@ -5,12 +5,19 @@ class TableOptionsEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isEditable: false
+            isEditable: false,
+            lang: 'en'
         }
     }
     
     componentDidMount = () => {
-        //console.log('here 0', this.props);        
+        this.setState({ lang: this.props.lang });     
+    }
+    
+    componentDidUpdate = (prevProps) => {
+        if (this.props.lang !== prevProps.lang) {
+            this.setState({ lang: this.props.lang });         
+        }
     }
     
     handleOptionStatus = (e) => {
@@ -32,22 +39,25 @@ class TableOptionsEditor extends React.Component {
     
     render() {
         return (
-            <div hidden={this.props.selectedSubcategory} style={{
-                position: 'absolute',
-                zIndex: 602,
-                top: this.props.selectedSubcategoryY - 80,
-                left: 640,
-                color: '#6c7680',
-                fontSize: 11,
-                width: '400px',
-                float: 'left',
-                borderTop: '1px solid black',
-                borderLeft: '1px solid black',
-                borderRight: '1px solid black',
-                display: 'flex',
-                flexDirection: 'column',
-                background: "#fff"
-            }}>
+            <div
+                hidden={this.props.selectedSubcategory}
+                style={{
+                    position: 'absolute',
+                    zIndex: 602,
+                    top: this.props.selectedSubcategoryY - 80,
+                    left: this.state.lang === 'en' ? 640 : 230,
+                    color: '#6c7680',
+                    fontSize: 11,
+                    width: '400px',
+                    float: 'left',
+                    borderTop: '1px solid black',
+                    borderLeft: '1px solid black',
+                    borderRight: '1px solid black',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    background: "#fff"
+                }}
+            >
                 {
                     this.props.tableTemplate && this.props.tableTemplate.map((category, index) => {
                         return (
@@ -68,7 +78,8 @@ class TableOptionsEditor extends React.Component {
                                                         fonWeight: 'bold',
                                                         background: '#6c7680',
                                                         color: '#fff',
-                                                        cursor: 'pointer'
+                                                        cursor: 'pointer',
+                                                        textAlign: this.props.lang === 'en' ? 'left' : 'right'
                                                     }} 
                                                     onClick={this.props.hideTableOptions}
                                                 >
@@ -86,8 +97,9 @@ class TableOptionsEditor extends React.Component {
                                                                 height: '100%',
                                                                 padding: '10px',
                                                                 display: 'flex',
-                                                                flexDirection: 'row',
-                                                                justifyContent: 'flex-start',
+                                                                flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse',
+                                                                justifyContent: this.props.lang === 'en' ? 'flex-start' : 'flex-end',
+                                                                textAlign: this.props.lang === 'en' ? 'left' : 'right',
                                                                 borderBottom: '1px solid black'
                                                             }}>
                                                                 <div style={{
@@ -108,7 +120,7 @@ class TableOptionsEditor extends React.Component {
                                                                     lineHeight: '12px',
                                                                     width: '370px',
                                                                 }}>
-                                                                    {option.name}
+                                                                    {this.props.lang === 'en' ? option.name : option.nameHebrew || option.name}
                                                                 </div>
                                                             </div>
                                                         )

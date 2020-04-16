@@ -54,6 +54,7 @@ class HomePage extends React.Component {
             hideCategoriesEditPanel: true,
             newCategoryNameModalIsOpen: false,
             newCategoryName: '',
+            newCategoryNameHebrew: '',
             categories: this.props.categories
         }
     }
@@ -69,9 +70,20 @@ class HomePage extends React.Component {
         //console.log(selectedProject.extendedContent && selectedProject.extendedContent[name]);
         switch (action) {
 			case "setString":
+                if (this.props.lang === 'en' || name === 'tableOptions') {
                     selectedProject.extendedContent[name] = value;
-                if(name === 'content' || name === 'title' || name === 'categories') {
+                } else {
+                    selectedProject.extendedContent[name+'Hebrew'] = value;
+                }
+                if(name === 'categories') {
                     selectedProject[name] = value;
+                }
+                if(name === 'content' || name === 'title' || name === 'categories') {
+                    if (this.props.lang === 'en') {
+                        selectedProject[name] = value;
+                    } else {
+                        selectedProject[name+'Hebrew'] = value;
+                    }
                 } 
                 break;
 			default:
@@ -329,13 +341,6 @@ class HomePage extends React.Component {
         this.setState({
             categories
         });
-        // if (typeof(window) !== "undefined") {
-        //     if(isEqual(this.state.categoryOrigin, this.state.category) && isEqual(this.state.subCategoriesOrigin, subCategories) && isEqual(this.state.itemsCurrentCheck, this.state.itemsCurrentOrigin)){ 
-        //         window.removeEventListener("beforeunload", this.unloadFunc);
-        //     } else {
-        //         window.addEventListener("beforeunload", this.unloadFunc);
-        //     }
-        // }
     }
     
     onCategoryOrderKeyPress = (e) => {
@@ -346,19 +351,18 @@ class HomePage extends React.Component {
     
     onCategoryNameChange = (e) => {
         const index = e.target.dataset.index;
+        const lang = e.target.dataset.lang;
         const categoryNewName = e.target.value;
         const categories = this.state.categories;
-        categories[index].name = categoryNewName;
+        if (lang === 'en') {
+            categories[index].name = categoryNewName;
+        } else {
+            categories[index].nameHebrew = categoryNewName;
+        }
+        
         this.setState({
             categories
         });
-        // if (typeof(window) !== "undefined") {
-        //     if(isEqual(this.state.categoryOrigin, this.state.category) && isEqual(this.state.subCategoriesOrigin, subCategories) && isEqual(this.state.itemsCurrentCheck, this.state.itemsCurrentOrigin)){ 
-        //         window.removeEventListener("beforeunload", this.unloadFunc);
-        //     } else {
-        //         window.addEventListener("beforeunload", this.unloadFunc);
-        //     }
-        // }
     }
 
     onCategoryNameBlur = (e) => {
@@ -367,14 +371,26 @@ class HomePage extends React.Component {
         const categories = this.state.categories;
         const categoryNewName = e.target.value;
         const categoryId = e.target.dataset.id;
+        const lang = e.target.dataset.lang;
         categories.map((category, index) => {
             if (category.id === categoryId) {
-                oldName = category.name;
+                if (lang === 'en') {
+                    oldName = category.name;
+                } else {
+                    oldName = category.nameHebrew;
+                }
+                
             }
         })
         categories.map((category, index) => {
-            if (category.name === categoryNewName && category.id !== categoryId) {
-                nameFlag = true;
+            if (lang === 'en') {
+                if (category.name === categoryNewName && category.id !== categoryId) {
+                    nameFlag = true;
+                }
+            } else {
+                if (category.nameHebrew === categoryNewName && category.id !== categoryId) {
+                    nameFlag = true;
+                }
             }
         })
         if (nameFlag === true) {
@@ -382,22 +398,18 @@ class HomePage extends React.Component {
             e.target.value = oldName;
             categories.map((category, index) => {
                 if (category.id === categoryId) {
-                    categories[index].name = oldName;
+                    if (lang === 'en') {
+                        categories[index].name = oldName;
+                    } else {
+                        categories[index].nameHebrew = oldName;
+                    }
+                    
                     this.setState({
                         categories
                     });
                 }
             })
         }
-        // } else {
-        //     if (typeof(window) !== "undefined") {
-        //         if(isEqual(this.state.categoryOrigin, this.state.category) && isEqual(this.state.subCategoriesOrigin, subCategories) && isEqual(this.state.itemsCurrentCheck, this.state.itemsCurrentOrigin)){ 
-        //             window.removeEventListener("beforeunload", this.unloadFunc);
-        //         } else {
-        //             window.addEventListener("beforeunload", this.unloadFunc);
-        //         }
-        //     }
-        // }
     }
     
     updateCategories = () => {
@@ -421,6 +433,7 @@ class HomePage extends React.Component {
     }
     
     addNewCategory = () => {
+        console.log('lang', this.props.lang);
         let nameFlag = false;
         this.props.categories && this.props.categories.map((category, index) => {
             if(category.name === this.state.newCategoryName) {
@@ -438,21 +451,24 @@ class HomePage extends React.Component {
             });
         } else {
             const name = this.state.newCategoryName;
+            const nameHebrew = this.state.newCategoryName;
             const order = this.props.categories ? this.props.categories.length+1 : 1;
             const category = {
                 name,
+                nameHebrew,
                 order,
                 isVisible: false,
                 type: 'category'
             };
-            this.props.startAddCategory(category, order).then((categories)=> {
-                //this.getAllData(categoryId, categoryId);
-                console.log('categories', categories);
-                this.setState({
-                    newCategoryNameModalIsOpen: false,
-                    newCategoryName: ''
-                });
-            });
+            // this.props.startAddCategory(category, order).then((categories)=> {
+            //     //this.getAllData(categoryId, categoryId);
+            //     console.log('categories', categories);
+            //     this.setState({
+            //         newCategoryNameModalIsOpen: false,
+            //         newCategoryName: '',
+            //         newCategoryNameHebrew: ''
+            //     });
+            // });
         }
         
     }
@@ -506,8 +522,10 @@ class HomePage extends React.Component {
                     <h4 className="Heebo-Regular">נא למלא שם לקטגוריה החדשה</h4>
                     <h4 className="Heebo-Regular">{this.state.newCategoryNameModalAlert}</h4>
                     <div dir="rtl" style={{marginTop: '2rem', paddingBottom: '2rem'}}>
-                        <AutosizeInput
-                            className="events__tabs__button"
+                        
+                        <input
+                            width={'120px'}
+                            className="backoffice__category__name"
                             type="text"
                             placeholder="שם הקטגוריה"
                             value={this.state.newCategoryName}
@@ -542,9 +560,9 @@ class HomePage extends React.Component {
                 {
                     this.props.isAuthenticated ?
                     
-                        <div className="backoffice__toolbar__buttons" style={{position: 'absolute', zIndex: 15009, left: '60px', color: '#fff'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--exit" style={this.props.lang === 'en' ? {left: '90%'} : {left: '60px'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label">
-                                יציאה
+                                {`${this.props.lang === 'en' ? 'Exit' : 'יציאה'}`}
                             </div>
                             <button className="backoffice_button" onClick={this.props.startLogout}>
                                 <img className="backoffice_icon" src="/images/backoffice/exit.svg" alt="יציאה" />
@@ -556,9 +574,9 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && this.state.selectedProject ?
-                        <div className="backoffice__toolbar__buttons" style={{position: 'absolute', zIndex: 15009, left: '240px'}}>{/* $( window ).width() / 2 - 85 */}
-                            <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua',}}>
-                                שמירת פרוייקט
+                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {left: '70%'} : {left: '240px'}}>{/* $( window ).width() / 2 - 85 */}
+                            <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
+                                {`${this.props.lang === 'en' ? 'Save Project' : 'שמירת פרוייקט'}`}
                             </div>
                             <button className="backoffice_button" onClick={this.onUpdateProject}>
                                 <img className="backoffice_icon" src="/images/backoffice/save.svg" alt="שמירת פרוייקט" />
@@ -570,9 +588,9 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && !this.state.selectedProject ?
-                        <div className="backoffice__toolbar__buttons" style={{position: 'absolute', zIndex: 15009, left: '240px'}}>{/* $( window ).width() / 2 - 85 */}
-                            <div className="backoffice__toolbar__label" style={{color: this.state.allowAddPoint ? 'red' : 'aqua',}}>
-                                הוספת פרוייקט
+                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--add-project" style={this.props.lang === 'en' ? {left: '70%'} : {left: '240px'}}>{/* $( window ).width() / 2 - 85 */}
+                            <div className="backoffice__toolbar__label" style={{color: this.state.allowAddPoint ? 'red' : 'aqua'}}>
+                                {`${this.props.lang === 'en' ? 'Add Project' : 'הוספת פרוייקט'}`}
                             </div>
                             <button className="backoffice_button" onClick={this.allowAddPoint}>
                                 <img className="backoffice_icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת פרוייקט" />
@@ -592,9 +610,9 @@ class HomePage extends React.Component {
                 */}
                 {this.props.isAuthenticated ? 
                 (
-                    <div className="backoffice__toolbar__buttons">
+                    <div className="backoffice__toolbar__buttons" style={this.props.lang === 'en' ? {left: '80%'} : {left: '150px'}}>
                         <div className="backoffice__toolbar__label">
-                            ניהול קטגוריות
+                            {`${this.props.lang === 'en' ? 'Categories' : 'ניהול קטגוריות'}`}
                         </div>
                         <button
                             className="backoffice__add__button"
@@ -656,16 +674,33 @@ class HomePage extends React.Component {
                                                             onBlur={this.onCategoryOrderBlur}
                                                         />
                                                     </div>
-                                                    <AutosizeInput
-                                                        data-id={category.id}
-                                                        data-index={index}
-                                                        className="events__tabs__button"
-                                                        type="text"
-                                                        placeholder="שם תת קטגוריה"
-                                                        value={category.name}
-                                                        onChange={this.onCategoryNameChange}
-                                                        onBlur={this.onCategoryNameBlur}
-                                                    />
+                                                    <div className="backoffice__category__name__box">
+                                                        <input
+                                                            data-id={category.id}
+                                                            data-index={index}
+                                                            data-lang={'he'}
+                                                            className="backoffice__category__name"
+                                                            type="text"
+                                                            placeholder="שם הקטגוריה"
+                                                            value={category.nameHebrew}
+                                                            onChange={this.onCategoryNameChange}
+                                                            onBlur={this.onCategoryNameBlur}
+                                                        />
+                                                    </div>
+                                                    <div className="backoffice__category__name__box">
+                                                        <input
+                                                            data-id={category.id}
+                                                            data-index={index}
+                                                            data-lang={'en'}
+                                                            className="backoffice__category__name"
+                                                            type="text"
+                                                            placeholder="Category Name"
+                                                            value={category.name}
+                                                            onChange={this.onCategoryNameChange}
+                                                            onBlur={this.onCategoryNameBlur}
+                                                            dir='ltr'
+                                                        />
+                                                    </div>
                                                 </div>
                                     })
                                     
@@ -685,12 +720,13 @@ class HomePage extends React.Component {
                     categories={this.state.categories}
                     points={this.props.points}
                     isAuthenticated={this.props.isAuthenticated}
+                    lang={this.props.lang}
                 />
                 
                 {
                     this.state.selectedProject ?
                         <div
-                            className="homepage__project__details__container"
+                            className={`homepage__project__details__container${this.props.lang === 'en' ? ' homepage__project__details__container--en' : ' homepage__project__details__container--he'}`}
                             style={{ 
                                 height: $( window ).height() - 60,
                                 width: $( window ).width() - 170
@@ -705,13 +741,14 @@ class HomePage extends React.Component {
                                 isAuthenticated={this.props.isAuthenticated}
                                 onChange={this.setData}
                                 uploadWidget={this.uploadWidget}
+                                lang={this.props.lang}
                             />
                         </div>
                     :
                         null
                 }
                 
-                <div style={{ float: 'right', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() - 170 }}>
+                <div style={{ float: this.props.lang === 'en' ? 'right' : 'left', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() - 170 }}>
                     
                     {/*<PointTest
                         sidebarClickedItemId={this.state.sidebarClickedItemId}
@@ -720,6 +757,7 @@ class HomePage extends React.Component {
                         allowAddPoint={this.state.allowAddPoint}
                         setSelectedProject={this.setSelectedProject}
                         handleExpandProject={this.handleExpandProject}
+                        lang={this.props.lang}
                     />*/}
                     
                     {/*MapViewTest  LayerSaveTest*/}
@@ -730,6 +768,7 @@ class HomePage extends React.Component {
                         allowAddPoint={this.state.allowAddPoint}
                         setSelectedProject={this.setSelectedProject}
                         handleExpandProject={this.handleExpandProject}
+                        lang={this.props.lang}
                     />
                     {/*<DomPopup 
                         sidebarClickedItemId={this.state.sidebarClickedItemId}
@@ -738,6 +777,7 @@ class HomePage extends React.Component {
                         allowAddPoint={this.state.allowAddPoint}
                         setSelectedProject={this.setSelectedProject}
                         handleExpandProject={this.handleExpandProject}
+                        lang={this.props.lang}
                     />*/}
                     
                 </div>
@@ -770,3 +810,31 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+
+
+
+
+// <AutosizeInput
+//                             width={'120px'}
+//                             className="backoffice__category__name"
+//                             type="text"
+//                             placeholder="שם הקטגוריה"
+//                             value={this.state.newCategoryName}
+//                             onChange={this.onNewCategoryNameChange}
+//                         />
+
+
+
+
+
+
+// <AutosizeInput
+//                                                         data-id={category.id}
+//                                                         data-index={index}
+//                                                         className="events__tabs__button"
+//                                                         type="text"
+//                                                         placeholder="שם תת קטגוריה"
+//                                                         value={category.name}
+//                                                         onChange={this.onCategoryNameChange}
+//                                                         onBlur={this.onCategoryNameBlur}
+//                                                     />

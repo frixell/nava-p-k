@@ -62,7 +62,7 @@ function ipLookUp () {
           //console.log('User\'s Country', response.country);
           //console.log(navigator.languages)
           if (response.country === 'IL') {
-              initialLang = 'he';
+              initialLang = 'en';
           } else {
               initialLang = 'en';
           }

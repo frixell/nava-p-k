@@ -46,16 +46,15 @@ class SideBar extends React.Component {
                 {
                     this.props.categories.map((category, index) => {
                         return (
-                            <div key={index}>
+                            <div hidden={!category.isVisible && !this.props.isAuthenticated} key={index}>
                                 <div
                                     onClick={this.handleSideBarCategoryClick}
                                     data-id={category.id}
-                                    className={`sidebar__listCategory${this.props.sidebarClickedCategoryId === category.id ? ' sidebar__listItem--selected' : ''}`}
-                                    
+                                    className={`sidebar__listCategory${this.props.lang === 'en' ? ' sidebar__listCategory--en' : ' sidebar__listCategory--he'}`}
                                 >
                                     <div
-                                        className={`sidebar__arrow${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`} 
-                                    /> {category.name}
+                                        className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`} 
+                                    /> {this.props.lang === 'en' ? category.name : category.nameHebrew}
                                 </div>
                                 {
                                     this.state.openCategories.includes(category.id) && this.props.points.map((point, index) => {
@@ -64,8 +63,9 @@ class SideBar extends React.Component {
                                                 <div
                                                     onClick={this.props.handleSideBarClick}
                                                     data-id={point.id}
-                                                    className={`sidebar__listItem${this.props.sidebarClickedItemId === point.id ? ' sidebar__listCategory--selected' : ''}`}
+                                                    className={`sidebar__listItem${this.props.lang === 'en' ? ' sidebar__listItem--en' : ' sidebar__listItem--he'}${this.props.sidebarClickedItemId === point.id ? ' sidebar__listCategory--selected' : ''}`}
                                                     key={index}
+                                                    dir={this.props.lang === 'en' ? ' ltr' : 'rtl'}
                                                 >
                                                     - {point.title}
                                                 </div>
@@ -80,28 +80,39 @@ class SideBar extends React.Component {
                 }
                 {
                     this.props.isAuthenticated && hasUnconectedProjects ? 
+                        <hr style={{width: '100%', marginTop: '30px', background: 'aqua'}} />
+                    :
+                        null
+                }
+                {
+                    this.props.isAuthenticated && hasUnconectedProjects ? 
                         <div
-                            className='sidebar__listCategory'
-                            style={{paddingLeft: '0px', marginTop: '20px'}}
+                            className={`sidebar__listCategory${this.props.lang === 'en' ? ' sidebar__listCategory--en' : ' sidebar__listCategory--he'}`}
+                            style={{marginTop: '10px'}}
+                            onClick={this.handleSideBarCategoryClick}
+                            data-id={'notConnectedProjects'}
                         >
-                            Not Connected
+                            <div
+                                className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes('notConnectedProjects') ? ' sidebar__arrow--open' : ''}`} 
+                            /> {this.props.lang === 'en' ? ' Not Connected' : 'לא מחובר'}
                         </div>
                     :
                     null
                     
                 }
                 {
-                    this.props.isAuthenticated && this.props.points.map((point, index) => {
+                    this.props.isAuthenticated && this.state.openCategories.includes('notConnectedProjects') &&  this.props.points.map((point, index) => {
                         if( !point.categories || point.categories.length === 0) {
                             return (
                                 <div
                                     onClick={this.props.handleSideBarClick}
                                     data-id={point.id}
-                                    className={`sidebar__listItem${this.props.sidebarClickedItemId === point.id ? ' sidebar__listItem--selected' : ''}`}
-                                    style={{color: 'aqua', paddingLeft: '0px', paddingTop: index === 0 ? '20px' : 0}}
+                                    className={`sidebar__listItem${this.props.lang === 'en' ? ' sidebar__listItem--en' : ' sidebar__listItem--he'}${this.props.sidebarClickedItemId === point.id ? ' sidebar__listItem--selected' : ''}`}
+                                    style={{color: 'aqua'}}
                                     key={index}
+                                    dir={this.props.lang === 'en' ? ' ltr' : 'rtl'}
                                 >
-                                    {point.title}
+                                    - {point.title}
                                 </div>
                             );
                         }

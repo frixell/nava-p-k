@@ -107,13 +107,20 @@
 .backoffice__about__images__buttons {
     position: absolute;
     z-index: 717;
-    left: -20px;
     top: 10px;
     color: aqua;
     background: #000;
     height: 5.5rem;
     width: 8.4rem;
     padding-left: 0.7rem;
+}
+
+.backoffice__about__images__buttons--en {
+    left: -20px;
+}
+
+.backoffice__about__images__buttons--he {
+    right: -20px;
 }
 
 .backoffice__about__images__text {
@@ -242,6 +249,26 @@
     width: 4rem;
 }
 
+.backoffice__category__name {
+    font-family: $font;
+    font-weight: $fontRegular;
+    background: $white;
+    color: $blue;
+    border: 1px solid $gray;
+    height: 3rem;
+    font-size: 1.8rem;
+    line-height: 0.5rem;
+    padding: 0;
+    margin: 0;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    margin-left: 0.5rem;
+}
+
+.backoffice__category__name__box {
+    width: 200px;
+}
+
 .backoffice__events__tabs__order__box input {
     font-family: $font;
     font-weight: $fontRegular;
@@ -256,6 +283,7 @@
     padding-left: 0.4rem;
     padding-right: 0.4rem;
     margin-left: 0.5rem;
+    width: 40px;
 }
 
 .backoffice__events__tabs__update__box {
@@ -305,6 +333,22 @@
     left: 130px;
     top: 0.5vh;
     z-index: 15001;
+}
+
+.backoffice__toolbar__buttons--exit {
+    position: 'absolute';
+    z-index: 15007;
+    color: '#fff';
+}
+
+.backoffice__toolbar__buttons--save-project {
+    position: 'absolute';
+    z-index: 15008;
+}
+
+.backoffice__toolbar__buttons--add-project {
+    position: 'absolute';
+    z-index: 15009;
 }
 
 .backoffice__toolbar__label {
