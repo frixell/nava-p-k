@@ -767,7 +767,7 @@ input[type="email"]::-webkit-input-placeholder {
 }
 
 .projects__set {
-    color: $gray;
+    color: aqua;
     font-size: 12px;
 }
 
@@ -838,7 +838,7 @@ input[type="email"]::-webkit-input-placeholder {
 
 .homepage__project__details__container {
     position: absolute;
-    z-index: 5;
+    z-index: 5000;
     background: $white;
     padding: 20px;
     padding-top: 30px;

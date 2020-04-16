@@ -82,9 +82,9 @@ class SideBar extends React.Component {
                     this.props.isAuthenticated && hasUnconectedProjects ? 
                         <div
                             className='sidebar__listCategory'
-                            style={{color: 'aqua', paddingLeft: '0px', marginTop: '20px'}}
+                            style={{paddingLeft: '0px', marginTop: '20px'}}
                         >
-                            Unconnected Projects
+                            Not Connected
                         </div>
                     :
                     null

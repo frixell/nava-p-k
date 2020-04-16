@@ -182,7 +182,27 @@ class ProjectDetailsPage extends React.Component {
                     >
                          <span className='projects__back'>Back</span>
                     </div>
-                    <div
+                    {this.props.isAuthenticated ? 
+                    (
+                        <div className="backoffice__toolbar__buttons" style={{left: '340px'}}>
+                            <div className="backoffice__toolbar__label">
+                                חיבור לקטגוריה
+                            </div>
+                            <button
+                                className="backoffice__add__button"
+                                onClick={
+                                    this.toggleCategoryEditor
+                                }
+                            >
+                                <img
+                                    className="backoffice__add__icon"
+                                    src="/images/eventspage/add-eventSubcategory-icon.svg"
+                                    alt="חיבור לקטגוריה"
+                                />
+                            </button>
+                        </div>
+                    ) : null}
+                    {/*<div
                         className='projects__set'
                         onClick={this.toggleCategoryEditor}
                         style={{
@@ -195,7 +215,7 @@ class ProjectDetailsPage extends React.Component {
                     >
                         Categories
                     </div>
-                    {/*<div style={{
+                    <div style={{
                         color: '#fff',
                         fontWheight: 'bold',
                         fontSize: 20,
@@ -341,8 +361,11 @@ class ProjectDetailsPage extends React.Component {
                         { 
                             this.props.isAuthenticated === true ? 
                                 <div className="backoffice__about__images__buttons">
+                                    <div className="backoffice__toolbar__label--black">
+                                        ניהול תמונה
+                                    </div>
                                     <button className="backoffice__events__events__add__button" onClick={this.props.uploadWidget}>
-                                        <img className="backoffice__events__events__add__icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת תת קטגוריה" /> Image
+                                        <img className="backoffice__events__events__add__icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="תמונה" />
                                     </button>
                                 </div>
                             :
