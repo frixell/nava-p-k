@@ -3,7 +3,7 @@
 const categoriesReducerDefaultState = [];
 
 export default (state = categoriesReducerDefaultState, action) => {
-    let categories = state;
+    let categories = JSON.parse(JSON.stringify(state));
     //console.log('points in reducer:', categories);
     switch (action.type) {
         
@@ -25,16 +25,17 @@ export default (state = categoriesReducerDefaultState, action) => {
             ];
             
         case 'TOGGLE_SHOW_CATEGORY':
-            // console.log('from reducer:', action);
-            // console.log('from reducer - categories:', categories);
-            // console.log('from reducer - action.categoryId:', action.categoryId);
+            console.log('from reducer:', action);
+            console.log('from reducer - categories:', categories);
+            console.log('from reducer - action.categoryId:', action.categoryId);
             //console.log('from reducer - categories[action.categoryId].isVisible:', categories[action.categoryId].isVisible);
-            const categoryIndex = categories.map((category, index) => {
-                if(category.id = action.categoryId) {
-                    return index;
+            let categoryIndex = null;
+            categories.map((category, index) => {
+                if (category.id === action.categoryId) {
+                    categoryIndex = index;
                 }
             });
-            //console.log('from reducer - categoryIndex:', categoryIndex);
+            console.log('from reducer - categoryIndex:', categoryIndex);
             categories[categoryIndex].isVisible = action.visible;
             return categories;
 

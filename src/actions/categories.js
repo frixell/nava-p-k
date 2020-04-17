@@ -14,11 +14,13 @@ export const startGetCategories = () => {
         return firebase.database().ref('categories').once('value').then((snapshot) => {
             const categories = [];
             snapshot.forEach((childSnapshot) => {
+                console.log('childSnapshot', childSnapshot);
                 categories.push({
                     id: childSnapshot.key,
                     ...childSnapshot.val()
                 });
             });
+            console.log('categories', categories);
             dispatch(getCategories(categories));
         });
     };

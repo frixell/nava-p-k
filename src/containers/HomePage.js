@@ -191,6 +191,7 @@ class HomePage extends React.Component {
     
     componentDidUpdate = (prevProps, prevState) => {
         if (!isEqual(this.props.categories, prevProps.categories)) {
+            console.log('change', this.props.categories);
             this.setState({categories: this.props.categories});
         }
         if (this.state.selectedProject && !isEqual(this.state.selectedProject, prevState.selectedProject) && this.state.selectedProject.extendedContent && this.state.selectedProject.extendedContent.table) {
@@ -656,7 +657,7 @@ class HomePage extends React.Component {
                             {
                                 this.state.categories && this.state.categories.length > 0 ?
                                     this.state.categories.map((category, index) => {
-                                        return  <div className="backoffice__edit__events__tabs__in__box" key={category.id} dir="rtl">
+                                        return  <div className="backoffice__edit__events__tabs__in__box" key={index + category.id} dir="rtl">
                                                     <Button
                                                         id="btn-show"
                                                         data-id={category.id}

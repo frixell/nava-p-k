@@ -7,13 +7,28 @@ class SideBar extends React.Component {
         super(props);
         this.state = {
             isEditable: false,
-            openCategories: []
+            openCategories: [],
+            categories: [],
+            points: [],
+            lang: 'en'
         }
     }
     
+    componentDidMount = () => {
+        this.setState({
+            categories: this.props.categories,
+            points: this.props.points,
+            lang: this.props.lang
+        });
+    }
+    
     componentDidUpdate = (prevProps) => {
-        if (!isEqual(this.props.points, prevProps.points)) {
-            //.log('change');
+        if (!isEqual(this.props.points, prevProps.points) || !isEqual(this.props.categories, prevProps.categories || this.props.lang !== prevProps.lang)) {
+            this.setState({
+                categories: this.props.categories,
+                points: this.props.points,
+                lang: this.props.lang
+            });
         }
     }
     
@@ -44,7 +59,7 @@ class SideBar extends React.Component {
                 }}
             >
                 {
-                    this.props.categories.map((category, index) => {
+                    this.state.categories.map((category, index) => {
                         return (
                             <div hidden={!category.isVisible && !this.props.isAuthenticated} key={index}>
                                 <div
@@ -57,7 +72,7 @@ class SideBar extends React.Component {
                                     /> {this.props.lang === 'en' ? category.name : category.nameHebrew}
                                 </div>
                                 {
-                                    this.state.openCategories.includes(category.id) && this.props.points.map((point, index) => {
+                                    this.state.openCategories.includes(category.id) && this.state.points.map((point, index) => {
                                         if ( point.categories && point.categories.includes(category.id) ) {
                                             return (
                                                 <div
