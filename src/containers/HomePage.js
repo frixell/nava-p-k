@@ -769,7 +769,7 @@ class HomePage extends React.Component {
                         <div
                             className={`homepage__project__details__container${this.props.lang === 'en' ? ' homepage__project__details__container--en' : ' homepage__project__details__container--he'}`}
                             style={{ 
-                                height: $( window ).height() - 60,
+                                height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 70,
                                 width: $( window ).width() - 170
                             }}
                         >
@@ -789,7 +789,7 @@ class HomePage extends React.Component {
                         null
                 }
                 
-                <div dir={this.state.lang === 'en' ? 'ltr' : 'rtl'} style={{ float: this.props.lang === 'en' ? 'right' : 'left', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() - 170 }}>
+                <div dir={this.state.lang === 'en' ? 'ltr' : 'rtl'} style={{ float: this.props.lang === 'en' ? 'right' : 'left', display: 'inline-block', height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 70, width: $( window ).width() - 170 }}>
                     
                     {/*<PointTest
                         sidebarClickedItemId={this.state.sidebarClickedItemId}

@@ -55,7 +55,7 @@ class SideBar extends React.Component {
             <div
                 className="homepage__sidebar__container"
                 style={{
-                    height: $( window ).height() - 60
+                    height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 70
                 }}
             >
                 {

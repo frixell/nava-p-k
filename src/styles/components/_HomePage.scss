@@ -762,10 +762,10 @@ input[type="email"]::-webkit-input-placeholder {
 
 .sidebar__arrow--he {
     margin-left: 3px;
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -o-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
     transform: rotate(180deg);
 }
 
@@ -917,6 +917,7 @@ input[type="email"]::-webkit-input-placeholder {
 .homepage__sidebar__container {
     display: inline-block;
     padding-top: 20px;
+    padding-right: 10px;
     width: 162px;
 }
 
