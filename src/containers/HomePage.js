@@ -99,9 +99,9 @@ class HomePage extends React.Component {
                 if(name === 'content') {
                     if (this.props.lang === 'en') {
                         selectedProject[name] = `<img src='${selectedProject.extendedContent.image}' />${value}`;
-                        selectedProject.extendedContent[name] = `<img src='${selectedProject.extendedContent.image}' />${value}`;
+                        selectedProject.extendedContent[name] = value;
                     } else {
-                        selectedProject[name+'Hebrew'] = value;
+                        selectedProject[name+'Hebrew'] = `<img src='${selectedProject.extendedContent.image}' />${value}`;
                         selectedProject.extendedContent[name+'Hebrew'] = value;
                     }
                     break;

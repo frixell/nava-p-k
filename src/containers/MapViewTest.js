@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {loadModules} from 'esri-loader'
+import {loadModules} from 'esri-loader';
+import isEqual from 'lodash.isequal';
  
 let view = null;
 let camera = null;
@@ -38,7 +39,7 @@ let markerSymbol = {
 class MapViewTest extends Component {
     state ={
         coordinates: [],
-        points: this.props.points,
+        points: null,
         selectedPoint: null,
         lang: 'en'
     }
@@ -77,8 +78,8 @@ class MapViewTest extends Component {
                 }
             }
         }
-        if (this.props.points.length !== prevProps.points.length) {
-            //console.log('length changed !');
+        if (!isEqual(this.props.points, prevProps.points)) {
+            this.setState({points: this.props.points});
         }
         if (this.props.sidebarClickedItemId !== prevProps.sidebarClickedItemId) {
             //console.log('side bar clicked');
@@ -109,6 +110,7 @@ class MapViewTest extends Component {
     
 
     componentDidMount() {
+        this.setState({points: this.props.points});
         loadModules(["esri/Map", "esri/views/MapView", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/Search", "esri/Camera", "esri/widgets/Editor", "esri/popup/content/TextContent", "esri/widgets/Expand", "esri/widgets/Zoom"]) // "esri/widgets/BasemapGallery", "esri/widgets/Locate",
             .then(([Map, MapView, SceneView, GraphicsLayer, Graphic, Search, Expand, Zoom]) => { // BasemapGallery,
                 var map = new Map({
