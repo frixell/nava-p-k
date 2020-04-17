@@ -500,11 +500,9 @@ input[type="email"]::-webkit-input-placeholder {
     margin-bottom: 0 !important;
 }
 
-/*.esri-ui-top-left {  
-    ight: 0;  
-    top: 20px;  
-    left: unset; 
-}*/ 
+.esri-ui-top-left {  
+    max-width: 25px;
+}
 
 .esri-ui-manual-container>.esri-component {
     background: transparent;
@@ -752,6 +750,10 @@ input[type="email"]::-webkit-input-placeholder {
     background-size: 8px 8px;
     transition: .3s all;
     pointer-events: none;
+}
+
+.esri-popup__header-title {
+    margin-right: 9px;
 }
 
 .sidebar__arrow--en {

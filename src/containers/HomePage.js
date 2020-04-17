@@ -52,11 +52,13 @@ class HomePage extends React.Component {
             table: [],
             needSave: false,
             hideCategoriesEditPanel: true,
+            editCategoriesModalIsOpen: false,
             newCategoryNameModalIsOpen: false,
             newCategoryName: '',
             newCategoryNameHebrew: '',
             categories: this.props.categories,
-            cursor: 'default'
+            cursor: 'default',
+            lang: 'en'
         }
     }
 
@@ -64,46 +66,69 @@ class HomePage extends React.Component {
 		const { value, dataset } = e.target;
 		const { name, index, action } = dataset;
 		const selectedProject = JSON.parse(JSON.stringify(this.state.selectedProject));
-        // console.log(name);
-        // console.log(value);
-        // console.log(action);
-        
-        //console.log(selectedProject.extendedContent && selectedProject.extendedContent[name]);
         switch (action) {
 			case "setString":
-                if (this.props.lang === 'en' || name === 'tableOptions') {
+                if(name === 'categories') {
+                    selectedProject[name] = value;
+                    break;
+                }
+                
+                if(name === 'tableOptions') {
+                    selectedProject.extendedContent[name] = value;
+                    break;
+                }
+                
+                if(name === 'image') {
+                    selectedProject.extendedContent[name] = value;
+                    selectedProject.content = `<img src='${value}' />${selectedProject.extendedContent.content}`;
+                    selectedProject.contentHebrew = `<img src='${value}' />${selectedProject.extendedContent.contentHebrew}`;
+                    break;
+                }
+                
+                if(name === 'title') {
+                    if (this.props.lang === 'en') {
+                        selectedProject[name] = value;
+                        selectedProject.extendedContent[name] = value;
+                    } else {
+                        selectedProject[name+'Hebrew'] = value;
+                        selectedProject.extendedContent[name+'Hebrew'] = value;
+                    }
+                    break;
+                }
+                
+                if(name === 'content') {
+                    if (this.props.lang === 'en') {
+                        selectedProject[name] = `<img src='${selectedProject.extendedContent.image}' />${value}`;
+                        selectedProject.extendedContent[name] = `<img src='${selectedProject.extendedContent.image}' />${value}`;
+                    } else {
+                        selectedProject[name+'Hebrew'] = value;
+                        selectedProject.extendedContent[name+'Hebrew'] = value;
+                    }
+                    break;
+                }
+                
+                if (this.props.lang === 'en') {
                     selectedProject.extendedContent[name] = value;
                 } else {
                     selectedProject.extendedContent[name+'Hebrew'] = value;
                 }
-                if(name === 'categories') {
-                    selectedProject[name] = value;
-                }
-                if(name === 'content' || name === 'title' || name === 'categories') {
-                    if (this.props.lang === 'en') {
-                        selectedProject[name] = value;
-                    } else {
-                        selectedProject[name+'Hebrew'] = value;
-                    }
-                } 
+                
+                
+                
+                
+                
+                
+                
+                
                 break;
 			default:
 				break;
         };
 
-        //console.log(selectedProject.extendedContent && selectedProject.extendedContent[name]);
         this.setState({
             selectedProject,
             needSave: true
         });
-
-        // if (typeof(window) !== "undefined") {     
-        //     if(isEqual(this.state.homepageOrigin, homepage)){ 
-        //         window.removeEventListener("beforeunload", this.unloadFunc);
-        //     } else {
-        //         window.addEventListener("beforeunload", this.unloadFunc);
-        //     }
-        // }
     }
 
     unloadFunc = (e) => {
@@ -121,9 +146,9 @@ class HomePage extends React.Component {
         });
         
         this.setState(() => ({ projectOrigin: project, needSave: false }));
-        if (typeof(window) !== "undefined") {
-            window.removeEventListener("beforeunload", this.unloadFunc);
-        }
+        // if (typeof(window) !== "undefined") {
+        //     window.removeEventListener("beforeunload", this.unloadFunc);
+        // }
     }
     
     uploadWidget = (e) => {
@@ -190,8 +215,10 @@ class HomePage extends React.Component {
     }
     
     componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.lang !== prevProps.lang) {
+            this.setState({lang: this.props.lang});
+        }
         if (!isEqual(this.props.categories, prevProps.categories)) {
-            console.log('change', this.props.categories);
             this.setState({categories: this.props.categories});
         }
         if (this.state.selectedProject && !isEqual(this.state.selectedProject, prevState.selectedProject) && this.state.selectedProject.extendedContent && this.state.selectedProject.extendedContent.table) {
@@ -272,16 +299,18 @@ class HomePage extends React.Component {
     }
     
     
-    
-    
-    
+    // handle category functions
     
     startEditCategory = () => {
         if (this.state.hideCategoriesEditPanel) {
             this.hideProject();
         }
+        // this.setState({
+        //     hideCategoriesEditPanel: !this.state.hideCategoriesEditPanel
+        // });
         this.setState({
-            hideCategoriesEditPanel: !this.state.hideCategoriesEditPanel
+            editCategoriesModalIsOpen: !this.state.editCategoriesModalIsOpen,
+            newCategoryNameModalIsOpen: false
         });
     }
     
@@ -444,7 +473,6 @@ class HomePage extends React.Component {
     }
     
     addNewCategory = () => {
-        console.log('lang', this.props.lang);
         let nameFlag = false;
         this.props.categories && this.props.categories.map((category, index) => {
             if(category.name === this.state.newCategoryName) {
@@ -492,32 +520,110 @@ class HomePage extends React.Component {
     }
 
     onToggleNewCategoryName = () => {
+        if (this.state.hideCategoriesEditPanel) {
+            this.hideProject();
+        }
         this.setState({
-            newCategoryNameModalIsOpen: !this.state.newCategoryNameModalIsOpen
+            newCategoryNameModalIsOpen: !this.state.newCategoryNameModalIsOpen,
+            editCategoriesModalIsOpen: false
         });
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    onToggleEditCategories = () => {
+        if (this.state.hideCategoriesEditPanel) {
+            this.hideProject();
+        }
+        this.setState({
+            editCategoriesModalIsOpen: !this.state.editCategoriesModalIsOpen,
+            newCategoryNameModalIsOpen: false
+        });
+    }
     
 
     render() {
         return (
-            <div className="container-fluid" style={{cursor: this.state.cursor}}>
+            <div className="container-fluid" style={{cursor: this.state.cursor, textAlign: this.props.lang === 'en' ? 'left' : 'right'}}>
+                
+                <Modal
+                    open={this.state.editCategoriesModalIsOpen}
+                    onClose={this.onToggleEditCategories}
+                    center
+                    classNames={{
+                        overlay: 'custom-overlay',
+                        modal: 'custom-modal',
+                        closeButton: 'custom-close-button'                     
+                    }}
+                >
+                    <div className="backoffice__edit__navigation__box">
+                            {
+                                this.state.categories && this.state.categories.length > 0 ?
+                                    this.state.categories.map((category, index) => {
+                                        return  <div className="backoffice__edit__events__tabs__in__box" key={index + category.id} dir="rtl">
+                                                    <Button
+                                                        id="btn-show"
+                                                        data-id={category.id}
+                                                        data-visible={category.isVisible}
+                                                        className={`backoffice__events__tabs__remove${category.isVisible === true ? ' btn-success' : ' btn-danger'}`}
+                                                        onClick={this.toggleShowCategory}
+                                                    >
+                                                        <img
+                                                            data-id={category.id}
+                                                            data-visible={category.isVisible}
+                                                            className="backoffice__show__icon"
+                                                            src={`/images/backoffice/${category.isVisible === true ? 'show' : 'hide'}.svg`}
+                                                            alt={category.isVisible === true ? 'הצג' : 'הסתר'}
+                                                        />
+                                                    </Button>
+                                                    <div className="backoffice__events__tabs__order__box">
+                                                        <input
+                                                            id="number"
+                                                            data-id={category.id}
+                                                            type="number"
+                                                            value={category.order || 0}
+                                                            data-index={index}
+                                                            onChange={this.onCategoryOrderChange}
+                                                            onKeyPress={this.onCategoryOrderKeyPress}
+                                                            onBlur={this.onCategoryOrderBlur}
+                                                        />
+                                                    </div>
+                                                    <div className="backoffice__category__name__box">
+                                                        <input
+                                                            data-id={category.id}
+                                                            data-index={index}
+                                                            data-lang={'he'}
+                                                            className="backoffice__category__name"
+                                                            type="text"
+                                                            placeholder="שם הקטגוריה"
+                                                            value={category.nameHebrew}
+                                                            onChange={this.onCategoryNameChange}
+                                                            onBlur={this.onCategoryNameBlur}
+                                                        />
+                                                    </div>
+                                                    <div className="backoffice__category__name__box">
+                                                        <input
+                                                            data-id={category.id}
+                                                            data-index={index}
+                                                            data-lang={'en'}
+                                                            className="backoffice__category__name"
+                                                            type="text"
+                                                            placeholder="Category Name"
+                                                            value={category.name}
+                                                            onChange={this.onCategoryNameChange}
+                                                            onBlur={this.onCategoryNameBlur}
+                                                            dir='ltr'
+                                                        />
+                                                    </div>
+                                                </div>
+                                    })
+                                    
+                                :
+                                    null
+                            }
+                            <div className="backoffice__events__tabs__update__box">
+                                <Button className="backoffice__events__tabs__update btn-success" onClick={this.updateCategories}>עדכון</Button>
+                            </div>
+                        </div>
+                </Modal>
                 
                 <Modal
                     open={this.state.newCategoryNameModalIsOpen}
@@ -612,13 +718,6 @@ class HomePage extends React.Component {
                 }
                 
                 
-                {/*
-                <div style={{ float: 'left', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() * 0.49 }}>
-                    
-                    <BuildingTest />
-                    
-                </div>
-                */}
                 {this.props.isAuthenticated ? 
                 (
                     <div className="backoffice__toolbar__buttons" style={this.props.lang === 'en' ? {left: '80%'} : {left: '150px'}}>
@@ -651,80 +750,11 @@ class HomePage extends React.Component {
                         </button>
                     </div>
                 ) : null}
-                { 
-                    this.props.isAuthenticated === true ? 
-                        <div className="backoffice__edit__navigation__box" hidden={this.state.hideCategoriesEditPanel}>
-                            {
-                                this.state.categories && this.state.categories.length > 0 ?
-                                    this.state.categories.map((category, index) => {
-                                        return  <div className="backoffice__edit__events__tabs__in__box" key={index + category.id} dir="rtl">
-                                                    <Button
-                                                        id="btn-show"
-                                                        data-id={category.id}
-                                                        data-visible={category.isVisible}
-                                                        className={`backoffice__events__tabs__remove${category.isVisible === true ? ' btn-success' : ' btn-danger'}`}
-                                                        onClick={this.toggleShowCategory}
-                                                    >
-                                                        <img
-                                                            data-id={category.id}
-                                                            data-visible={category.isVisible}
-                                                            className="backoffice__show__icon"
-                                                            src={`/images/backoffice/${category.isVisible === true ? 'show' : 'hide'}.svg`}
-                                                            alt={category.isVisible === true ? 'הצג' : 'הסתר'}
-                                                        />
-                                                    </Button>
-                                                    <div className="backoffice__events__tabs__order__box">
-                                                        <input
-                                                            id="number"
-                                                            data-id={category.id}
-                                                            type="number"
-                                                            value={category.order || 0}
-                                                            data-index={index}
-                                                            onChange={this.onCategoryOrderChange}
-                                                            onKeyPress={this.onCategoryOrderKeyPress}
-                                                            onBlur={this.onCategoryOrderBlur}
-                                                        />
-                                                    </div>
-                                                    <div className="backoffice__category__name__box">
-                                                        <input
-                                                            data-id={category.id}
-                                                            data-index={index}
-                                                            data-lang={'he'}
-                                                            className="backoffice__category__name"
-                                                            type="text"
-                                                            placeholder="שם הקטגוריה"
-                                                            value={category.nameHebrew}
-                                                            onChange={this.onCategoryNameChange}
-                                                            onBlur={this.onCategoryNameBlur}
-                                                        />
-                                                    </div>
-                                                    <div className="backoffice__category__name__box">
-                                                        <input
-                                                            data-id={category.id}
-                                                            data-index={index}
-                                                            data-lang={'en'}
-                                                            className="backoffice__category__name"
-                                                            type="text"
-                                                            placeholder="Category Name"
-                                                            value={category.name}
-                                                            onChange={this.onCategoryNameChange}
-                                                            onBlur={this.onCategoryNameBlur}
-                                                            dir='ltr'
-                                                        />
-                                                    </div>
-                                                </div>
-                                    })
-                                    
-                                :
-                                    null
-                            }
-                            <div className="backoffice__events__tabs__update__box">
-                                <Button className="backoffice__events__tabs__update btn-success" onClick={this.updateCategories}>עדכון</Button>
-                            </div>
-                        </div>
-                    :
-                        null
-                }
+                
+                
+                
+                
+                
                 <SideBar
                     sidebarClickedItemId={this.state.sidebarClickedItemId}
                     handleSideBarClick={this.handleSideBarClick}
@@ -759,7 +789,7 @@ class HomePage extends React.Component {
                         null
                 }
                 
-                <div style={{ float: this.props.lang === 'en' ? 'right' : 'left', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() - 170 }}>
+                <div dir={this.state.lang === 'en' ? 'ltr' : 'rtl'} style={{ float: this.props.lang === 'en' ? 'right' : 'left', display: 'inline-block', height: $( window ).height() - 60, width: $( window ).width() - 170 }}>
                     
                     {/*<PointTest
                         sidebarClickedItemId={this.state.sidebarClickedItemId}
@@ -778,6 +808,7 @@ class HomePage extends React.Component {
                         points={this.state.points}
                         addPoint={this.addPoint}
                         allowAddPoint={this.state.allowAddPoint}
+                        selectedProject={this.state.selectedProject}
                         setSelectedProject={this.setSelectedProject}
                         handleExpandProject={this.handleExpandProject}
                         lang={this.props.lang}

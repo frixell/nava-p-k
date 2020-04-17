@@ -3,6 +3,8 @@ import {loadModules} from 'esri-loader'
  
 let view = null;
 let camera = null;
+let searchWidget = null;
+let expandThisAction = {};
 const styles = {
     container: {
         height: '100%',
@@ -37,10 +39,44 @@ class MapViewTest extends Component {
     state ={
         coordinates: [],
         points: this.props.points,
-        selectedPoint: null
+        selectedPoint: null,
+        lang: 'en'
     }
     
     componentDidUpdate(prevProps) {
+        if (this.props.lang !== prevProps.lang) {
+            this.setState({lang: this.props.lang});
+            
+            if (this.props.lang === 'en') {
+                if (view) {
+                    view.ui.move("zoom", this.props.lang === 'en' ? 'top-right' : 'top-left');
+                    view.ui.move(searchWidget, this.props.lang === 'en' ? 'bottom-left' : 'bottom-right');
+                    view.popup.lang = this.props.lang;
+                    view.popup.title = this.state.selectedPoint && this.state.selectedPoint.title;
+                    view.popup.content = this.state.selectedPoint && this.state.selectedPoint.content;
+                    expandThisAction = {
+                        title: 'Expand',
+                        id: 'expand-this',
+                        className: 'esri-icon-zoom-out-fixed'
+                    };
+                    view.popup.actions = [expandThisAction];
+                }
+            } else {
+                if (view) {
+                    view.ui.move("zoom", this.props.lang === 'en' ? 'top-right' : 'top-left');
+                    view.ui.move(searchWidget, this.props.lang === 'en' ? 'bottom-left' : 'bottom-right');
+                    view.popup.lang = this.props.lang;
+                    view.popup.title = this.state.selectedPoint && this.state.selectedPoint.titleHebrew;
+                    view.popup.content = this.state.selectedPoint && this.state.selectedPoint.contentHebrew;
+                    expandThisAction = {
+                        title: 'הרחבה',
+                        id: 'expand-this',
+                        className: 'esri-icon-zoom-out-fixed'
+                    };
+                    view.popup.actions = [expandThisAction];
+                }
+            }
+        }
         if (this.props.points.length !== prevProps.points.length) {
             //console.log('length changed !');
         }
@@ -73,71 +109,56 @@ class MapViewTest extends Component {
     
 
     componentDidMount() {
-        loadModules(["esri/Map", "esri/views/MapView", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/Search", "esri/Camera", "esri/widgets/Editor", "esri/popup/content/TextContent", "esri/widgets/Expand"]) // "esri/widgets/BasemapGallery", "esri/widgets/Locate",
-            .then(([Map, MapView, SceneView, GraphicsLayer, Graphic, Search, Expand]) => { // BasemapGallery,
+        loadModules(["esri/Map", "esri/views/MapView", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/Search", "esri/Camera", "esri/widgets/Editor", "esri/popup/content/TextContent", "esri/widgets/Expand", "esri/widgets/Zoom"]) // "esri/widgets/BasemapGallery", "esri/widgets/Locate",
+            .then(([Map, MapView, SceneView, GraphicsLayer, Graphic, Search, Expand, Zoom]) => { // BasemapGallery,
                 var map = new Map({
                     basemap: "streets"
                 });
                 
                 view = new MapView({
                     popup: {
+                        lang: this.state.lang,
                         dockEnabled: true,
                         dockOptions: {
-                        // Disables the dock button from the popup
-                        buttonEnabled: false,
-                        // Ignore the default sizes that trigger responsive docking
-                        breakpoint: false,
-                        position: 'top-left'
+                            buttonEnabled: false,
+                            breakpoint: false,
+                            position: 'top-left'
                         }
                     },
-                    container: "pointTestViewDiv", // Reference to the scene div created in step 5
-                    map: map, // Reference to the map object created before the scene
-                    zoom: 3, // Sets zoom level based on level of detail (LOD)
-                    center: [-20, 35] // Sets center point of view using longitude,latitude
+                    container: "pointTestViewDiv",
+                    map: map,
+                    zoom: 3,
+                    center: [-20, 35]
                 });
                 
+                
+                //view.ui.components = [];
                 var graphicsLayer = new GraphicsLayer();
                 map.add(graphicsLayer);
                 
-                
-                // BaseMap Widget
-                
-                // var basemapGallery = new BasemapGallery({
-                //     view: view
-                // });
-                
-                // var bgExpand = new Expand({
-                //     view: view,
-                //     content: basemapGallery
-                //   });
-
-                // view.ui.add(bgExpand, {
-                //     position: "bottom-right"
-                // });
+                view.ui.move("zoom", this.props.lang === 'en' ? 'top-right' : 'top-left');
                 
                 
                 // Search Widget
                 
-                const searchWidget = new Search({
+                searchWidget = new Search({
                     view: view
                 });
 
                 view.ui.add(searchWidget, {
-                    position: "bottom-right",
+                    position: "bottom-left",
                     index: 2
                 });
-        
                 
+                view.ui.move(searchWidget, this.props.lang === 'en' ? 'bottom-left' : 'bottom-right');
                 
-                var expandThisAction = {
-                    title: 'Expand',
+                expandThisAction = {
+                    title: this.props.lang === 'en' ? 'Expand' : 'הרחבה',
                     id: 'expand-this',
                     className: 'esri-icon-zoom-out-fixed'
                 };
                 
                 let points = this.state.points;
-                
-                
                 
                 view.popup.autoOpenEnabled = false;
                 view.popup.on("trigger-action", function(event) {
@@ -147,13 +168,11 @@ class MapViewTest extends Component {
                 });
                 
                 let expandThis = (event) => { 
-                    //console.log('expand', event.target.project);
                     view.popup.close();
                     this.props.handleExpandProject(event.target.project);
                 }
                 
                 view.on('click', (event) => {
-                    //console.log('in click');
                     if (this.props.allowAddPoint) {
                         let point = {
                             project: {},
@@ -164,72 +183,40 @@ class MapViewTest extends Component {
                             z: 500
                         };
                         this.props.addPoint(point).then(respoint => {
-                            //console.log(respoint);
-                            
                             points.push(respoint);
                             this.setState({points});
-                            // var polyline = {
-                            //     type: "polyline",
-                            //     paths: [
-                            //     [event.mapPoint.longitude, event.mapPoint.latitude, 0],
-                            //     [event.mapPoint.longitude, event.mapPoint.latitude, 490]
-                            //     ]
-                            // };
-                        
-                            // var lineSymbol = {
-                            //     type: "simple-line",
-                            //     color: [226, 119, 40],
-                            //     width: 4
-                            // };
-                    
-                            // var polylineGraphic = new Graphic({
-                            //     geometry: polyline,
-                            //     symbol: lineSymbol
-                            // });
-                    
-                            // graphicsLayer.add(polylineGraphic);
-                            
-                            
                             var pointGraphic = new Graphic({
                                 point: respoint,
                                 geometry: respoint,
                                 symbol: markerSymbol
                             });
-                            
                             graphicsLayer.add(pointGraphic);
                         });
-                        
                     }
-
+                    const setAction = (point) => {
+                        this.setState({selectedPoint: point});
+                    }
                     view.hitTest(event).then(function(response) {
-                        // check if a graphic is returned from the hitTest
                         let results = response.results[0].graphic
                         if (results) {
-                            //console.log('in click graphic', response.results[0]);
-                            let title = (results.point && results.point.title) || 'Edit this';
-                            let content = (results.point && results.point.content) || 'Edit this';
-                            
+                            let titleHebrew = results.point.titleHebrew;
+                            let contentHebrew = results.point.contentHebrew;
+                            let title = results.point.title;
+                            let content = results.point.content;
+                            setAction(results.point);
                             view.popup.open({
-                                // Set the popup's title to the coordinates of the location
                                 project: results.point || {},
-                                title: title,
-                                location: event.mapPoint, // Set the location of the popup to the clicked location
-                                content: content,
-                                actions: [expandThisAction] // editThisAction, 
+                                title: view.popup.lang === 'en' ? title : titleHebrew,
+                                location: event.mapPoint,
+                                content: view.popup.lang === 'en' ? content : contentHebrew,
+                                actions: [expandThisAction]
                             });
-                            
-                            //this.props.addPoint(response.results[0].graphic.point);
-                            //this.props.setSelectedProject(response.results[0].graphic.point);
-                            //this.setState({selectedPoint: response.results[0].graphic.point});
                         }
                     });
-                    
                 });
-                
-                
             
                 this.state.points.forEach(point => {
-                    let pointCategories = point.categories.split(',');
+                    let pointCategories = (point.categories && point.categories.split(',')) || [];
                     let markerSymbolColor = [226, 119, 40];
                     if (pointCategories.length > 0) {
                         let colorIndex = 0;
