@@ -691,7 +691,7 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && this.state.selectedProject ?
-                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {left: '70%'} : {left: '240px'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {left: '73%'} : {left: '300px'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
                                 {`${this.props.lang === 'en' ? 'Save Project' : 'שמירת פרוייקט'}`}
                             </div>
@@ -705,7 +705,7 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && !this.state.selectedProject ?
-                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--add-project" style={this.props.lang === 'en' ? {left: '70%'} : {left: '240px'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--add-project" style={this.props.lang === 'en' ? {left: '73%'} : {left: '300px'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label" style={{color: this.state.allowAddPoint ? 'red' : 'aqua'}}>
                                 {`${this.props.lang === 'en' ? 'Add Project' : 'הוספת פרוייקט'}`}
                             </div>
@@ -720,8 +720,8 @@ class HomePage extends React.Component {
                 
                 {this.props.isAuthenticated ? 
                 (
-                    <div className="backoffice__toolbar__buttons" style={this.props.lang === 'en' ? {left: '80%'} : {left: '150px'}}>
-                        <div className="backoffice__toolbar__label">
+                    <div className="backoffice__toolbar__buttons" style={this.props.lang === 'en' ? {left: '80%'} : {left: '210px'}}>
+                        <div className="backoffice__toolbar__label" style={this.props.lang === 'en' ? {paddingLeft: '6px'} : {textAlign: 'left'}}>
                             {`${this.props.lang === 'en' ? 'Categories' : 'ניהול קטגוריות'}`}
                         </div>
                         <button
