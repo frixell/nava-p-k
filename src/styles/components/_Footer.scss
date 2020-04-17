@@ -1,9 +1,15 @@
 .footer__box {
     width: 100%;
-    _height: 7.3rem;
     background: none;
     position: absolute;
+}
+
+.footer__box--en {
     bottom: 0;
+}
+
+.footer__box--he {
+    bottom: 10px;
 }
 
 .footer__text {
