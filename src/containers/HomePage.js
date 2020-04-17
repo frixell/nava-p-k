@@ -55,7 +55,8 @@ class HomePage extends React.Component {
             newCategoryNameModalIsOpen: false,
             newCategoryName: '',
             newCategoryNameHebrew: '',
-            categories: this.props.categories
+            categories: this.props.categories,
+            cursor: 'default'
         }
     }
 
@@ -225,7 +226,10 @@ class HomePage extends React.Component {
     }
     
     addPoint = (point) => {
-        this.setState({allowAddPoint: false});
+        this.setState({
+            allowAddPoint: false,
+            cursor: 'default'
+        });
         return this.props.startAddPoint(point).then(res => {
             return res;
         });
@@ -233,7 +237,10 @@ class HomePage extends React.Component {
     }
     
     allowAddPoint = () => {
-        this.setState({allowAddPoint: !this.state.allowAddPoint});
+        this.setState({
+            allowAddPoint: !this.state.allowAddPoint,
+            cursor: this.state.cursor === 'crosshair' ? 'default' : 'crosshair'
+        });
     }
     
     handleSideBarClick = (event) => {
@@ -509,7 +516,7 @@ class HomePage extends React.Component {
 
     render() {
         return (
-            <div className="container-fluid">
+            <div className="container-fluid" style={{cursor: this.state.cursor}}>
                 
                 <Modal
                     open={this.state.newCategoryNameModalIsOpen}
