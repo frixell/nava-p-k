@@ -5,14 +5,13 @@ import isEqual from 'lodash.isequal';
 let map = null;
 let graphicsLayer = null;
 let view = null;
+let polygon = null;
 let camera = null;
 let searchWidget = null;
 let expandThisAction = {};
 let editGraphic = null;
 let pointGraphic = null;
 let polygonGraphic = null;
-let polygon = null;
-let simpleFillSymbol = null;
 let markerSymbolWidth = 3;
 let markerSymbolOutlineWidth = 1;
 const styles = {
@@ -230,6 +229,8 @@ class MapViewTest extends Component {
             let showPoint = false;
             pointCategories.map(pointCategoryId => {
                 this.props.openCategories.map(openCategory => {
+                    console.log('openCategory.id', openCategory);
+                    console.log('pointCategoryId', pointCategoryId);
                     if (openCategory === pointCategoryId) {
                         showPoint = true;
                     }
@@ -246,89 +247,207 @@ class MapViewTest extends Component {
                     markerSymbolColor = this.props.categoryColors[colorIndex].color;
                 }
                 
-                if (pointCategories.length > 0) {
-                    pointCategories.map((category, index) => {
-                        
-                        let startX = point.x + 6 / pointCategories.length * index;
-                        let stepX = 6 / pointCategories.length;
-                        polygon = {
-                            type: "polygon",
-                            rings: [
-                            [startX, point.y - (1 * 3 / view.zoom)],
-                            [startX, point.y + (1 * 3 / view.zoom)],
-                            [startX + stepX, point.y + (1 * 3 / view.zoom)],
-                            [startX + stepX, point.y - (1 * 3 / view.zoom)]
-                            ],
-                            center: [point.x, point.y]
-                        };
                 
-                        //let currentColor = null;
-                        
-                        // pointCategories.map(pointCategoryId => {
-                        //     this.props.openCategories.map(openCategory => {
-                        //         if (openCategory === pointCategoryId) {
-                        //             currentColor = category.color;
-                        //         }
-                        //     })
-                        // })
-                        
-                        let colorIndex = 0;
-                        this.props.categories.map((propsCategory, index) => {
-                            if (propsCategory.id === category) {
-                                colorIndex = index;
-                            }
-                        });
-                        markerSymbolColor = this.props.categoryColors[colorIndex].color;
-                        
-                        console.log('nu...', category);
-                        console.log('nu...', this.props.categories);
-                        
-                        
-                        simpleFillSymbol = {
-                            type: "simple-fill",
-                            color: markerSymbolColor, //currentColor,  // orange, opacity 80%
-                            outline: {
-                            color: [255, 255, 255],
-                            width: 1
-                            }
-                        };
                 
-                        polygonGraphic = {
-                            point: point,
-                            geometry: polygon,
-                            symbol: simpleFillSymbol
-                        };
                 
-                        graphicsLayer.add(polygonGraphic);
-                    });
-                } else {
-                    polygon = {
-                        type: "polygon",
-                        rings: [
-                        [point.x - (2 * 3 / view.zoom), point.y - (2 * 3 / view.zoom)],
-                        [point.x - (2 * 3 / view.zoom), point.y + (2 * 3 / view.zoom)],
-                        [point.x + (2 * 3 / view.zoom), point.y + (2 * 3 / view.zoom)],
-                        [point.x + (2 * 3 / view.zoom), point.y - (2 * 3 / view.zoom)]
-                        ],
-                        center: [point.x, point.y]
-                    };
-            
-                    simpleFillSymbol = {
-                        type: "simple-fill",
-                        color: markerSymbolColor,  // orange, opacity 80%
-                        outline: {
+                
+                
+                markerSymbol = {
+                    type: "simple-marker",
+                    color: markerSymbolColor,
+                    outline: {
                         color: [255, 255, 255],
-                        width: 1
-                        }
-                    };
-            
-                    polygonGraphic = {
-                        geometry: polygon,
-                        symbol: simpleFillSymbol
-                    };
-            
-                    graphicsLayer.add(polygonGraphic);
-                }
+                        width: markerSymbolOutlineWidth
+                    }
+                };
+
+                
+                
+                
+                imageSymbol = {
+                    type: "picture-fill",  // autocasts as new PictureFillSymbol()
+                    url: "https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png",
+                    width: "24px",
+                    height: "24px",
+                    outline: {
+                    style: "solid"
+                    },
+                };
+                
+                
+                
+        
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                //console.log(point);
+                
+                
+                //   var polyline = {
+                //     type: "polyline", // autocasts as new Polyline()
+                //     paths: [[point.x, point.y - 0.5], [point.x, point.y + 0.5]]
+                //   };
+                
+                //   var lineSymbol = {
+                //     type: "simple-line", // autocasts as new SimpleLineSymbol()
+                //     color: markerSymbolColor, // RGB color values as an array
+                //     width: 10
+                //   };
+                
+                //   var lineAtt = {
+                //     Name: "Keystone Pipeline", // The name of the pipeline
+                //     Owner: "TransCanada", // The owner of the pipeline
+                //     Length: "3,456 km" // The length of the pipeline
+                //   };
+                
+                //   var polylineGraphic = new Graphic({
+                //     geometry: polyline, // Add the geometry created in step 4
+                //     symbol: lineSymbol, // Add the symbol created in step 5
+                //     attributes: lineAtt // Add the attributes created in step 6
+                //   });
+                
+                //   // Add the graphic to the view's default graphics view
+                //   // If adding multiple graphics, use addMany and pass in the array of graphics.
+                //   graphicsLayer.add(polylineGraphic);
+                
+                //console.log('view', view);
+                
+                
+                
+                
+                var polygon = {
+                    type: "polygon",
+                    rings: [
+                    [point.x - (2 * 3 / view.zoom), point.y - (2 * 3 / view.zoom)],
+                    [point.x - (2 * 3 / view.zoom), point.y + (2 * 3 / view.zoom)],
+                    [point.x + (2 * 3 / view.zoom), point.y + (2 * 3 / view.zoom)],
+                    [point.x + (2 * 3 / view.zoom), point.y - (2 * 3 / view.zoom)]
+                    ],
+                    center: [point.x, point.y]
+                };
+                
+                
+                console.log('point', 5 * 3 / view.zoom);
+        
+                var simpleFillSymbol = {
+                    type: "simple-fill",
+                    color: markerSymbolColor,  // orange, opacity 80%
+                    outline: {
+                    color: [255, 255, 255],
+                    width: 1
+                    }
+                };
+        
+                polygonGraphic = {
+                    geometry: polygon,
+                    symbol: simpleFillSymbol
+                };
+        
+                graphicsLayer.add(polygonGraphic);
+                
+                
+                
+                
+                
+                
+                //   var polygon = {
+                //     type: "polygon", // autocasts as new Polygon()
+                //     rings: [
+                //       [30.184, 51.48391, 400],
+                //       [30.184, 51.49091, 500],
+                //       [30.172, 51.49091, 500],
+                //       [30.172, 51.48391, 400],
+                //       [30.184, 51.48391, 400]
+                //     ]
+                //   };
+        
+                //   var fillSymbol = {
+                //     type: "simple-fill", // autocasts as new SimpleFillSymbol()
+                //     color: [227, 139, 79, 0.8],
+                //     outline: {
+                //       // autocasts as new SimpleLineSymbol()
+                //       color: [255, 255, 255],
+                //       width: 1
+                //     }
+                //   };
+        
+                //   var polygonGraphic = new Graphic({
+                //     geometry: polygon,
+                //     symbol: fillSymbol
+                //   });
+        
+                //   graphicsLayer.add(polygonGraphic);
+                
+                
+                
+                markerSymbol = {
+                    type: "simple-marker",
+                    color: markerSymbolColor,
+                    outline: {
+                        color: [255, 255, 255],
+                        width: markerSymbolOutlineWidth
+                    }
+                };
+
+                
+                
+                
+                imageSymbol = {
+                    type: "picture-fill",  // autocasts as new PictureFillSymbol()
+                    url: "https://static.arcgis.com/images/Symbols/Shapes/BlackStarLargeB.png",
+                    width: "24px",
+                    height: "24px",
+                    outline: {
+                    style: "solid"
+                    },
+                };
+                
+                
+                
+                
+                // let simpleSymbol = {
+                //     type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+                //     color: [ 51, 51, 204, 0.9 ],
+                //     style: "solid",
+                //     outline: {  // autocasts as new SimpleLineSymbol()
+                //         color: "white",
+                //         width: 1
+                //     }
+                // };
+                
+                // polygonGraphic = new Graphic({
+                //     point: point,
+                //     geometry: point,
+                //     symbol: simpleSymbol
+                // });
+                
+                
+                
+                
+                pointGraphic = {
+                    point: point,
+                    geometry: point,
+                    symbol: markerSymbol
+                };
+                
+                
+                //graphicsLayer.add(pointGraphic);
+                
+                
+                
+                
+                
+                
                 
                 
                 graphicsLayer
@@ -456,7 +575,7 @@ class MapViewTest extends Component {
                     }
                     view.hitTest(event).then(function(response) {
                         //editGraphic = response.results[0].graphic;
-                        console.log('response.results[0]', response.results[0]);
+console.log('editGraphic', editGraphic);
                         // Remove the graphic from the GraphicsLayer
                         // Sketch will handle displaying the graphic while being updated
                         //view.graphics.removeAll();
