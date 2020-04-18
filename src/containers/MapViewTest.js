@@ -107,7 +107,7 @@ class MapViewTest extends Component {
             //             type: "simple-marker",
             //             color: markerSymbolColor,
             //             outline: {
-            //                 color: [255, 255, 255],
+            //                 color: [108, 118, 128],
             //                 width: markerSymbolOutlineWidth
             //             }
             //         };
@@ -168,7 +168,7 @@ class MapViewTest extends Component {
             //                 type: "simple-marker",
             //                 color: markerSymbolColor,
             //                 outline: {
-            //                     color: [255, 255, 255],
+            //                     color: [108, 118, 128],
             //                     width: markerSymbolOutlineWidth
             //                 }
             //             };
@@ -248,16 +248,16 @@ class MapViewTest extends Component {
                 
                 if (pointCategories.length > 0) {
                     pointCategories.map((category, index) => {
-                        
-                        let startX = point.x + 6 / pointCategories.length * index;
-                        let stepX = 6 / pointCategories.length;
+                        let factorY = point.y;
+                        let startX = point.x + 5 / pointCategories.length * 3 / view.zoom * index;
+                        let stepX = 6 / pointCategories.length * 3 / view.zoom;
                         polygon = {
                             type: "polygon",
                             rings: [
-                            [startX, point.y - (1 * 3 / view.zoom)],
-                            [startX, point.y + (1 * 3 / view.zoom)],
-                            [startX + stepX, point.y + (1 * 3 / view.zoom)],
-                            [startX + stepX, point.y - (1 * 3 / view.zoom)]
+                            [startX, point.y],
+                            [startX, point.y + (3 * 3 / view.zoom) - point.y / 35],
+                            [startX + stepX, point.y + (3 * 3 / view.zoom) - point.y / 35],
+                            [startX + stepX, point.y]
                             ],
                             center: [point.x, point.y]
                         };
@@ -288,8 +288,8 @@ class MapViewTest extends Component {
                             type: "simple-fill",
                             color: markerSymbolColor, //currentColor,  // orange, opacity 80%
                             outline: {
-                            color: [255, 255, 255],
-                            width: 1
+                            color: [108, 118, 128],
+                            width: 0.5
                             }
                         };
                 
@@ -317,8 +317,8 @@ class MapViewTest extends Component {
                         type: "simple-fill",
                         color: markerSymbolColor,  // orange, opacity 80%
                         outline: {
-                        color: [255, 255, 255],
-                        width: 1
+                        color: [108, 118, 128],
+                        width: 0.5
                         }
                     };
             

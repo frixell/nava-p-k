@@ -37,8 +37,8 @@ function initializeReactGA(url) {
 
 
 let categoryColorsHEX = ['#409191', '#c1617e', '#5eae88', '#a6c98d', '#db8976', '#e8e2a4', '#e5b682']
-
-let categoryColorsRGB = [[64,145,145], [193,97,126], [94,174,136], [166,201,141], [219,137,118], [232,226,164], [229,182,130]];
+let categoryColorsRGBOpacity = 0.85;
+let categoryColorsRGB = [[64,145,145,categoryColorsRGBOpacity], [193,97,126,categoryColorsRGBOpacity], [94,174,136,categoryColorsRGBOpacity], [166,201,141,categoryColorsRGBOpacity], [219,137,118,categoryColorsRGBOpacity], [232,226,164,categoryColorsRGBOpacity], [229,182,130,categoryColorsRGBOpacity]];
 
 
 
