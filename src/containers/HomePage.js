@@ -35,6 +35,15 @@ function initializeReactGA(url) {
 }
 //initializeReactGA();
 
+
+//let categoryColorsHEX = ['#409191', '#c1617e', '#5eae88', '#a6c98d', '#db8976', '#e8e2a4', '#e5b682']
+
+let categoryColorsRGB = [[64,145,145], [193,97,126], [94,174,136], [166,201,141], [219,137,118], [232,226,164], [229,182,130]];
+
+
+
+
+
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
@@ -58,7 +67,9 @@ class HomePage extends React.Component {
             newCategoryNameHebrew: '',
             categories: this.props.categories,
             cursor: 'default',
-            lang: 'en'
+            lang: 'en',
+            categoryColors: [],
+            openCategories: []
         }
     }
 
@@ -211,6 +222,17 @@ class HomePage extends React.Component {
     }
 
     componentDidMount = () => {
+        console.log('categories', this.props.categories);
+        if(this.props.categories) {
+            let categoryColors = [];
+            this.props.categories.map((category, index) => {
+                categoryColors.push({
+                    color: categoryColorsRGB[index],
+                    id: category.id
+                });
+            })
+            this.setState({categoryColors})
+        }
         this.setUrlLang();
     }
     
@@ -539,6 +561,13 @@ class HomePage extends React.Component {
         });
     }
     
+    setOpenCategories = (openCategories) => {
+        console.log('openCategories - homepage', openCategories);
+        this.setState({
+            openCategories: openCategories
+        });
+    }
+    
 
     render() {
         return (
@@ -762,6 +791,8 @@ class HomePage extends React.Component {
                     points={this.props.points}
                     isAuthenticated={this.props.isAuthenticated}
                     lang={this.props.lang}
+                    categoryColors={this.state.categoryColors}
+                    setOpenCategories={this.setOpenCategories}
                 />
                 
                 {
@@ -783,6 +814,7 @@ class HomePage extends React.Component {
                                 onChange={this.setData}
                                 uploadWidget={this.uploadWidget}
                                 lang={this.props.lang}
+                                categoryColors={this.state.categoryColors}
                             />
                         </div>
                     :
@@ -812,6 +844,8 @@ class HomePage extends React.Component {
                         setSelectedProject={this.setSelectedProject}
                         handleExpandProject={this.handleExpandProject}
                         lang={this.props.lang}
+                        categoryColors={this.state.categoryColors}
+                        openCategories={this.state.openCategories}
                     />
                     {/*<DomPopup 
                         sidebarClickedItemId={this.state.sidebarClickedItemId}

@@ -42,6 +42,8 @@ class SideBar extends React.Component {
             openCategories.push(id);
         }
         this.setState({openCategories});
+        console.log('openCategories - sidebar', openCategories);
+        this.props.setOpenCategories(openCategories);
     }
     
     render() {

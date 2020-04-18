@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import {loadModules} from 'esri-loader';
 import isEqual from 'lodash.isequal';
- 
+
+let map = null;
+let graphicsLayer = null;
 let view = null;
 let camera = null;
 let searchWidget = null;
 let expandThisAction = {};
+let editGraphic = null;
+let pointGraphic = null;
 const styles = {
     container: {
         height: '100%',
@@ -17,15 +21,6 @@ const styles = {
         height: '100%',
     },
 };
-
-
-
-//let categoryColors = ['#409191', '#c1617e', '#5eae88', '#a6c98d', '#db8976', '#e8e2a4', '#e5b682']
-
-let categoryColors = [[64,145,145], [193,97,126], [94,174,136], [166,201,141], [219,137,118], [232,226,164], [229,182,130] ]
-
-
-
 
 let markerSymbol = {
     type: "simple-marker",
@@ -41,10 +36,15 @@ class MapViewTest extends Component {
         coordinates: [],
         points: null,
         selectedPoint: null,
-        lang: 'en'
+        lang: 'en',
+        openCategories: []
     }
     
     componentDidUpdate(prevProps) {
+        //console.log('map', map);
+        //if (map) console.log('map.layers.items[0].graphics.items[0].symbol.color.a', map.layers.items[0].graphics.items[0].symbol.color);
+        //if (map) map.layers.items[0].graphics.items[0].symbol.color = {r:0,g:0,b:0,a:1};
+        //if (map) console.log('map.layers.items[0].graphics.items[0].symbol.color.a 2', map.layers.items[0].graphics.items[0].symbol.color);
         if (this.props.lang !== prevProps.lang) {
             this.setState({lang: this.props.lang});
             
@@ -78,6 +78,106 @@ class MapViewTest extends Component {
                 }
             }
         }
+        
+        console.log('this.state.openCategories', this.state.openCategories);
+        console.log('this.props.openCategories', this.props.openCategories);
+        if (this.props.openCategories.length !== this.state.openCategories.length || (this.props.openCategories.length === 0 && graphicsLayer)) {
+            console.log('1 - in map view test');
+            if (this.props.openCategories.length === 0 && graphicsLayer) {
+                graphicsLayer.removeAll();
+                this.state.points.forEach(point => {
+                    let pointCategories = (point.categories && point.categories.split(',')) || [];
+                    let markerSymbolColor = [226, 119, 40];
+                    if (pointCategories.length > 0) {
+                        let colorIndex = 0;
+                        this.props.categories.map((category, index) => {
+                            if (category.id === pointCategories[0]) {
+                                colorIndex = index;
+                            }
+                        });
+                        markerSymbolColor = this.props.categoryColors[colorIndex].color;
+                    }
+                    let markerSymbol = {
+                        type: "simple-marker",
+                        color: markerSymbolColor,
+                        outline: {
+                            color: [255, 255, 255],
+                            width: 2
+                        }
+                    };
+                    pointGraphic = {
+                        point: point,
+                        geometry: point,
+                        symbol: markerSymbol
+                    };
+                    graphicsLayer.add(pointGraphic);
+                    graphicsLayer
+                        .when(function() {
+                            return graphicsLayer.queryExtent();
+                        })
+                        .then(function(response) {
+                            view.goTo(response.extent);
+                        });
+                });
+            } else {
+                console.log('2');
+                //graphicsLayer.remove(editGraphic);
+                graphicsLayer.removeAll();
+                this.state.points.forEach(point => {
+                    let pointCategories = (point.categories && point.categories.split(',')) || [];
+                    let markerSymbolColor = [226, 119, 40];
+                    let showPoint = false;
+                    pointCategories.map(pointCategoryId => {
+                        this.props.openCategories.map(openCategory => {
+                            console.log('openCategory.id', openCategory);
+                            console.log('pointCategoryId', pointCategoryId);
+                            if (openCategory === pointCategoryId) {
+                                showPoint = true;
+                            }
+                        })
+                    })
+                    
+                    console.log('showPoint', showPoint);
+                    
+                    if (showPoint) {
+                        if (pointCategories.length > 0) {
+                            let colorIndex = 0;
+                            this.props.categories.map((category, index) => {
+                                if (category.id === pointCategories[0]) {
+                                    colorIndex = index;
+                                }
+                            });
+                            markerSymbolColor = this.props.categoryColors[colorIndex].color;
+                        }
+                        let markerSymbol = {
+                            type: "simple-marker",
+                            color: markerSymbolColor,
+                            outline: {
+                                color: [255, 255, 255],
+                                width: 2
+                            }
+                        };
+                        pointGraphic = {
+                            point: point,
+                            geometry: point,
+                            symbol: markerSymbol
+                        };
+                        graphicsLayer.add(pointGraphic);
+                        graphicsLayer
+                            .when(function() {
+                                return graphicsLayer.queryExtent();
+                            })
+                            .then(function(response) {
+                                view.goTo(response.extent);
+                            });
+                    }
+                    //this.setState({openCategories: this.props.openCategories});
+                });
+            }
+            
+        }
+        
+        
         if (!isEqual(this.props.points, prevProps.points)) {
             this.setState({points: this.props.points});
         }
@@ -113,7 +213,7 @@ class MapViewTest extends Component {
         this.setState({points: this.props.points});
         loadModules(["esri/Map", "esri/views/MapView", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/widgets/Search", "esri/Camera", "esri/widgets/Editor", "esri/popup/content/TextContent", "esri/widgets/Expand", "esri/widgets/Zoom"]) // "esri/widgets/BasemapGallery", "esri/widgets/Locate",
             .then(([Map, MapView, SceneView, GraphicsLayer, Graphic, Search, Expand, Zoom]) => { // BasemapGallery,
-                var map = new Map({
+                map = new Map({
                     basemap: "streets"
                 });
                 
@@ -135,7 +235,9 @@ class MapViewTest extends Component {
                 
                 
                 //view.ui.components = [];
-                var graphicsLayer = new GraphicsLayer();
+                graphicsLayer = new GraphicsLayer({
+                    id: "mosh"
+                });
                 map.add(graphicsLayer);
                 
                 view.ui.move("zoom", this.props.lang === 'en' ? 'top-right' : 'top-left');
@@ -187,7 +289,7 @@ class MapViewTest extends Component {
                         this.props.addPoint(point).then(respoint => {
                             points.push(respoint);
                             this.setState({points});
-                            var pointGraphic = new Graphic({
+                            pointGraphic = new Graphic({
                                 point: respoint,
                                 geometry: respoint,
                                 symbol: markerSymbol
@@ -199,6 +301,14 @@ class MapViewTest extends Component {
                         this.setState({selectedPoint: point});
                     }
                     view.hitTest(event).then(function(response) {
+                        //editGraphic = response.results[0].graphic;
+console.log('editGraphic', editGraphic);
+                        // Remove the graphic from the GraphicsLayer
+                        // Sketch will handle displaying the graphic while being updated
+                        //view.graphics.removeAll();
+                        //graphicsLayer.remove(editGraphic);
+                        
+                        
                         let results = response.results[0].graphic
                         if (results) {
                             let titleHebrew = results.point.titleHebrew;
@@ -227,7 +337,7 @@ class MapViewTest extends Component {
                                 colorIndex = index;
                             }
                         });
-                        markerSymbolColor = categoryColors[colorIndex];
+                        markerSymbolColor = this.props.categoryColors[colorIndex].color;
                     }
                     let markerSymbol = {
                         type: "simple-marker",
@@ -237,7 +347,7 @@ class MapViewTest extends Component {
                             width: 2
                         }
                     };
-                    var pointGraphic = new Graphic({
+                    pointGraphic = new Graphic({
                         point: point,
                         geometry: point,
                         symbol: markerSymbol
@@ -250,7 +360,39 @@ class MapViewTest extends Component {
                         .then(function(response) {
                             view.goTo(response.extent);
                         });
-                })
+                });
+                // const rings = [
+                //     [  // first ring
+                //     [-97.06138,32.837,35.1,4.8],
+                //     [-97.06133,32.836,35.2,4.1],
+                //     [-97.06124,32.834,35.3,4.2],
+                //     [-97.06138,32.837,35.1,4.8]  // same as first vertex
+                //     ], [  // second ring
+                //     [-97.06326,32.759,35.4],
+                //     [-97.06298,32.755,35.5],
+                //     [-97.06153,32.749,35.6],
+                //     [-97.06326,32.759,35.4]  // same as first vertex
+                //     ]
+                // ];
+                
+                // const polygon = new Polygon({
+                //     hasZ: true,
+                //     hasM: true,
+                //     rings: rings,
+                //     spatialReference: { wkid: 4326 }
+                // });
+                
+                // var graphicC = new Graphic({  // graphic with polygon geometry
+                //     geometry: polygon, // set geometry here
+                //     symbol: new SimpleFillSymbol({}) // set symbol here
+                //   });
+                
+                // var pointGraphic = new Graphic({
+                //     point: point,
+                //     geometry: polygon,
+                //     symbol: markerSymbol
+                // });
+                //graphicsLayer.add(graphicC);
             })
     }
  
