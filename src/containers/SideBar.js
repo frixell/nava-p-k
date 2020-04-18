@@ -62,13 +62,15 @@ class SideBar extends React.Component {
             >
                 {
                     this.state.categories.map((category, index) => {
+                        console.log('this.props.categoryColors', this.props.categoryColors);
                         return (
                             <div hidden={!category.isVisible && !this.props.isAuthenticated} key={index}>
                                 <div
                                     onClick={this.handleSideBarCategoryClick}
                                     data-id={category.id}
                                     className={`sidebar__listCategory${this.props.lang === 'en' ? ' sidebar__listCategory--en' : ' sidebar__listCategory--he'}`}
-                                >
+                                    style={{color: this.props.categoryColors[index].colorHex}}
+                               >
                                     <div
                                         className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`} 
                                     /> {this.props.lang === 'en' ? category.name : category.nameHebrew}
