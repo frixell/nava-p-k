@@ -6,10 +6,10 @@ import isEqual from 'lodash.isequal';
 // let factorY = point.y > 0 ? zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10) : - zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
 // let startX = point.x + 1 / pointCategories.length * zoomFactorsX[view.zoom] * index;
 // let stepX = 1 / pointCategories.length * zoomFactorsX[view.zoom];
-                //     0  1  2   3      4    5    6    7    8    9    10    11
-let zoomFactorsX =    [6, 5, 4,  3  , 1.5, 0.8, 0.5, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
-let zoomFactorsY =    [6, 5, 4,  3  , 1.8, 1.2, 0.5, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
-let zoomFactorsYVal = [3, 3, 3,  3.1,   5, 6.6, 8.2,  14,  25,  75,  150,  300,  450,  900,  1800,  3300,  9900,  20000,  50000, 100000,  200000,  500000, 1000000,  2000000];
+                //     0    1  2   3      4    5    6    7    8    9    10    11
+let zoomFactorsX =    [8,   6, 4,  3  , 1.5, 0.8, 0.5, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
+let zoomFactorsY =    [8,   6, 4,  3  , 1.8,   1, 0.5, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
+let zoomFactorsYVal = [1, 1.5, 2,  3.1,   5,   8,  16,  30,  40,  80,  160,  300,  450,  900,  1800,  3300,  9900,  20000,  50000, 100000,  200000,  500000, 1000000,  2000000];
 // let startZoom = 6;
 // let startX = 0;
 // let startY = 0;
