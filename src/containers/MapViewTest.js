@@ -371,7 +371,7 @@ class MapViewTest extends Component {
         loadModules(["esri/Map", "esri/views/MapView", "esri/views/SceneView", "esri/layers/GraphicsLayer", "esri/Graphic", "esri/geometry/Polygon", "esri/symbols/SimpleFillSymbol", "esri/widgets/Search", "esri/Camera", "esri/widgets/Editor", "esri/popup/content/TextContent", "esri/widgets/Expand", "esri/widgets/Zoom"]) // "esri/widgets/BasemapGallery", "esri/widgets/Locate",
             .then(([Map, MapView, SceneView, GraphicsLayer, Graphic, Polygon, SimpleFillSymbol, Search, Expand, Zoom]) => { // BasemapGallery,
                 map = new Map({
-                    basemap: "satellite"
+                    basemap: "streets"
                 });
 
                 // "dark-gray"
