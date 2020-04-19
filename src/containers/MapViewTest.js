@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import {loadModules} from 'esri-loader';
 import isEqual from 'lodash.isequal';
 
+
+let zoomFactorsX =    [6, 5, 4,  3  , 1.7, 0.8, 0.5, 0.4, 0.3, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
+let zoomFactorsY =    [6, 5, 4,  3  , 1.7, 1.2, 0.5, 0.4, 0.3, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
+let zoomFactorsYVal = [3, 3, 3,  3.2, 4.5, 4.5,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3, 3, 3, 3, 3, 3, 3, 3];
+                
+                
 let map = null;
 let graphicsLayer = null;
 let view = null;
@@ -79,8 +85,8 @@ class MapViewTest extends Component {
             }
         }
         
-        console.log('this.state.openCategories', this.state.openCategories);
-        console.log('this.props.openCategories', this.props.openCategories);
+        // console.log('this.state.openCategories', this.state.openCategories);
+        // console.log('this.props.openCategories', this.props.openCategories);
         if (this.props.openCategories.length !== this.state.openCategories.length || (this.props.openCategories.length === 0 && graphicsLayer)) {
             
             graphicsLayer.removeAll();
@@ -246,17 +252,19 @@ class MapViewTest extends Component {
                     markerSymbolColor = this.props.categoryColors[colorIndex].color;
                 }
                 
+                // TODO fix all zoom options
+                
                 if (pointCategories.length > 0) {
                     pointCategories.map((category, index) => {
-                        let factorY = point.y;
-                        let startX = point.x + 5 / pointCategories.length * 3 / view.zoom * index;
-                        let stepX = 6 / pointCategories.length * 3 / view.zoom;
+                        let factorY = zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
+                        let startX = point.x + 1 / pointCategories.length * zoomFactorsX[view.zoom] * index;
+                        let stepX = 1 / pointCategories.length * zoomFactorsX[view.zoom];
                         polygon = {
                             type: "polygon",
                             rings: [
                             [startX, point.y],
-                            [startX, point.y + (3 * 3 / view.zoom) - point.y / 35],
-                            [startX + stepX, point.y + (3 * 3 / view.zoom) - point.y / 35],
+                            [startX, point.y + factorY],
+                            [startX + stepX, point.y + factorY],
                             [startX + stepX, point.y]
                             ],
                             center: [point.x, point.y]
@@ -280,8 +288,8 @@ class MapViewTest extends Component {
                         });
                         markerSymbolColor = this.props.categoryColors[colorIndex].color;
                         
-                        console.log('nu...', category);
-                        console.log('nu...', this.props.categories);
+                        // console.log('nu...', category);
+                        // console.log('nu...', this.props.categories);
                         
                         
                         simpleFillSymbol = {
@@ -302,20 +310,23 @@ class MapViewTest extends Component {
                         graphicsLayer.add(polygonGraphic);
                     });
                 } else {
+                    let factorY = point.y > 0 ? zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10) : - zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
+                    let startX = point.x;
+                    let stepX = 1 * zoomFactorsX[view.zoom];
                     polygon = {
                         type: "polygon",
                         rings: [
-                        [point.x - (2 * 3 / view.zoom), point.y - (2 * 3 / view.zoom)],
-                        [point.x - (2 * 3 / view.zoom), point.y + (2 * 3 / view.zoom)],
-                        [point.x + (2 * 3 / view.zoom), point.y + (2 * 3 / view.zoom)],
-                        [point.x + (2 * 3 / view.zoom), point.y - (2 * 3 / view.zoom)]
+                        [startX, point.y],
+                        [startX, point.y + factorY],
+                        [startX + stepX, point.y + factorY],
+                        [startX + stepX, point.y]
                         ],
                         center: [point.x, point.y]
                     };
             
                     simpleFillSymbol = {
                         type: "simple-fill",
-                        color: markerSymbolColor,  // orange, opacity 80%
+                        color: [255,255,255,0.85],  // orange, opacity 80%
                         outline: {
                         color: [108, 118, 128],
                         width: 0.5
@@ -323,6 +334,7 @@ class MapViewTest extends Component {
                     };
             
                     polygonGraphic = {
+                        point: point,
                         geometry: polygon,
                         symbol: simpleFillSymbol
                     };
@@ -413,7 +425,7 @@ class MapViewTest extends Component {
                 
                 
                 const detectZoom = (newValue, oldValue, property, object) => {
-                    console.log("New Value: ",newValue," Old Value: ",oldValue, " Changed Property: ",property," Watched Object: ",object);
+                    //console.log("New Value: ",newValue," Old Value: ",oldValue, " Changed Property: ",property," Watched Object: ",object);
                     graphicsLayer.removeAll();
                     setTimeout(this.drawPoints(), 250);
                 }
@@ -440,30 +452,53 @@ class MapViewTest extends Component {
                             y: event.mapPoint.latitude,
                             z: 500
                         };
+                        
                         this.props.addPoint(point).then(respoint => {
+                            console.log('respoint', respoint);
                             points.push(respoint);
                             this.setState({points});
+                            
+                            let factorY = zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
+                            let startX = point.x;
+                            let stepX = 1 * zoomFactorsX[view.zoom];
+                            polygon = {
+                                type: "polygon",
+                                rings: [
+                                [startX, point.y],
+                                [startX, point.y + factorY],
+                                [startX + stepX, point.y + factorY],
+                                [startX + stepX, point.y]
+                                ],
+                                center: [point.x, point.y]
+                            };
+                            
+                            simpleFillSymbol = {
+                                type: "simple-fill",
+                                color: [255,255,255,0.85],
+                                outline: {
+                                color: [108, 118, 128],
+                                width: 0.5
+                                }
+                            };
+                            
+                            
                             pointGraphic = new Graphic({
                                 point: respoint,
-                                geometry: respoint,
-                                symbol: markerSymbol
+                                geometry: polygon,
+                                symbol: simpleFillSymbol
                             });
+                            console.log('pointGraphic', pointGraphic);
                             graphicsLayer.add(pointGraphic);
                         });
                     }
+                    
                     const setAction = (point) => {
                         this.setState({selectedPoint: point});
                     }
+                    
                     view.hitTest(event).then(function(response) {
-                        //editGraphic = response.results[0].graphic;
-                        console.log('response.results[0]', response.results[0]);
-                        // Remove the graphic from the GraphicsLayer
-                        // Sketch will handle displaying the graphic while being updated
-                        //view.graphics.removeAll();
-                        //graphicsLayer.remove(editGraphic);
-                        
-                        
-                        let results = response.results[0].graphic
+                        console.log('hitTest response', response);
+                        let results = response.results[0].graphic;
                         if (results) {
                             let titleHebrew = results.point.titleHebrew;
                             let contentHebrew = results.point.contentHebrew;

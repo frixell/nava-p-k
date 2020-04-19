@@ -222,7 +222,7 @@ class HomePage extends React.Component {
     }
 
     componentDidMount = () => {
-        console.log('categories', this.props.categories);
+        //console.log('categories', this.props.categories);
         if(this.props.categories) {
             let categoryColors = [];
             this.props.categories.map((category, index) => {
@@ -524,7 +524,7 @@ class HomePage extends React.Component {
             };
             this.props.startAddCategory(category, order).then((categories)=> {
                 //this.getAllData(categoryId, categoryId);
-                console.log('categories', categories);
+                //console.log('categories', categories);
                 this.setState({
                     newCategoryNameModalIsOpen: false,
                     newCategoryName: '',
@@ -563,7 +563,7 @@ class HomePage extends React.Component {
     }
     
     setOpenCategories = (openCategories) => {
-        console.log('openCategories - homepage', openCategories);
+        //console.log('openCategories - homepage', openCategories);
         this.setState({
             openCategories: openCategories
         });

@@ -42,7 +42,7 @@ class SideBar extends React.Component {
             openCategories.push(id);
         }
         this.setState({openCategories});
-        console.log('openCategories - sidebar', openCategories);
+        //console.log('openCategories - sidebar', openCategories);
         this.props.setOpenCategories(openCategories);
     }
     
@@ -62,7 +62,7 @@ class SideBar extends React.Component {
             >
                 {
                     this.state.categories.map((category, index) => {
-                        console.log('this.props.categoryColors', this.props.categoryColors);
+                        //console.log('this.props.categoryColors', this.props.categoryColors);
                         return (
                             <div hidden={!category.isVisible && !this.props.isAuthenticated} key={index}>
                                 <div

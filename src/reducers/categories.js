@@ -25,9 +25,9 @@ export default (state = categoriesReducerDefaultState, action) => {
             ];
             
         case 'TOGGLE_SHOW_CATEGORY':
-            console.log('from reducer:', action);
-            console.log('from reducer - categories:', categories);
-            console.log('from reducer - action.categoryId:', action.categoryId);
+            // console.log('from reducer:', action);
+            // console.log('from reducer - categories:', categories);
+            // console.log('from reducer - action.categoryId:', action.categoryId);
             //console.log('from reducer - categories[action.categoryId].isVisible:', categories[action.categoryId].isVisible);
             let categoryIndex = null;
             categories.map((category, index) => {
@@ -35,7 +35,7 @@ export default (state = categoriesReducerDefaultState, action) => {
                     categoryIndex = index;
                 }
             });
-            console.log('from reducer - categoryIndex:', categoryIndex);
+            //console.log('from reducer - categoryIndex:', categoryIndex);
             categories[categoryIndex].isVisible = action.visible;
             return categories;
 
