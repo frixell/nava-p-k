@@ -8,18 +8,21 @@ const circleToPolygon = require('circle-to-polygon');
 // let factorY = point.y > 0 ? zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10) : - zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
 // let startX = point.x + 1 / pointCategories.length * zoomFactorsX[view.zoom] * index;
 // let stepX = 1 / pointCategories.length * zoomFactorsX[view.zoom];
-                //     0    1  2   3      4    5    6    7    8    9    10    11
+                //             0         1         2         3        4        5        6        7        8        9       10       11     12     13    14    15    16   17   18   19   20   21   22    23
+let zoomRadius =      [1258291.2, 629145.6, 314572.8, 157286.4, 78643.2, 39321.6, 19660.8,  9830.4,  4915.2,  2457.6,  1228.8,   614.4, 307.2, 153.6, 76.8, 38.4, 19.2, 9.6, 4.8, 2.4, 1.2, 0.6, 0.3, 0.15];
+let indexY     =      [10000000,  10000000,       50,       50,      12,     4.1,     3.3,     2.1,     1.5,     1.2,     1.1,     1.05];
+
 let zoomFactorsX =    [8,   6, 4,  3  , 1.5, 0.8, 0.5, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
 let zoomFactorsY =    [8,   6, 4,  3  , 1.8,   1, 0.5, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
 let zoomFactorsYVal = [1, 1.5, 2,  3.1,   5,   8,  16,  30,  40,  80,  160,  300,  450,  900,  1800,  3300,  9900,  20000,  50000, 100000,  200000,  500000, 1000000,  2000000];
-// let startZoom = 6;
-// let startX = 0;
-// let startY = 0;
+let startZoom = 3;
+let startX = 0;
+let startY = 0;
 let gotoZoom = 10;
 
-let startZoom = 3;
-let startX = -20;
-let startY = 35;
+// let startZoom = 3;
+// let startX = -20;
+// let startY = 35;
                 
 let map = null;
 let graphicsLayer = null;
@@ -30,7 +33,7 @@ let expandThisAction = {};
 let editGraphic = null;
 let pointGraphic = null;
 let polygonGraphic = null;
-let circleGraphic = null;
+//let circleGraphic = null;
 let polygon = null;
 let simpleFillSymbol = null;
 let markerSymbolWidth = 3;
@@ -266,11 +269,59 @@ class MapViewTest extends Component {
                     markerSymbolColor = this.props.categoryColors[colorIndex].color;
                 }
                 
-                
+                let yIndex = 0;
+                if (point.y < 0 && point.y > -10) {
+                    yIndex = 1;
+                } else if (point.y < -9 && point.y > -20) {
+                    yIndex = 2;
+                } else if (point.y < -19 && point.y > -30) {
+                    yIndex = 3;
+                } else if (point.y < -29 && point.y > -40) {
+                    yIndex = 4;
+                } else if (point.y < -39 && point.y > -50) {
+                    yIndex = 5;
+                } else if (point.y < -49 && point.y > -60) {
+                    yIndex = 6;
+                } else if (point.y < -59 && point.y > -70) {
+                    yIndex = 7;
+                } else if (point.y < -69 && point.y > -80) {
+                    yIndex = 8;
+                } else if (point.y < -79 && point.y > -85) {
+                    yIndex = 9;
+                } else if (point.y < -84 && point.y > -100) {
+                    yIndex = 10;
+                }
+                if (point.y > 0 && point.y < 10) {
+                    yIndex = 1;
+                } else if (point.y > 9 && point.y < 20) {
+                    yIndex = 2;
+                } else if (point.y > 19 && point.y < 30) {
+                    yIndex = 3;
+                } else if (point.y > 29 && point.y < 40) {
+                    yIndex = 4;
+                } else if (point.y > 39 && point.y < 50) {
+                    yIndex = 5;
+                } else if (point.y > 49 && point.y < 60) {
+                    yIndex = 6;
+                } else if (point.y > 59 && point.y < 70) {
+                    yIndex = 7;
+                } else if (point.y > 69 && point.y < 80) {
+                    yIndex = 8;
+                } else if (point.y > 79 && point.y < 85) {
+                    yIndex = 9;
+                } else if (point.y > 84 && point.y < 100) {
+                    yIndex = 10;
+                }
+                console.log('yIndex', yIndex);
                 const coordinates = [point.x, point.y];
-                const radius = 140000000 / (zoomFactorsYVal[view.zoom] * 9.2) /  point.y;
+                //console.log('view.zoom', view.zoom);
+                //console.log('zoomRadius[view.zoom]', zoomRadius[Math.round(view.zoom)]);
+                const radius = zoomRadius[Math.round(view.zoom)] - zoomRadius[Math.round(view.zoom)] / indexY[Math.round(yIndex)]; //zoomFactorsY[view.zoom] * 2000000 / (zoomFactorsY[view.zoom] * 10) - point.y * (zoomFactorsY[view.zoom] * zoomFactorsYVal[view.zoom] * 200);
                 const numberOfEdges = 120;
                 
+                console.log('zoomRadius[Math.round(view.zoom)]', zoomRadius[Math.round(view.zoom)]);
+                console.log('indexY[Math.round(yIndex)]', indexY[Math.round(yIndex)]);
+                console.log('radius', radius);
                 let slices = numberOfEdges / pointCategories.length;
                 
                 let newPolygon = circleToPolygon(coordinates, radius, numberOfEdges);
@@ -334,7 +385,7 @@ class MapViewTest extends Component {
                         polygon.rings = newPolygon.coordinates[0].slice(index * slices, index * slices + slices +1);
                         polygon.rings.push([point.x, point.y]);
                         polygon.rings.unshift([point.x, point.y]);
-                        console.log('polygon2', polygon);
+                        //console.log('polygon2', polygon);
                         
                         
                         
@@ -443,10 +494,6 @@ class MapViewTest extends Component {
                 // "topo-vector"
 
 
-
-
-
-                
                 view = new MapView({
                     popup: {
                         lang: this.state.lang,
@@ -565,10 +612,10 @@ class MapViewTest extends Component {
                                 }
                             };
                             
-                            circleGraphic = new Circle({
-                                spatialReference: mapView.spatialReference,
-                                center: event.vertices[0],
-                             });
+                            // circleGraphic = new Circle({
+                            //     spatialReference: mapView.spatialReference,
+                            //     center: event.vertices[0],
+                            //  });
  
                             
                             pointGraphic = new Graphic({
