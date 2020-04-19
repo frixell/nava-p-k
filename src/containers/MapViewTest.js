@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {loadModules} from 'esri-loader';
 import isEqual from 'lodash.isequal';
 
+const circleToPolygon = require('circle-to-polygon');
+
 
 // let factorY = point.y > 0 ? zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10) : - zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
 // let startX = point.x + 1 / pointCategories.length * zoomFactorsX[view.zoom] * index;
@@ -28,6 +30,7 @@ let expandThisAction = {};
 let editGraphic = null;
 let pointGraphic = null;
 let polygonGraphic = null;
+let circleGraphic = null;
 let polygon = null;
 let simpleFillSymbol = null;
 let markerSymbolWidth = 3;
@@ -263,7 +266,14 @@ class MapViewTest extends Component {
                     markerSymbolColor = this.props.categoryColors[colorIndex].color;
                 }
                 
-                // TODO fix all zoom options
+                
+                const coordinates = [point.x, point.y];
+                const radius = 140000000 / (zoomFactorsYVal[view.zoom] * 9.2) /  point.y;
+                const numberOfEdges = 120;
+                
+                let slices = numberOfEdges / pointCategories.length;
+                
+                let newPolygon = circleToPolygon(coordinates, radius, numberOfEdges);
                 
                 if (pointCategories.length > 0) {
                     pointCategories.map((category, index) => {
@@ -308,9 +318,26 @@ class MapViewTest extends Component {
                             color: markerSymbolColor, //currentColor,  // orange, opacity 80%
                             outline: {
                             color: [108, 118, 128],
-                            width: 0.5
+                            width: 0
                             }
                         };
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        // console.log('newPolygon', newPolygon);
+                        //console.log('polygon', polygon);
+                        polygon.rings = newPolygon.coordinates[0].slice(index * slices, index * slices + slices +1);
+                        polygon.rings.push([point.x, point.y]);
+                        polygon.rings.unshift([point.x, point.y]);
+                        console.log('polygon2', polygon);
+                        
+                        
+                        
                 
                         polygonGraphic = {
                             point: point,
@@ -320,6 +347,29 @@ class MapViewTest extends Component {
                 
                         graphicsLayer.add(polygonGraphic);
                     });
+                    
+                    
+                    
+                    
+                    simpleFillSymbol = {
+                        type: "simple-fill",
+                        color: [0,0,0,0], //currentColor,  // orange, opacity 80%
+                        outline: {
+                        color: [255, 255, 255],
+                        width: 2
+                        }
+                    };
+                    polygon.rings = newPolygon.coordinates[0];
+                    
+                    polygonGraphic = {
+                        point: point,
+                        geometry: polygon,
+                        symbol: simpleFillSymbol
+                    };
+            
+                    graphicsLayer.add(polygonGraphic);
+
+                    
                 } else {
                     let factorY = point.y > 0 ? zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10) : - zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
                     let startX = point.x;
@@ -515,6 +565,11 @@ class MapViewTest extends Component {
                                 }
                             };
                             
+                            circleGraphic = new Circle({
+                                spatialReference: mapView.spatialReference,
+                                center: event.vertices[0],
+                             });
+ 
                             
                             pointGraphic = new Graphic({
                                 point: respoint,
