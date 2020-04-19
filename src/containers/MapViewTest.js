@@ -3,10 +3,21 @@ import {loadModules} from 'esri-loader';
 import isEqual from 'lodash.isequal';
 
 
-let zoomFactorsX =    [6, 5, 4,  3  , 1.7, 0.8, 0.5, 0.4, 0.3, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
-let zoomFactorsY =    [6, 5, 4,  3  , 1.7, 1.2, 0.5, 0.4, 0.3, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
-let zoomFactorsYVal = [3, 3, 3,  3.2, 4.5, 4.5,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3,   3, 3, 3, 3, 3, 3, 3, 3];
-                
+// let factorY = point.y > 0 ? zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10) : - zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
+// let startX = point.x + 1 / pointCategories.length * zoomFactorsX[view.zoom] * index;
+// let stepX = 1 / pointCategories.length * zoomFactorsX[view.zoom];
+                //     0  1  2   3      4    5    6    7    8    9    10    11
+let zoomFactorsX =    [6, 5, 4,  3  , 1.5, 0.8, 0.5, 0.4, 0.3, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
+let zoomFactorsY =    [6, 5, 4,  3  , 1.8, 1.2, 0.5, 0.4, 0.3, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
+let zoomFactorsYVal = [3, 3, 3,  3.1,   5, 6.6, 8.2,   3,   3,   3,  150,   3,   3,   3,   3,   3,   3, 3, 3, 3, 3, 3, 3, 3];
+// let startZoom = 6;
+// let startX = 0;
+// let startY = 0;
+let gotoZoom = 10;
+
+let startZoom = 3;
+let startX = -20;
+let startY = 35;
                 
 let map = null;
 let graphicsLayer = null;
@@ -217,7 +228,7 @@ class MapViewTest extends Component {
             // view.zoom = 13;
             view.goTo({
                 center: [selectedPoint.x, selectedPoint.y],
-                zoom: 10
+                zoom: gotoZoom
               })
               .catch(function(error) {
                 if (error.name != "AbortError") {
@@ -256,7 +267,8 @@ class MapViewTest extends Component {
                 
                 if (pointCategories.length > 0) {
                     pointCategories.map((category, index) => {
-                        let factorY = zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
+                        let factorY = point.y > 0 ? zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10) : - zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
+                        //let factorY = zoomFactorsY[view.zoom];
                         let startX = point.x + 1 / pointCategories.length * zoomFactorsX[view.zoom] * index;
                         let stepX = 1 / pointCategories.length * zoomFactorsX[view.zoom];
                         polygon = {
@@ -375,8 +387,8 @@ class MapViewTest extends Component {
                     },
                     container: "pointTestViewDiv",
                     map: map,
-                    zoom: 3,
-                    center: [-20, 35]
+                    zoom: startZoom,
+                    center: [startX, startY]
                 });
                 
                 
@@ -458,7 +470,7 @@ class MapViewTest extends Component {
                             points.push(respoint);
                             this.setState({points});
                             
-                            let factorY = zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
+                            let factorY = point.y > 0 ? zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10) : - zoomFactorsY[view.zoom] - point.y / (zoomFactorsYVal[view.zoom] * 10);
                             let startX = point.x;
                             let stepX = 1 * zoomFactorsX[view.zoom];
                             polygon = {
