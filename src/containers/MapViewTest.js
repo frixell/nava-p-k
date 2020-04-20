@@ -490,6 +490,10 @@ class MapViewTest extends Component {
                     center: [startX, startY]
                 });
                 
+                view.constraints = {
+                    minZoom: 3
+                };
+                
                 
                 //view.ui.components = [];
                 graphicsLayer = new GraphicsLayer({
@@ -533,25 +537,12 @@ class MapViewTest extends Component {
                     this.props.handleExpandProject(event.target.project);
                 }
                 
-                
-                
                 const detectZoom = (newValue, oldValue, property, object) => {
-                    //console.log("New Value: ",newValue," Old Value: ",oldValue, " Changed Property: ",property," Watched Object: ",object);
                     graphicsLayer.removeAll();
                     setTimeout(this.drawPoints(), 250);
                 }
                 
                 view.watch('zoom', detectZoom);
-                // view.on('zoom-start', function(event){
-                        
-                //     console.log(view.zoom);
-                //   });
-                
-                //   map.on("zoom-end", function(){
-
-                //     alert("this is my Map");
-                
-                // });
                 
                 view.on('click', (event) => {
                     if (this.props.allowAddPoint) {
