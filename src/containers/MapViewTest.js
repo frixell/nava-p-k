@@ -37,7 +37,7 @@ let polygonGraphic = null;
 let polygon = null;
 let simpleFillSymbol = null;
 let markerSymbolWidth = 3;
-let markerSymbolOutlineWidth = 1;
+let markerSymbolOutlineWidth = 2;
 const styles = {
     container: {
         height: '100%',
@@ -317,11 +317,8 @@ class MapViewTest extends Component {
                 //console.log('view.zoom', view.zoom);
                 //console.log('zoomRadius[view.zoom]', zoomRadius[Math.round(view.zoom)]);
                 const radius = zoomRadius[Math.round(view.zoom)] - zoomRadius[Math.round(view.zoom)] / indexY[Math.round(yIndex)]; //zoomFactorsY[view.zoom] * 2000000 / (zoomFactorsY[view.zoom] * 10) - point.y * (zoomFactorsY[view.zoom] * zoomFactorsYVal[view.zoom] * 200);
-                const numberOfEdges = 120;
+                const numberOfEdges = 240;
                 
-                console.log('zoomRadius[Math.round(view.zoom)]', zoomRadius[Math.round(view.zoom)]);
-                console.log('indexY[Math.round(yIndex)]', indexY[Math.round(yIndex)]);
-                console.log('radius', radius);
                 let slices = numberOfEdges / pointCategories.length;
                 
                 let newPolygon = circleToPolygon(coordinates, radius, numberOfEdges);
@@ -341,16 +338,6 @@ class MapViewTest extends Component {
                             ],
                             center: [point.x, point.y]
                         };
-                
-                        //let currentColor = null;
-                        
-                        // pointCategories.map(pointCategoryId => {
-                        //     this.props.openCategories.map(openCategory => {
-                        //         if (openCategory === pointCategoryId) {
-                        //             currentColor = category.color;
-                        //         }
-                        //     })
-                        // })
                         
                         let colorIndex = 0;
                         this.props.categories.map((propsCategory, index) => {
@@ -360,13 +347,10 @@ class MapViewTest extends Component {
                         });
                         markerSymbolColor = this.props.categoryColors[colorIndex].color;
                         
-                        // console.log('nu...', category);
-                        // console.log('nu...', this.props.categories);
-                        
                         
                         simpleFillSymbol = {
                             type: "simple-fill",
-                            color: markerSymbolColor, //currentColor,  // orange, opacity 80%
+                            color: markerSymbolColor,
                             outline: {
                             color: [108, 118, 128],
                             width: 0
@@ -374,22 +358,11 @@ class MapViewTest extends Component {
                         };
                         
                         
-                        
-                        
-                        
-                        
-                        
-                        
-                        // console.log('newPolygon', newPolygon);
-                        //console.log('polygon', polygon);
                         polygon.rings = newPolygon.coordinates[0].slice(index * slices, index * slices + slices +1);
                         polygon.rings.push([point.x, point.y]);
                         polygon.rings.unshift([point.x, point.y]);
-                        //console.log('polygon2', polygon);
                         
                         
-                        
-                
                         polygonGraphic = {
                             point: point,
                             geometry: polygon,
@@ -399,12 +372,19 @@ class MapViewTest extends Component {
                         graphicsLayer.add(polygonGraphic);
                     });
                     
-                    
+                    markerSymbol = {
+                        type: "simple-marker",
+                        color: [255, 255, 255,0],
+                        outline: {
+                            color: [255, 255, 255],
+                            width: markerSymbolOutlineWidth
+                        }
+                    };
                     
                     
                     simpleFillSymbol = {
                         type: "simple-fill",
-                        color: [0,0,0,0], //currentColor,  // orange, opacity 80%
+                        color: [0,0,0,0],
                         outline: {
                         color: [255, 255, 255],
                         width: 2
@@ -414,8 +394,8 @@ class MapViewTest extends Component {
                     
                     polygonGraphic = {
                         point: point,
-                        geometry: polygon,
-                        symbol: simpleFillSymbol
+                        geometry: point,
+                        symbol: markerSymbol
                     };
             
                     graphicsLayer.add(polygonGraphic);
