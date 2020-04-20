@@ -1445,6 +1445,16 @@ input[type="email"]::-webkit-input-placeholder {
 
 @media (max-width: $mobileMaxWidth) {
 
+    
+    .homepage__sidebar__container {
+        display: inline-block;
+        padding-top: 20px;
+        padding-right: 10px;
+        width: 100%;
+    }
+    
+    
+    
     .homepage__socialmedia-button {
         height: 3.5rem;
         margin-top: 0.1rem;

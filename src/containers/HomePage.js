@@ -783,81 +783,99 @@ class HomePage extends React.Component {
                 
                 
                 
+                <div style={ $( window ).width() < 768 ? 
+                                {
+                                    display: 'flex',
+                                    flexDirection: 'column-reverse'
+                                }
+                            :
+                                {
+                                    display: 'flex',
+                                    flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse'
+                                }
+                            }
+                >
                 
-                
-                <SideBar
-                    sidebarClickedItemId={this.state.sidebarClickedItemId}
-                    handleSideBarClick={this.handleSideBarClick}
-                    categories={this.state.categories}
-                    points={this.props.points}
-                    isAuthenticated={this.props.isAuthenticated}
-                    lang={this.props.lang}
-                    categoryColors={this.state.categoryColors}
-                    setOpenCategories={this.setOpenCategories}
-                />
-                
-                {
-                    this.state.selectedProject ?
-                        <div
-                            className={`homepage__project__details__container${this.props.lang === 'en' ? ' homepage__project__details__container--en' : ' homepage__project__details__container--he'}`}
-                            style={{ 
-                                height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 70,
-                                width: $( window ).width() - 170
-                            }}
-                        >
-                            <ProjectDetailsPage
-                                hideProject={this.hideProject}
-                                categories={this.state.categories}
-                                table={this.state.table}
-                                tableTemplate={this.props.tableTemplate}
-                                selectedProject={this.state.selectedProject}
-                                isAuthenticated={this.props.isAuthenticated}
-                                onChange={this.setData}
-                                uploadWidget={this.uploadWidget}
-                                lang={this.props.lang}
-                                categoryColors={this.state.categoryColors}
-                            />
-                        </div>
-                    :
-                        null
-                }
-                
-                <div dir={this.state.lang === 'en' ? 'ltr' : 'rtl'} style={{ float: this.props.lang === 'en' ? 'right' : 'left', display: 'inline-block', height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 60, width: $( window ).width() - 170 }}>
-                    
-                    {/*<PointTest
+                    <SideBar
                         sidebarClickedItemId={this.state.sidebarClickedItemId}
-                        points={this.state.points}
-                        addPoint={this.addPoint}
-                        allowAddPoint={this.state.allowAddPoint}
-                        setSelectedProject={this.setSelectedProject}
-                        handleExpandProject={this.handleExpandProject}
-                        lang={this.props.lang}
-                    />*/}
-                    
-                    {/*MapViewTest  LayerSaveTest*/}
-                    <MapViewTest
-                        categories={this.props.categories}
-                        sidebarClickedItemId={this.state.sidebarClickedItemId}
-                        points={this.state.points}
-                        addPoint={this.addPoint}
-                        allowAddPoint={this.state.allowAddPoint}
-                        selectedProject={this.state.selectedProject}
-                        setSelectedProject={this.setSelectedProject}
-                        handleExpandProject={this.handleExpandProject}
+                        handleSideBarClick={this.handleSideBarClick}
+                        categories={this.state.categories}
+                        points={this.props.points}
+                        isAuthenticated={this.props.isAuthenticated}
                         lang={this.props.lang}
                         categoryColors={this.state.categoryColors}
-                        openCategories={this.state.openCategories}
+                        setOpenCategories={this.setOpenCategories}
                     />
-                    {/*<DomPopup 
-                        sidebarClickedItemId={this.state.sidebarClickedItemId}
-                        points={this.state.points}
-                        addPoint={this.addPoint}
-                        allowAddPoint={this.state.allowAddPoint}
-                        setSelectedProject={this.setSelectedProject}
-                        handleExpandProject={this.handleExpandProject}
-                        lang={this.props.lang}
-                    />*/}
                     
+                    {
+                        this.state.selectedProject ?
+                            <div
+                                className={`homepage__project__details__container${this.props.lang === 'en' ? ' homepage__project__details__container--en' : ' homepage__project__details__container--he'}`}
+                                style={ 
+                                    $( window ).width() < 768 ? 
+                                    {
+                                        height: auto,
+                                        width: '100%',
+                                        
+                                    }
+                                    :
+                                    { 
+                                        height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 70,
+                                        width: $( window ).width() - 170
+                                    }
+                                }
+                            >
+                                <ProjectDetailsPage
+                                    hideProject={this.hideProject}
+                                    categories={this.state.categories}
+                                    table={this.state.table}
+                                    tableTemplate={this.props.tableTemplate}
+                                    selectedProject={this.state.selectedProject}
+                                    isAuthenticated={this.props.isAuthenticated}
+                                    onChange={this.setData}
+                                    uploadWidget={this.uploadWidget}
+                                    lang={this.props.lang}
+                                    categoryColors={this.state.categoryColors}
+                                />
+                            </div>
+                        :
+                            null
+                    }
+                    
+                    <div
+                        dir={this.state.lang === 'en' ? 'ltr' : 'rtl'}
+                        style={
+                            $( window ).width() < 768 ? 
+                            { 
+                                height: 'auto',
+                                width: '100%'
+                            }
+                            :
+                            { 
+                                float: this.props.lang === 'en' ? 'right' : 'left',
+                                display: 'inline-block',
+                                height: this.props.lang === 'en' ? 
+                                            $( window ).height() - 60 
+                                        : 
+                                            $( window ).height() - 60, 
+                                width: $( window ).width() - 170 
+                            }
+                        }
+                    >
+                        <MapViewTest
+                            categories={this.props.categories}
+                            sidebarClickedItemId={this.state.sidebarClickedItemId}
+                            points={this.state.points}
+                            addPoint={this.addPoint}
+                            allowAddPoint={this.state.allowAddPoint}
+                            selectedProject={this.state.selectedProject}
+                            setSelectedProject={this.setSelectedProject}
+                            handleExpandProject={this.handleExpandProject}
+                            lang={this.props.lang}
+                            categoryColors={this.state.categoryColors}
+                            openCategories={this.state.openCategories}
+                        />
+                    </div>
                 </div>
                 
                 <Footer lang={this.props.lang} />

@@ -56,9 +56,16 @@ class SideBar extends React.Component {
         return (
             <div
                 className="homepage__sidebar__container"
-                style={{
-                    height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 70
-                }}
+                style={ $( window ).width() < 768 ? 
+                    {
+                        height: 'auto',
+                        width: '100%'
+                    }
+                    :
+                    {
+                        height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 70
+                    }
+                }
             >
                 <div className="sidebar__image__box">
                     <img className={this.props.lang === 'en' ? " sidebar__image--en" : " sidebar__image--he"} src="https://res.cloudinary.com/dewafmxth/image/upload/v1587375229/nava_ky02kt.jpg" />
