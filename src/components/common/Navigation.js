@@ -255,14 +255,38 @@ class Navigation extends React.Component {
         <Navbar id="navbarD" light className={`container-fluid navbar__shadow desktop`} expand="md" fixed={this.state.fixed} dir={this.langDir}>
           <div className={this.props.lang === 'he' ? 'container-fluid navbar__header__container' : 'container-fluid navbar__header__container__eng'} dir={this.props.lang === 'he' ? 'ltr' : 'rtl'}>
             <div className="container-fluid navbar__header">
-              <NavbarBrand className={this.props.lang === 'he' ? 'navbar__brand' : 'navbar__brand__eng'} href="/">{this.props.lang === 'he' ? <div style={{marginTop: '-0.9vw'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div> : <div style={{marginTop: '-0.8vw'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>}</NavbarBrand>
+              <NavbarBrand className={this.props.lang === 'he' ? 'navbar__brand' : 'navbar__brand__eng'} href="/">{this.props.lang === 'he' ? <div style={{marginTop: '-0.9vw', textAlign: 'right'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div> : <div style={{marginTop: '-0.8vw', lineHeight: '140%'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>}</NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
             </div>
           </div>
           <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="navbar__nav" className={this.props.lang === 'he' ? 'mr-auto' : 'ml-auto'} navbar>
+            <Nav className="navbar__nav" className={this.props.lang === 'he' ? 'ml-auto' : 'mr-auto'} navbar dir={this.props.lang === 'he' ? 'rtl' : 'ltr'}>
+              
+              
+            <NavItem>
+                <NavLink exact to="/" className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
+              </NavItem>
               <NavItem>
-                <div onClick={this.setLang} className="nav__link nav__link--padding-top">{this.props.lang === 'he' ? 'EN' : 'עב'}</div>
+                <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/research'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teachin'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הוראה' : 'Teachin'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/הרצאות' : '/Lectures'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הרצאות' : 'Lectures'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/קו״ח' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/צרו קשר' : '/Contact'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
+              </NavItem>
+              
+              <NavItem>
+                <div onClick={this.setLang} className="nav__link nav__link--padding-top" style={this.props.lang === 'he' ? {position: 'fixed', top: '2vw', left: '0'} : {position: 'fixed', top: '2vw', right: '0'}}>{this.props.lang === 'he' ? 'EN' : 'עב'}</div>
               </NavItem>
             </Nav>
           </Collapse>

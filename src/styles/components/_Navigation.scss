@@ -90,8 +90,9 @@
 }
 
 .navbar-light .navbar-nav {
-    margin-left: 0vw;
-    margin-right: 0vw;
+    margin-top: 1vw;
+    margin-left: 23rem;
+    margin-right: 18rem;
 }
 
 .nav__logo {
@@ -168,13 +169,13 @@
     font-family: $font;
     font-weight: $fontRegular;
     font-size: 1.4rem;
-    text-shadow: 1px 1px $white;
+    _text-shadow: 1px 1px $white;
     letter-spacing: 0.1px;
     min-height: 2.2rem;
     padding-top: 0rem;
     padding-bottom: 0rem;
-    padding-left: 0.3rem;
-    padding-right: 0.3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
     text-align: center;
 }
 
@@ -190,8 +191,8 @@
     margin-right: 0.4rem;
     color: $white;
     text-decoration: none;
-    padding-left: 0.3rem;
-    padding-right: 0.3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 
@@ -206,8 +207,8 @@
     margin-right: 0.4rem;
     color: $white;
     text-decoration: none;
-    padding-left: 0.3rem;
-    padding-right: 0.3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 
