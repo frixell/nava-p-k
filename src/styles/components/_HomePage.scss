@@ -723,8 +723,6 @@ input[type="email"]::-webkit-input-placeholder {
     color: $white;
     font-size: 14px;
     padding: 5px;
-    margin-left: 4px;
-    margin-right: 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -912,6 +910,48 @@ input[type="email"]::-webkit-input-placeholder {
 
 .homepage__project__details__container--he {
     left: 0;
+}
+
+.sidebar__categories__box {
+    width: 100%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.sidebar__image__box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.sidebar__image--he {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
+.sidebar__image--en {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+.sidebar__text__box {
+    width: 100%;
+    color: $white;
+    font-family: $font;
+    font-weight: $fontRegular;
+    font-size: 1.4rem;
+}
+
+.sidebar__text__box--en {
+    padding-left: 6px;
+    text-align: left;
+}
+
+.sidebar__text__box--he {
+    padding-right: 6px;
+    text-align: right;
 }
 
 .homepage__sidebar__container {

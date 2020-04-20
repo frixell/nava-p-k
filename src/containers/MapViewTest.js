@@ -15,14 +15,14 @@ let indexY     =      [10000000,  10000000,       50,       50,      12,     4.1
 let zoomFactorsX =    [8,   6, 4,  3  , 1.5, 0.8, 0.5, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
 let zoomFactorsY =    [8,   6, 4,  3  , 1.8,   1, 0.5, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005, 0.0002, 0.0001, 0.00005, 0.00002, 0.00001, 0.000005];
 let zoomFactorsYVal = [1, 1.5, 2,  3.1,   5,   8,  16,  30,  40,  80,  160,  300,  450,  900,  1800,  3300,  9900,  20000,  50000, 100000,  200000,  500000, 1000000,  2000000];
-let startZoom = 3;
-let startX = 0;
-let startY = 0;
+// let startZoom = 3;
+// let startX = 0;
+// let startY = 0;
 let gotoZoom = 10;
 
-// let startZoom = 3;
-// let startX = -20;
-// let startY = 35;
+let startZoom = 3;
+let startX = -20;
+let startY = 35;
                 
 let map = null;
 let graphicsLayer = null;

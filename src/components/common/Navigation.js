@@ -255,7 +255,7 @@ class Navigation extends React.Component {
         <Navbar id="navbarD" light className={`container-fluid navbar__shadow desktop`} expand="md" fixed={this.state.fixed} dir={this.langDir}>
           <div className={this.props.lang === 'he' ? 'container-fluid navbar__header__container' : 'container-fluid navbar__header__container__eng'} dir={this.props.lang === 'he' ? 'ltr' : 'rtl'}>
             <div className="container-fluid navbar__header">
-              <NavbarBrand className={this.props.lang === 'he' ? 'navbar__brand' : 'navbar__brand__eng'} href="/">{this.props.lang === 'he' ? 'נאוה קיינר-פרסוב' : 'Nava Kainer-Persov'}</NavbarBrand>
+              <NavbarBrand className={this.props.lang === 'he' ? 'navbar__brand' : 'navbar__brand__eng'} href="/">{this.props.lang === 'he' ? <div style={{marginTop: '-0.9vw'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div> : <div style={{marginTop: '-0.8vw'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>}</NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
             </div>
           </div>
