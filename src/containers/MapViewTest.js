@@ -19,9 +19,9 @@ let zoomFactorsYVal = [1, 1.5, 2,  3.1,   5,   8,  16,  30,  40,  80,  160,  300
 // let startX = 0;
 // let startY = 0;
 let gotoZoom = 10;
-var windowWidth = window.innerWidth
-|| document.documentElement.clientWidth
-|| document.body.clientWidth;
+var windowWidth   = window.innerWidth
+                    || document.documentElement.clientWidth
+                    || document.body.clientWidth;
 let startZoom = windowWidth < 768 ? 2 : 3;
 let startX = -20;
 let startY = 35;
@@ -47,8 +47,8 @@ const styles = {
         fontSize: 2
     },
     mapDiv: {
-        height: $( window ).width() < 768 ? $( window ).width() * 0.75 : '100%',
-        width: $( window ).width() < 768 ? $( window ).width() : '100%',
+        height: windowWidth < 768 ? windowWidth * 0.75 : '100%',
+        width: windowWidth < 768 ? windowWidth : '100%',
     },
 };
 

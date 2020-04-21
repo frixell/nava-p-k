@@ -2,6 +2,12 @@ import React from 'react';
 import isEqual from 'lodash.isequal';
 import { addQuarters } from 'date-fns';
 
+var windowWidth   = window.innerWidth
+                    || document.documentElement.clientWidth
+                    || document.body.clientWidth;
+var windowHeight   = window.innerHeight
+                    || document.documentElement.clientHeight
+                    || document.body.clientHeight;
 class SideBar extends React.Component {
     constructor(props) {
         super(props);
@@ -56,39 +62,95 @@ class SideBar extends React.Component {
         return (
             <div
                 className="homepage__sidebar__container"
-                style={ $( window ).width() < 768 ? 
+                style={ windowWidth < 768 ? 
                     {
                         height: 'auto',
                         width: '100%'
                     }
                     :
                     {
-                        height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 70
+                        height: this.props.lang === 'en' ? windowHeight - 60 : windowHeight - 70
                     }
                 }
             >
-                <div className="sidebar__image__box">
-                    <img className={this.props.lang === 'en' ? " sidebar__image--en" : " sidebar__image--he"} src="https://res.cloudinary.com/dewafmxth/image/upload/v1587375229/nava_ky02kt.jpg" />
-                </div>
-                <div className={`sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
-                    {this.props.lang === 'en' ?
-                            'Urban regeneration comparative global case studies' 
-                        : 
-                            'התחדשות ערונית מקרי מחקר השוואתי גלובלי'
-                        
+                <div
+                    style={ windowWidth < 768 ? 
+                        {
+                            display: 'flex',
+                            flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse'
+                        }
+                        :
+                        {
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }
                     }
+                >
+                    <div className="sidebar__image__box">
+                        <img className={this.props.lang === 'en' ? " sidebar__image--en" : " sidebar__image--he"} src="https://res.cloudinary.com/dewafmxth/image/upload/v1587375229/nava_ky02kt.jpg" />
+                    </div>
+                    <div className={`sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
+                        {this.props.lang === 'en' ?
+                                'Urban regeneration comparative global case studies' 
+                            : 
+                                'התחדשות ערונית מקרי מחקר השוואתי גלובלי'
+                            
+                        }
+                    </div>
                 </div>
-                <div className="sidebar__categories__box">
+                <div
+                    className="sidebar__categories__box"
+                    style = {
+                        windowWidth < 768 ? 
+                        {
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse',
+                            marginTop: '7px',
+                            marginBottom: '7px'
+                        }
+                        :
+                        {
+                            display: 'flex',
+                            flexDirection: 'column'
+                        }
+                    }
+                >
                     {
                         this.state.categories.map((category, index) => {
                             //console.log('this.props.categoryColors', this.props.categoryColors);
                             return (
-                                <div hidden={!category.isVisible && !this.props.isAuthenticated} key={index}>
+                                <div
+                                    hidden={!category.isVisible && !this.props.isAuthenticated}
+                                    key={index}
+                                    style={
+                                        windowWidth < 768 ? 
+                                        {
+                                            margin: 2,
+                                            padding: 2
+                                        }
+                                        :
+                                        {
+                                            color: this.props.categoryColors[index].colorHex
+                                        }
+                                    }
+                                >
                                     <div
                                         onClick={this.handleSideBarCategoryClick}
                                         data-id={category.id}
                                         className={`sidebar__listCategory${this.props.lang === 'en' ? ' sidebar__listCategory--en' : ' sidebar__listCategory--he'}`}
-                                        style={{color: this.props.categoryColors[index].colorHex}}
+                                        style={
+                                            windowWidth < 768 ? 
+                                            {
+                                                color: this.props.categoryColors[index].colorHex,
+                                                border: `1px solid ${this.props.categoryColors[index].colorHex}`,
+                                                padding: 2
+                                            }
+                                            :
+                                            {
+                                                color: this.props.categoryColors[index].colorHex
+                                            }
+                                        }
                                 >
                                         <div
                                             className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`} 

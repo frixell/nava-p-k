@@ -18,7 +18,7 @@ class Footer extends React.Component {
                     {this.context.t("allRightsReserved")} | {this.context.t("programmingBy")}
                 </p>
                 <p className="footer__text Heebo-Regular mobile" dir={dirLang}>
-                    {this.context.t("allRightsReserved")} <br/> {this.context.t("programmingBy")}
+                    {this.context.t("allRightsReserved")} | {this.context.t("programmingBy")}
                 </p>
             </div>
         )
