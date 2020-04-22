@@ -386,9 +386,9 @@
 
 @media (max-width: $mobileMaxWidth) {
     .contactpage__structure {
-        padding-top: 26rem;
+        padding-top: 1rem;
         margin-top: 0rem;
-        background-image: url('https://res.cloudinary.com/dz7woxmn2/image/upload/v1542319956/contact_bg_1_mobile.jpg');
+        _background-image: url('https://res.cloudinary.com/dz7woxmn2/image/upload/v1542319956/contact_bg_1_mobile.jpg');
     }
     .contactpage__container {
         width: 100%;
