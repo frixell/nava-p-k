@@ -507,17 +507,18 @@ class MapViewTest extends Component {
                 
                 
                 // Search Widget
-                
-                searchWidget = new Search({
-                    view: view
-                });
+                if (windoWidth >767) {
+                    searchWidget = new Search({
+                        view: view
+                    });
 
-                view.ui.add(searchWidget, {
-                    position: "bottom-left",
-                    index: 2
-                });
-                
-                view.ui.move(searchWidget, this.props.lang === 'en' ? 'bottom-left' : 'bottom-right');
+                    view.ui.add(searchWidget, {
+                        position: "bottom-left",
+                        index: 2
+                    });
+                    
+                    view.ui.move(searchWidget, this.props.lang === 'en' ? 'bottom-left' : 'bottom-right');
+                }
                 
                 expandThisAction = {
                     title: this.props.lang === 'en' ? 'Expand' : 'הרחבה',

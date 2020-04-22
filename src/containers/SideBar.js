@@ -163,9 +163,10 @@ class SideBar extends React.Component {
                                             windowWidth < 768 ? 
                                             {
                                                 color: this.props.categoryColors[index].colorHex,
-                                                border: `1px solid ${this.props.categoryColors[index].colorHex}`,
+                                                border: `1px dotted ${this.props.categoryColors[index].colorHex}`,
                                                 padding: 2,
-                                                paddingRight: '6px'
+                                                paddingRight: this.props.lang === 'en' ? '6px': '2px',
+                                                paddingLeft: this.props.lang === 'en' ? '2px': '6px'
                                             }
                                             :
                                             {

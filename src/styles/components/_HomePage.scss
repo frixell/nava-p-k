@@ -1445,6 +1445,15 @@ input[type="email"]::-webkit-input-placeholder {
 
 @media (max-width: $mobileMaxWidth) {
 
+    .sidebar__listCategory:hover {
+        background: $black;
+    }
+    
+    .sidebar__listCategory--selected {
+        color: $gray;
+        background: $black;
+    }
+    
     .sidebar__image__box {
         width: 80%;
         padding-bottom: 0;

@@ -263,14 +263,14 @@ class Navigation extends React.Component {
             <Nav className="navbar__nav" className={this.props.lang === 'he' ? 'ml-auto' : 'mr-auto'} navbar dir={this.props.lang === 'he' ? 'rtl' : 'ltr'}>
               
               
-            <NavItem>
+              <NavItem>
                 <NavLink exact to="/" className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/research'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teachin'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הוראה' : 'Teachin'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teaching'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הוראה' : 'Teaching'}</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to={this.props.lang === 'he' ? '/הרצאות' : '/Lectures'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הרצאות' : 'Lectures'}</NavLink>
@@ -340,6 +340,28 @@ class Navigation extends React.Component {
                 </button>
                 <img className="nav__social__seperator" src="/images/navigation/nav-social-seperator.png" alt="קו הפרדה" />
               </div>
+              
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/צרו קשר' : '/Contact'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/קו״ח' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/הרצאות' : '/Lectures'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הרצאות' : 'Lectures'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teaching'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הוראה' : 'Teaching'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/Research'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink exact to="/" className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
+              </NavItem>
               
             </Nav>
           </Collapse>
