@@ -9,6 +9,13 @@ import AutosizeInput from 'react-input-autosize';
 import TableOptionsEditor from './TableOptionsEditor';
 import ProjectCategoriesEditor from './ProjectCategoriesEditor';
 
+var windowWidth   = window.innerWidth
+                    || document.documentElement.clientWidth
+                    || document.body.clientWidth;
+var windowHeight   = window.innerHeight
+                    || document.documentElement.clientHeight
+                    || document.body.clientHeight;
+
 class ProjectDetailsPage extends React.Component {
     constructor(props) {
         super(props);
@@ -175,7 +182,7 @@ class ProjectDetailsPage extends React.Component {
                 
                 <div style={{
                         display: 'inline-block',
-                        width: '50%'
+                        width: windowWidth < 768 ? '100%' : '50%'
                     }}>
                     <div
                         className={`projects__arrow${this.props.lang === 'en' ? ' projects__arrow--en' : ' projects__arrow--he'}`}
@@ -305,7 +312,7 @@ class ProjectDetailsPage extends React.Component {
                                         <div style={{
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            width: '80%'
+                                            width: '65%'
                                         }}>
                                             {
                                                 category.categories.map((subcategory, index) => {
@@ -328,7 +335,7 @@ class ProjectDetailsPage extends React.Component {
                                                                 style={{
                                                                 display: 'flex',
                                                                 flexDirection: 'column',
-                                                                width: '60%',
+                                                                width: windowWidth < 768 ? '40%' : '60%',
                                                                 cursor: this.props.isAuthenticated ? 'pointer' : 'normal'
                                                             }}>
                                                                 {
@@ -390,7 +397,7 @@ class ProjectDetailsPage extends React.Component {
                     color: '#6c7680',
                     fontSize: 14,
                     lineHeight: '17px',
-                    width: '48%',
+                    width: windowWidth < 768 ? '100%' : '48%',
                     float: 'right',
                     paddingTop: '2px'
                 }}>
