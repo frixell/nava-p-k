@@ -507,7 +507,7 @@ class MapViewTest extends Component {
                 
                 
                 // Search Widget
-                if (windoWidth >767) {
+                if (windowWidth >767) {
                     searchWidget = new Search({
                         view: view
                     });
