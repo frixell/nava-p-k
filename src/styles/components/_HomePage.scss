@@ -1445,10 +1445,14 @@ input[type="email"]::-webkit-input-placeholder {
 
 @media (max-width: $mobileMaxWidth) {
 
+    .sidebar__image__box {
+        width: 80%;
+        padding-bottom: 0;
+    }
     
     .homepage__sidebar__container {
         display: inline-block;
-        padding-top: 20px;
+        padding-top: 10px;
         padding-right: 10px;
         width: 100%;
     }

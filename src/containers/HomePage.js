@@ -814,7 +814,7 @@ class HomePage extends React.Component {
                                 style={ 
                                     $( window ).width() < 768 ? 
                                     {
-                                        height: auto,
+                                        height: 'auto',
                                         width: '100%',
                                         
                                     }

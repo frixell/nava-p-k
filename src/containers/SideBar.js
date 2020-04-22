@@ -65,11 +65,15 @@ class SideBar extends React.Component {
                 style={ windowWidth < 768 ? 
                     {
                         height: 'auto',
-                        width: '100%'
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column-reverse'
                     }
                     :
                     {
-                        height: this.props.lang === 'en' ? windowHeight - 60 : windowHeight - 70
+                        height: this.props.lang === 'en' ? windowHeight - 60 : windowHeight - 70,
+                        display: 'flex',
+                        flexDirection: 'column'
                     }
                 }
             >
@@ -77,7 +81,8 @@ class SideBar extends React.Component {
                     style={ windowWidth < 768 ? 
                         {
                             display: 'flex',
-                            flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse'
+                            flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse',
+                            paddingTop: '20px'
                         }
                         :
                         {
@@ -89,13 +94,26 @@ class SideBar extends React.Component {
                     <div className="sidebar__image__box">
                         <img className={this.props.lang === 'en' ? " sidebar__image--en" : " sidebar__image--he"} src="https://res.cloudinary.com/dewafmxth/image/upload/v1587375229/nava_ky02kt.jpg" />
                     </div>
-                    <div className={`sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
-                        {this.props.lang === 'en' ?
-                                'Urban regeneration comparative global case studies' 
-                            : 
-                                'התחדשות ערונית מקרי מחקר השוואתי גלובלי'
-                            
-                        }
+                    <div>
+                        <div className={`sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
+                            {this.props.lang === 'en' ?
+                                    'Urban regeneration comparative global case studies' 
+                                : 
+                                    'התחדשות ערונית מקרי מחקר השוואתי גלובלי'
+                                
+                            }
+                        </div>
+                        <div
+                            className={`mobile sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}
+                            style={{paddingTop: '3rem'}}
+                        >
+                            {this.props.lang === 'en' ?
+                                    'New tool for comparative research' 
+                                : 
+                                    'כלי חדש למחקר השוואתי'
+                                
+                            }
+                        </div>
                     </div>
                 </div>
                 <div
@@ -106,6 +124,8 @@ class SideBar extends React.Component {
                             display: 'flex',
                             flexWrap: 'wrap',
                             flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                             marginTop: '7px',
                             marginBottom: '7px'
                         }
@@ -126,7 +146,7 @@ class SideBar extends React.Component {
                                     style={
                                         windowWidth < 768 ? 
                                         {
-                                            margin: 2,
+                                            margin: 3,
                                             padding: 2
                                         }
                                         :
@@ -144,7 +164,8 @@ class SideBar extends React.Component {
                                             {
                                                 color: this.props.categoryColors[index].colorHex,
                                                 border: `1px solid ${this.props.categoryColors[index].colorHex}`,
-                                                padding: 2
+                                                padding: 2,
+                                                paddingRight: '6px'
                                             }
                                             :
                                             {
@@ -220,7 +241,7 @@ class SideBar extends React.Component {
                         })
                     }
                 </div>
-                <div className={`sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
+                <div className={`desktop sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
                     {this.props.lang === 'en' ?
                             'New tool for comparative research' 
                         : 

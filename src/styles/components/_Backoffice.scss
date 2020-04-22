@@ -709,6 +709,13 @@
 
 
 @media (max-width: $mobileMaxWidth) {
+    .backoffice__toolbar__buttons {
+        position: fixed;
+        left: 130px;
+        top: 95vh;
+        z-index: 15001;
+    }
+    
     .about__edit__panel {
         width: 98%;
     }

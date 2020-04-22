@@ -338,7 +338,7 @@
     }
 
     #navbarM {
-        background: $white;
+        background: $black;
         height: 8rem;
     }
 
@@ -358,7 +358,7 @@
         visibility: visible;
         margin-left: auto;
         margin-right: 4rem;
-        font-size: 3rem;
+        font-size: 2rem;
         padding-top: 0.4rem;
         padding-right: 0;
     }
@@ -416,8 +416,8 @@
 
     .nav__link__phone__mobile {
         margin-top: 0rem;
-        margin-left: 2rem;
-        margin-right: 2rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
         width: 2.5rem;
     }
 
@@ -429,7 +429,6 @@
     .nav__phone__mobile {
         height: 3.5rem;
         margin-top: 1rem;
-        max-width: 5rem;
         border: none;
         background: none;
     }
