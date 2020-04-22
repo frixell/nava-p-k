@@ -301,7 +301,22 @@ class Navigation extends React.Component {
 
         <Navbar id="navbarM" light className={`container-fluid mobile`} expand="md" fixed={this.state.fixed}>
           <div className={this.props.lang === 'he' ? 'container-fluid navbar__header__container navbar__shadow' : 'container-fluid navbar__header__container__eng navbar__shadow'} dir={this.langDir}>
-            <div className="container-fluid navbar__header__mobile" dir={this.langDir}>
+          
+            <div
+              className="container-fluid navbar__header__mobile"
+              dir={this.langDir}
+              style={
+                this.props.lang === 'he' ?
+                {
+                  flexDirection: 'row'
+                }
+                :
+                {
+                  flexDirection: 'row-reverse'
+                }
+              }
+            >
+              <NavbarToggler className="navbar__toggler ml-auto" onClick={this.toggle} />
               <button className="nav__lang__mobile">
                 <div onClick={this.setLang} className="navbar__lang">{this.props.lang === 'he' ? 'EN' : 'עב'}</div>
               </button>
@@ -313,7 +328,7 @@ class Navigation extends React.Component {
                   <img className="nav__link__phone__mobile" src="/images/navigation/phone_mobile_white.png" alt="טלפון" />
               </button>
               <NavbarBrand className="navbar__brand" href="/">{this.props.lang === 'he' ? <div style={{marginTop: '-0.9vw', textAlign: 'right'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div> : <div style={{marginTop: '-0.8vw', lineHeight: '140%'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>}</NavbarBrand>
-              <NavbarToggler className="navbar__toggler ml-auto" onClick={this.toggle} />
+              
             </div>
           </div>
           <Collapse className="navbar__collapse" isOpen={this.state.isOpen} navbar>

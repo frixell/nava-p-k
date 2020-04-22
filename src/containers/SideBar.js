@@ -127,8 +127,9 @@ class SideBar extends React.Component {
                             justifyContent: 'flex-start',
                             alignItems: 'center',
                             marginTop: '7px',
-                            marginBottom: '7px'
-                        }
+                            marginBottom: '7px',
+                            paddingRight: '1rem',
+                            paddingLeft: '1rem'                        }
                         :
                         {
                             display: 'flex',
