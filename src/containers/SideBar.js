@@ -124,7 +124,7 @@ class SideBar extends React.Component {
                             display: 'flex',
                             flexWrap: 'wrap',
                             flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse',
-                            justifyContent: 'center',
+                            justifyContent: 'flex-start',
                             alignItems: 'center',
                             marginTop: '7px',
                             marginBottom: '7px'
@@ -147,7 +147,8 @@ class SideBar extends React.Component {
                                         windowWidth < 768 ? 
                                         {
                                             margin: 3,
-                                            padding: 2
+                                            padding: 2,
+                                            width: this.state.openCategories.includes(category.id) ? '100%' : 'auto'
                                         }
                                         :
                                         {
@@ -179,22 +180,29 @@ class SideBar extends React.Component {
                                         /> {this.props.lang === 'en' ? category.name : category.nameHebrew}
                                     </div>
                                     {
-                                        this.state.openCategories.includes(category.id) && this.state.points.map((point, index) => {
-                                            if ( point.categories && point.categories.includes(category.id) ) {
-                                                return (
-                                                    <div
-                                                        onClick={this.props.handleSideBarClick}
-                                                        data-id={point.id}
-                                                        className={`sidebar__listItem${this.props.lang === 'en' ? ' sidebar__listItem--en' : ' sidebar__listItem--he'}${this.props.sidebarClickedItemId === point.id ? ' sidebar__listCategory--selected' : ''}`}
-                                                        key={index}
-                                                        dir={this.props.lang === 'en' ? ' ltr' : 'rtl'}
-                                                    >
-                                                        - {this.props.lang === 'en' ? point.title : point.titleHebrew || point.title}
-                                                    </div>
-                                                );
-                                            }
-                                            
-                                        })
+                                        this.state.openCategories.includes(category.id) ?
+                                        <div>
+                                        {
+                                            this.state.openCategories.includes(category.id) && this.state.points.map((point, index) => {
+                                                if ( point.categories && point.categories.includes(category.id) ) {
+                                                    return (
+                                                        <div
+                                                            onClick={this.props.handleSideBarClick}
+                                                            data-id={point.id}
+                                                            className={`sidebar__listItem${this.props.lang === 'en' ? ' sidebar__listItem--en' : ' sidebar__listItem--he'}${this.props.sidebarClickedItemId === point.id ? ' sidebar__listCategory--selected' : ''}`}
+                                                            key={index}
+                                                            dir={this.props.lang === 'en' ? ' ltr' : 'rtl'}
+                                                        >
+                                                            - {this.props.lang === 'en' ? point.title : point.titleHebrew || point.title}
+                                                        </div>
+                                                    );
+                                                }
+                                                
+                                            })
+                                        }
+                                        </div>
+                                        :
+                                        null
                                     }
                                 </div>
                             );

@@ -1445,6 +1445,24 @@ input[type="email"]::-webkit-input-placeholder {
 
 @media (max-width: $mobileMaxWidth) {
     
+    .sidebar__text__box {
+        width: 100%;
+        color: $white;
+        font-family: $font;
+        font-weight: $fontRegular;
+        font-size: 1.6rem;
+    }
+    
+    .sidebar__text__box--en {
+        padding-left: 0px;
+        text-align: left;
+    }
+    
+    .sidebar__text__box--he {
+        padding-right: 0px;
+        text-align: right;
+    }
+    
     
     .tableTemplate__subcategory__name {
         width: 50%;
@@ -1474,14 +1492,19 @@ input[type="email"]::-webkit-input-placeholder {
     }
     
     .sidebar__image__box {
-        width: 80%;
+        width: 40%;
         padding-bottom: 0;
+    }
+    
+    .sidebar__image--en {
+        padding-left: 2rem;
+        padding-right: 2rem;
     }
     
     .homepage__sidebar__container {
         display: inline-block;
         padding-top: 10px;
-        padding-right: 10px;
+        padding-right: 0px;
         width: 100%;
     }
     
