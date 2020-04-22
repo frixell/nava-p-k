@@ -312,7 +312,7 @@ class ProjectDetailsPage extends React.Component {
                                         <div style={{
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            width: '65%'
+                                            width: windowWidth < 768 ? '70%' : '80%'
                                         }}>
                                             {
                                                 category.categories.map((subcategory, index) => {
@@ -335,7 +335,7 @@ class ProjectDetailsPage extends React.Component {
                                                                 style={{
                                                                 display: 'flex',
                                                                 flexDirection: 'column',
-                                                                width: windowWidth < 768 ? '40%' : '60%',
+                                                                width: windowWidth < 768 ? '50%' : '100%',
                                                                 cursor: this.props.isAuthenticated ? 'pointer' : 'normal'
                                                             }}>
                                                                 {
