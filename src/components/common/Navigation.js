@@ -310,7 +310,7 @@ class Navigation extends React.Component {
                   data-name="phone"
                   onClick={this.gotoPhone}
               >
-                  <img className="nav__link__phone__mobile" src="/images/navigation/phone_mobile.png" alt="טלפון" />
+                  <img className="nav__link__phone__mobile" src="/images/navigation/phone_mobile_white.png" alt="טלפון" />
               </button>
               <NavbarBrand className="navbar__brand" href="/">{this.props.lang === 'he' ? <div style={{marginTop: '-0.9vw', textAlign: 'right'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div> : <div style={{marginTop: '-0.8vw', lineHeight: '140%'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>}</NavbarBrand>
               <NavbarToggler className="navbar__toggler ml-auto" onClick={this.toggle} />

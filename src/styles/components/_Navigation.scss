@@ -364,14 +364,14 @@
     }
 
     .navbar__lang {
-        font-size: 2.7rem;
-        padding-top: 1.2rem;
+        font-size: 1.8rem;
+        padding-top: 0.8rem;
         padding-left: 0.5rem;
         padding-right: 1vw;
-        color: $lightblue;
+        color: $white;
         font-family: $font;
         font-weight: $fontRegular;
-        text-shadow: 1px 1px $blue;
+        _text-shadow: 1px 1px $blue;
         letter-spacing: 0.1px;
     }
 
@@ -472,7 +472,7 @@
     }
 
     .navbar-light .navbar-toggler-icon {  
-        background-image: url('/images/navigation/nav_collapse.png');
+        background-image: url('/images/navigation/nav_collapse_white.png');
         width: 3rem;
         height: 3rem;
     }
