@@ -38,8 +38,11 @@
 @media (max-width: $mobileMaxWidth) {
 
     .footer__box {
-        height: 3.6rem;
+        height: 2.4rem;
         background: $black;
+        position: fixed;
+        bottom: 0;
+        z-index: 5007;
     }
     
     .footer__box--en {
@@ -52,8 +55,8 @@
 
     .footer__text {
         font-size: 1.2rem;
-        padding-top: 1.4rem;
-        line-height: 2.5rem;
+        padding-top: 0rem;
+        line-height: 1.2rem;
     }
 
 }
