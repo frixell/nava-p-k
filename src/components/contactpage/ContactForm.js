@@ -96,10 +96,10 @@ export class ContactForm extends React.Component {
                     </div>
                     <img className="contact__confirm__image desktop" src="/images/contact/contact-confirm.svg" alt="שלח" />
                     <img className="contact__confirm__seperator" src="/images/contact/contact-confirm-seperator.png" alt="קו הפרדה" />
-                    <h2 className="contact__confirm__header Heebo-Medium" dir={dirLang}>תודה,</h2>
-                    <h4 className="contact__confirm__text Heebo-Medium" dir={dirLang}>אצור עמכם קשר בהקדם</h4>
+                    <h2 className="contact__confirm__header Heebo-Medium" dir={dirLang}>{this.props.lang === 'he' ? 'תודה,' : 'Thank you,'}</h2>
+                    <h4 className="contact__confirm__text Heebo-Medium" dir={dirLang}>{this.props.lang === 'he' ? 'אצור עמכם קשר בהקדם' : 'Contact you as soon as possible'}</h4>
                     <img className="contact__confirm__seperator" src="/images/contact/contact-confirm-seperator.png" alt="קו הפרדה" />
-                    <h3 className="contact__confirm__footer Heebo-Medium">זיוה קיינר</h3>
+                    <h3 className="contact__confirm__footer Heebo-Medium">{this.props.lang === 'he' ? 'נאוה קיינר-פרסוב' : 'Nava Kainer-Persov'}</h3>
                 </Modal>
 
                 {this.state.error && <p className={`contact__error--${this.props.style} Heebo-Regular`}>{this.state.error}</p>}

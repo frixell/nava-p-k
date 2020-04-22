@@ -14,22 +14,19 @@ class ContactContact extends React.Component {
         }
     }
     gotoInstagram = () => {
-        console.log('in facebook');
         if (typeof(window) !== "undefined") {
             window.open('https://www.instagram.com/nava_persov_kainer/');
         }
     }
 
     gotoMail = () => {
-        console.log('in facebook');
         if (typeof(window) !== "undefined") {
             window.location = 'mailto:nava-p-k@gmail.com';
         }
     }
     gotoPhone = () => {
-        console.log('in facebook');
         if (typeof(window) !== "undefined") {
-            window.location = 'tel:+972505684454';
+            window.location = 'tel:+972505966599';
         }
     }
 
@@ -41,7 +38,7 @@ class ContactContact extends React.Component {
             <div className={this.props.lang === 'he' ? `contact__contact__box--${this.props.style}` : `contact__contact__box--${this.props.style} contact__contact__box__eng--${this.props.style}`}>
                 
                 <div className={`contact__contact__text__line--${this.props.style}`} dir={dirLang} onClick={this.gotoPhone}>
-                    <p className={`contact__contact__text--${this.props.style} Heebo-Regular`} dir='ltr'>+972505684454</p>
+                    <p className={`contact__contact__text--${this.props.style} Heebo-Regular`} dir='ltr'>+972505966599</p>
                 </div>
 
                 <div className={`contact__contact__text__line--${this.props.style}`} dir={dirLang} onClick={this.gotoMail}>

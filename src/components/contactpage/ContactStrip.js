@@ -13,10 +13,7 @@ export class ContactStrip extends React.Component {
     render() {
         return (
             <div className={this.props.lang === 'he' ? 'container-fluid contactstrip__box' : 'container-fluid contactstrip__box contactstrip__box__eng'} dir={this.props.lang === 'he' ? 'ltr' : 'rtl'}>
-                <ContactMap
-                    style='strip'
-                    lang={this.props.lang}
-                />
+                
                 <ContactForm
                     style='strip'
                     lang={this.props.lang}
@@ -36,3 +33,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(undefined, mapDispatchToProps)(ContactStrip);
+
+// <ContactMap
+//                     style='strip'
+//                     lang={this.props.lang}
+//                 />

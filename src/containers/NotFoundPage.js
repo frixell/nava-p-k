@@ -40,7 +40,7 @@ class NotFoundPage extends React.Component {
                         </div>
                     </div>
                 </div>
-                <ContactStrip lang={this.props.lang} />
+                
                 <Footer />
             </div>
         );
@@ -52,7 +52,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(NotFoundPage); 
-
+//<ContactStrip lang={this.props.lang} />
 
                                     // data-name="greenArrow"
                                     // onMouseEnter={props.setIconRatioOn}
