@@ -381,10 +381,16 @@
 
 
 
-
+.contact__form__box__inputs input {
+    _width: 37rem !important;
+}
 
 
 @media (max-width: $mobileMaxWidth) {
+    .contact__form__box__inputs input {
+        _width: 88vw !important;
+    }
+    
     .contactpage__structure {
         padding-top: 1rem;
         margin-top: 0rem;
@@ -424,7 +430,7 @@
 
     .contact__form--page input { 
         font-size: 3.6rem;
-        width: 88vw;
+        width: 88vw !important;
         height: 18vw;
         margin-left: auto;
         margin-right: auto;

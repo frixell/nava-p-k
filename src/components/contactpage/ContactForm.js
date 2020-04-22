@@ -72,7 +72,7 @@ export class ContactForm extends React.Component {
     render() {
         const dirLang = this.props.lang === 'he' ? 'rtl' : 'ltr';
         return (
-            <div className={`contact__form__box--${this.props.style}`}>
+            <div className={`contact__form__box__inputs contact__form__box--${this.props.style}`}>
 
                 <Modal
                     open={this.state.mailSentModalIsOpen}
