@@ -22,7 +22,7 @@ let gotoZoom = 10;
 var windowWidth   = window.innerWidth
                     || document.documentElement.clientWidth
                     || document.body.clientWidth;
-let startZoom = windowWidth < 768 ? 2 : 3;
+let startZoom = windowWidth < 768 ? 1 : 3;
 let startX = -20;
 let startY = 35;
                 
@@ -47,7 +47,7 @@ const styles = {
         fontSize: 2
     },
     mapDiv: {
-        height: windowWidth < 768 ? windowWidth * 0.75 : '100%',
+        height: windowWidth < 768 ? windowWidth * 0.6 : '100%',
         width: windowWidth < 768 ? windowWidth : '100%',
     },
 };
@@ -493,7 +493,7 @@ class MapViewTest extends Component {
                 });
                 
                 view.constraints = {
-                    minZoom: windowWidth < 768 ? 2 : 3
+                    minZoom: windowWidth < 768 ? 1 : 3
                 };
                 
                 
