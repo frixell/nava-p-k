@@ -167,167 +167,167 @@ app.get('/sitemap.xml', function(req, res) {
 
 //*** server side rendering -- SEO ***//
 
-app.get('/:category?/:subCategory?/:event?/:toomuch?', function(request, response, next) {
-    if (request.params.toomuch) {
-      next();
-    } else {
-      const filePath = path.resolve(__dirname, '../public', 'index.html');
-      let categoryOk = false;
-      if(request.params.category && request.params.category.indexOf('.') === -1 && request.params.category.indexOf('#') === -1 && request.params.category.indexOf('$') === -1 && request.params.category.indexOf('[') === -1 && request.params.category.indexOf(']') === -1){
-        categoryOk = true;
-      }
-      let subCategoryOk = false;
-      if(request.params.subCategory && request.params.subCategory.indexOf('.') === -1 && request.params.subCategory.indexOf('#') === -1 && request.params.subCategory.indexOf('$') === -1 && request.params.subCategory.indexOf('[') === -1 && request.params.subCategory.indexOf(']') === -1){
-        subCategoryOk = true;
-      }
-      let eventOk = false;
-      if(request.params.event && request.params.event.indexOf('.') === -1 && request.params.event.indexOf('#') === -1 && request.params.event.indexOf('$') === -1 && request.params.event.indexOf('[') === -1 && request.params.event.indexOf(']') === -1){
-        eventOk = true;
-      }
+// app.get('/:category?/:subCategory?/:event?/:toomuch?', function(request, response, next) {
+//     if (request.params.toomuch) {
+//       next();
+//     } else {
+//       const filePath = path.resolve(__dirname, '../public', 'index.html');
+//       let categoryOk = false;
+//       if(request.params.category && request.params.category.indexOf('.') === -1 && request.params.category.indexOf('#') === -1 && request.params.category.indexOf('$') === -1 && request.params.category.indexOf('[') === -1 && request.params.category.indexOf(']') === -1){
+//         categoryOk = true;
+//       }
+//       let subCategoryOk = false;
+//       if(request.params.subCategory && request.params.subCategory.indexOf('.') === -1 && request.params.subCategory.indexOf('#') === -1 && request.params.subCategory.indexOf('$') === -1 && request.params.subCategory.indexOf('[') === -1 && request.params.subCategory.indexOf(']') === -1){
+//         subCategoryOk = true;
+//       }
+//       let eventOk = false;
+//       if(request.params.event && request.params.event.indexOf('.') === -1 && request.params.event.indexOf('#') === -1 && request.params.event.indexOf('$') === -1 && request.params.event.indexOf('[') === -1 && request.params.event.indexOf(']') === -1){
+//         eventOk = true;
+//       }
       
 
-      // console.log("cat check");
-      // console.log(categoryOk);
-      // console.log(subCategoryOk);
-      // console.log(eventOk);
+//       // console.log("cat check");
+//       // console.log(categoryOk);
+//       // console.log(subCategoryOk);
+//       // console.log(eventOk);
 
-      //if (categoryOk && subCategoryOk && eventOk) {
-          let dbString = 'serverSeo/';
-          if(!request.params.category && !request.params.subCategory && !request.params.event) {
-              dbString = dbString;
-              var db = admin.database();
-                var ref = db.ref(dbString);
-                ref.once("value", function(snapshot) {
-                    let seo = {
-                      title: 'נאוה קיינר-פרסוב - עין הוד',
-                      description: 'נאוה קיינר-פרסוב - עין הוד',
-                      keyWords: 'נאוה קיינר-פרסוב - עין הוד'
-                    };
-                    if(snapshot.val() !== null) {
-                      seo = snapshot.val().seo;
-                    }
+//       //if (categoryOk && subCategoryOk && eventOk) {
+//           let dbString = 'serverSeo/';
+//           if(!request.params.category && !request.params.subCategory && !request.params.event) {
+//               dbString = dbString;
+//               var db = admin.database();
+//                 var ref = db.ref(dbString);
+//                 ref.once("value", function(snapshot) {
+//                     let seo = {
+//                       title: 'נאוה קיינר-פרסוב - עין הוד',
+//                       description: 'נאוה קיינר-פרסוב - עין הוד',
+//                       keyWords: 'נאוה קיינר-פרסוב - עין הוד'
+//                     };
+//                     if(snapshot.val() !== null) {
+//                       seo = snapshot.val().seo;
+//                     }
 
-                    //console.log(seo);
+//                     //console.log(seo);
 
-                    fs.readFile(filePath, 'utf8', function (err,data) {
-                      if (err) {
-                        return console.log(err);
-                      }
-                      data = data.replace(/\$OG_TITLE/g, seo.title);
-                      data = data.replace(/\$OG_DESCRIPTION/g, seo.description);
-                      data = data.replace(/\$OG_KEYWORDS/g, seo.keyWords);
-                      data = data.replace(/\$OG_IMAGE/g, 'https://nava-p-k.herokuapp.com/images/og_image.jpg');
-                      response.send(data);
-                    }, function (errorObject) {
-                      console.log("The read failed: " + errorObject.code);
-                    });
-                });
-          } else if (request.params.category && !request.params.subCategory && !request.params.event) {
-              if (categoryOk && !subCategoryOk && !eventOk) {
-                dbString = dbString + String(request.params.category);
-                var db = admin.database();
-                var ref = db.ref(dbString);
-                ref.once("value", function(snapshot) {
-                    let seo = {
-                      title: 'נאוה קיינר-פרסוב - עין הוד',
-                      description: 'נאוה קיינר-פרסוב - עין הוד',
-                      keyWords: 'נאוה קיינר-פרסוב - עין הוד'
-                    };
-                    if(snapshot.val() !== null) {
-                      seo = snapshot.val().seo;
-                    }
+//                     fs.readFile(filePath, 'utf8', function (err,data) {
+//                       if (err) {
+//                         return console.log(err);
+//                       }
+//                       data = data.replace(/\$OG_TITLE/g, seo.title);
+//                       data = data.replace(/\$OG_DESCRIPTION/g, seo.description);
+//                       data = data.replace(/\$OG_KEYWORDS/g, seo.keyWords);
+//                       data = data.replace(/\$OG_IMAGE/g, 'https://nava-p-k.herokuapp.com/images/og_image.jpg');
+//                       response.send(data);
+//                     }, function (errorObject) {
+//                       console.log("The read failed: " + errorObject.code);
+//                     });
+//                 });
+//           } else if (request.params.category && !request.params.subCategory && !request.params.event) {
+//               if (categoryOk && !subCategoryOk && !eventOk) {
+//                 dbString = dbString + String(request.params.category);
+//                 var db = admin.database();
+//                 var ref = db.ref(dbString);
+//                 ref.once("value", function(snapshot) {
+//                     let seo = {
+//                       title: 'נאוה קיינר-פרסוב - עין הוד',
+//                       description: 'נאוה קיינר-פרסוב - עין הוד',
+//                       keyWords: 'נאוה קיינר-פרסוב - עין הוד'
+//                     };
+//                     if(snapshot.val() !== null) {
+//                       seo = snapshot.val().seo;
+//                     }
 
-                    //console.log(seo);
+//                     //console.log(seo);
 
-                    fs.readFile(filePath, 'utf8', function (err,data) {
-                      if (err) {
-                        return console.log(err);
-                      }
-                      data = data.replace(/\$OG_TITLE/g, seo.title);
-                      data = data.replace(/\$OG_DESCRIPTION/g, seo.description);
-                      data = data.replace(/\$OG_KEYWORDS/g, seo.keyWords);
-                      data = data.replace(/\$OG_IMAGE/g, '/images/og_image.jpg');
-                      response.send(data);
-                    }, function (errorObject) {
-                      console.log("The read failed: " + errorObject.code);
-                    });
-                });
-              } else {
-                next();
-              }
-          } else if (request.params.category && request.params.subCategory && !request.params.event) {
-              if (categoryOk && subCategoryOk && !eventOk) {
-                dbString = dbString + 'subcategories/' + String(request.params.category);
-                var db = admin.database();
-                var ref = db.ref(dbString);
-                ref.once("value", function(snapshot) {
-                    let seo = {
-                      title: 'נאוה קיינר-פרסוב - עין הוד',
-                      description: 'נאוה קיינר-פרסוב - עין הוד',
-                      keyWords: 'נאוה קיינר-פרסוב - עין הוד'
-                    };
-                    if(snapshot.val() !== null) {
-                      seo = snapshot.val().seo;
-                    }
+//                     fs.readFile(filePath, 'utf8', function (err,data) {
+//                       if (err) {
+//                         return console.log(err);
+//                       }
+//                       data = data.replace(/\$OG_TITLE/g, seo.title);
+//                       data = data.replace(/\$OG_DESCRIPTION/g, seo.description);
+//                       data = data.replace(/\$OG_KEYWORDS/g, seo.keyWords);
+//                       data = data.replace(/\$OG_IMAGE/g, '/images/og_image.jpg');
+//                       response.send(data);
+//                     }, function (errorObject) {
+//                       console.log("The read failed: " + errorObject.code);
+//                     });
+//                 });
+//               } else {
+//                 next();
+//               }
+//           } else if (request.params.category && request.params.subCategory && !request.params.event) {
+//               if (categoryOk && subCategoryOk && !eventOk) {
+//                 dbString = dbString + 'subcategories/' + String(request.params.category);
+//                 var db = admin.database();
+//                 var ref = db.ref(dbString);
+//                 ref.once("value", function(snapshot) {
+//                     let seo = {
+//                       title: 'נאוה קיינר-פרסוב - עין הוד',
+//                       description: 'נאוה קיינר-פרסוב - עין הוד',
+//                       keyWords: 'נאוה קיינר-פרסוב - עין הוד'
+//                     };
+//                     if(snapshot.val() !== null) {
+//                       seo = snapshot.val().seo;
+//                     }
 
-                    //console.log(seo);
+//                     //console.log(seo);
 
-                    fs.readFile(filePath, 'utf8', function (err,data) {
-                      if (err) {
-                        return console.log(err);
-                      }
-                      data = data.replace(/\$OG_TITLE/g, seo.title);
-                      data = data.replace(/\$OG_DESCRIPTION/g, seo.description);
-                      data = data.replace(/\$OG_KEYWORDS/g, seo.keyWords);
-                      data = data.replace(/\$OG_IMAGE/g, '/images/og_image.jpg');
-                      response.send(data);
-                    }, function (errorObject) {
-                      console.log("The read failed: " + errorObject.code);
-                    });
-                });
-              } else {
-                next();
-              }
-          } else {
-              if (categoryOk && subCategoryOk && eventOk) {
-                dbString = dbString + 'events/' + String(request.params.category);
-                var db = admin.database();
-                var ref = db.ref(dbString);
-                ref.once("value", function(snapshot) {
-                    let seo = {
-                      title: 'נאוה קיינר-פרסוב - עין הוד',
-                      description: 'נאוה קיינר-פרסוב - עין הוד',
-                      keyWords: 'נאוה קיינר-פרסוב - עין הוד'
-                    };
-                    if(snapshot.val() !== null) {
-                      seo = snapshot.val().seo;
-                    }
+//                     fs.readFile(filePath, 'utf8', function (err,data) {
+//                       if (err) {
+//                         return console.log(err);
+//                       }
+//                       data = data.replace(/\$OG_TITLE/g, seo.title);
+//                       data = data.replace(/\$OG_DESCRIPTION/g, seo.description);
+//                       data = data.replace(/\$OG_KEYWORDS/g, seo.keyWords);
+//                       data = data.replace(/\$OG_IMAGE/g, '/images/og_image.jpg');
+//                       response.send(data);
+//                     }, function (errorObject) {
+//                       console.log("The read failed: " + errorObject.code);
+//                     });
+//                 });
+//               } else {
+//                 next();
+//               }
+//           } else {
+//               if (categoryOk && subCategoryOk && eventOk) {
+//                 dbString = dbString + 'events/' + String(request.params.category);
+//                 var db = admin.database();
+//                 var ref = db.ref(dbString);
+//                 ref.once("value", function(snapshot) {
+//                     let seo = {
+//                       title: 'נאוה קיינר-פרסוב - עין הוד',
+//                       description: 'נאוה קיינר-פרסוב - עין הוד',
+//                       keyWords: 'נאוה קיינר-פרסוב - עין הוד'
+//                     };
+//                     if(snapshot.val() !== null) {
+//                       seo = snapshot.val().seo;
+//                     }
 
-                    //console.log(seo);
+//                     //console.log(seo);
 
-                    fs.readFile(filePath, 'utf8', function (err,data) {
-                      if (err) {
-                        return console.log(err);
-                      }
-                      data = data.replace(/\$OG_TITLE/g, seo.title);
-                      data = data.replace(/\$OG_DESCRIPTION/g, seo.description);
-                      data = data.replace(/\$OG_KEYWORDS/g, seo.keyWords);
-                      data = data.replace(/\$OG_IMAGE/g, '/images/og_image.jpg');
-                      response.send(data);
-                    }, function (errorObject) {
-                      console.log("The read failed: " + errorObject.code);
-                    });
-                });
-              } else {
-                next();
-              }
-          }
+//                     fs.readFile(filePath, 'utf8', function (err,data) {
+//                       if (err) {
+//                         return console.log(err);
+//                       }
+//                       data = data.replace(/\$OG_TITLE/g, seo.title);
+//                       data = data.replace(/\$OG_DESCRIPTION/g, seo.description);
+//                       data = data.replace(/\$OG_KEYWORDS/g, seo.keyWords);
+//                       data = data.replace(/\$OG_IMAGE/g, '/images/og_image.jpg');
+//                       response.send(data);
+//                     }, function (errorObject) {
+//                       console.log("The read failed: " + errorObject.code);
+//                     });
+//                 });
+//               } else {
+//                 next();
+//               }
+//           }
           
-      //} else {
-      //    next();
-      //}
-    }
-});
+//       //} else {
+//       //    next();
+//       //}
+//     }
+// });
 
 //******    end ssr --- SEO     ******//
 
