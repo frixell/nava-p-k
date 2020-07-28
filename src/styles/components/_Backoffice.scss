@@ -328,27 +328,50 @@
     border: none;
 }
 
-.backoffice__toolbar__buttons {
+.backoffice__nav__toolbar__buttons {
     position: fixed;
     left: 130px;
     top: 0.5vh;
     z-index: 15001;
 }
 
-.backoffice__toolbar__buttons--exit {
+.backoffice__nav__toolbar__buttons--exit {
     position: 'absolute';
     z-index: 15007;
     color: '#fff';
 }
 
-.backoffice__toolbar__buttons--save-project {
+.backoffice__nav__toolbar__buttons--save-project {
     position: 'absolute';
     z-index: 15008;
 }
 
-.backoffice__toolbar__buttons--add-project {
+.backoffice__nav__toolbar__buttons--add-project {
     position: 'absolute';
     z-index: 15009;
+}
+
+.backoffice__toolbar__buttons {
+    position: fixed;
+    left: 130px;
+    top: 0.5vh;
+    z-index: 301;
+}
+
+.backoffice__toolbar__buttons--exit {
+    position: 'absolute';
+    z-index: 307;
+    color: '#fff';
+}
+
+.backoffice__toolbar__buttons--save-project {
+    position: 'absolute';
+    z-index: 308;
+}
+
+.backoffice__toolbar__buttons--add-project {
+    position: 'absolute';
+    z-index: 309;
 }
 
 .backoffice__toolbar__label {
@@ -519,8 +542,11 @@
 
 
 .backoffice__modal {
+    margin-top: 5%;
     width: 100%;
     max-width: 100%;
+    max-height: 90%;
+    overflow-y: auto;
 }
 
 
