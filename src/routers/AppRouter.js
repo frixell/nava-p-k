@@ -17,19 +17,16 @@ if (typeof(window) !== "undefined") {
 
 import AboutPage from '../containers/AboutPage';
 import TeachingPage from '../containers/TeachingPage';
+import CvPage from '../containers/CvPage';
+
 import ContactPage from '../containers/ContactPage';
-import DifferentPage from '../containers/DifferentPage';
-import EventsPage from '../containers/EventsPage';
-import EventPage from '../containers/EventPage';
 import HomePage from '../containers/HomePage';
-import WorkshopPage from '../containers/WorkshopPage';
 import NotFoundPage from '../containers/NotFoundPage';
 import LoginPage from '../components/LoginPage';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import SigninPage from '../components/SigninPage';
 import { connect } from 'react-redux';
-import { stringReplace } from '../reusableFunctions/stringReplace';
 
 export const history = typeof(window) !== "undefined" ? createHistory() : createMemoryHistory();
 
@@ -41,77 +38,19 @@ class AppRouter extends React.Component {
                     {
                         this.props.events.categories ?
                         <Switch>
-                            <Route path="/" render={(props) => ( <HomePage {...props} />)} exact={true} />
+                            <Route path="/" render={(props) => ( <HomePage {...props} urlLang='he' />)} exact={true} />
                             <Route path="/עב" render={(props) => ( <HomePage {...props} urlLang='he' />)} exact={true} />
                             <Route path="/en" render={(props) => ( <HomePage {...props} urlLang='en' />)} exact={true} />
                             <Route path="/אודות" render={(props) => ( <AboutPage {...props} urlLang='he' />)} exact={true} />
-                            <Route path="/about" render={(props) => ( <AboutPage {...props} urlLang='en' />)} exact={true} />
+                            <Route path="/About" render={(props) => ( <AboutPage {...props} urlLang='en' />)} exact={true} />
                             <Route path="/הוראה" render={(props) => ( <TeachingPage {...props} urlLang='he' />)} exact={true} />
-                            <Route path="/Teaching" render={(props) => ( <TeachingPage {...props} urlLang='he' />)} exact={true} />
+                            <Route path="/Teaching" render={(props) => ( <TeachingPage {...props} urlLang='en' />)} exact={true} />
+                            <Route path="/קורות_חיים" render={(props) => ( <CvPage {...props} urlLang='he' />)} exact={true} />
+                            <Route path="/CV" render={(props) => ( <CvPage {...props} urlLang='en' />)} exact={true} />
                             <Route path="/צרו_קשר" component={ContactPage} exact={true} />
-                            <Route path="/contact" component={ContactPage} exact={true} />
-                            {
-                                this.props.events.categories.map((category, index) => {
-                                    return <Route path={`/${stringReplace(category.name, '_', ' ')}`} key={category.id} render={(props) => ( <EventsPage {...props} urlLang='he' category={category} categoryIndex={index} />)} exact={true} />;
-                                })
-                            }
-                            {
-                                this.props.events.categories.map((category, index) => {
-                                    return <Route path={`/${stringReplace(category.nameEng, '_', ' ')}`} key={category.id} render={(props) => ( <EventsPage {...props} urlLang='en' category={category} categoryIndex={index} />)} exact={true} />;
-                                })
-                            }
-                            {
-                                this.props.events.categories.map((category, index) => {
-                                    
-                                    return <Route
-                                                path={`/:subcategory/${stringReplace(category.name, '_', ' ')}`}
-                                                key={category.id}
-                                                render={(props) => ( <EventsPage {...props} urlLang='he' category={category} categoryIndex={index} />)}
-                                                exact={true}
-                                            />;
-                                    
-                                })
-                            }
-                            {
-                                this.props.events.categories.map((category, index) => {
-                                    
-                                    return <Route
-                                                path={`/${stringReplace(category.nameEng, '_', ' ')}/:subcategory`}
-                                                key={category.id}
-                                                render={(props) => ( <EventsPage {...props} urlLang='en' category={category} categoryIndex={index} />)}
-                                                exact={true}
-                                            />;
-                                    
-                                })
-                            }
-                            {
-                                this.props.events.categories.map((category, index) => {
-                                    //this.props.events.allSubCategories.map((subcategory, index) => {
-                                        return <Route
-                                                    path={`/:event/:subcategory/${stringReplace(category.name, '_', ' ')}`}
-                                                    key={category.id}
-                                                    render={(props) => ( <EventsPage {...props} urlLang='he' category={category} categoryIndex={index} categoryName={category.name} categoryId={category.id} />)}
-                                                    exact={true}
-                                                />;
-                                    //})
-                                })
-                            }
-                            {
-                                this.props.events.categories.map((category, index) => {
-                                    //this.props.events.allSubCategories.map((subcategory, index) => {
-                                        return <Route
-                                                    path={`/${stringReplace(category.nameEng, '_', ' ')}/:subcategory/:event`}
-                                                    key={category.id}
-                                                    render={(props) => ( <EventsPage {...props} urlLang='en' category={category} categoryIndex={index} categoryName={category.name} categoryId={category.id} />)}
-                                                    exact={true}
-                                                />;
-                                    //})
-                                })
-                            }
+                            <Route path="/Contact" component={ContactPage} exact={true} />
                             <Route path="/signin" component={SigninPage} exact={true} />
                             <PublicRoute path="/login" component={LoginPage} exact={true} />
-                            <Route path="/סדנאות" render={(props) => ( <WorkshopPage {...props} urlLang='he' />)} exact={true} />
-                            <Route path="/workshops" render={(props) => ( <WorkshopPage {...props} urlLang='en' />)} exact={true} />
                             <Route component={NotFoundPage} />
                         </Switch>
                         :

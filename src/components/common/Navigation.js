@@ -279,7 +279,7 @@ class Navigation extends React.Component {
                 <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/קו״ח' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/קורות_חיים' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to={this.props.lang === 'he' ? '/אודות' : '/About'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
@@ -366,7 +366,7 @@ class Navigation extends React.Component {
                 <NavLink to={this.props.lang === 'he' ? '/אודות' : '/About'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/קו״ח' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/קורות_חיים' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>

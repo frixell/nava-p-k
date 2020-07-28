@@ -1,6 +1,7 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import aboutpageReducer from '../reducers/aboutpage';
+import cvpageReducer from '../reducers/cvpage';
 import teachingpageReducer from '../reducers/teachingpage';
 import workshoppageReducer from '../reducers/workshoppage';
 import authReducer from '../reducers/auth';
@@ -34,6 +35,7 @@ export default () => {
             categories: categoriesReducer,
             tableTemplate: tableTemplateReducer,
             aboutpage: aboutpageReducer,
+            cvpage: cvpageReducer,
             teachingpage: teachingpageReducer,
             auth: authReducer,
             costumers: costumersReducer,
