@@ -301,6 +301,50 @@ export default class Teach extends React.Component {
                                 }
                         >
                             <div className="backoffice__toolbar__label" style={{width: '5rem', color: this.state.needSave ? 'red' : 'aqua'}}>
+                                {`${this.props.lang === 'en' ? 'Order' : 'מיקום'}`}
+                            </div>
+                            <div className="backoffice__item__order__box">
+                                <input
+                                    data-id={this.props.teach.id}
+                                    type="number"
+                                    value={this.props.teach.order}
+                                    onChange={this.props.onItemOrderChange}
+                                    data-index={this.props.index}
+                                    onKeyPress={this.props.onItemOrderKeyPress}
+                                    onBlur={this.props.onItemOrderBlur}
+                                />
+                            </div>
+                        </div>
+                    :
+                        null
+                }
+                
+                {
+                    this.props.isAuthenticated && !this.props.isEdit && this.state.showButtons ?
+                        <div
+                            className="backoffice__toolbar__buttons backoffice__toolbar__buttons--save-project"
+                            style={
+                                this.props.lang === 'en' ? 
+                                    {
+                                        width: '5rem',
+                                        height: '5rem',
+                                        left: '88%',
+                                        top: '20.8rem',
+                                        position: 'absolute',
+                                        background: 'black'
+                                    } 
+                                : 
+                                    {
+                                        width: '5rem',
+                                        height: '5rem',
+                                        left: '12%',
+                                        top: '20.8rem',
+                                        position: 'absolute',
+                                        background: 'black'
+                                    }
+                                }
+                        >
+                            <div className="backoffice__toolbar__label" style={{width: '5rem', color: this.state.needSave ? 'red' : 'aqua'}}>
                                 {`${this.props.lang === 'en' ? 'Delete' : 'מחיקה'}`}
                             </div>
                             <button

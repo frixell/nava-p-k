@@ -60,7 +60,7 @@ export const startSetTeachingPage = () => {
 
 
 export const showTeach = ( teach ) => ({
-    type: 'SHOW_TEACH',
+    type: 'UPDATE_TEACH',
     teach
 });
 
@@ -132,6 +132,25 @@ export const startDeleteTeach = (teachData = {}) => {
     };
 };
 
+
+
+
+
+export const updateTeachings = (teachings) => ({
+    type: 'UPDATE_TEACHINGS',
+    teachings
+});
+
+export const startUpdateTeachings = (fbTeachings, teachings) => {
+    return (dispatch, getState) => {
+        console.log('fbTeachings', fbTeachings);
+        return database.ref(`website/teachingpage/`).child(`teachings`).update(fbTeachings).then(() => {
+            dispatch(updateTeachings(teachings));
+            return teachings;
+        })
+
+    };
+};
 
 
 

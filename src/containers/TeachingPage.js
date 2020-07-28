@@ -16,7 +16,7 @@ import SocialMedia from '../components/common/SocialMedia';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
 import { startSetAboutPage, startEditAboutPage, startEditAboutPageSeo, startAddAboutImage, startDeleteAboutImage } from '../actions/aboutpage';
-import { startSetTeachingPage, startAddTeach, startShowTeach, startUpdateTeach, startDeleteTeach } from '../actions/teachingpage';
+import { startSetTeachingPage, startAddTeach, startShowTeach, startUpdateTeach, startUpdateTeachings, startDeleteTeach } from '../actions/teachingpage';
 import Teach from './Teach';
 
 import { iconRatioOn } from '../reusableFunctions/iconRatioOn';
@@ -224,6 +224,16 @@ class TeachingPage extends React.Component {
         this.props.startEditAboutPageSeo(seo);
         this.onToggleAboutpageSeo();
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     setIsVisibleTeach = (e) => {
         const id = e.target.dataset.id;
@@ -459,47 +469,100 @@ class TeachingPage extends React.Component {
             slideGalleryImages
         });
     }
+    
+    
+    
 
-    onOpenSlideGallery = (e) => {
-        const currentImage = e.target.dataset.order-1;
-        this.onToggleSlideGallery(e, currentImage);
+    onItemOrderBlur = (e) => {
+        const teachings = this.state.teachings;
+        let newOrder = e.target.value;
+        
+        if (newOrder > teachings.length) {
+            newOrder = teachings.length;
+        }
+        if (newOrder < 1) {
+            newOrder = 1;
+        }
+        
+        const oldOrder = teachings.length - Number(e.target.dataset.index);
+        
+        console.log('newOrder', newOrder);
+        console.log('oldOrder', oldOrder);
+        const id = e.target.dataset.id;
+        
+        console.log('id -', id);
+        
+        if ( Number(newOrder) > Number(oldOrder) ) {
+            for (let i = 0; i < teachings.length; i++) {
+                if (id !== teachings[i].id) {
+                    console.log('1teachings[i].id -', teachings[i].id);
+                    if (teachings[i].order <= newOrder && teachings[i].order > oldOrder) {
+                        teachings[i].order = teachings[i].order-1;
+                    }
+                }
+            }
+        } else if ( Number(newOrder) < Number(oldOrder) ) {
+            for (let i = 0; i < teachings.length; i++) {
+                if (id !== teachings[i].id) {
+                    console.log('2teachings[i].id -', teachings[i].id);
+                    if (teachings[i].order < oldOrder && teachings[i].order >= newOrder) {
+                        teachings[i].order = Number(teachings[i].order)+1;
+                    }
+                }
+            }
+        }
+        teachings.sort((a, b) => {
+            return a.order > b.order ? -1 : 1;
+        });
+        
+        const fbTeachings = {};
+        
+        teachings.map(teach => {
+            console.log(teach.id);
+            fbTeachings[teach.id] = teach;
+        });
+        console.log(fbTeachings);
+        this.props.startUpdateTeachings(fbTeachings, teachings).then(res => {
+            this.setState({
+                teachings
+            });
+        })
+
+        
+        // if (typeof(window) !== "undefined") {
+        //     if(isEqual(this.state.categoryOrigin, this.state.category) && isEqual(this.state.subCategoriesOrigin, this.state.subCategories) && isEqual(itemsCurrent, this.state.itemsCurrentOrigin)){ 
+        //         window.removeEventListener("beforeunload", this.unloadFunc);
+        //     } else {
+        //         window.addEventListener("beforeunload", this.unloadFunc);
+        //     }
+        // }
     }
 
-    onToggleSlideGallery = (e, currentImage = this.state.currentImage) => {
+    onItemOrderChange = (e) => {
+        
+        const teachings = this.state.teachings;
+        const index = e.target.dataset.index;
+        console.log('index', index);
+        let newOrder = e.target.value;
+        if (newOrder > teachings.length) {
+            newOrder = teachings.length;
+        }
+        if (newOrder < 1) {
+            newOrder = 1;
+        }
+        console.log('teachings', teachings);
+        teachings[index].order = Number(newOrder);
+        
         this.setState({
-            currentImage,
-            slideGalleryModalIsOpen: !this.state.slideGalleryModalIsOpen
+            teachings
         });
     }
 
-    onCurrentImageChange = (currentImage) => {
-        this.setState({
-            currentImage
-        });
-    }
-
-    onNext = () => {
-        if (this.animating) return;
-        const nextIndex = this.state.currentImage === this.state.slideGalleryImages.length - 1 ? 0 : this.state.currentImage + 1;
-        if (this.onCurrentImageChange) {
-        this.onCurrentImageChange(nextIndex);
+    onItemOrderKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            this.onItemOrderBlur(e);
         }
     }
-
-    previous = () => {
-        if (this.animating) return;
-        const nextIndex = this.state.currentImage === 0 ? this.state.slideGalleryImages.length - 1 : this.state.currentImage - 1;
-        this.onCurrentImageChange(nextIndex);
-    }
-
-    onExiting = () => {
-        this.animating = true;
-    }
-
-    onExited = () => {
-        this.animating = false;
-    }
-
 
     render() {
         return (
@@ -673,7 +736,11 @@ class TeachingPage extends React.Component {
                                 return (
                                     <Teach
                                         lang={this.props.lang}
+                                        index={index}
                                         key={index}
+                                        onItemOrderChange={this.onItemOrderChange}
+                                        onItemOrderKeyPress={this.onItemOrderKeyPress}
+                                        onItemOrderBlur={this.onItemOrderBlur}
                                         setIsEditTeach={this.setIsEditTeach}
                                         setIsVisibleTeach={this.setIsVisibleTeach}
                                         deleteTeach={this.deleteTeach}
@@ -711,6 +778,7 @@ const mapDispatchToProps = (dispatch) => ({
     startEditAboutPageSeo: (seo) => dispatch(startEditAboutPageSeo(seo)),
     startAddTeach: (teach, order) => dispatch(startAddTeach(teach, order)),
     startUpdateTeach: (teach) => dispatch(startUpdateTeach(teach)),
+    startUpdateTeachings: (fbTeachings, teachings) => dispatch(startUpdateTeachings(fbTeachings, teachings)),
     startShowTeach: (teach) => dispatch(startShowTeach(teach)),
     startDeleteTeach: (teach) => dispatch(startDeleteTeach(teach)),
     startDeleteAboutImage: (fbImages, images, publicid) => dispatch(startDeleteAboutImage(fbImages, images, publicid)),

@@ -13,7 +13,10 @@ const teachingpageReducerDefaultState = {};
         case 'SET_TEACHINGPAGE':
             teachingpage.teachings = action.teachingpage;
             return teachingpage;
-        case 'SHOW_TEACH':
+        case 'UPDATE_TEACHINGS':
+            teachingpage.teachings = action.teachings;
+            return teachingpage;
+        case 'UPDATE_TEACH':
             console.log('reducer- action', action);
             const teachIndex = teachingpage.teachings.findIndex(t => t.id === action.teach.id);
             const teachings = teachingpage.teachings
