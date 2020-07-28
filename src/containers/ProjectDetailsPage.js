@@ -192,7 +192,7 @@ class ProjectDetailsPage extends React.Component {
                     </div>
                     {this.props.isAuthenticated ? 
                     (
-                        <div className="backoffice__toolbar__buttons" style={this.props.lang === 'en' ? {left: '64%'} : {left: '440px'}}>
+                        <div className="backoffice__toolbar__buttons" style={this.props.lang === 'en' ? {left: '70%'} : {left: '30%'}}>
                             <div className="backoffice__toolbar__label" style={this.props.lang === 'en' ? {paddingLeft: '6px'} : {textAlign: 'left'}}>
                                 {`${this.props.lang === 'en' ? 'Connect' : 'חיבור לקטגוריה'}`}
                             </div>

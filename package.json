@@ -5,7 +5,7 @@
   "author": "mosh",
   "license": "MIT",
   "engines": {
-    "node": "8.11.4"
+    "node": "14.5.0"
   },
   "scripts": {
     "build:dev": "webpack",
@@ -38,22 +38,21 @@
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "css-loader": "^0.28.11",
+    "date-fns": "^2.15.0",
     "draft-js": "^0.11.5",
     "draftjs-to-html": "^0.9.1",
     "esri-loader": "^2.13.0",
     "express": "^4.16.3",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "firebase": "^5.0.4",
-    "firebase-admin": "^6.0.0",
-    "google-maps-react": "^2.0.2",
+    "firebase": "^7.16.1",
+    "firebase-admin": "^9.0.0",
+    "google-maps-react": "^2.0.6",
     "googleapis": "^33.0.0",
     "gsap": "^2.0.1",
     "history": "^4.7.2",
-    "hoist-non-react-statics": "^2.5.5",
     "html-minifier": "^3.5.20",
     "jquery": "^3.3.1",
     "lodash.isequal": "^4.5.0",
-    "node-sass": "^4.8.3",
     "nodemailer": "^4.6.7",
     "nodemailer-smtp-transport": "^2.7.4",
     "normalize.css": "^8.0.0",
@@ -83,15 +82,15 @@
     "react-share": "^2.2.0",
     "react-slick": "^0.23.1",
     "reactstrap": "^6.1.0",
-    "redux": "^4.0.0",
+    "redux": "^4.0.5",
     "redux-i18n": "^1.5.13",
     "redux-mock-store": "^1.5.1",
     "redux-thunk": "^2.3.0",
-    "sass-loader": "^7.0.1",
-    "slick-carousel": "^1.8.1",
+    "sass": "^1.26.10",
+    "sass-loader": "^9.0.2",
     "ssl-express-www": "^3.0.3",
-    "webpack": "^4.6.0",
-    "webpack-cli": "^2.0.15"
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
     "cross-env": "^5.1.6",
@@ -101,6 +100,6 @@
     "enzyme-to-json": "^3.3.4",
     "jest": "^23.1.0",
     "react-test-renderer": "^16.4.0",
-    "webpack-dev-server": "^3.1.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }

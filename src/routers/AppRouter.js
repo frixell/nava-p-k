@@ -1,7 +1,8 @@
 import React from 'react';
 import { Router, Route, Switch, Link, NavLink } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory';
+//import createHistory from 'history/createBrowserHistory';
 import { createMemoryHistory } from 'history';
+const createHistory = require("history").createBrowserHistory;
 import ReactLoading from "react-loading";
 
 let loadImage = "";
@@ -15,6 +16,7 @@ if (typeof(window) !== "undefined") {
 }
 
 import AboutPage from '../containers/AboutPage';
+import TeachingPage from '../containers/TeachingPage';
 import ContactPage from '../containers/ContactPage';
 import DifferentPage from '../containers/DifferentPage';
 import EventsPage from '../containers/EventsPage';
@@ -44,6 +46,8 @@ class AppRouter extends React.Component {
                             <Route path="/en" render={(props) => ( <HomePage {...props} urlLang='en' />)} exact={true} />
                             <Route path="/אודות" render={(props) => ( <AboutPage {...props} urlLang='he' />)} exact={true} />
                             <Route path="/about" render={(props) => ( <AboutPage {...props} urlLang='en' />)} exact={true} />
+                            <Route path="/הוראה" render={(props) => ( <TeachingPage {...props} urlLang='he' />)} exact={true} />
+                            <Route path="/Teaching" render={(props) => ( <TeachingPage {...props} urlLang='he' />)} exact={true} />
                             <Route path="/צרו_קשר" component={ContactPage} exact={true} />
                             <Route path="/contact" component={ContactPage} exact={true} />
                             {

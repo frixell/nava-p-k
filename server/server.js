@@ -409,25 +409,6 @@ app.post("/sendEmail", bodyParser.urlencoded({ extended: true }), function(reque
 });
 
 
-
-// var minify = require('html-minifier').minify;
-// var result = minify(path.join(publicPath, 'index.html'), {
-//   removeAttributeQuotes: true,
-//   collapseWhitespace: true,
-//   conservativeCollapse: true,
-//   minifyCSS: true,
-//   minifyJS: true,
-//   removeScriptTypeAttributes: true,
-//   removeStyleLinkTypeAttributes: true,
-//   removeOptionalTags: true,
-//   removeRedundantAttributes: true,
-//   caseSensitive: true,
-//   collapseBooleanAttributes: true,
-//   collapseInlineTagWhitespace: true,
-//   decodeEntities: true,
-//   minifyURLs: true
-// });
-
 app.get('*', (req, res) => {
     res.sendFile(path.join(publicPath, 'index.html'));
 });

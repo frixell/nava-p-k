@@ -16,6 +16,9 @@ import SocialMedia from '../components/common/SocialMedia';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
 import { startSetAboutPage, startEditAboutPage, startEditAboutPageSeo, startAddAboutImage, startDeleteAboutImage } from '../actions/aboutpage';
+import { startSetTeachingPage, startAddTeach, startShowTeach, startUpdateTeach, startDeleteTeach } from '../actions/teachingpage';
+import Teach from './Teach';
+
 import { iconRatioOn } from '../reusableFunctions/iconRatioOn';
 import { iconRatioOut } from '../reusableFunctions/iconRatioOut';
 import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
@@ -24,88 +27,90 @@ import UncontrolledCarousel from '../components/UncontrolledCarouselSlide';
 import isEqual from 'lodash.isequal';
 import { setLanguage } from "redux-i18n";
 
-// import ReactGA from 'react-ga';
-
-// function initializeReactGA(url) {
-//     ReactGA.initialize('UA-128960221-1');
-//     ReactGA.pageview(url);
-// }
-//initializeReactGA();
 
 
-class AboutPage extends React.Component {
+class TeachingPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            aboutpageOrigin: [],
-            aboutpage: { content: '' },
-            ratio: 1,
-            ratioFacebook: 1,
-            ratioInstagram: 1,
-            ratioMail: 1,
-            ratioPhone: 1,
-            ratioGreenArrow: 1,
+            teachingpageOrigin: [],
+            teachingpage: [],
+            teachings: [],
+            
             pageupImageClassName: 'pageup__image__absolute',
-            slideGalleryModalIsOpen: false,
+            
             seoAboutpageModalIsOpen: false,
             seo: {
                 title: '',
                 description: '',
                 keyWords: '',
             },
-            images: [],
-            galleryImages: [],
-            slideGalleryImages: [],
-            langLink: '/אודות',
-            langLinkEng: '/about'
+            
+            langLink: '/הוראה',
+            langLinkEng: '/teaching',
+            selectedTeach: {
+                details: '',
+                description: ''
+            },
+            isEdit: false,
+            editTeachModalIsOpen: false
+        }
+    }
+    
+    deleteTeach = e => {
+        const id = e.target.dataset.id;
+        const teachings = JSON.parse(JSON.stringify(this.state.teachings));
+        const teachIndex = teachings.findIndex(t => t.id === id);
+        const deletedTeach = teachings[teachIndex];
+        this.props.startDeleteTeach(deletedTeach).then(res => {
+            console.log('done delete');
+            const updatedTeachings = teachings.filter(t => t.id !== id);
+            this.setState({
+                teachings: updatedTeachings
+            });
+        });
+    }
+    
+    saveTeach = e => {
+        console.log(e);
+        const id = e.target.dataset.id;
+        if (id) {
+            const teachings = JSON.parse(JSON.stringify(this.state.teachings));
+            const selectedTeach = JSON.parse(JSON.stringify(this.state.selectedTeach));
+            this.props.startUpdateTeach(selectedTeach).then(res => {
+                const teachIndex = teachings.findIndex(t => t.id === id);
+                teachings[teachIndex] = selectedTeach;
+                this.setState({
+                    teachings
+                });
+            });
+        } else {
+            this.props.startAddTeach(this.state.selectedTeach, this.state.teachings.length + 1).then(res => {
+                const teachings = res.sort((a, b) => {
+                    return a.order > b.order ? -1 : 1;
+                });
+                this.setState({
+                    teachings,
+                    selectedTeach: teachings[0]
+                })
+            });
         }
     }
 
     setData = (e) => {
-        console.log(e);
 		const { value, dataset } = e.target;
-		const { name, action } = dataset;
-		const aboutpage = JSON.parse(JSON.stringify(this.state.aboutpage));
-
-        switch (action) {
-			case "setString":
-                aboutpage[name] = value;
-                break;
-            case "setNumber":
-                aboutpage[name] = value;
-                break;
-			default:
-				break;
-        };
+		const { name } = dataset;
+        const selectedTeach = this.state.selectedTeach;
+        selectedTeach[name] = value;
         this.setState({
-            aboutpage: aboutpage
+            selectedTeach
         });
-        if (typeof(window) !== "undefined") {
-            if(isEqual(this.state.aboutpageOrigin, aboutpage)){ 
-                window.removeEventListener("beforeunload", this.unloadFunc);
-            } else {
-                window.addEventListener("beforeunload", this.unloadFunc);
-            }
-        }
 	}
 
     unloadFunc = (e) => {
         var confirmationMessage = "o/";
         e.returnValue = confirmationMessage;
         return confirmationMessage;
-    }
-
-    // update database
-
-    onUpdateAboutPage = () => {
-        const aboutpage = JSON.parse(JSON.stringify(this.state.aboutpage));
-        const fbAboutpage = JSON.parse(JSON.stringify(this.state.aboutpage));
-        
-        this.props.startEditAboutPage(fbAboutpage, aboutpage);
-        this.setState(() => ({ aboutpageOrigin: aboutpage }));
-        if (typeof(window) !== "undefined") {
-            window.removeEventListener("beforeunload", this.unloadFunc);
-        }
     }
 
     handleScroll = () => {
@@ -118,10 +123,6 @@ class AboutPage extends React.Component {
         }
     }
 
-    // setGoogleAnalytics = () => {
-    //     initializeReactGA(`/${this.props.location.pathname}`)
-    // }
-
     componentDidMount = () => {
 
         this.setUrlLang();
@@ -131,71 +132,52 @@ class AboutPage extends React.Component {
         if (typeof(window) !== "undefined") {
             window.addEventListener('scroll', this.handleScroll);
         }
-        this.props.startSetAboutPage().then(()=> {
-            let aboutpage= [];
-            
-            if ( this.props.aboutpage ){
+        this.props.startSetTeachingPage().then(()=> {
+            let teachingpage= [];
+            if ( this.props.teachingpage && this.props.teachingpage.teachings ){
                 
-                aboutpage = this.props.aboutpage;
-                const aboutimages = [];
-                const img = aboutpage.aboutimages;
-                img && Object.keys(img).map((key) => {
-                    const keyedImg = {id: String(key), ...img[key]};
-                    aboutimages.push(keyedImg);
+                teachingpage = this.props.teachingpage.teachings;
+                const teachings = [];
+                Object.keys(teachingpage).map((key) => {
+                    const keyedTeach = {id: String(key), ...teachingpage[key]};
+                    teachings.push(keyedTeach);
                 });
             
-                aboutimages.sort((a, b) => {
-                    return a.order > b.order ? 1 : -1;
-                });
-                const galleryImages = [];
-                aboutimages.map((image) => {
-                    return galleryImages.push({
-                        publicId: image.publicId,
-                        id: image.id,
-                        order: image.order,
-                        src: image.src,
-                        alt: image.alt,
-                        width: image.width,
-                        height: image.height
-                    });
-                });
-                const slideGalleryImages = [];
-                aboutimages.map((image) => {
-                    let imageWidth = image.width;
-                    let imageHeight = image.height;
-                    const ratio = 600/imageHeight;
-                    imageWidth = ratio*imageWidth;
-                    imageHeight = ratio*imageHeight;
-                    if (imageWidth > 960) {
-                        const widthRatio = 960/imageWidth;
-                        imageWidth = widthRatio*imageWidth;
-                        imageHeight = widthRatio*imageHeight;
-                    }
-                    return slideGalleryImages.push({
-                        publicId: image.publicId,
-                        id: image.id,
-                        order: image.order,
-                        src: image.src,
-                        altText: image.alt,
-                        width: imageWidth,
-                        height: imageHeight,
-                        caption: '',
-                        header: ''
-                    });
-                });
-                this.setState({
-                    images: aboutimages,
-                    galleryImages,
-                    slideGalleryImages
+                teachings.sort((a, b) => {
+                    return a.order > b.order ? -1 : 1;
                 });
 
                 this.setState({
-                    seo: aboutpage.seo,
-                    aboutpage: aboutpage,
-                    aboutpageOrigin: aboutpage
+                    teachings: teachings,
+                    teachingpage: teachingpage,
+                    teachingpageOrigin: teachingpage
                 });
             }
         });
+    }
+    
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.lang !== prevProps.lang) {
+            this.setState({lang: this.props.lang});
+        }
+        if (!isEqual(this.props.teachingpage.teachings, prevProps.teachingpage.teachings)) {
+            teachingpage = this.props.teachingpage.teachings;
+                const teachings = [];
+                Object.keys(teachingpage).map((key) => {
+                    const keyedTeach = {id: String(key), ...teachingpage[key]};
+                    teachings.push(keyedTeach);
+                });
+            
+                teachings.sort((a, b) => {
+                    return a.order > b.order ? -1 : 1;
+                });
+
+                this.setState({
+                    teachings: teachings,
+                    teachingpage: teachingpage,
+                    teachingpageOrigin: teachingpage
+                });
+        }
     }
 
     componentWillUnmount = () => {
@@ -242,15 +224,44 @@ class AboutPage extends React.Component {
         this.props.startEditAboutPageSeo(seo);
         this.onToggleAboutpageSeo();
     }
+    
+    setIsVisibleTeach = (e) => {
+        const id = e.target.dataset.id;
+        const isVisible = e.target.dataset.visible;
+        const teachings = this.state.teachings;
+        const teachIndex = teachings.findIndex(t => t.id === id);
+        const updatedTeach = teachings[teachIndex];
+        teachings[teachIndex].visible = isVisible;
+        this.setState({
+            teachings
+        });
+        updatedTeach.visible = isVisible;
+        this.props.startShowTeach(updatedTeach);
+    }
+    
+    setIsEditTeach = (e) => {
+        const id = e.target.dataset.id;
+        const teachings = this.state.teachings;
+        const teachIndex = teachings.findIndex(t => t.id === id);
+        const selectedTeach = JSON.parse(JSON.stringify(teachings[teachIndex]));
+        this.setState({
+            selectedTeach
+        });
+        this.onToggleEditTeach();
+    }
+    
+    onToggleEditTeach = () => {
+        this.setState({
+            editTeachModalIsOpen: !this.state.editTeachModalIsOpen
+        });
+    }
 
-    uploadWidget = (e) => {
-        const { dataset } = e.target;
-        const { id } = dataset;
-        const eventId = this.state.eventId;
+    uploadWidget = (event) => {
+        
         var myUploadWidget;
         myUploadWidget = cloudinary.openUploadWidget({ 
-            cloud_name: 'dz7woxmn2', 
-            upload_preset: 'rsrmcqga', 
+            cloud_name: 'dewafmxth', 
+            upload_preset: 'ml_default', 
             sources: [
                 "local",
                 "url",
@@ -267,67 +278,34 @@ class AboutPage extends React.Component {
             }
         },
             (error, result) => {
+                console.log(event);
                 if (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
                 if (result.event === "success") {
-                    const order = Number(this.state.images.length)+1;
                     const image = {
                         publicId: result.info.public_id,
                         src: result.info.secure_url,
                         width: result.info.width,
-                        height: result.info.height,
-                        alt: '',
-                        order: order
+                        height: result.info.height
                     };
+                    
+                    const selectedTeach = this.state.selectedTeach;
+                    selectedTeach.image = image;
                         
-                    this.props.startAddAboutImage(image, order).then((images)=> {
-                        images.sort((a, b) => {
-                            return a.order > b.order ? 1 : -1;
-                        });
-                        const galleryImages = [];
-                        images.map((image) => {
-                            return galleryImages.push({
-                                publicId: image.publicId,
-                                id: image.id,
-                                order: image.order,
-                                src: image.src,
-                                alt: image.alt,
-                                width: image.width,
-                                height: image.height
-                            });
-                        });
-                        const slideGalleryImages = [];
-                        images.map((image) => {
-                            let imageWidth = image.width;
-                            let imageHeight = image.height;
-                            const ratio = 600/imageHeight;
-                            imageWidth = ratio*imageWidth;
-                            imageHeight = ratio*imageHeight;
-                            if (imageWidth > 800) {
-                                const widthRatio = 800/imageWidth;
-                                imageWidth = widthRatio*imageWidth;
-                                imageHeight = widthRatio*imageHeight;
-                            }
-                            return slideGalleryImages.push({
-                                publicId: image.publicId,
-                                id: image.id,
-                                order: image.order,
-                                src: image.src,
-                                altText: image.alt,
-                                width: imageWidth,
-                                height: imageHeight,
-                                caption: '',
-                                header: ''
-                            });
-                        });
-                        this.setState({
-                            imagesOrigin: JSON.parse(JSON.stringify(images)),
-                            images,
-                            galleryImages,
-                            slideGalleryImages
-                        });
+                    this.setState({
+                        selectedTeach
                     });
+                    
+                    const event = {
+                        target: {
+                            dataset: {
+                                id: selectedTeach.id
+                            }
+                        }
+                    }
+                    
+                    this.saveTeach(event);
                     myUploadWidget.close();
                 }
             }
@@ -594,6 +572,32 @@ class AboutPage extends React.Component {
                     :
                         null
                 }
+                
+                
+                { 
+                    this.props.isAuthenticated === true ? 
+                        <Modal
+                            open={this.state.editTeachModalIsOpen}
+                            onClose={this.onToggleEditTeach}
+                            center
+                            classNames={{modal: 'backoffice__modal'}}
+                        >
+                            <div className="backoffice__seo__modal">
+                                <Teach
+                                    lang={this.props.lang}
+                                    isEdit={true}
+                                    isAuthenticated={this.props.isAuthenticated}
+                                    teach={this.state.selectedTeach}
+                                    saveTeach={this.saveTeach}
+                                    setData={this.setData}
+                                    uploadWidget={this.uploadWidget}
+                                />
+                            </div>
+                        </Modal>
+                    :
+                        null
+                }
+                
   
                 <Navigation 
                     {...this.props}
@@ -620,14 +624,20 @@ class AboutPage extends React.Component {
                                 null
                         }
                         
+                       
+                        
                         {
-                            this.props.isAuthenticated ?
+                            this.props.isAuthenticated && !this.state.isEdit ?
                                 <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {left: '85%'} : {left: '15%'}}>{/* $( window ).width() / 2 - 85 */}
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
-                                        {`${this.props.lang === 'en' ? 'Save' : 'שמירה'}`}
+                                        {`${this.props.lang === 'en' ? 'Add' : 'הוספה'}`}
                                     </div>
-                                    <button className="backoffice_button" onClick={this.onUpdateAboutPage}>
-                                        <img className="backoffice_icon" src="/images/backoffice/save.svg" alt="שמירת אודות" />
+                                    <button className="backoffice_button" onClick={this.onToggleEditTeach}>
+                                        <img
+                                            className="backoffice__events__events__add__icon"
+                                            src="/images/eventspage/add-eventSubcategory-icon.svg"
+                                            alt="תמונה"
+                                        />
                                     </button>
                                 </div>
                             :
@@ -652,34 +662,28 @@ class AboutPage extends React.Component {
                                 null
                         }
                         
-                        
                         <div className="page__header__container">
-                            <h1 className="page__header">{this.props.lang === 'en' ? 'About' : 'אודות'}</h1>
+                            <h1 className="page__header">{this.props.lang === 'en' ? 'Teaching' : 'הוראה'}</h1>
                         </div>
+            
                             
-                            
-                        <AboutTopStrip
-                            slogen={this.state.aboutpage.slogen}
-                            action='setString'
-                            name="slogen"
-                            index="slogen"
-                            key={`homepage-events-item-slogen`}
-                            setData={this.setData}
-                            lang={this.props.lang}
-                        />
-                            
-                        <AboutContentStrip
-                            isAuthenticated={this.props.isAuthenticated}
-                            action='setString'
-                            name="about"
-                            index="about"
-                            key={`homepage-events-item-about`}
-                            item={this.state.aboutpage.about}
-                            aboutpageOrigin={this.state.aboutpageOrigin}
-                            aboutpage={this.state.aboutpage}
-                            setData={this.setData}
-                            lang={this.props.lang}
-                        />            
+                        {
+                            this.state.teachings &&
+                            this.state.teachings.map((teach, index) => {
+                                return (
+                                    <Teach
+                                        lang={this.props.lang}
+                                        key={index}
+                                        setIsEditTeach={this.setIsEditTeach}
+                                        setIsVisibleTeach={this.setIsVisibleTeach}
+                                        deleteTeach={this.deleteTeach}
+                                        isAuthenticated={this.props.isAuthenticated}
+                                        teach={teach} 
+                                    />
+                                )
+                            })
+                        }
+                        
                     </div>
                 </div>
 
@@ -696,18 +700,21 @@ class AboutPage extends React.Component {
 
 const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.uid,
-    aboutpage: state.aboutpage,
+    teachingpage: state.teachingpage,
     lang: state.i18nState.lang
 });
 
 const mapDispatchToProps = (dispatch) => ({
     startLogout: () => dispatch(startLogout()),
-    startSetAboutPage: () => dispatch(startSetAboutPage()),
+    startSetTeachingPage: () => dispatch(startSetTeachingPage()),
     startEditAboutPage: (fbAboutpage, aboutpage) => dispatch(startEditAboutPage(fbAboutpage, aboutpage)),
     startEditAboutPageSeo: (seo) => dispatch(startEditAboutPageSeo(seo)),
-    startAddAboutImage: (image, order) => dispatch(startAddAboutImage(image, order)),
+    startAddTeach: (teach, order) => dispatch(startAddTeach(teach, order)),
+    startUpdateTeach: (teach) => dispatch(startUpdateTeach(teach)),
+    startShowTeach: (teach) => dispatch(startShowTeach(teach)),
+    startDeleteTeach: (teach) => dispatch(startDeleteTeach(teach)),
     startDeleteAboutImage: (fbImages, images, publicid) => dispatch(startDeleteAboutImage(fbImages, images, publicid)),
     setLanguage: (lang) => dispatch(setLanguage(lang))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AboutPage);  
+export default connect(mapStateToProps, mapDispatchToProps)(TeachingPage);  

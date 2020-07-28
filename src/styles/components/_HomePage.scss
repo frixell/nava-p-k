@@ -667,6 +667,19 @@ input[type="email"]::-webkit-input-placeholder {
     overflow: hidden;
 }
 
+.editorReadOnlyClassName {
+    font-size: 14px;
+    line-height: 16px;
+    width: 100%;
+    color: $gray;
+    padding: 0;
+    margin: 0;
+    padding-right: 10px;
+    padding-top: 4rem;
+    padding-bottom: 0px;
+    overflow: hidden;
+}
+
 .blockTypeClassName {
     font-size: 1.3rem;
     line-height: 1.6rem;

@@ -9,15 +9,19 @@
     display: flex;
     justify-content: center;
     width: 99vw;
-    height: 35rem;
-    margin-bottom: 8rem;
+    margin-top: 6rem;
+    margin-bottom: 1rem;
 }
 
-
+.about__topstrip__image__box {
+    width: 60vw;
+    height: 35vw;
+    overflow: hidden;
+}
 
 .about__topstrip__image {
-    width: 58rem;
-    height: 38.5rem;
+    object-fit: cover;
+    width: 60vw;
 }
 
 .about__topstrip__slogen {
@@ -82,9 +86,9 @@
 
 
 .about__content__header__box {
+    position: relative;
     display: inline-block;
-    text-align: right;
-    line-height: 2rem;
+    line-height: 1.5rem;
 }
 
 .about__content__header__in__box {

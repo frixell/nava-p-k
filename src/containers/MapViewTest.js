@@ -439,10 +439,12 @@ class MapViewTest extends Component {
                 
                 graphicsLayer
                     .when(function() {
-                        return graphicsLayer.queryExtent();
+                        console.log(graphicsLayer.fullExtent);
+                        return graphicsLayer.fullExtent;
                     })
                     .then(function(response) {
-                        view.goTo(response.extent);
+                        console.log(response);
+                        //view.goTo(response.extent);
                     });
             }
         });
@@ -530,14 +532,18 @@ class MapViewTest extends Component {
                 
                 view.popup.autoOpenEnabled = false;
                 view.popup.on("trigger-action", function(event) {
+                    console.log(event);
                     if (event.action.id === "expand-this") {
+                        console.log('here');
                         expandThis(event);
+                        //selectedPoint
                     }
                 });
                 
-                let expandThis = (event) => { 
+                let expandThis = (event) => {
+                    console.log(event);
+                    this.props.handleExpandProject(this.state.selectedPoint);
                     view.popup.close();
-                    this.props.handleExpandProject(event.target.project);
                 }
                 
                 const detectZoom = (newValue, oldValue, property, object) => {

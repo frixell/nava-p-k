@@ -89,7 +89,7 @@ html {
 body {
     font-family: $font;
     font-size: $m-size;
-    background-color: $black;
+    background-color: $offwhite;
 }
 
 h3 {
@@ -220,6 +220,15 @@ button:disabled {
   font-weight: $fontBold;
 }
 
-.almoni-tzar-aaa-regular {
-  font-family: almoni-tzar-aaa-regular, sans-serif;
+
+
+
+.page__header__container {
+    margin-top: 3rem;
+    width: 100%;
+}
+
+.page__header {
+    font-size: 3rem;
+    text-align: center;
 }

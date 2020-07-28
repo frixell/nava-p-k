@@ -1,9 +1,9 @@
 @import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
-@import "../../node_modules/slick-carousel/slick/slick.css";
 
 @import './base/settings';
 @import './base/base';
 
+@import './components/TeachingPage';
 @import './components/AboutPage';
 @import './components/Backoffice';
 @import './components/CustomersStrip';

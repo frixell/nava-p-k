@@ -12,7 +12,7 @@ import MapViewTest from './MapViewTest';
 //import LayerSaveTest from './LayerSaveTest';
 
 import SideBar from './SideBar';
-import BuildingTest from './BuildingTest';
+//import BuildingTest from './BuildingTest';
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import { connect } from 'react-redux';
@@ -20,20 +20,19 @@ import { startLogout } from '../actions/auth';
 import { startAddPoint, startEditProject } from '../actions/points';
 import isEqual from 'lodash.isequal';
 import { setLanguage } from "redux-i18n";
-import ReactGA from 'react-ga';
 import ProjectDetailsPage from './ProjectDetailsPage';
-
 import {
     startAddCategory,
     startEditCategories,
     startToggleShowCategory,
 } from '../actions/categories';
 
-function initializeReactGA(url) {
-    ReactGA.initialize('UA-128960221-1');
-    ReactGA.pageview(url);
-}
-//initializeReactGA();
+// import ReactGA from 'react-ga';
+// function initializeReactGA(url) {
+//     ReactGA.initialize('UA-128960221-1');
+//     ReactGA.pageview(url);
+// }
+// initializeReactGA();
 
 
 let categoryColorsHEX = ['#409191', '#c1617e', '#5eae88', '#a6c98d', '#db8976', '#e8e2a4', '#e5b682']
@@ -123,13 +122,6 @@ class HomePage extends React.Component {
                 } else {
                     selectedProject.extendedContent[name+'Hebrew'] = value;
                 }
-                
-                
-                
-                
-                
-                
-                
                 
                 break;
 			default:
@@ -320,8 +312,7 @@ class HomePage extends React.Component {
         //     selectedProject: selectedProject
         // })
     }
-    
-    
+        
     // handle category functions
     
     startEditCategory = () => {
@@ -707,7 +698,7 @@ class HomePage extends React.Component {
                 {
                     this.props.isAuthenticated ?
                     
-                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--exit" style={this.props.lang === 'en' ? {left: '90%'} : {left: '60px'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--exit" style={this.props.lang === 'en' ? {left: '90%'} : {left: '10%'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label">
                                 {`${this.props.lang === 'en' ? 'Exit' : 'יציאה'}`}
                             </div>
@@ -721,7 +712,7 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && this.state.selectedProject ?
-                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {left: '73%'} : {left: '300px'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {left: '83%'} : {left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
                                 {`${this.props.lang === 'en' ? 'Save Project' : 'שמירת פרוייקט'}`}
                             </div>
@@ -735,7 +726,7 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && !this.state.selectedProject ?
-                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--add-project" style={this.props.lang === 'en' ? {left: '73%'} : {left: '300px'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__toolbar__buttons backoffice__toolbar__buttons--add-project" style={this.props.lang === 'en' ? {left: '83%'} : {left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label" style={{color: this.state.allowAddPoint ? 'red' : 'aqua'}}>
                                 {`${this.props.lang === 'en' ? 'Add Project' : 'הוספת פרוייקט'}`}
                             </div>
@@ -750,7 +741,7 @@ class HomePage extends React.Component {
                 
                 {this.props.isAuthenticated ? 
                 (
-                    <div className="backoffice__toolbar__buttons" style={this.props.lang === 'en' ? {left: '80%'} : {left: '210px'}}>
+                    <div className="backoffice__toolbar__buttons" style={this.props.lang === 'en' ? {left: '76%'} : {left: '24%'}}>
                         <div className="backoffice__toolbar__label" style={this.props.lang === 'en' ? {paddingLeft: '6px'} : {textAlign: 'left'}}>
                             {`${this.props.lang === 'en' ? 'Categories' : 'ניהול קטגוריות'}`}
                         </div>
@@ -878,7 +869,7 @@ class HomePage extends React.Component {
                     </div>
                 </div>
                 
-                <Footer lang={this.props.lang} />
+                <Footer lang={this.props.lang} position="absolute" />
             </div>
         );
     }

@@ -1,0 +1,56 @@
+.teach__image__box {
+    width: 60%;
+    min-height: 15rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    position: relative;
+    border: 1px solid $black;
+}
+
+.teach__details__box {
+    display: inline-block;
+    color: #6c7680;
+    font-size: 14px;
+    line-height: 17px;
+    width: 56%;
+    min-height: 5rem;
+    padding: 1rem;
+    margin: 0 auto;
+    border-bottom: 1px solid $black;
+    border-right: 1px solid $black;
+}
+
+.teach__details__box--eng {
+    border-left: 1px solid $black;
+}
+
+.teach__description__box {
+    display: inline-block;
+    color: #6c7680;
+    font-size: 14px;
+    line-height: 17px;
+    width: 44%;
+    min-height: 5rem;
+    padding: 1rem;
+    margin: 0 auto;
+    border-bottom: 1px solid $black;
+    border-left: 1px solid $black;
+    border-right: 1px solid $black;
+}
+
+.teach__box {
+    vertical-align: top;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 3rem;
+}
+
+.teach__header__box {
+    position: relative;
+    display: inline-block;
+    line-height: 1.5rem;
+}
