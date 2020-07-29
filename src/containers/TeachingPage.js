@@ -807,7 +807,7 @@ const mapDispatchToProps = (dispatch) => ({
     startEditAboutPageSeo: (seo) => dispatch(startEditAboutPageSeo(seo)),
     startAddTeach: (teach, order) => dispatch(startAddTeach(teach, order)),
     startUpdateTeach: (teach) => dispatch(startUpdateTeach(teach)),
-    startUpdateTeachImage: (teach, publicid) => dispatch(startUpdateTeachImage(teach, publicid),
+    startUpdateTeachImage: (teach, publicid) => dispatch(startUpdateTeachImage(teach, publicid)),
     startUpdateTeachings: (fbTeachings, teachings) => dispatch(startUpdateTeachings(fbTeachings, teachings)),
     startShowTeach: (teach) => dispatch(startShowTeach(teach)),
     startDeleteTeach: (teach) => dispatch(startDeleteTeach(teach)),
