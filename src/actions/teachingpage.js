@@ -141,7 +141,7 @@ export const startDeleteTeach = (teachData = {}) => {
         // });
         
         
-        fetch('http://localhost:3000/deleteImage', {
+        fetch('/deleteImage', {
             method: 'POST',
             body: 'publicid=' + image.publicId,
             headers: {
