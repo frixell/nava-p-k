@@ -1,40 +1,8 @@
 import database from '../firebase/firebase';
 
-// edit about
-
-export const editAboutPage = ( aboutpage ) => ({
-    type: 'EDIT_ABOUTPAGE',
-    aboutpage
-});
-
-export const startEditAboutPage = ( fbAboutpage, aboutpage ) => {
-    return (dispatch) => {
-        return database.ref(`website/aboutpage`).update({...fbAboutpage}).then(() => {
-            dispatch(editAboutPage( aboutpage ));
-        })
-    };
-};
 
 
-// edit about seo
-
-export const editAboutPageSeo = ( seo ) => ({
-    type: 'EDIT_ABOUTPAGE_SEO',
-    seo
-});
-
-export const startEditAboutPageSeo = ( seo ) => {
-    return (dispatch) => {
-        return database.ref(`serverSeo/about/seo`).update(seo).then(() => {
-            return database.ref(`website/aboutpage/seo`).update(seo).then(() => {
-                dispatch(editAboutPageSeo( seo ));
-            })
-        })
-    };
-};
-
-
-// set aboutpage
+// SET_TEACHINGPAGE
 
 export const setTeachingPage = (teachingpage) => ({
     type: "SET_TEACHINGPAGE",
@@ -59,109 +27,8 @@ export const startSetTeachingPage = () => {
 
 
 
-export const showTeach = ( teach ) => ({
-    type: 'UPDATE_TEACH',
-    teach
-});
 
-export const startShowTeach = ( teach ) => {
-    let id = teach.id;
-    console.log('actions- teach- ', teach);
-    return (dispatch) => {
-        return database.ref(`website/teachingpage/teachings/${id}`).update(teach).then(() => {
-            dispatch(showTeach( teach ));
-        })
-    };
-};
-
-
-
-export const editTeach = ( teach ) => ({
-    type: 'EDIT_TEACH',
-    teach
-});
-
-export const startEditTeach = ( teachObj ) => {
-    //console.log('project', projectObj);
-    let id = projectObj.project.id;
-    let teach = teachObj.teach;
-    //console.log(id);
-    //console.log(project);
-    return (dispatch) => {
-        return database.ref(`website/teachingpage/teachings/${id}`).update(teach).then(() => {
-            dispatch(editTeach( teach ));
-        })
-    };
-};
-
-
-
-export const deleteTeach = (teach) => ({
-    type: 'DELETE_TEACH',
-    teach
-});
-
-export const startDeleteTeach = (teachData = {}) => {
-    return (dispatch, getState) => {
-        const {
-            id = '',
-            publicId = '',
-            image = '',
-            details = '',
-            description = '',
-            detailsHebrew = '',
-            descriptionHebrew = '',
-            order = ''
-        } = teachData;
-        
-        const teach = {
-            id,
-            publicId,
-            image,
-            details,
-            description,
-            detailsHebrew,
-            descriptionHebrew,
-            order
-        };
-        
-        console.log('image:', image);
-        var method = 'POST';
-        var action = 'http://localhost:3000/deleteImage';
-        //var action = '/deleteImage';
-        var xhr = new XMLHttpRequest();
-        var data = '';
-        data += 'publicid=' + image.publicId;
-        // xhr.open(method, action);
-        // xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
-        // xhr.send(data);
-        // xhr.addEventListener('load', function (e) {
-        //     var data = e.target.responseText;
-        //     console.log('xhr data', data);
-        // });
-        
-        
-        fetch('/deleteImage', {
-            method: 'POST',
-            body: 'publicid=' + image.publicId,
-            headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
-        
-        
-        
-        return database.ref(`website/teachingpage/teachings/${id}`).remove().then((ref) => {
-            console.log(ref);
-            dispatch(deleteTeach(teach));
-            return id;
-        });
-    };
-};
-
-
-
-
+// UPDATE_TEACHINGS
 
 export const updateTeachings = (teachings) => ({
     type: 'UPDATE_TEACHINGS',
@@ -181,6 +48,9 @@ export const startUpdateTeachings = (fbTeachings, teachings) => {
 
 
 
+
+
+// UPDATE_TEACH
 
 export const updateTeach = (teach) => ({
     type: 'UPDATE_TEACH',
@@ -219,6 +89,73 @@ export const startUpdateTeach = (teachData = {}) => {
 };
 
 
+// UPDATE_TEACH - image
+
+export const updateTeachImage = (teach) => ({
+    type: 'UPDATE_TEACH',
+    teach
+});
+
+export const startUpdateTeachImage = (teachData = {}, publicid) => {
+    return (dispatch, getState) => {
+        const {
+            id = '',
+            publicId = '',
+            image = '',
+            details = '',
+            description = '',
+            detailsHebrew = '',
+            descriptionHebrew = '',
+            order = ''
+        } = teachData;
+        
+        const teach = {
+            id,
+            publicId,
+            image,
+            details,
+            description,
+            detailsHebrew,
+            descriptionHebrew,
+            order
+        };
+        
+        var data = '';
+        console.log('before fetch publicid', publicid);
+        data += 'publicid=' + publicid;
+        // 'http://localhost:3000/deleteImage'
+        fetch('/deleteImage', {
+            method: 'POST',
+            body: 'publicid=' + image.publicId,
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        
+        return database.ref(`website/teachingpage/teachings/${id}`).update(teach).then((ref) => {
+            console.log(ref);
+            dispatch(updateTeachImage(teach));
+            return id;
+        });
+    };
+};
+
+
+// UPDATE_TEACH - update "show" state
+
+export const showTeach = ( teach ) => ({
+    type: 'UPDATE_TEACH',
+    teach
+});
+
+export const startShowTeach = ( teach ) => {
+    let id = teach.id;
+    return (dispatch) => {
+        return database.ref(`website/teachingpage/teachings/${id}`).update(teach).then(() => {
+            dispatch(showTeach( teach ));
+        })
+    };
+};
 
 
 
@@ -259,16 +196,13 @@ export const startAddTeach = (teachData = {}, order) => {
             }
 
             let teachings = getState().teachingpage.teachings;
-
-            // console.log(teachings);
+            
             if (!teachings) {
                 teachings = {};
             }
 
             teachings[ref.key] = localTeach;
-
-            // console.log(teachings);
-
+            
             const teachingsArray = [];
             Object.keys(teachings).map((key) => {
                 const keyedTeach = {id: String(key), ...teachings[key]};
@@ -284,30 +218,56 @@ export const startAddTeach = (teachData = {}, order) => {
 };
 
 
-// DELETE_ABOUT_IMAGE
 
-export const deleteAboutImage = ( images ) => ({
-    type: 'DELETE_ABOUT_IMAGE',
-    images
+
+// DELETE_TEACH
+
+export const deleteTeach = (teach) => ({
+    type: 'DELETE_TEACH',
+    teach
 });
 
-export const startDeleteAboutImage = ( fbImages, images, publicid ) => {
-    return (dispatch) => {
-        var method = 'POST';
-        //var action = 'http://localhost:3000/deleteImage';
-        var action = '/deleteImage';
-        var xhr = new XMLHttpRequest();
+export const startDeleteTeach = (teachData = {}) => {
+    return (dispatch, getState) => {
+        const {
+            id = '',
+            publicId = '',
+            image = '',
+            details = '',
+            description = '',
+            detailsHebrew = '',
+            descriptionHebrew = '',
+            order = ''
+        } = teachData;
+        
+        const teach = {
+            id,
+            publicId,
+            image,
+            details,
+            description,
+            detailsHebrew,
+            descriptionHebrew,
+            order
+        };
+
         var data = '';
-        data += 'publicid=' + publicid;
-        xhr.open(method, action);
-        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded')
-        xhr.send(data);
-        xhr.addEventListener('load', function (e) {
-            var data = e.target.responseText;
-            // console.log(data);
+        data += 'publicid=' + image.publicId;
+        // 'http://localhost:3000/deleteImage'
+        fetch('/deleteImage', {
+            method: 'POST',
+            body: 'publicid=' + image.publicId,
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+            }
         });
-        return database.ref().child(`website/aboutpage/aboutimages`).update(fbImages).then(() => {
-            //dispatch(editImages( images, eventId, categoryId ));
-        })
+        
+        return database.ref(`website/teachingpage/teachings/${id}`).remove().then((ref) => {
+            console.log(ref);
+            dispatch(deleteTeach(teach));
+            return id;
+        });
     };
 };
+
+

@@ -16,7 +16,7 @@ import SocialMedia from '../components/common/SocialMedia';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
 import { startSetAboutPage, startEditAboutPage, startEditAboutPageSeo, startAddAboutImage, startDeleteAboutImage } from '../actions/aboutpage';
-import { startSetTeachingPage, startAddTeach, startShowTeach, startUpdateTeach, startUpdateTeachings, startDeleteTeach } from '../actions/teachingpage';
+import { startSetTeachingPage, startAddTeach, startShowTeach, startUpdateTeach, startUpdateTeachImage, startUpdateTeachings, startDeleteTeach } from '../actions/teachingpage';
 import Teach from './Teach';
 
 import { iconRatioOn } from '../reusableFunctions/iconRatioOn';
@@ -63,7 +63,6 @@ class TeachingPage extends React.Component {
         const teachIndex = teachings.findIndex(t => t.id === id);
         const deletedTeach = teachings[teachIndex];
         this.props.startDeleteTeach(deletedTeach).then(res => {
-            console.log('done delete');
             const updatedTeachings = teachings.filter(t => t.id !== id);
             this.setState({
                 teachings: updatedTeachings
@@ -95,6 +94,20 @@ class TeachingPage extends React.Component {
                 })
             });
         }
+    }
+    
+    saveTeachImage = (e, publicId) => {
+        console.log(e);
+        const id = e.target.dataset.id;
+        const teachings = JSON.parse(JSON.stringify(this.state.teachings));
+        const selectedTeach = JSON.parse(JSON.stringify(this.state.selectedTeach));
+        this.props.startUpdateTeachImage(selectedTeach, publicId).then(res => {
+            const teachIndex = teachings.findIndex(t => t.id === id);
+            teachings[teachIndex] = selectedTeach;
+            this.setState({
+                teachings
+            });
+        });
     }
 
     setData = (e) => {
@@ -311,6 +324,7 @@ class TeachingPage extends React.Component {
                     };
                     
                     const selectedTeach = this.state.selectedTeach;
+                    const currentTeachImage = selectedTeach.image;
                     selectedTeach.image = image;
                         
                     this.setState({
@@ -325,7 +339,12 @@ class TeachingPage extends React.Component {
                         }
                     }
                     
-                    this.saveTeach(event);
+                    if (currentTeachImage && currentTeachImage.publicId) {
+                        this.saveTeachImage(event);
+                    } else {
+                        this.saveTeach(event);
+                    }
+                    
                     myUploadWidget.close();
                 }
             }
@@ -788,6 +807,7 @@ const mapDispatchToProps = (dispatch) => ({
     startEditAboutPageSeo: (seo) => dispatch(startEditAboutPageSeo(seo)),
     startAddTeach: (teach, order) => dispatch(startAddTeach(teach, order)),
     startUpdateTeach: (teach) => dispatch(startUpdateTeach(teach)),
+    startUpdateTeachImage: (teach, publicid) => dispatch(startUpdateTeachImage(teach, publicid),
     startUpdateTeachings: (fbTeachings, teachings) => dispatch(startUpdateTeachings(fbTeachings, teachings)),
     startShowTeach: (teach) => dispatch(startShowTeach(teach)),
     startDeleteTeach: (teach) => dispatch(startDeleteTeach(teach)),

@@ -6,24 +6,6 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import isEqual from 'lodash.isequal';
-import AnimateHeight from 'react-animate-height';
-import Textarea from 'react-expanding-textarea';
-import $ from 'jquery';
-
-const shouldHighLight = (org, update, eng) => {
-    if ( org === update ) {
-        return `about__content__text${eng} Heebo-Regular edit__bg`;
-    } else {
-        return `about__content__text${eng} Heebo-Regular edit__changed__bg`;
-    }
-};
-
-var windowWidth   = window.innerWidth
-                    || document.documentElement.clientWidth
-                    || document.body.clientWidth;
-var windowHeight   = window.innerHeight
-                    || document.documentElement.clientHeight
-                    || document.body.clientHeight;
 
 export default class Teach extends React.Component {
     
