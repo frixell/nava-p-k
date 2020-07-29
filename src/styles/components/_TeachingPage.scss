@@ -1,3 +1,5 @@
+$teachBorder: $offblack;
+
 .teach__image__box {
     width: 60%;
     min-height: 15rem;
@@ -6,7 +8,7 @@
     align-items: center;
     margin: 0 auto;
     position: relative;
-    border: 1px solid $black;
+    border: 1px solid $teachBorder;
 }
 
 .teach__details__box {
@@ -18,12 +20,12 @@
     min-height: 5rem;
     padding: 1rem;
     margin: 0 auto;
-    border-bottom: 1px solid $black;
-    border-right: 1px solid $black;
+    border-bottom: 1px solid $teachBorder;
+    border-right: 1px solid $teachBorder;
 }
 
 .teach__details__box--eng {
-    border-left: 1px solid $black;
+    border-left: 1px solid $teachBorder;
 }
 
 .teach__description__box {
@@ -35,9 +37,8 @@
     min-height: 5rem;
     padding: 1rem;
     margin: 0 auto;
-    border-bottom: 1px solid $black;
-    border-left: 1px solid $black;
-    border-right: 1px solid $black;
+    border-bottom: 1px solid $teachBorder;
+    border-left: 1px solid $teachBorder;
 }
 
 .teach__box {
