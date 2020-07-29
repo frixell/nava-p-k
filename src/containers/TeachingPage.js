@@ -340,7 +340,7 @@ class TeachingPage extends React.Component {
                     }
                     
                     if (currentTeachImage && currentTeachImage.publicId) {
-                        this.saveTeachImage(event);
+                        this.saveTeachImage(event, currentTeachImage.publicId);
                     } else {
                         this.saveTeach(event);
                     }
