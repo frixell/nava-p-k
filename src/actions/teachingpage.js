@@ -126,7 +126,7 @@ export const startUpdateTeachImage = (teachData = {}, publicid) => {
         // 'http://localhost:3000/deleteImage'
         fetch('/deleteImage', {
             method: 'POST',
-            body: 'publicid=' + image.publicId,
+            body: 'publicid=' + publicid,
             headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
             }
