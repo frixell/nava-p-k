@@ -38,7 +38,7 @@ app.use(function forceHTTPS(req, res, next) {
 });
 
 
-var allowedOrigins = ['http://localhost:8080',
+var allowedOrigins = ['http://localhost:8080/',
                       'https://www.navapersovkainer.com',
                       'http://nava-p-k.herokuapp.com',
                       'https://nava-p-k.herokuapp.com'];
@@ -357,18 +357,8 @@ app.use(compression());
 app.use(express.static(publicPath));
 
 
-
-
-
 app.post("/deleteImage", bodyParser.urlencoded({ extended: true }), function(request, response) {
     if(request.body.publicid){
-
-        // cloudinary.config({ 
-        //   cloud_name: process.env.CLOUDINARY_CLOUD_NAME || cloudinaryVars.cloud_name, 
-        //   api_key: process.env.CLOUDINARY_API_KEY || cloudinaryVars.api_key, 
-        //   api_secret: process.env.CLOUDINARY_API_SECRET || cloudinaryVars.api_secret
-        // });
-
         cloudinary.config({ 
           cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
           api_key: process.env.CLOUDINARY_API_KEY, 

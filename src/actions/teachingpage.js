@@ -124,6 +124,33 @@ export const startDeleteTeach = (teachData = {}) => {
             descriptionHebrew,
             order
         };
+        
+        console.log('image:', image);
+        var method = 'POST';
+        var action = 'http://localhost:3000/deleteImage';
+        //var action = '/deleteImage';
+        var xhr = new XMLHttpRequest();
+        var data = '';
+        data += 'publicid=' + image.publicId;
+        // xhr.open(method, action);
+        // xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+        // xhr.send(data);
+        // xhr.addEventListener('load', function (e) {
+        //     var data = e.target.responseText;
+        //     console.log('xhr data', data);
+        // });
+        
+        
+        fetch('http://localhost:3000/deleteImage', {
+            method: 'POST',
+            body: 'publicid=' + image.publicId,
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+        
+        
+        
         return database.ref(`website/teachingpage/teachings/${id}`).remove().then((ref) => {
             console.log(ref);
             dispatch(deleteTeach(teach));

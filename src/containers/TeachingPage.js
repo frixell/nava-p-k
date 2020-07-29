@@ -298,7 +298,7 @@ class TeachingPage extends React.Component {
             }
         },
             (error, result) => {
-                console.log(event);
+                // console.log(event);
                 if (error) {
                     // console.log(error);
                 }
