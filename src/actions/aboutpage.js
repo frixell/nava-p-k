@@ -47,7 +47,7 @@ export const startSetAboutPage = () => {
             //console.log('in set homepage ============');
             const aboutpage = snapshot.val();
             dispatch(setAboutPage(aboutpage));
-            //dispatch(check());
+            return aboutpage;
         });
     };
 };
@@ -56,14 +56,14 @@ export const startSetAboutPage = () => {
 
 
 
-// ADD_ABOUT_IMAGE
+// SAVE_ABOUT_IMAGE
 
-export const addAboutImage = (images) => ({
-    type: 'ADD_ABOUT_IMAGE',
-    images
+export const saveAboutImage = (image) => ({
+    type: 'SAVE_ABOUT_IMAGE',
+    image
 });
 
-export const startAddAboutImage = (imageData = {}, order) => {
+export const startSaveAboutImage = (imageData = {}, publicid) => {
     return (dispatch, getState) => {
         const {
             publicId = '',
@@ -72,43 +72,30 @@ export const startAddAboutImage = (imageData = {}, order) => {
             height = '',
             alt = ''
         } = imageData;
-        const eventId = "about";
+        
         const image = {
             publicId,
             src,
             width,
             height,
             alt,
-            order: order
+            order: 0
         };
-        return database.ref('website/aboutpage/aboutimages').push(image).then((ref) => {
-            
-            const localImage = {
-                id: ref.key,
-                ...image
-            }
-
-            let aboutImages = getState().aboutpage.aboutimages;
-
-            console.log(aboutImages);
-            if (!aboutImages) {
-                aboutImages = {};
-            }
-
-            aboutImages[ref.key] = localImage;
-
-            console.log(aboutImages);
-
-            const images = [];
-            Object.keys(aboutImages).map((key) => {
-                const keyedImg = {id: String(key), ...aboutImages[key]};
-                images.push(keyedImg);
+        
+        if (publicid) {
+            // 'http://localhost:3000/deleteImage'
+            fetch('/deleteImage', {
+                method: 'POST',
+                body: 'publicid=' + publicid,
+                headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+                }
             });
-
-            console.log(images);
-
-             dispatch(addAboutImage(images));
-             return images;
+        }
+        
+        return database.ref('website/aboutpage/image').update(image).then((ref) => {
+             dispatch(saveAboutImage(image));
+             return image;
         });
     };
 };

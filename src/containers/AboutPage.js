@@ -15,7 +15,7 @@ import PageUpStrip from '../components/common/PageUpStrip';
 import SocialMedia from '../components/common/SocialMedia';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
-import { startSetAboutPage, startEditAboutPage, startEditAboutPageSeo, startAddAboutImage, startDeleteAboutImage } from '../actions/aboutpage';
+import { startSetAboutPage, startEditAboutPage, startEditAboutPageSeo, startSaveAboutImage, startDeleteAboutImage } from '../actions/aboutpage';
 import { iconRatioOn } from '../reusableFunctions/iconRatioOn';
 import { iconRatioOut } from '../reusableFunctions/iconRatioOut';
 import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
@@ -38,24 +38,14 @@ class AboutPage extends React.Component {
         super(props);
         this.state = {
             aboutpageOrigin: [],
-            aboutpage: { content: '' },
-            ratio: 1,
-            ratioFacebook: 1,
-            ratioInstagram: 1,
-            ratioMail: 1,
-            ratioPhone: 1,
-            ratioGreenArrow: 1,
+            aboutpage: { content: '', image: '' },
             pageupImageClassName: 'pageup__image__absolute',
-            slideGalleryModalIsOpen: false,
             seoAboutpageModalIsOpen: false,
             seo: {
                 title: '',
                 description: '',
                 keyWords: '',
             },
-            images: [],
-            galleryImages: [],
-            slideGalleryImages: [],
             langLink: '/אודות',
             langLinkEng: '/about'
         }
@@ -131,70 +121,13 @@ class AboutPage extends React.Component {
         if (typeof(window) !== "undefined") {
             window.addEventListener('scroll', this.handleScroll);
         }
-        this.props.startSetAboutPage().then(()=> {
-            let aboutpage= [];
-            
-            if ( this.props.aboutpage ){
-                
-                aboutpage = this.props.aboutpage;
-                const aboutimages = [];
-                const img = aboutpage.aboutimages;
-                img && Object.keys(img).map((key) => {
-                    const keyedImg = {id: String(key), ...img[key]};
-                    aboutimages.push(keyedImg);
-                });
-            
-                aboutimages.sort((a, b) => {
-                    return a.order > b.order ? 1 : -1;
-                });
-                const galleryImages = [];
-                aboutimages.map((image) => {
-                    return galleryImages.push({
-                        publicId: image.publicId,
-                        id: image.id,
-                        order: image.order,
-                        src: image.src,
-                        alt: image.alt,
-                        width: image.width,
-                        height: image.height
-                    });
-                });
-                const slideGalleryImages = [];
-                aboutimages.map((image) => {
-                    let imageWidth = image.width;
-                    let imageHeight = image.height;
-                    const ratio = 600/imageHeight;
-                    imageWidth = ratio*imageWidth;
-                    imageHeight = ratio*imageHeight;
-                    if (imageWidth > 960) {
-                        const widthRatio = 960/imageWidth;
-                        imageWidth = widthRatio*imageWidth;
-                        imageHeight = widthRatio*imageHeight;
-                    }
-                    return slideGalleryImages.push({
-                        publicId: image.publicId,
-                        id: image.id,
-                        order: image.order,
-                        src: image.src,
-                        altText: image.alt,
-                        width: imageWidth,
-                        height: imageHeight,
-                        caption: '',
-                        header: ''
-                    });
-                });
-                this.setState({
-                    images: aboutimages,
-                    galleryImages,
-                    slideGalleryImages
-                });
-
-                this.setState({
-                    seo: aboutpage.seo,
-                    aboutpage: aboutpage,
-                    aboutpageOrigin: aboutpage
-                });
-            }
+        this.props.startSetAboutPage().then(aboutpage => {
+            console.log('aboutpage', aboutpage);
+            this.setState({
+                seo: aboutpage.seo,
+                aboutpage: aboutpage,
+                aboutpageOrigin: aboutpage
+            });
         });
     }
 
@@ -249,8 +182,8 @@ class AboutPage extends React.Component {
         const eventId = this.state.eventId;
         var myUploadWidget;
         myUploadWidget = cloudinary.openUploadWidget({ 
-            cloud_name: 'dz7woxmn2', 
-            upload_preset: 'rsrmcqga', 
+            cloud_name: 'dewafmxth', 
+            upload_preset: 'ml_default', 
             sources: [
                 "local",
                 "url",
@@ -271,61 +204,23 @@ class AboutPage extends React.Component {
                     console.log(error);
                 }
                 if (result.event === "success") {
-                    const order = Number(this.state.images.length)+1;
                     const image = {
                         publicId: result.info.public_id,
                         src: result.info.secure_url,
                         width: result.info.width,
                         height: result.info.height,
                         alt: '',
-                        order: order
+                        order: 0
                     };
+                    
+                    let publicId = null;
+                    if(this.state.aboutpage.image && this.state.aboutpage.image.publicId) publicId = this.state.aboutpage.image.publicId;
                         
-                    this.props.startAddAboutImage(image, order).then((images)=> {
-                        images.sort((a, b) => {
-                            return a.order > b.order ? 1 : -1;
-                        });
-                        const galleryImages = [];
-                        images.map((image) => {
-                            return galleryImages.push({
-                                publicId: image.publicId,
-                                id: image.id,
-                                order: image.order,
-                                src: image.src,
-                                alt: image.alt,
-                                width: image.width,
-                                height: image.height
-                            });
-                        });
-                        const slideGalleryImages = [];
-                        images.map((image) => {
-                            let imageWidth = image.width;
-                            let imageHeight = image.height;
-                            const ratio = 600/imageHeight;
-                            imageWidth = ratio*imageWidth;
-                            imageHeight = ratio*imageHeight;
-                            if (imageWidth > 800) {
-                                const widthRatio = 800/imageWidth;
-                                imageWidth = widthRatio*imageWidth;
-                                imageHeight = widthRatio*imageHeight;
-                            }
-                            return slideGalleryImages.push({
-                                publicId: image.publicId,
-                                id: image.id,
-                                order: image.order,
-                                src: image.src,
-                                altText: image.alt,
-                                width: imageWidth,
-                                height: imageHeight,
-                                caption: '',
-                                header: ''
-                            });
-                        });
+                    this.props.startSaveAboutImage(image, publicId).then((image)=> {
+                        const aboutpage = this.state.aboutpage;
+                        aboutpage.image = image;
                         this.setState({
-                            imagesOrigin: JSON.parse(JSON.stringify(images)),
-                            images,
-                            galleryImages,
-                            slideGalleryImages
+                            aboutpage
                         });
                     });
                     myUploadWidget.close();
@@ -663,6 +558,9 @@ class AboutPage extends React.Component {
                             action='setString'
                             name="slogen"
                             index="slogen"
+                            image={this.state.aboutpage.image}
+                            isAuthenticated={this.props.isAuthenticated}
+                            uploadWidget={this.uploadWidget}
                             key={`homepage-events-item-slogen`}
                             setData={this.setData}
                             lang={this.props.lang}
@@ -705,7 +603,7 @@ const mapDispatchToProps = (dispatch) => ({
     startSetAboutPage: () => dispatch(startSetAboutPage()),
     startEditAboutPage: (fbAboutpage, aboutpage) => dispatch(startEditAboutPage(fbAboutpage, aboutpage)),
     startEditAboutPageSeo: (seo) => dispatch(startEditAboutPageSeo(seo)),
-    startAddAboutImage: (image, order) => dispatch(startAddAboutImage(image, order)),
+    startSaveAboutImage: (image, publicId) => dispatch(startSaveAboutImage(image, publicId)),
     startDeleteAboutImage: (fbImages, images, publicid) => dispatch(startDeleteAboutImage(fbImages, images, publicid)),
     setLanguage: (lang) => dispatch(setLanguage(lang))
 });

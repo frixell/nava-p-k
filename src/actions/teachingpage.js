@@ -193,17 +193,16 @@ export const startUpdateTeachImage = (teachData = {}, publicid) => {
             order
         };
         
-        var data = '';
-        console.log('before fetch publicid', publicid);
-        data += 'publicid=' + publicid;
-        // 'http://localhost:3000/deleteImage'
-        fetch('/deleteImage', {
-            method: 'POST',
-            body: 'publicid=' + publicid,
-            headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
+        if (publicid) {
+            // 'http://localhost:3000/deleteImage'
+            fetch('/deleteImage', {
+                method: 'POST',
+                body: 'publicid=' + publicid,
+                headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            });
+        }
         
         return database.ref(`website/teachingpage/teachings/${id}`).update(teach).then((ref) => {
             console.log(ref);

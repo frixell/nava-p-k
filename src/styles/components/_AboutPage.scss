@@ -16,12 +16,12 @@
 .about__topstrip__image__box {
     width: 60vw;
     height: 35vw;
+    text-align: center;
     overflow: hidden;
 }
 
 .about__topstrip__image {
-    object-fit: cover;
-    width: 60vw;
+    max-width: 100%;
 }
 
 .about__topstrip__slogen {
