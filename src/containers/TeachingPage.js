@@ -1,29 +1,16 @@
 import React from 'react';
 import { Prompt } from "react-router-dom";
 import {Helmet} from 'react-helmet';
-//import { Button, Modal as ModalRB } from "react-bootstrap";
 import Button from 'react-bootstrap/lib/Button';
-import ModalRB from 'react-bootstrap/lib/Modal';
 import Modal from 'react-responsive-modal';
-import AboutTopStrip from '../components/aboutpage/AboutTopStrip';
-import AboutContentStrip from '../components/aboutpage/AboutContentStrip';
-import ContactStrip from '../components/contactpage/ContactStrip';
-import CustomersStrip from '../components/common/CustomersStrip';
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import PageUpStrip from '../components/common/PageUpStrip';
-import SocialMedia from '../components/common/SocialMedia';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
-import { startSetAboutPage, startEditAboutPage, startEditAboutPageSeo, startAddAboutImage, startDeleteAboutImage } from '../actions/aboutpage';
-import { startSetTeachingPage, startAddTeach, startShowTeach, startUpdateTeach, startUpdateTeachImage, startUpdateTeachings, startDeleteTeach } from '../actions/teachingpage';
+import { startEditTeachingPageSeo, startSetTeachingPage, startAddTeach, startShowTeach, startUpdateTeach, startUpdateTeachImage, startUpdateTeachings, startDeleteTeach } from '../actions/teachingpage';
 import Teach from './Teach';
-
-import { iconRatioOn } from '../reusableFunctions/iconRatioOn';
-import { iconRatioOut } from '../reusableFunctions/iconRatioOut';
 import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
-import TileGallery from '../components/common/TileGallery';
-import UncontrolledCarousel from '../components/UncontrolledCarouselSlide';
 import isEqual from 'lodash.isequal';
 import { setLanguage } from "redux-i18n";
 
@@ -39,7 +26,7 @@ class TeachingPage extends React.Component {
             
             pageupImageClassName: 'pageup__image__absolute',
             
-            seoAboutpageModalIsOpen: false,
+            seoModalIsOpen: false,
             seo: {
                 title: '',
                 description: '',
@@ -159,10 +146,19 @@ class TeachingPage extends React.Component {
                 teachings.sort((a, b) => {
                     return a.order > b.order ? -1 : 1;
                 });
+                
+                let seo = {
+                    title: '',
+                    description: '',
+                    keyWords: '',
+                };
+                
+                if (this.props.teachingpage.seo) seo = this.props.teachingpage.seo;
 
                 this.setState({
-                    teachings: teachings,
-                    teachingpage: teachingpage,
+                    seo,
+                    teachings,
+                    teachingpage,
                     teachingpageOrigin: teachingpage
                 });
             }
@@ -186,8 +182,8 @@ class TeachingPage extends React.Component {
                 });
 
                 this.setState({
-                    teachings: teachings,
-                    teachingpage: teachingpage,
+                    teachings,
+                    teachingpage,
                     teachingpageOrigin: teachingpage
                 });
         }
@@ -199,9 +195,9 @@ class TeachingPage extends React.Component {
         }
     }
 
-    onToggleAboutpageSeo = () => {
+    onToggleSeo = () => {
         this.setState({
-            seoAboutpageModalIsOpen: !this.state.seoAboutpageModalIsOpen
+            seoModalIsOpen: !this.state.seoModalIsOpen
         });
     }
 
@@ -232,19 +228,11 @@ class TeachingPage extends React.Component {
         });
     }
 
-    updateAboutpageSeo = () => {
+    updateSeo = () => {
         const seo = this.state.seo;
-        this.props.startEditAboutPageSeo(seo);
-        this.onToggleAboutpageSeo();
+        this.props.startEditTeachingPageSeo(seo);
+        this.onToggleSeo();
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -352,156 +340,6 @@ class TeachingPage extends React.Component {
         myUploadWidget.open();
     }
 
-    onImageOrderBlur = (e) => {
-        const images = [];
-        const galleryImages = this.state.galleryImages;
-        const imageId = e.target.dataset.id;
-        const index = e.target.dataset.index;
-        const order = e.target.dataset.order;
-        let newOrder = e.target.value;
-        if (newOrder > galleryImages.length) {
-            newOrder = galleryImages.length;
-        }
-        if (newOrder < 1) {
-            newOrder = 1;
-        }
-        const oldOrder = Number(e.target.dataset.index)+1;
-        const id = e.target.dataset.id;
-        if ( Number(newOrder) > Number(oldOrder) ) {
-            for (let i = 0; i < galleryImages.length; i++) {
-                if (id !== galleryImages[i].id) {
-                    if (galleryImages[i].order <= newOrder && galleryImages[i].order > oldOrder) {
-                        galleryImages[i].order = galleryImages[i].order-1;
-                    }
-                }
-            }
-        } else if ( Number(newOrder) < Number(oldOrder) ) {
-            for (let i = 0; i < galleryImages.length; i++) {
-                if (id !== galleryImages[i].id) {
-                    if (galleryImages[i].order < oldOrder && galleryImages[i].order >= newOrder) {
-                        galleryImages[i].order = Number(galleryImages[i].order)+1;
-                    }
-                }
-            }
-        }
-        galleryImages.sort((a, b) => {
-            return a.order > b.order ? 1 : -1;
-        });
-        galleryImages.map((image, index) => {
-            image.order = Number(index)+1;
-            images.push(image.image);
-        });
-        this.setState({
-            images,
-            galleryImages
-        });
-    }
-
-    onImageOrderChange = (e) => {
-        const galleryImages = this.state.galleryImages;
-        const eventId = this.state.eventId;
-        const imageId = e.target.dataset.id;
-        const index = e.target.dataset.index;
-        const order = e.target.dataset.order;
-        let newOrder = e.target.value;
-        if (newOrder > galleryImages.length) {
-            newOrder = galleryImages.length;
-        }
-        if (newOrder < 1) {
-            newOrder = 1;
-        }
-        galleryImages[index].order = Number(newOrder);
-        this.setState({
-            galleryImages
-        });
-    }
-
-    onImageOrderKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            this.onImageOrderBlur(e);
-        }
-    }
-
-    updateImages = () => {
-        const aboutpage = this.state.aboutpage;
-        const galleryImages = this.state.galleryImages;
-        const images = this.state.images;
-        const fbImages = {};
-        galleryImages.map((image, index) => {
-            fbImages[image.id] = image;
-        })
-        aboutpage.aboutimages = fbImages;
-        this.setState({
-            aboutpage
-        });
-        this.onUpdateAboutPage();
-    }
-
-    onDeleteImage = (e) => {
-        const id = e.target.dataset.id;
-        const order = e.target.dataset.order;
-        const publicid = e.target.dataset.publicid;
-        const galleryImages = [];
-        const galleryImagesOld = this.state.galleryImages;
-        const images = [];
-        for (let i = 0; i < galleryImagesOld.length; i++) {
-            if (id !== galleryImagesOld[i].id) {
-                if (galleryImagesOld[i].order > order) {
-                    galleryImagesOld[i].order = galleryImagesOld[i].order-1;
-                }
-                galleryImages.push(galleryImagesOld[i]);
-            }
-        }
-        galleryImages.map((image, index) => {
-            image.order = Number(index)+1;
-            images.push(image);
-        });
-        const fbImages = {};
-        images.map((image, index) => {
-            fbImages[image.id] = image;
-        })
-        fbImages[id] = null;
-        this.props.startDeleteAboutImage( fbImages, images, publicid );
-        const slideGalleryImages = [];
-        images.map((image) => {
-            let imageWidth = image.width;
-            let imageHeight = image.height;
-            let ratioWidth = 1;
-            let ratioHeight = 1;
-            if (imageHeight < 800 && imageWidth < 1000) {
-                ratioHeight = 800/imageHeight;
-                ratioWidth = 1000/imageWidth;
-                if (ratioHeight > ratioWidth) {
-                    imageHeight = ratioHeight*imageHeight;
-                    imageWidth = ratioHeight*imageWidth;
-                } else {
-                    imageHeight = ratioWidth*imageHeight;
-                    imageWidth = ratioWidth*imageWidth;
-                }
-            }
-            return slideGalleryImages.push({
-                publicId: image.publicId,
-                id: image.id,
-                order: image.order,
-                src: image.src,
-                altText: image.alt,
-                width: imageWidth,
-                height: imageHeight,
-                caption: '',
-                header: ''
-            });
-        });
-        this.setState({
-            imagesOrigin: JSON.parse(JSON.stringify(images)),
-            images,
-            galleryImages,
-            slideGalleryImages
-        });
-    }
-    
-    
-    
-
     onItemOrderBlur = (e) => {
         const teachings = this.state.teachings;
         let newOrder = e.target.value;
@@ -601,7 +439,7 @@ class TeachingPage extends React.Component {
                     this.props.isAuthenticated === true ? 
                         <Prompt
                             style={{background: "red"}}
-                            when={!isEqual(this.state.aboutpageOrigin, this.state.aboutpage)}
+                            when={!isEqual(this.state.teachingpageOrigin, this.state.teachingpage)}
                             message="Changes you made may not be saved."
                         />
                     :
@@ -614,7 +452,7 @@ class TeachingPage extends React.Component {
                 
                 { 
                     this.props.isAuthenticated === true ? 
-                        <Modal open={this.state.seoAboutpageModalIsOpen} onClose={this.onToggleAboutpageSeo} center dir="rtl">
+                        <Modal open={this.state.seoModalIsOpen} onClose={this.onToggleSeo} center dir="rtl">
                             <div className="backoffice__seo__modal">
                                 <h4 className="Heebo-Regular">seo</h4>
                                 <div className="backoffice__seo__modal__left">
@@ -658,7 +496,7 @@ class TeachingPage extends React.Component {
                                     />
                                     <br />
                                 </div>
-                                <Button bsStyle="success" onClick={this.updateAboutpageSeo}>עדכון</Button>
+                                <Button bsStyle="success" onClick={this.updateSeo}>עדכון</Button>
                             </div>
                         </Modal>
                     :
@@ -742,7 +580,7 @@ class TeachingPage extends React.Component {
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
                                         {`${this.props.lang === 'en' ? 'SEO' : 'קידום'}`}
                                     </div>
-                                    <button className="backoffice_button" onClick={this.onToggleAboutpageSeo}>
+                                    <button className="backoffice_button" onClick={this.onToggleSeo}>
                                     <img
                                         className="backoffice__edit__icon"
                                         src="/images/backoffice/edit.svg"
@@ -803,15 +641,13 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     startLogout: () => dispatch(startLogout()),
     startSetTeachingPage: () => dispatch(startSetTeachingPage()),
-    startEditAboutPage: (fbAboutpage, aboutpage) => dispatch(startEditAboutPage(fbAboutpage, aboutpage)),
-    startEditAboutPageSeo: (seo) => dispatch(startEditAboutPageSeo(seo)),
+    startEditTeachingPageSeo: (seo) => dispatch(startEditTeachingPageSeo(seo)),
     startAddTeach: (teach, order) => dispatch(startAddTeach(teach, order)),
     startUpdateTeach: (teach) => dispatch(startUpdateTeach(teach)),
     startUpdateTeachImage: (teach, publicid) => dispatch(startUpdateTeachImage(teach, publicid)),
     startUpdateTeachings: (fbTeachings, teachings) => dispatch(startUpdateTeachings(fbTeachings, teachings)),
     startShowTeach: (teach) => dispatch(startShowTeach(teach)),
     startDeleteTeach: (teach) => dispatch(startDeleteTeach(teach)),
-    startDeleteAboutImage: (fbImages, images, publicid) => dispatch(startDeleteAboutImage(fbImages, images, publicid)),
     setLanguage: (lang) => dispatch(setLanguage(lang))
 });
 

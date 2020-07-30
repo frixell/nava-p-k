@@ -2,30 +2,49 @@ import database from '../firebase/firebase';
 
 
 
-// SET_TEACHINGPAGE
+// EDIT_TEACHINGPAGE_SEO
 
-export const setTeachingPage = (teachingpage) => ({
-    type: "SET_TEACHINGPAGE",
-    teachingpage
+export const editTeachingPageSeo = ( seo ) => ({
+    type: 'EDIT_TEACHINGPAGE_SEO',
+    seo
 });
 
-export const startSetTeachingPage = () => {
+export const startEditTeachingPageSeo = ( seo ) => {
     return (dispatch) => {
-        return database.ref(`website/teachingpage/teachings`).once('value').then((snapshot) => {
-            const teachingpage = snapshot.val();
-            const teachingsArray = [];
-            Object.keys(teachingpage).map((key) => {
-                const keyedTeach = {id: String(key), ...teachingpage[key]};
-                teachingsArray.push(keyedTeach);
-            });
-
-            // console.log(teachingsArray);
-            dispatch(setTeachingPage(teachingsArray));
-        });
+        return database.ref(`serverSeo/teaching/seo`).update(seo).then(() => {
+            return database.ref(`website/teachingpage/seo`).update(seo).then(() => {
+                dispatch(editTeachingPageSeo( seo ));
+            })
+        })
     };
 };
 
 
+
+
+// SET_TEACHINGPAGE
+
+export const setTeachingPage = (teachings, seo) => ({
+    type: "SET_TEACHINGPAGE",
+    teachings,
+    seo
+});
+
+export const startSetTeachingPage = () => {
+    return (dispatch) => {
+        return database.ref(`website/teachingpage`).once('value').then((snapshot) => {
+            const teachingpage = snapshot.val();
+            const teachingsArray = [];
+            Object.keys(teachingpage.teachings).map((key) => {
+                const keyedTeach = {id: String(key), ...teachingpage.teachings[key]};
+                teachingsArray.push(keyedTeach);
+            });
+
+            // console.log(teachingsArray);
+            dispatch(setTeachingPage(teachingsArray, teachingpage.seo));
+        });
+    };
+};
 
 
 // UPDATE_TEACHINGS
@@ -48,6 +67,60 @@ export const startUpdateTeachings = (fbTeachings, teachings) => {
 
 
 
+
+// ADD_TEACH
+
+export const addTeach = (teach) => ({
+    type: 'ADD_TEACH',
+    teach
+});
+
+export const startAddTeach = (teachData = {}, order) => {
+    return (dispatch, getState) => {
+        const {
+            publicId = '',
+            image = '',
+            details = '',
+            description = '',
+            detailsHebrew = '',
+            descriptionHebrew = ''
+        } = teachData;
+        const eventId = "teach";
+        const teach = {
+            publicId,
+            image,
+            details,
+            description,
+            detailsHebrew,
+            descriptionHebrew,
+            order: order
+        };
+        return database.ref('website/teachingpage/teachings').push(teach).then((ref) => {
+            
+            const localTeach = {
+                id: ref.key,
+                ...teach
+            }
+
+            let teachings = getState().teachingpage.teachings;
+            
+            if (!teachings) {
+                teachings = {};
+            }
+
+            teachings.push(localTeach);
+            
+            const teachingsArray = [];
+            Object.keys(teachings).map((key) => {
+                const keyedTeach = {id: String(key), ...teachings[key]};
+                teachingsArray.push(keyedTeach);
+            });
+
+             dispatch(addTeach(localTeach));
+             return teachingsArray;
+        });
+    };
+};
 
 
 // UPDATE_TEACH
@@ -158,68 +231,6 @@ export const startShowTeach = ( teach ) => {
 };
 
 
-
-
-
-// ADD_TEACH
-
-export const addTeach = (teach) => ({
-    type: 'ADD_TEACH',
-    teach
-});
-
-export const startAddTeach = (teachData = {}, order) => {
-    return (dispatch, getState) => {
-        const {
-            publicId = '',
-            image = '',
-            details = '',
-            description = '',
-            detailsHebrew = '',
-            descriptionHebrew = ''
-        } = teachData;
-        const eventId = "teach";
-        const teach = {
-            publicId,
-            image,
-            details,
-            description,
-            detailsHebrew,
-            descriptionHebrew,
-            order: order
-        };
-        return database.ref('website/teachingpage/teachings').push(teach).then((ref) => {
-            
-            const localTeach = {
-                id: ref.key,
-                ...teach
-            }
-
-            let teachings = getState().teachingpage.teachings;
-            
-            if (!teachings) {
-                teachings = {};
-            }
-
-            teachings[ref.key] = localTeach;
-            
-            const teachingsArray = [];
-            Object.keys(teachings).map((key) => {
-                const keyedTeach = {id: String(key), ...teachings[key]};
-                teachingsArray.push(keyedTeach);
-            });
-
-            // console.log(teachingsArray);
-
-             dispatch(addTeach(teachingsArray));
-             return teachingsArray;
-        });
-    };
-};
-
-
-
-
 // DELETE_TEACH
 
 export const deleteTeach = (teach) => ({
@@ -269,5 +280,3 @@ export const startDeleteTeach = (teachData = {}) => {
         });
     };
 };
-
-
