@@ -314,10 +314,10 @@ class MapViewTest extends Component {
                 } else if (point.y > 84 && point.y < 100) {
                     yIndex = 10;
                 }
-                console.log('yIndex', yIndex);
+                // console.log('yIndex', yIndex);
                 const coordinates = [point.x, point.y];
-                //console.log('view.zoom', view.zoom);
-                //console.log('zoomRadius[view.zoom]', zoomRadius[Math.round(view.zoom)]);
+                // console.log('view.zoom', view.zoom);
+                // console.log('zoomRadius[view.zoom]', zoomRadius[Math.round(view.zoom)]);
                 const radius = zoomRadius[Math.round(view.zoom)] - zoomRadius[Math.round(view.zoom)] / indexY[Math.round(yIndex)]; //zoomFactorsY[view.zoom] * 2000000 / (zoomFactorsY[view.zoom] * 10) - point.y * (zoomFactorsY[view.zoom] * zoomFactorsYVal[view.zoom] * 200);
                 const numberOfEdges = 240;
                 
@@ -439,12 +439,12 @@ class MapViewTest extends Component {
                 
                 graphicsLayer
                     .when(function() {
-                        console.log(graphicsLayer.fullExtent);
+                        // console.log(graphicsLayer.fullExtent);
                         return graphicsLayer.fullExtent;
                     })
                     .then(function(response) {
-                        console.log(response);
-                        //view.goTo(response.extent);
+                        // console.log(response);
+                        // view.goTo(response.extent);
                     });
             }
         });
@@ -532,16 +532,16 @@ class MapViewTest extends Component {
                 
                 view.popup.autoOpenEnabled = false;
                 view.popup.on("trigger-action", function(event) {
-                    console.log(event);
+                    // console.log(event);
                     if (event.action.id === "expand-this") {
-                        console.log('here');
+                        // console.log('here');
                         expandThis(event);
                         //selectedPoint
                     }
                 });
                 
                 let expandThis = (event) => {
-                    console.log(event);
+                    // console.log(event);
                     this.props.handleExpandProject(this.state.selectedPoint);
                     view.popup.close();
                 }
@@ -565,7 +565,7 @@ class MapViewTest extends Component {
                         };
                         
                         this.props.addPoint(point).then(respoint => {
-                            console.log('respoint', respoint);
+                            // console.log('respoint', respoint);
                             points.push(respoint);
                             this.setState({points});
                             
@@ -603,7 +603,7 @@ class MapViewTest extends Component {
                                 geometry: polygon,
                                 symbol: simpleFillSymbol
                             });
-                            console.log('pointGraphic', pointGraphic);
+                            // console.log('pointGraphic', pointGraphic);
                             graphicsLayer.add(pointGraphic);
                         });
                     }
@@ -613,7 +613,7 @@ class MapViewTest extends Component {
                     }
                     
                     view.hitTest(event).then(function(response) {
-                        console.log('hitTest response', response);
+                        // console.log('hitTest response', response);
                         let results = response.results[0].graphic;
                         if (results) {
                             let titleHebrew = results.point.titleHebrew;

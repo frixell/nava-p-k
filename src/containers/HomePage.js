@@ -698,7 +698,7 @@ class HomePage extends React.Component {
                 {
                     this.props.isAuthenticated ?
                     
-                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.lang === 'en' ? {left: '90%'} : {left: '10%'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.lang === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label">
                                 {`${this.props.lang === 'en' ? 'Exit' : 'יציאה'}`}
                             </div>
@@ -712,12 +712,12 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && this.state.selectedProject ?
-                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {left: '83%'} : {left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
-                            <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
-                                {`${this.props.lang === 'en' ? 'Save Project' : 'שמירת פרוייקט'}`}
+                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '83%'} : {textAlign: 'center', left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
+                            <div className="backoffice__toolbar__label" style={{textAlign: 'center', color: this.state.needSave ? 'red' : 'aqua'}}>
+                                {`${this.props.lang === 'en' ? 'Save' : 'שמירה'}`}
                             </div>
                             <button className="backoffice_button" onClick={this.onUpdateProject}>
-                                <img className="backoffice_icon" src="/images/backoffice/save.svg" alt="שמירת פרוייקט" />
+                                <img className="backoffice_icon" src="/images/backoffice/save.svg" alt="שמירה" />
                             </button>
                         </div>
                     :
@@ -726,9 +726,9 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && !this.state.selectedProject ?
-                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--add-project" style={this.props.lang === 'en' ? {left: '83%'} : {left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
-                            <div className="backoffice__toolbar__label" style={{color: this.state.allowAddPoint ? 'red' : 'aqua'}}>
-                                {`${this.props.lang === 'en' ? 'Add Project' : 'הוספת פרוייקט'}`}
+                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--add-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '83%'} : {textAlign: 'center', left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
+                            <div className="backoffice__toolbar__label" style={{width: '7rem', textAlign: 'center', color: this.state.allowAddPoint ? 'red' : 'aqua'}}>
+                                {`${this.props.lang === 'en' ? 'Add project' : 'הוספת פרוייקט'}`}
                             </div>
                             <button className="backoffice_button" onClick={this.allowAddPoint}>
                                 <img className="backoffice_icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת פרוייקט" />
@@ -741,34 +741,41 @@ class HomePage extends React.Component {
                 
                 {this.props.isAuthenticated ? 
                 (
-                    <div className="backoffice__nav__toolbar__buttons" style={this.props.lang === 'en' ? {left: '76%'} : {left: '24%'}}>
-                        <div className="backoffice__toolbar__label" style={this.props.lang === 'en' ? {paddingLeft: '6px'} : {textAlign: 'left'}}>
-                            {`${this.props.lang === 'en' ? 'Categories' : 'ניהול קטגוריות'}`}
+                    <div className="backoffice__nav__toolbar__buttons" style={this.props.lang === 'en' ? {textAlign: 'center', left: '76%'} : {textAlign: 'center', left: '24%'}}>
+                        <div className="backoffice__toolbar__label" style={this.props.lang === 'en' ? {paddingLeft: '6px', textAlign: 'center'} : {textAlign: 'center'}}>
+                            {`${this.props.lang === 'en' ? 'Manage categories' : 'ניהול קטגוריות'}`}
                         </div>
-                        <button
-                            className="backoffice__add__button"
-                            onClick={
-                                this.onToggleNewCategoryName
-                            }
-                        >
-                            <img
-                                className="backoffice__add__icon"
-                                src="/images/eventspage/add-eventSubcategory-icon.svg"
-                                alt="הוספת קטגוריה"
-                            />
-                        </button>
-                        <button
-                            className="backoffice__edit__button"
-                            onClick={
-                                this.startEditCategory
-                            }
-                        >
-                            <img
-                                className="backoffice__edit__icon"
-                                src="/images/backoffice/edit.svg"
-                                alt="עריכה"
-                            />
-                        </button>
+                        <div style={{
+                            position: 'relative',
+                            width: '7rem',
+                            height: '3rem',
+                            display: 'inline-block'
+                        }}>
+                            <button
+                                className="backoffice__add__button"
+                                onClick={
+                                    this.onToggleNewCategoryName
+                                }
+                            >
+                                <img
+                                    className="backoffice__add__icon"
+                                    src="/images/eventspage/add-eventSubcategory-icon.svg"
+                                    alt="הוספת קטגוריה"
+                                />
+                            </button>
+                            <button
+                                className="backoffice__edit__button"
+                                onClick={
+                                    this.startEditCategory
+                                }
+                            >
+                                <img
+                                    className="backoffice__edit__icon"
+                                    src="/images/backoffice/edit.svg"
+                                    alt="עריכה"
+                                />
+                            </button>
+                        </div>
                     </div>
                 ) : null}
                 

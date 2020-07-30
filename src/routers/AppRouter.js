@@ -1,6 +1,5 @@
 import React from 'react';
 import { Router, Route, Switch, Link, NavLink } from 'react-router-dom';
-//import createHistory from 'history/createBrowserHistory';
 import { createMemoryHistory } from 'history';
 const createHistory = require("history").createBrowserHistory;
 import ReactLoading from "react-loading";
@@ -23,7 +22,6 @@ import ContactPage from '../containers/ContactPage';
 import HomePage from '../containers/HomePage';
 import NotFoundPage from '../containers/NotFoundPage';
 import LoginPage from '../components/LoginPage';
-import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import SigninPage from '../components/SigninPage';
 import { connect } from 'react-redux';
@@ -35,27 +33,22 @@ class AppRouter extends React.Component {
         return (
             <Router history={history}>
                 <div>
-                    {
-                        this.props.events.categories ?
-                        <Switch>
-                            <Route path="/" render={(props) => ( <HomePage {...props} urlLang='he' />)} exact={true} />
-                            <Route path="/עב" render={(props) => ( <HomePage {...props} urlLang='he' />)} exact={true} />
-                            <Route path="/en" render={(props) => ( <HomePage {...props} urlLang='en' />)} exact={true} />
-                            <Route path="/אודות" render={(props) => ( <AboutPage {...props} urlLang='he' />)} exact={true} />
-                            <Route path="/About" render={(props) => ( <AboutPage {...props} urlLang='en' />)} exact={true} />
-                            <Route path="/הוראה" render={(props) => ( <TeachingPage {...props} urlLang='he' />)} exact={true} />
-                            <Route path="/Teaching" render={(props) => ( <TeachingPage {...props} urlLang='en' />)} exact={true} />
-                            <Route path="/קורות_חיים" render={(props) => ( <CvPage {...props} urlLang='he' />)} exact={true} />
-                            <Route path="/CV" render={(props) => ( <CvPage {...props} urlLang='en' />)} exact={true} />
-                            <Route path="/צרו_קשר" component={ContactPage} exact={true} />
-                            <Route path="/Contact" component={ContactPage} exact={true} />
-                            <Route path="/signin" component={SigninPage} exact={true} />
-                            <PublicRoute path="/login" component={LoginPage} exact={true} />
-                            <Route component={NotFoundPage} />
-                        </Switch>
-                        :
-                            null
-                        }   
+                    <Switch>
+                        <Route path="/" render={(props) => ( <HomePage {...props} urlLang='he' />)} exact={true} />
+                        <Route path="/עב" render={(props) => ( <HomePage {...props} urlLang='he' />)} exact={true} />
+                        <Route path="/en" render={(props) => ( <HomePage {...props} urlLang='en' />)} exact={true} />
+                        <Route path="/אודות" render={(props) => ( <AboutPage {...props} urlLang='he' />)} exact={true} />
+                        <Route path="/About" render={(props) => ( <AboutPage {...props} urlLang='en' />)} exact={true} />
+                        <Route path="/הוראה" render={(props) => ( <TeachingPage {...props} urlLang='he' />)} exact={true} />
+                        <Route path="/Teaching" render={(props) => ( <TeachingPage {...props} urlLang='en' />)} exact={true} />
+                        <Route path="/קורות_חיים" render={(props) => ( <CvPage {...props} urlLang='he' />)} exact={true} />
+                        <Route path="/CV" render={(props) => ( <CvPage {...props} urlLang='en' />)} exact={true} />
+                        <Route path="/צרו_קשר" component={ContactPage} exact={true} />
+                        <Route path="/Contact" component={ContactPage} exact={true} />
+                        <Route path="/signin" component={SigninPage} exact={true} />
+                        <PublicRoute path="/login" component={LoginPage} exact={true} />
+                        <Route component={NotFoundPage} />
+                    </Switch>
                 </div>
             </Router>
         )
@@ -63,8 +56,7 @@ class AppRouter extends React.Component {
 };
 
 const mapStateToProps = (state) => ({
-    isAuthenticated: !!state.auth.uid,
-    events: state.eventspage
+    isAuthenticated: !!state.auth.uid
 });
 
 export default connect(mapStateToProps)(AppRouter);

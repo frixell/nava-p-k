@@ -3,16 +3,9 @@ import thunk from 'redux-thunk';
 import aboutpageReducer from '../reducers/aboutpage';
 import cvpageReducer from '../reducers/cvpage';
 import teachingpageReducer from '../reducers/teachingpage';
-import workshoppageReducer from '../reducers/workshoppage';
 import authReducer from '../reducers/auth';
-import costumersReducer from '../reducers/costumers';
-import eventspageReducer from '../reducers/eventspage';
 import homepageReducer from '../reducers/homepage';
 import navigationReducer from '../reducers/navigation';
-import newsletterReducer from '../reducers/newsletter';
-import messagesReducer from '../reducers/messages';
-import desktopGalleryReducer from '../reducers/desktopGallery';
-import mobileGalleryReducer from '../reducers/mobileGallery';
 import pointsReducer from '../reducers/points';
 import categoriesReducer from '../reducers/categories';
 import tableTemplateReducer from '../reducers/tableTemplate';
@@ -38,15 +31,8 @@ export default () => {
             cvpage: cvpageReducer,
             teachingpage: teachingpageReducer,
             auth: authReducer,
-            costumers: costumersReducer,
-            eventspage: eventspageReducer,
             homepage: homepageReducer,
-            messages: messagesReducer,
             navigation: navigationReducer,
-            newsletter: newsletterReducer,
-            workshoppage: workshoppageReducer,
-            desktopGallery: desktopGalleryReducer,
-            mobileGallery: mobileGalleryReducer,
             i18nState
         }),
         composeEnhancers(applyMiddleware(thunk))

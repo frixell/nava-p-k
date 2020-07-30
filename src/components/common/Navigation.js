@@ -8,14 +8,9 @@ import {
   Nav,
   NavItem
 } from 'reactstrap';
-import HomePageCarousel from '../homepage/HomePageCarousel';
-import IconHoverChange from './IconHoverChange';
 import { connect } from 'react-redux';
-import { setHomePageCarouselDone } from '../../actions/navigation';
 import { setLanguage } from "redux-i18n";
 import $ from 'jquery';
-import IconHoverGrow from './IconHoverGrow';
-import { stringReplace } from '../../reusableFunctions/stringReplace';
 
 import ReactGA from 'react-ga';
 
@@ -51,19 +46,9 @@ class Navigation extends React.Component {
   fixedTop = () => {
     document.getElementsByClassName("navbar-light")[1].style.position = "fixed";
     document.getElementsByClassName("navbar-light")[1].style.top = 0;
-    // if ( this.state.windowWidth < 769 ) {
-    //   document.getElementById('hp_carousel_mobile').style.display = "none";
-    // } else {
-    //   document.getElementById('hp_carousel_desktop').style.display = "none";
-    // }
-    
-    
     document.getElementById('fakeNav').style.display = "block";
     const homepageCarouselDone = true;
-    this.props.setHomePageCarouselDone({
-        homepageCarouselDone: homepageCarouselDone
-    });
-    //console.log('setting carousel done');
+    
     this.setState({
         fixed: 'top'
     });
@@ -96,7 +81,6 @@ class Navigation extends React.Component {
     }
 
   componentDidMount = () => {
-    //console.log($( window ).width());
     let windowWidth = 0;
     if (typeof(window) !== "undefined") {
       windowWidth = $( window ).width();
@@ -104,34 +88,15 @@ class Navigation extends React.Component {
     this.setState({ 
         windowWidth
     });
-    // Returns width of HTML document
-    //console.log($( document ).width());
-
-    //console.log("in component did mount check for fixed top");
     if(document.getElementById('enable-toolbar-trigger')) {
-      //document.getElementById('enable-toolbar-trigger').style.display = "none";
       document.getElementById('enable-toolbar-buttons').style.textAlign = "right";
     }
     
-    
-    
-    //document.body.style.backgroundColor = "#fff";
     let location = '/';
     if (typeof(window) !== "undefined") {
       location = window.location.href;
     }
-    //console.log(location);
-    //const page = location.substring(location.lastIndexOf("/"), location.length);
-    //console.log(page);
     this.fixedTop();
-    // if (page.length > 1 || this.props.carouselDone === true) {
-    //   //console.log("go to fixed top");
-    //   this.fixedTop();
-    // } else {
-    //   if (typeof(window) !== "undefined") {
-    //     window.addEventListener('scroll', this.handleScroll);
-    //   }
-    // }
   }
 
   componentDidUpdate = () => {
@@ -144,26 +109,6 @@ class Navigation extends React.Component {
           windowWidth
       });
     }
-    
-    if(this.state.eventsCategoriesReverse.length === 0 && this.props.eventsCategories.length > 0){
-      this.setReverseCategories();
-    }
-  }
-
-  componentWillMount = () => {
-    if(this.state.eventsCategoriesReverse.length === 0 && this.props.eventsCategories.length > 0){
-      this.setReverseCategories();
-    }
-  }
-
-  setReverseCategories = () => {
-    let eventsCategoriesReverse = [];
-    this.props.eventsCategories.map((category) => {
-        return eventsCategoriesReverse.unshift(category);
-    });
-    this.setState({
-      eventsCategoriesReverse
-    });
   }
 
   componentWillUnmount = () => {
@@ -210,37 +155,15 @@ class Navigation extends React.Component {
     }
   }
 
-  gotoFacebook = () => {
-      if (typeof(window) !== "undefined") {
-        window.open('https://www.facebook.com/oren.pro/');
-      }
-  }
-  gotoInstagram = () => {
-      if (typeof(window) !== "undefined") {
-        window.open('https://www.instagram.com/oren_rinat_pro/');
-      }
-  }
-  gotoMail = () => {
-      if (typeof(window) !== "undefined") {
-        window.location = 'mailto:info@oren-pro.com';
-      }
-  }
-
-  gotoPhone = () => {
-      if (typeof(window) !== "undefined") {
-        window.location = 'tel:0525379515';
-      }
-  }
-
   setLang = () => {
       const lang = this.props.lang === 'he' ? 'en' : 'he';
       this.props.setLanguage(lang);
       if (lang === 'he') {
         this.props.history.push(this.props.langLink);
-        initializeReactGA(`/${this.props.langLink}`);
+        // initializeReactGA(`/${this.props.langLink}`);
       } else {
         this.props.history.push(this.props.langLinkEng);
-        initializeReactGA(`/${this.props.langLinkEng}`);
+        // initializeReactGA(`/${this.props.langLinkEng}`);
       }
       
   }
@@ -402,13 +325,10 @@ class Navigation extends React.Component {
 };
 
 const mapStateToProps = (state) => ({
-    isAuthenticated: !!state.auth.uid,
-    eventsCategories: state.eventspage.categories,
-    carouselDone: state.navigation.homepageCarouselDone
+    isAuthenticated: !!state.auth.uid
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setHomePageCarouselDone: (homepageCarouselDone) => dispatch(setHomePageCarouselDone(homepageCarouselDone)),
     setLanguage: (lang) => dispatch(setLanguage(lang))
 });
 
