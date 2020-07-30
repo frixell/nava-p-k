@@ -187,7 +187,7 @@ class Navigation extends React.Component {
               
               
               <NavItem>
-                <NavLink exact to="/" className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
+                <NavLink exact to={this.props.lang === 'he' ? '/' : '/en'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/research'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
@@ -304,7 +304,7 @@ class Navigation extends React.Component {
                 <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/Research'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink exact to="/" className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
+                <NavLink exact to={this.props.lang === 'he' ? '/' : '/en'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
               </NavItem>
               
             </Nav>

@@ -26,6 +26,7 @@ $teachBorder: $offblack;
 
 .teach__details__box--eng {
     border-left: 1px solid $teachBorder;
+    border-right: none;
 }
 
 .teach__description__box {
@@ -39,6 +40,11 @@ $teachBorder: $offblack;
     margin: 0 auto;
     border-bottom: 1px solid $teachBorder;
     border-left: 1px solid $teachBorder;
+}
+
+.teach__description__box--eng {
+    border-right: 1px solid $teachBorder;
+    border-left: none;
 }
 
 .teach__box {
