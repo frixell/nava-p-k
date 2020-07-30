@@ -162,6 +162,7 @@ export default class Teach extends React.Component {
             className="teach__box"
             dir={dirLang}
             onMouseEnter={this.onMouseEnter}
+            onMouseOver={!this.state.showButtons && this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
         >
         
@@ -463,9 +464,6 @@ export default class Teach extends React.Component {
                     }}
                 >
                     
-                    
-                
-                
                     <div className={`teach__details__box${this.props.lang === 'en' ? ' teach__details__box--eng' : ''}`}>
                         {
                             this.props.isAuthenticated === true && this.props.isEdit ?

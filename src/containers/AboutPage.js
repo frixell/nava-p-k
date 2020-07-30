@@ -503,7 +503,7 @@ class AboutPage extends React.Component {
                         {
                             this.props.isAuthenticated ?
                             
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.lang === 'en' ? {left: '90%'} : {left: '10%'}}>{/* $( window ).width() / 2 - 85 */}
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.lang === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>
                                     <div className="backoffice__toolbar__label">
                                         {`${this.props.lang === 'en' ? 'Exit' : 'יציאה'}`}
                                     </div>
@@ -517,7 +517,7 @@ class AboutPage extends React.Component {
                         
                         {
                             this.props.isAuthenticated ?
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {left: '85%'} : {left: '15%'}}>{/* $( window ).width() / 2 - 85 */}
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '85%'} : {textAlign: 'center', left: '15%'}}>
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
                                         {`${this.props.lang === 'en' ? 'Save' : 'שמירה'}`}
                                     </div>
@@ -531,7 +531,7 @@ class AboutPage extends React.Component {
                         
                         {
                             this.props.isAuthenticated ?
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {left: '80%'} : {left: '20%'}}>{/* $( window ).width() / 2 - 85 */}
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '80%'} : {textAlign: 'center', left: '20%'}}>
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
                                         {`${this.props.lang === 'en' ? 'SEO' : 'קידום'}`}
                                     </div>
