@@ -818,7 +818,7 @@ class HomePage extends React.Component {
                                     }
                                     :
                                     { 
-                                        height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 70,
+                                        height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 65,
                                         width: $( window ).width() - 170
                                     }
                                 }
