@@ -41,7 +41,7 @@ let categoryColorsRGB = [[64,145,145,categoryColorsRGBOpacity], [193,97,126,cate
 
 
 
-
+console.log('change');
 
 class HomePage extends React.Component {
     constructor(props) {
