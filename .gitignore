@@ -3,3 +3,10 @@ public/dist/
 .env.development
 .env.test
 config/
+
+# Documentation files - not needed on server
+PLAN.md
+PROGRESS.md
+SPECIFICATIONS.md
+SUGGESTED_STACK.md
+UPGRADE.md
