@@ -5,7 +5,9 @@ public/dist/
 config/
 
 # Documentation files - not needed on server
+CLAUDE.md
 PLAN.md
+NEXT_PLAN.md
 PROGRESS.md
 SPECIFICATIONS.md
 SUGGESTED_STACK.md
