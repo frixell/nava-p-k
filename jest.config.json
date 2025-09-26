@@ -1,4 +1,10 @@
 {
- "setupFiles": ["raf/polyfill", "<rootDir>/src/tests/setupTests.js"],
- "snapshotSerializers": ["enzyme-to-json/serializer"]
+ "testEnvironment": "jsdom",
+ "setupFilesAfterEnv": ["<rootDir>/src/tests/setupTests.js"],
+ "moduleNameMapper": {
+   "\\.(css|scss|sass)$": "identity-obj-proxy"
+ },
+ "transform": {
+   "^.+\\.js$": "babel-jest"
+ }
 }
