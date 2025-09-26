@@ -441,7 +441,7 @@ class ProjectDetailsPage extends React.Component {
                         </div>
                         :
                         <div>
-                            <span dangerouslySetInnerHTML={{ __html: this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.content }} />
+                            <span dir={this.props.lang === 'en' ? 'ltr' : 'rtl'} dangerouslySetInnerHTML={{ __html: this.props.selectedProject.extendedContent && this.props.selectedProject.extendedContent.content }} />
                         </div>
                     }
                 </div>
