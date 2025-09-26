@@ -83,13 +83,26 @@ app.get('/robots.txt', function (req, res) {
 
 // init bd connection
 
+// admin.initializeApp({
+//   credential: admin.credential.cert({
+//     projectId: process.env.FIREBASE_PROJECT_ID,
+//     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+//     privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+//   }),
+//   databaseURL: process.env.FIREBASE_DATABASE_URL
+// });
+
 admin.initializeApp({
   credential: admin.credential.cert({
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+    // projectId: process.env.FIREBASE_PROJECT_ID,
+    projectId: 'navapk-af5b9',
+    // clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    clientEmail: 'firebase-adminsdk-7fjih@navapk-af5b9.iam.gserviceaccount.com',
+    // privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+    privateKey: '-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDU9GUkYCYYAeDW\n35uyynYFy/o3hMnOWTETQRLGmGNEHggATuE3HXWopyn7K5padlcaWywHB/RlSHG+\nc9W0ZQrdzDKbWG2PuL77XrWf+T4MPQcc0jmNIQZP1hOW/bxc6wkXHeKaPUqC6pvE\nC4c5o/U7PXPXgljbRczZOwF5P2c2EtvD4PeAA+GYtDsj053iEVbSPQvI3CJapicj\nYSgEYnacdlB9auWUjhPLU7d0GxxAyrOa+r+05bZrLTbITuNZeb7cUjCxjOBJgnVy\n3U/jVrAhM6TrBZAh5nMiFjiqvm5TzzUOqBQcfe5Jb/VUPyIiodf9QuJvTNU78ZHW\ne3779b4lAgMBAAECggEACCMjl0F+SyYNOaC3Qhx26I9MCyGNlY82bxoqNcD+cAym\nuR5KgFDlnVFv6vtWTVUezHDF7Kna5qDfScwC0z8WLHYATAvTue1xDMlobsm3G4Ac\nfLcywEgOBfBz9K3S7AkGIqY/ca3cYkbFN3dKTkNL3Fzjh41hSFWxN27IBmJMFxaN\nC6q8UcEG/OgT3wbdpsMeADQ7Xf9jcP7Ao4Tl6dIg4kPC4dhK0HiIgM9pLXnza6D5\nvpXV1tWR4XGFqaoJWrrh9lzeldFhM2JCLijIznxmVhxbSviIrmHh5n4q0fEIknXs\nO+t60eIZkDR6Urt8AxfHuQMVTffZdjeH7tTFKLmnmQKBgQDqLlgm4d4kKaKJbjBk\nweQwk9aHbGhnr/A9wQiv7lpOkSMJ8t3Q5z+c7l5WuzhsaZ9Zn3lFmz7/udz8z74p\n+d37FKfsAl2T7twMyoBFKySxbXP1HgmWN2xYyHWDmYkiNLbFilmHzyvGN74geY0i\nWtp6dWe583TScQdhe713zAFiqQKBgQDoy8Mi6TJ3zIxc4GurqDZFkZ1HBwqfDVbN\nUiOS7HJzZVigngHiLQc3HZMDCx0EecVRL0z906/KMOBHI5uVcHOYg16gT5tZdpZn\nY2PRXlfJInCmcGkc3DxHPXurXsMBzblR3JvBZaInbLKEw5yiahWJQO5RmViKvyjW\nlqBH/8ypHQKBgQCYSCTIvA4RZAWu6rmLe84gjLJvg95stqs57SHyDcQp3RV07bqy\nkv351cQBEGQDk7estxhMXETeVIXQ3GKjtzlTgb4kqfEiNqxfoPtCf2iv/CXwmmTP\niyDopwpL1naniLHlyS6pMt4bWrpHMePGGGCES351HEy2YAvVp3qwwTeRaQKBgQDE\noqCQU4PSl0+Uf+fSlgJJnybHQRZipMTGJ3Ru/RPrjxZejTiwEDLBBlUQRAndpvHZ\nkmepG26oDcLTtCsN/m9VytlZ9gQVfEqsx9Ifnl3uQg3/OIJA43JzBmb4qNF1K402\nrW5O3IcsX+8mn4gl1A+e4N6sxCd7At7+6zo1tsbrrQKBgQDmZBk1/6XEAQC6iN1M\nePI4L8kdPNt/mSZ4Rldn+ud+KjjN7Hs/D2BtNAzwX2qOyRU5GDvANqmjg+s2HyiJ\n/+C8Ju6XxMXV9EwGFhc5aAaOBq612JgoepHANJ4vN+QzyIS6KmTC6wCvBb1ws6qi\nFXXPf0pOs55wkcDJMiuR/G87VA==\n-----END PRIVATE KEY-----\n',
   }),
-  databaseURL: process.env.FIREBASE_DATABASE_URL
+  // databaseURL: process.env.FIREBASE_DATABASE_URL
+  databaseURL: 'https://navapk-af5b9.firebaseio.com'
 });
 
 
