@@ -19,6 +19,9 @@ module.exports = (env) => {
     
     return {
         entry: './src/app.js',
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+        },
         devtool: 'inline-source-map',
         output: {
             filename: 'bundle.js',
@@ -26,6 +29,20 @@ module.exports = (env) => {
         },
         module: {
             rules: [{
+                test: /\.(ts|tsx)$/,
+                use: [
+                    {
+                        loader: 'babel-loader'
+                    },
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true
+                        }
+                    }
+                ],
+                exclude: /node_modules/
+            }, {
                 loader: 'babel-loader',
                 test: /\.js$/,
                 exclude: /node_modules/
