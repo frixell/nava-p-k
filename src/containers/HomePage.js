@@ -39,10 +39,6 @@ let categoryColorsHEX = ['#409191', '#c1617e', '#5eae88', '#a6c98d', '#db8976', 
 let categoryColorsRGBOpacity = 1;
 let categoryColorsRGB = [[64,145,145,categoryColorsRGBOpacity], [193,97,126,categoryColorsRGBOpacity], [94,174,136,categoryColorsRGBOpacity], [166,201,141,categoryColorsRGBOpacity], [219,137,118,categoryColorsRGBOpacity], [232,226,164,categoryColorsRGBOpacity], [229,182,130,categoryColorsRGBOpacity]];
 
-
-
-console.log('change');
-
 class HomePage extends React.Component {
     constructor(props) {
         super(props);
@@ -562,6 +558,7 @@ class HomePage extends React.Component {
     
 
     render() {
+        console.log('change');
         return (
             <div className="container-fluid" style={{cursor: this.state.cursor, textAlign: this.props.lang === 'en' ? 'left' : 'right'}}>
                 
