@@ -8,7 +8,7 @@ const TeachingPage: React.FC = () => {
     const dispatch = useAppDispatch();
     
     // Correctly select the nested data from the refactored slice
-    const { data, status, error } = useAppSelector((state) => state.teachingpage);
+    const { data, status, error } = useAppSelector((state) => state.teachingpage); 
     // Destructure teachings from data, providing a fallback empty array
     const teachings = data?.teachings || [];
 
