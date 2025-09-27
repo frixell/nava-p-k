@@ -79,7 +79,7 @@ export const fetchCVPageData = createAsyncThunk<CVPageData>(
 // Create an async thunk for updating data
 export const updateCVPageData = createAsyncThunk(
     'cvpage/updateData',
-    async (cvData: Omit<CVPageData, 'seo'>) => {
+    async (cvData: Omit<CVPageData, 'seo'> | CVPageData) => {
         await database.ref('cvpage').update(cvData);
         return cvData;
     }
