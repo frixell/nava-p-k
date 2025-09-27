@@ -41,7 +41,7 @@ const EditAboutPage: React.FC = () => {
             const { seo, ...pageContent } = finalData;
 
             await Promise.all([
-                dispatch(updateAboutPageData(pageContent)).unwrap(),
+                dispatch(updateAboutPageData(pageContent as Omit<AboutPageData, 'seo'>)).unwrap(),
                 dispatch(updateAboutPageSeo(seo)).unwrap()
             ]);
 
