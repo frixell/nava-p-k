@@ -3,8 +3,10 @@ import { AboutPageData } from '../reducers/aboutpage';
 
 interface AboutPageFormProps {
     initialData: AboutPageData;
-    onSubmit: (data: AboutPageData) => void;
-    onImageUpload: (file: File) => void;
+    onSubmit: (
+        data: Omit<AboutPageData, 'imageUrl' | 'publicId'>, 
+        newImageFile: File | null
+    ) => void;
     isSaving: boolean;
 }
 
@@ -12,7 +14,6 @@ const AboutPageForm: React.FC<AboutPageFormProps> = ({ initialData, onSubmit, is
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageUrl, setImageUrl] = useState('');
-    const [newImageFile, setNewImageFile] = useState<File | null>(null);
     const [seoTitle, setSeoTitle] = useState('');
     const [seoDescription, setSeoDescription] = useState('');
     const [seoKeywords, setSeoKeywords] = useState('');
@@ -28,15 +29,14 @@ const AboutPageForm: React.FC<AboutPageFormProps> = ({ initialData, onSubmit, is
         }
     }, [initialData]);
 
+    const [newImageFile, setNewImageFile] = useState<File | null>(null);
+
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        if (newImageFile) {
-            onImageUpload(newImageFile);
-        }
-        onSubmit({ 
-            title, content, imageUrl, 
-            seo: { title: seoTitle, description: seoDescription, keyWords: seoKeywords } 
-        });
+        onSubmit(
+            { title, content, seo: { title: seoTitle, description: seoDescription, keyWords: seoKeywords } },
+            newImageFile
+        );
     };
 
     return (

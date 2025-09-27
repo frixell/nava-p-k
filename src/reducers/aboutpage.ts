@@ -47,7 +47,7 @@ export const updateAboutPageData = createAsyncThunk(
 // Thunk for uploading a new image
 export const uploadAboutPageImage = createAsyncThunk(
     'aboutpage/uploadImage',
-    async (file: File, { dispatch, rejectWithValue }) => {
+    async (file: File, { rejectWithValue }) => {
         // This is a placeholder for your Cloudinary upload logic.
         // In a real app, you would post the file to a serverless function
         // or directly to Cloudinary, which would return the secure_url and public_id.
@@ -62,9 +62,7 @@ export const uploadAboutPageImage = createAsyncThunk(
         // });
         // const uploadResult = await response.json();
         // For now, we'll use mock data.
-        const uploadResult = { secure_url: 'https://via.placeholder.com/400', public_id: 'mock_public_id' };
-
-        await dispatch(updateAboutPageData({ imageUrl: uploadResult.secure_url, publicId: uploadResult.public_id }));
+        const uploadResult = { secure_url: 'https://via.placeholder.com/400', public_id: 'mock_public_id' }; // MOCK
         return uploadResult;
     }
 );

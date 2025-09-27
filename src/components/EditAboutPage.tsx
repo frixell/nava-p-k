@@ -24,31 +24,32 @@ const EditAboutPage: React.FC = () => {
         }
     }, [status, dispatch]);
 
-    const handleSubmit = async (updatedData: AboutPageData) => {
+    const handleSubmit = async (
+        pageData: Omit<AboutPageData, 'imageUrl' | 'publicId'>,
+        newImageFile: File | null
+    ) => {
         setIsSaving(true);
-        const { seo, ...pageContent } = updatedData;
+        let finalData: AboutPageData = { ...data!, ...pageData };
 
         try {
-            // Dispatch both updates concurrently
+            if (newImageFile) {
+                const uploadResult = await dispatch(uploadAboutPageImage(newImageFile)).unwrap();
+                finalData.imageUrl = uploadResult.secure_url;
+                finalData.publicId = uploadResult.public_id;
+            }
+
+            const { seo, ...pageContent } = finalData;
+
             await Promise.all([
                 dispatch(updateAboutPageData(pageContent)).unwrap(),
                 dispatch(updateAboutPageSeo(seo)).unwrap()
             ]);
-            navigate('/dashboard'); // Navigate only after both are successful
+
+            navigate('/dashboard');
         } catch (error) {
             console.error('Failed to save about page data:', error);
-            // Optionally, show an error message to the user
         } finally {
             setIsSaving(false);
-        }
-    };
-
-    const handleImageUpload = async (file: File) => {
-        setIsSaving(true);
-        try {
-            await dispatch(uploadAboutPageImage(file)).unwrap();
-        } catch (error) {
-            console.error('Failed to upload image:', error);
         }
     };
 
@@ -63,7 +64,7 @@ const EditAboutPage: React.FC = () => {
     return (
         <div>
             <h1>Edit About Page</h1>
-            <AboutPageForm initialData={data} onSubmit={handleSubmit} onImageUpload={handleImageUpload} isSaving={isSaving} />
+            <AboutPageForm initialData={data} onSubmit={handleSubmit} isSaving={isSaving} />
         </div>
     );
 };
