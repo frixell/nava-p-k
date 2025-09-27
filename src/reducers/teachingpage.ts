@@ -87,6 +87,32 @@ export const deleteTeachingItem = createAsyncThunk('teachingpage/deleteItem', as
     return id; // Return the id of the deleted item
 });
 
+// Thunk for uploading a new image for a teaching item
+export const uploadTeachingItemImage = createAsyncThunk(
+    'teachingpage/uploadImage',
+    async (file: File, { rejectWithValue }) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        // IMPORTANT: Replace with your actual Cloudinary upload preset
+        formData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET || 'your_cloudinary_preset');
+
+        try {
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME || 'your_cloud_name'}/image/upload`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Image upload failed');
+            }
+
+            return await response.json();
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 // Create an async thunk for updating SEO data
 export const updateTeachingPageSeo = createAsyncThunk(
     'teachingpage/updateSeo',
