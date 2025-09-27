@@ -1,24 +1,34 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import database from '../firebase/firebase';
 
-// Define a type for the teaching page data.
-// This is a guess; please adjust to your actual data structure.
+// Define a type for a single teaching item
+export interface TeachingItem {
+    id: string;
+    image: string;
+    details: string;
+    description: string;
+    detailsHebrew: string;
+    descriptionHebrew: string;
+    order: number;
+}
+
+// Define a type for the entire page data
 export interface TeachingPageData {
-    title: string;
-    content: string;
-    imageUrl?: string;
+    teachings: TeachingItem[];
+    seo?: { [key: string]: any };
 }
 
 // Define the shape of the state for this slice
 interface TeachingPageState {
-    data: TeachingPageData | null;
+    // We will store teachings directly on the state
+    teachings: TeachingItem[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
 }
 
 // Define the initial state
 const initialState: TeachingPageState = {
-    data: null,
+    teachings: [],
     status: 'idle',
     error: null,
 };
@@ -26,7 +36,18 @@ const initialState: TeachingPageState = {
 // Create the async thunk for fetching data
 export const fetchTeachingPageData = createAsyncThunk('teachingpage/fetchData', async () => {
     const snapshot = await database.ref('teachingpage').once('value');
-    return snapshot.val() as TeachingPageData;
+    const pageData = snapshot.val();
+    
+    const teachingsArray: TeachingItem[] = [];
+    if (pageData?.teachings) {
+        Object.keys(pageData.teachings).forEach((key) => {
+            teachingsArray.push({
+                id: key,
+                ...pageData.teachings[key]
+            });
+        });
+    }
+    return teachingsArray.sort((a, b) => a.order - b.order);
 });
 
 const teachingpageSlice = createSlice({
@@ -38,9 +59,9 @@ const teachingpageSlice = createSlice({
             .addCase(fetchTeachingPageData.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(fetchTeachingPageData.fulfilled, (state, action: PayloadAction<TeachingPageData>) => {
+            .addCase(fetchTeachingPageData.fulfilled, (state, action: PayloadAction<TeachingItem[]>) => {
                 state.status = 'succeeded';
-                state.data = action.payload;
+                state.teachings = action.payload;
             })
             .addCase(fetchTeachingPageData.rejected, (state, action) => {
                 state.status = 'failed';
