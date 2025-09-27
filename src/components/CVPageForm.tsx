@@ -25,14 +25,18 @@ const CVPageForm: React.FC<CVPageFormProps> = ({ initialData, onSubmit, isSaving
     }, [initialData]);
 
     const handleSectionChange = (index: number, field: keyof CVSection, value: any) => {
-        const newSections = [...sections];
-        (newSections[index] as any)[field] = value;
+        const newSections = sections.map((section, i) => 
+            i === index ? { ...section, [field]: value } : section
+        );
         setSections(newSections);
     };
 
     const handleItemChange = (sectionIndex: number, itemIndex: number, field: keyof CVItem, value: string) => {
         const newSections = [...sections];
-        newSections[sectionIndex].items[itemIndex][field] = value;
+        const newItems = newSections[sectionIndex].items.map((item, i) => 
+            i === itemIndex ? { ...item, [field]: value } : item
+        );
+        newSections[sectionIndex] = { ...newSections[sectionIndex], items: newItems };
         setSections(newSections);
     };
 
