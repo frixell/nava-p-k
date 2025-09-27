@@ -1,35 +1,27 @@
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
-import { startLogin, AuthActionTypes } from '../actions/auth';
-import { ThunkDispatch } from 'redux-thunk';
+import { useAppDispatch } from '../hooks';
+import { loginUser } from '../reducers/auth';
 
 interface User {
     userEmail: string;
     password: string;
 }
 
-interface RootState {
-    auth: { uid?: string };
-    [key: string]: any;
-}
-
 const LoginPage: React.FC = () => {
-    const dispatch = useDispatch<ThunkDispatch<RootState, void, AuthActionTypes>>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
-    const onSubmit = useCallback((user: User): Promise<boolean> => {
-        return dispatch(startLogin(user.userEmail, user.password))
-            .then(() => {
-                // If we reach here, login was successful
-                navigate('/');
-                return true;
-            })
-            .catch(() => {
-                // If we reach here, login failed
-                return false;
-            });
+    const onSubmit = useCallback(async (user: User): Promise<boolean> => {
+        try {
+            await dispatch(loginUser({ userEmail: user.userEmail, password: user.password })).unwrap();
+            navigate('/');
+            return true;
+        } catch (error) {
+            // The thunk will be rejected on a failed login
+            return false;
+        }
     }, [dispatch, navigate]);
 
     return (

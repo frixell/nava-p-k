@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
         <div className="homepage-container">
             <h1>Welcome to the Homepage</h1>
             {/* This is an example render. You will need to replace this with your actual JSX for displaying homepage items. */}
-            {items.map((item: any) => (
+            {items.map((item) => (
                 <div key={item.id}>
                     <h2>{item.title || 'No Title'}</h2>
                     <p>{item.description || 'No Description'}</p>

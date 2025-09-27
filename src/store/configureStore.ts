@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import aboutpageReducer from '../reducers/aboutpage'; // This will now resolve to aboutpage.ts
 import cvpageReducer from '../reducers/cvpage';
+import cvpageReducer from '../reducers/cvpage'; // This will now resolve to cvpage.ts
 import eventspageReducer from '../reducers/eventspage'; // This will now resolve to eventspage.ts
 import teachingpageReducer from '../reducers/teachingpage'; // Assuming this is still a .js file
 import authReducer from '../reducers/auth'; // This will now resolve to auth.ts
