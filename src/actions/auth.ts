@@ -25,8 +25,6 @@ export const signin = (email: string, password: string) => {
         .catch((error: firebase.auth.Error) => {
             // Handle Errors here.
             console.log(error);
-            const errorCode = error.code;
-            const errorMessage = error.message;
             // ...
         });
     };
@@ -38,13 +36,30 @@ export const login = (uid: string): LoginAction => ({
 });
 
 export const startLogin = (email: string, password: string) => {
-    return () => {
+    return (dispatch: Dispatch<AuthActionTypes>) => {
+        console.log('startLogin called with email:', email);
+        console.log('Firebase auth object:', firebase.auth());
+
         return firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Login successful
+            console.log('Login successful:', userCredential.user?.uid);
+            console.log('Full userCredential:', userCredential);
+
+            // Dispatch the login action to store the user in Redux
+            if (userCredential.user?.uid) {
+                dispatch(login(userCredential.user.uid));
+            }
+
+            return userCredential; // Return success
+        })
         .catch((error: firebase.auth.Error) => {
             // Handle Errors here.
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ...
+            console.log('Login error details:');
+            console.log('- Error code:', error.code);
+            console.log('- Error message:', error.message);
+            console.log('- Full error object:', error);
+            return Promise.reject(error); // Properly reject on error
         });
     };
 };

@@ -161,8 +161,9 @@ class SideBar extends React.Component {
                                         onClick={this.handleSideBarCategoryClick}
                                         data-id={category.id}
                                         className={`sidebar__listCategory${this.props.lang === 'en' ? ' sidebar__listCategory--en' : ' sidebar__listCategory--he'}`}
+                                        title={this.props.lang === 'en' ? category.name : category.nameHebrew}
                                         style={
-                                            windowWidth < 768 ? 
+                                            windowWidth < 768 ?
                                             {
                                                 color: this.props.categoryColors[index].colorHex,
                                                 border: `1px dotted ${this.props.categoryColors[index].colorHex}`,
@@ -177,8 +178,11 @@ class SideBar extends React.Component {
                                         }
                                 >
                                         <div
-                                            className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`} 
-                                        /> {this.props.lang === 'en' ? category.name : category.nameHebrew}
+                                            className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`}
+                                        />
+                                        <span className="sidebar__listCategory__text">
+                                            {this.props.lang === 'en' ? category.name : category.nameHebrew}
+                                        </span>
                                     </div>
                                     {
                                         this.state.openCategories.includes(category.id) ?
@@ -222,10 +226,14 @@ class SideBar extends React.Component {
                                 style={{marginTop: '10px'}}
                                 onClick={this.handleSideBarCategoryClick}
                                 data-id={'notConnectedProjects'}
+                                title={this.props.lang === 'en' ? 'Not Connected' : 'לא מחובר'}
                             >
                                 <div
-                                    className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes('notConnectedProjects') ? ' sidebar__arrow--open' : ''}`} 
-                                /> {this.props.lang === 'en' ? ' Not Connected' : 'לא מחובר'}
+                                    className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes('notConnectedProjects') ? ' sidebar__arrow--open' : ''}`}
+                                />
+                                <span className="sidebar__listCategory__text">
+                                    {this.props.lang === 'en' ? 'Not Connected' : 'לא מחובר'}
+                                </span>
                             </div>
                         :
                         null
