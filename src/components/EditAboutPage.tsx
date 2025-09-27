@@ -6,7 +6,8 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import { 
     fetchAboutPageData, 
     updateAboutPageData, 
-    updateAboutPageSeo, 
+    updateAboutPageSeo,
+    uploadAboutPageImage,
     AboutPageData 
 } from '../reducers/aboutpage';
 import AboutPageForm from './AboutPageForm';
@@ -30,7 +31,7 @@ const EditAboutPage: React.FC = () => {
         try {
             // Dispatch both updates concurrently
             await Promise.all([
-                dispatch(updateAboutPageData(pageContent as Omit<AboutPageData, 'seo'>)).unwrap(),
+                dispatch(updateAboutPageData(pageContent)).unwrap(),
                 dispatch(updateAboutPageSeo(seo)).unwrap()
             ]);
             navigate('/dashboard'); // Navigate only after both are successful
@@ -39,6 +40,15 @@ const EditAboutPage: React.FC = () => {
             // Optionally, show an error message to the user
         } finally {
             setIsSaving(false);
+        }
+    };
+
+    const handleImageUpload = async (file: File) => {
+        setIsSaving(true);
+        try {
+            await dispatch(uploadAboutPageImage(file)).unwrap();
+        } catch (error) {
+            console.error('Failed to upload image:', error);
         }
     };
 
@@ -53,7 +63,7 @@ const EditAboutPage: React.FC = () => {
     return (
         <div>
             <h1>Edit About Page</h1>
-            <AboutPageForm initialData={data} onSubmit={handleSubmit} isSaving={isSaving} />
+            <AboutPageForm initialData={data} onSubmit={handleSubmit} onImageUpload={handleImageUpload} isSaving={isSaving} />
         </div>
     );
 };

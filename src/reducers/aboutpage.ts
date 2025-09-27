@@ -7,6 +7,7 @@ export interface AboutPageData {
     title: string;
     content: string;
     imageUrl?: string;
+    publicId?: string; // For Cloudinary image management
     seo?: {
         title: string;
         description: string;
@@ -40,6 +41,31 @@ export const updateAboutPageData = createAsyncThunk(
     async (aboutData: Omit<AboutPageData, 'seo'>) => {
         await database.ref('website/aboutpage').update({ ...aboutData });
         return aboutData;
+    }
+);
+
+// Thunk for uploading a new image
+export const uploadAboutPageImage = createAsyncThunk(
+    'aboutpage/uploadImage',
+    async (file: File, { dispatch, rejectWithValue }) => {
+        // This is a placeholder for your Cloudinary upload logic.
+        // In a real app, you would post the file to a serverless function
+        // or directly to Cloudinary, which would return the secure_url and public_id.
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'your_cloudinary_preset'); // Replace with your preset
+
+        // Example of calling a serverless function or Cloudinary API
+        // const response = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', {
+        //     method: 'POST',
+        //     body: formData,
+        // });
+        // const uploadResult = await response.json();
+        // For now, we'll use mock data.
+        const uploadResult = { secure_url: 'https://via.placeholder.com/400', public_id: 'mock_public_id' };
+
+        await dispatch(updateAboutPageData({ imageUrl: uploadResult.secure_url, publicId: uploadResult.public_id }));
+        return uploadResult;
     }
 );
 

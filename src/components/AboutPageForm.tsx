@@ -4,6 +4,7 @@ import { AboutPageData } from '../reducers/aboutpage';
 interface AboutPageFormProps {
     initialData: AboutPageData;
     onSubmit: (data: AboutPageData) => void;
+    onImageUpload: (file: File) => void;
     isSaving: boolean;
 }
 
@@ -11,6 +12,7 @@ const AboutPageForm: React.FC<AboutPageFormProps> = ({ initialData, onSubmit, is
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+    const [newImageFile, setNewImageFile] = useState<File | null>(null);
     const [seoTitle, setSeoTitle] = useState('');
     const [seoDescription, setSeoDescription] = useState('');
     const [seoKeywords, setSeoKeywords] = useState('');
@@ -28,6 +30,9 @@ const AboutPageForm: React.FC<AboutPageFormProps> = ({ initialData, onSubmit, is
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        if (newImageFile) {
+            onImageUpload(newImageFile);
+        }
         onSubmit({ 
             title, content, imageUrl, 
             seo: { title: seoTitle, description: seoDescription, keyWords: seoKeywords } 
@@ -62,6 +67,16 @@ const AboutPageForm: React.FC<AboutPageFormProps> = ({ initialData, onSubmit, is
                     id="imageUrl"
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
+                    className="text-input"
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="imageUpload">Upload New Image</label>
+                <input
+                    type="file"
+                    id="imageUpload"
+                    accept="image/*"
+                    onChange={(e) => setNewImageFile(e.target.files ? e.target.files[0] : null)}
                     className="text-input"
                 />
             </div>
