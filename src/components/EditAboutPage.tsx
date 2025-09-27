@@ -30,7 +30,7 @@ const EditAboutPage: React.FC = () => {
         try {
             // Dispatch both updates concurrently
             await Promise.all([
-                dispatch(updateAboutPageData(pageContent as Omit<AboutPageData, 'seo'>)).unwrap(),
+                dispatch(updateAboutPageData(pageContent as AboutPageData)).unwrap(),
                 dispatch(updateAboutPageSeo(seo)).unwrap()
             ]);
             navigate('/dashboard'); // Navigate only after both are successful
