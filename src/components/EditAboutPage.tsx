@@ -3,7 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { fetchAboutPageData, updateAboutPageData, AboutPageData } from '../reducers/aboutpage';
+import { 
+    fetchAboutPageData, 
+    updateAboutPageData, 
+    updateAboutPageSeo, 
+    AboutPageData 
+} from '../reducers/aboutpage';
 import AboutPageForm from './AboutPageForm';
 
 const EditAboutPage: React.FC = () => {
@@ -20,9 +25,15 @@ const EditAboutPage: React.FC = () => {
 
     const handleSubmit = async (updatedData: AboutPageData) => {
         setIsSaving(true);
+        const { seo, ...pageContent } = updatedData;
+
         try {
-            await dispatch(updateAboutPageData(updatedData)).unwrap();
-            navigate('/dashboard');
+            // Dispatch both updates concurrently
+            await Promise.all([
+                dispatch(updateAboutPageData(pageContent as AboutPageData)).unwrap(),
+                dispatch(updateAboutPageSeo(seo)).unwrap()
+            ]);
+            navigate('/dashboard'); // Navigate only after both are successful
         } catch (error) {
             console.error('Failed to save about page data:', error);
             // Optionally, show an error message to the user
