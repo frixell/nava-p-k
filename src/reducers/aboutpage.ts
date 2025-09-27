@@ -1,0 +1,52 @@
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import database from '../firebase/firebase';
+
+// Define a type for the about page data.
+// This is a guess; please adjust to your actual data structure.
+export interface AboutPageData {
+    title: string;
+    content: string;
+    imageUrl?: string;
+}
+
+// Define the shape of the state for this slice
+interface AboutPageState {
+    data: AboutPageData | null;
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;
+}
+
+// Define the initial state
+const initialState: AboutPageState = {
+    data: null,
+    status: 'idle',
+    error: null,
+};
+
+// Create the async thunk for fetching data
+export const fetchAboutPageData = createAsyncThunk('aboutpage/fetchData', async () => {
+    const snapshot = await database.ref('aboutpage').once('value');
+    return snapshot.val() as AboutPageData;
+});
+
+const aboutpageSlice = createSlice({
+    name: 'aboutpage',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchAboutPageData.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchAboutPageData.fulfilled, (state, action: PayloadAction<AboutPageData>) => {
+                state.status = 'succeeded';
+                state.data = action.payload;
+            })
+            .addCase(fetchAboutPageData.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message || 'Failed to fetch about page data';
+            });
+    },
+});
+
+export default aboutpageSlice.reducer;

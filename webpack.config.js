@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -16,51 +17,34 @@ module.exports = (env) => {
     const CSSExtract = new MiniCssExtractPlugin({
         filename: 'styles.css'
     });
+
+    const plugins = [
+        CSSExtract,
+        new webpack.DefinePlugin({
+            'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.FIREBASE_API_KEY),
+            'process.env.FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.FIREBASE_AUTH_DOMAIN),
+            'process.env.FIREBASE_DATABASE_URL': JSON.stringify(process.env.FIREBASE_DATABASE_URL),
+            'process.env.FIREBASE_PROJECT_ID': JSON.stringify(process.env.FIREBASE_PROJECT_ID),
+            'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.FIREBASE_STORAGE_BUCKET),
+            'process.env.FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(process.env.FIREBASE_MESSAGING_SENDER_ID),
+            'process.env.GOOGLE_MAPS_API_KEY': JSON.stringify(process.env.GOOGLE_MAPS_API_KEY)
+        })
+    ];
     
     return {
-        entry: './src/app.js',
+        entry: './src/app.tsx',
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-            fallback: {
-                "buffer": false,
-                "stream": false,
-                "util": false,
-                "assert": false,
-                "path": false,
-                "zlib": false,
-                "querystring": false,
-                "url": false,
-                "crypto": false,
-                "http": false,
-                "https": false,
-                "os": false,
-                "fs": false,
-                "async_hooks": false
-            }
+            fallback: {}
         },
-        devtool: 'inline-source-map',
         output: {
             filename: 'bundle.js',
             path: path.join(__dirname, 'public', 'dist')
         },
         module: {
             rules: [{
-                test: /\.(ts|tsx)$/,
-                use: [
-                    {
-                        loader: 'babel-loader'
-                    },
-                    {
-                        loader: 'ts-loader',
-                        options: {
-                            transpileOnly: true
-                        }
-                    }
-                ],
-                exclude: /node_modules/
-            }, {
                 loader: 'babel-loader',
-                test: /\.js$/,
+                test: /\.(js|jsx|ts|tsx)$/,
                 exclude: /node_modules/
             }, {
                 test: /\.s?css$/,
@@ -82,23 +66,14 @@ module.exports = (env) => {
                 ]
             }]
         },
-        plugins: [
+        plugins: isProduction ? [
+            ...plugins,
             new CompressionPlugin({
                 test: /\.(js|css)$/,
-                algorithm: 'gzip',
-                //deleteOriginalAssets: true
+                algorithm: 'gzip'
             }),
-            CSSExtract,
-            new webpack.DefinePlugin({
-                'process.env.FIREBASE_API_KEY': JSON.stringify(process.env.FIREBASE_API_KEY),
-                'process.env.FIREBASE_AUTH_DOMAIN': JSON.stringify(process.env.FIREBASE_AUTH_DOMAIN),
-                'process.env.FIREBASE_DATABASE_URL': JSON.stringify(process.env.FIREBASE_DATABASE_URL),
-                'process.env.FIREBASE_PROJECT_ID': JSON.stringify(process.env.FIREBASE_PROJECT_ID),
-                'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.FIREBASE_STORAGE_BUCKET),
-                'process.env.FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(process.env.FIREBASE_MESSAGING_SENDER_ID),
-                'process.env.GOOGLE_MAPS_API_KEY': JSON.stringify(process.env.GOOGLE_MAPS_API_KEY)
-            })
-        ],
+            new ForkTsCheckerWebpackPlugin()
+        ] : plugins,
         devtool: isProduction ? 'source-map' : 'inline-source-map',
         devServer: {
             static: {
