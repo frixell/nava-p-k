@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route, Switch, Link, NavLink } from 'react-router-dom';
+import { Router, Route, Routes, Link, NavLink } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 const createHistory = require("history").createBrowserHistory;
 import ReactLoading from "react-loading";
@@ -33,22 +33,22 @@ class AppRouter extends React.Component {
         return (
             <Router history={history}>
                 <div>
-                    <Switch>
-                        <Route path="/" render={(props) => ( <HomePage {...props} urlLang='he' />)} exact={true} />
-                        <Route path="/עב" render={(props) => ( <HomePage {...props} urlLang='he' />)} exact={true} />
-                        <Route path="/en" render={(props) => ( <HomePage {...props} urlLang='en' />)} exact={true} />
-                        <Route path="/אודות" render={(props) => ( <AboutPage {...props} urlLang='he' />)} exact={true} />
-                        <Route path="/About" render={(props) => ( <AboutPage {...props} urlLang='en' />)} exact={true} />
-                        <Route path="/הוראה" render={(props) => ( <TeachingPage {...props} urlLang='he' />)} exact={true} />
-                        <Route path="/Teaching" render={(props) => ( <TeachingPage {...props} urlLang='en' />)} exact={true} />
-                        <Route path="/קורות_חיים" render={(props) => ( <CvPage {...props} urlLang='he' />)} exact={true} />
-                        <Route path="/CV" render={(props) => ( <CvPage {...props} urlLang='en' />)} exact={true} />
-                        <Route path="/צרו_קשר" component={ContactPage} exact={true} />
-                        <Route path="/Contact" component={ContactPage} exact={true} />
-                        <Route path="/signin" component={SigninPage} exact={true} />
-                        <PublicRoute path="/login" component={LoginPage} exact={true} />
-                        <Route component={NotFoundPage} />
-                    </Switch>
+                    <Routes>
+                        <Route path="/" element={<HomePage urlLang='he' />} />
+                        <Route path="/עב" element={<HomePage urlLang='he' />} />
+                        <Route path="/en" element={<HomePage urlLang='en' />} />
+                        <Route path="/אודות" element={<AboutPage urlLang='he' />} />
+                        <Route path="/About" element={<AboutPage urlLang='en' />} />
+                        <Route path="/הוראה" element={<TeachingPage urlLang='he' />} />
+                        <Route path="/Teaching" element={<TeachingPage urlLang='en' />} />
+                        <Route path="/קורות_חיים" element={<CvPage urlLang='he' />} />
+                        <Route path="/CV" element={<CvPage urlLang='en' />} />
+                        <Route path="/צרו_קשר" element={<ContactPage />} />
+                        <Route path="/Contact" element={<ContactPage />} />
+                        <Route path="/signin" element={<SigninPage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="*" element={<NotFoundPage />} />
+                    </Routes>
                 </div>
             </Router>
         )

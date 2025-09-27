@@ -1,5 +1,5 @@
-import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import LoginForm from './LoginForm';
 import { startLogin } from '../actions/auth';
 import { Dispatch } from 'redux';
@@ -9,11 +9,11 @@ interface User {
     password: string;
 }
 
-interface LoginPageProps extends PropsFromRedux {}
+const LoginPage: React.FC = () => {
+    const dispatch = useDispatch<Dispatch>();
 
-export class LoginPage extends React.Component<LoginPageProps> {
-    onSubmit = (user: User): Promise<boolean> => {
-        return this.props.startLogin(user.userEmail, user.password).then((res: any) => {
+    const onSubmit = useCallback((user: User): Promise<boolean> => {
+        return dispatch(startLogin(user.userEmail, user.password)).then((res: any) => {
             console.log('login page res = '+{...res});
             if (res) {
                 return true;
@@ -21,25 +21,16 @@ export class LoginPage extends React.Component<LoginPageProps> {
                 return false;
             }
         });
-    };
+    }, [dispatch]);
 
-    render(): JSX.Element {
-        return (
-            <div>
-                <h1>Login</h1>
-                <LoginForm
-                    onSubmit={this.onSubmit}
-                />
-            </div>
-        );
-    }
-}
+    return (
+        <div>
+            <h1>Login</h1>
+            <LoginForm
+                onSubmit={onSubmit}
+            />
+        </div>
+    );
+};
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-    startLogin: (userEmail: string, password: string) => dispatch(startLogin(userEmail, password))
-});
-
-const connector = connect(undefined, mapDispatchToProps);
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-export default connector(LoginPage);
+export default LoginPage;
