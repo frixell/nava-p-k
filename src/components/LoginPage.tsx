@@ -10,8 +10,13 @@ interface User {
     password: string;
 }
 
+interface RootState {
+    auth: { uid?: string };
+    [key: string]: any;
+}
+
 const LoginPage: React.FC = () => {
-    const dispatch = useDispatch<ThunkDispatch<any, void, AuthActionTypes>>();
+    const dispatch = useDispatch<ThunkDispatch<RootState, void, AuthActionTypes>>();
     const navigate = useNavigate();
 
     const onSubmit = useCallback((user: User): Promise<boolean> => {

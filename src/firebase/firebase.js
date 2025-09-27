@@ -12,12 +12,14 @@ const config = {
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID || "123456789"
 };
 
-console.log('Firebase config:', config);
-console.log('Environment variables:', {
-    FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
-    FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
-    FIREBASE_DATABASE_URL: process.env.FIREBASE_DATABASE_URL
-});
+if (process.env.NODE_ENV === 'development') {
+    console.log('Firebase config:', config);
+    console.log('Environment variables:', {
+        FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
+        FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
+        FIREBASE_DATABASE_URL: process.env.FIREBASE_DATABASE_URL
+    });
+}
 
 firebase.initializeApp(config);
 const database = firebase.database();
