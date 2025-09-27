@@ -24,9 +24,9 @@ const TeachingPageForm: React.FC<TeachingPageFormProps> = ({ initialData, onSubm
     }, [initialData]);
 
     const handleInputChange = (index: number, field: keyof TeachingItem, value: string | number) => {
-        const updatedTeachings = teachings.map((item, i) =>
+        const updatedTeachings = teachings.map((item, i) => (
             i === index ? { ...item, [field]: value } : item
-        );
+        ));
         setTeachings(updatedTeachings);
     };
 
