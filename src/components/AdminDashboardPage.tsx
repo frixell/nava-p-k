@@ -11,6 +11,7 @@ const AdminDashboardPage: React.FC = () => {
                     {/* We will add links to edit pages here later */}
                     <li><Link to="/edit-about">Edit About Page</Link></li>
                     <li><Link to="/edit-cv">Edit CV Page</Link></li>
+                    <li><Link to="/edit-teaching">Edit Teaching Page</Link></li>
                 </ul>
             </nav>
         </div>

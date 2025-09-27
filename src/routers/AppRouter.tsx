@@ -12,6 +12,7 @@ import NotFoundPage from '../components/NotFoundPage';
 import AdminDashboardPage from '../components/AdminDashboardPage';
 import EditAboutPage from '../components/EditAboutPage';
 import EditCVPage from '../components/EditCVPage';
+import EditTeachingPage from '../components/EditTeachingPage';
 
 const AppRouter: React.FC = () => (
     <BrowserRouter>
@@ -44,6 +45,14 @@ const AppRouter: React.FC = () => (
                     element={
                         <PrivateRoute>
                             <EditCVPage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/edit-teaching"
+                    element={
+                        <PrivateRoute>
+                            <EditTeachingPage />
                         </PrivateRoute>
                     }
                 />
