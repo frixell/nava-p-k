@@ -1,0 +1,66 @@
+import React, { useState, useEffect, FormEvent } from 'react';
+import { AboutPageData } from '../reducers/aboutpage';
+
+interface AboutPageFormProps {
+    initialData: AboutPageData;
+    onSubmit: (data: AboutPageData) => void;
+    isSaving: boolean;
+}
+
+const AboutPageForm: React.FC<AboutPageFormProps> = ({ initialData, onSubmit, isSaving }) => {
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+
+    useEffect(() => {
+        if (initialData) {
+            setTitle(initialData.title || '');
+            setContent(initialData.content || '');
+            setImageUrl(initialData.imageUrl || '');
+        }
+    }, [initialData]);
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        onSubmit({ title, content, imageUrl });
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="form">
+            <div className="form-group">
+                <label htmlFor="title">Title</label>
+                <input
+                    type="text"
+                    id="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="text-input"
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="content">Content</label>
+                <textarea
+                    id="content"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    className="textarea"
+                />
+            </div>
+            <div className="form-group">
+                <label htmlFor="imageUrl">Image URL</label>
+                <input
+                    type="text"
+                    id="imageUrl"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    className="text-input"
+                />
+            </div>
+            <button type="submit" disabled={isSaving} className="button">
+                {isSaving ? 'Saving...' : 'Save Changes'}
+            </button>
+        </form>
+    );
+};
+
+export default AboutPageForm;

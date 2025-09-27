@@ -10,6 +10,7 @@ import TeachingPage from '../components/TeachingPage';
 import LoginPage from '../components/LoginPage';
 import NotFoundPage from '../components/NotFoundPage';
 import AdminDashboardPage from '../components/AdminDashboardPage';
+import EditAboutPage from '../components/EditAboutPage';
 
 const AppRouter: React.FC = () => (
     <BrowserRouter>
@@ -26,6 +27,14 @@ const AppRouter: React.FC = () => (
                     element={
                         <PrivateRoute>
                             <AdminDashboardPage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/edit-about"
+                    element={
+                        <PrivateRoute>
+                            <EditAboutPage />
                         </PrivateRoute>
                     }
                 />

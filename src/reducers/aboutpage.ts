@@ -29,6 +29,15 @@ export const fetchAboutPageData = createAsyncThunk('aboutpage/fetchData', async 
     return snapshot.val() as AboutPageData;
 });
 
+// Create an async thunk for updating data
+export const updateAboutPageData = createAsyncThunk(
+    'aboutpage/updateData',
+    async (aboutData: AboutPageData) => {
+        await database.ref('website/aboutpage').update({ ...aboutData });
+        return aboutData;
+    }
+);
+
 const aboutpageSlice = createSlice({
     name: 'aboutpage',
     initialState,
@@ -40,6 +49,10 @@ const aboutpageSlice = createSlice({
             })
             .addCase(fetchAboutPageData.fulfilled, (state, action: PayloadAction<AboutPageData>) => {
                 state.status = 'succeeded';
+                state.data = action.payload;
+            })
+            .addCase(updateAboutPageData.fulfilled, (state, action: PayloadAction<AboutPageData>) => {
+                // Also update the state on successful save
                 state.data = action.payload;
             })
             .addCase(fetchAboutPageData.rejected, (state, action) => {
