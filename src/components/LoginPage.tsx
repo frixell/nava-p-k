@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
-import { startLogin } from '../actions/auth';
+import { startLogin, AuthActionTypes } from '../actions/auth';
 import { ThunkDispatch } from 'redux-thunk';
 
 interface User {
@@ -11,23 +11,17 @@ interface User {
 }
 
 const LoginPage: React.FC = () => {
-    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+    const dispatch = useDispatch<ThunkDispatch<any, void, AuthActionTypes>>();
     const navigate = useNavigate();
 
     const onSubmit = useCallback((user: User): Promise<boolean> => {
-        console.log('LoginPage onSubmit called with user:', user);
-
-        return (dispatch(startLogin(user.userEmail, user.password)) as any)
-            .then((res: any) => {
-                console.log('login page SUCCESS - res =', res);
+        return dispatch(startLogin(user.userEmail, user.password))
+            .then(() => {
                 // If we reach here, login was successful
                 navigate('/');
                 return true;
             })
-            .catch((error: any) => {
-                console.log('login page ERROR - error =', error);
-                console.log('Error type:', typeof error);
-                console.log('Error details:', error?.code, error?.message);
+            .catch(() => {
                 // If we reach here, login failed
                 return false;
             });

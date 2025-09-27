@@ -5,8 +5,8 @@ export default class LoginForm extends React.Component {
         super(props);
 
         this.state = {
-            userEmail: props.user ? props.user.userEmail : 'mosh@frixell.net',
-            password: props.user ? props.user.password : 'nava123',
+            userEmail: props.user ? props.user.userEmail : '',
+            password: props.user ? props.user.password : '',
             connecting: false,
             error: ''
         }

@@ -23,9 +23,22 @@ export const signin = (email: string, password: string) => {
     return () => {
         return firebase.auth().createUserWithEmailAndPassword(email, password)
         .catch((error: firebase.auth.Error) => {
-            // Handle Errors here.
-            console.log(error);
-            // ...
+            // Handle Errors here - return user-friendly error
+            let userMessage = 'Registration failed. Please try again.';
+
+            switch(error.code) {
+                case 'auth/email-already-in-use':
+                    userMessage = 'This email is already registered.';
+                    break;
+                case 'auth/weak-password':
+                    userMessage = 'Password should be at least 6 characters.';
+                    break;
+                case 'auth/invalid-email':
+                    userMessage = 'Please enter a valid email address.';
+                    break;
+            }
+
+            return Promise.reject({ message: userMessage, code: error.code });
         });
     };
 };
@@ -37,16 +50,9 @@ export const login = (uid: string): LoginAction => ({
 
 export const startLogin = (email: string, password: string) => {
     return (dispatch: Dispatch<AuthActionTypes>) => {
-        console.log('startLogin called with email:', email);
-        console.log('Firebase auth object:', firebase.auth());
-
         return firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
-            // Login successful
-            console.log('Login successful:', userCredential.user?.uid);
-            console.log('Full userCredential:', userCredential);
-
-            // Dispatch the login action to store the user in Redux
+            // Login successful - dispatch the login action to store the user in Redux
             if (userCredential.user?.uid) {
                 dispatch(login(userCredential.user.uid));
             }
@@ -54,12 +60,26 @@ export const startLogin = (email: string, password: string) => {
             return userCredential; // Return success
         })
         .catch((error: firebase.auth.Error) => {
-            // Handle Errors here.
-            console.log('Login error details:');
-            console.log('- Error code:', error.code);
-            console.log('- Error message:', error.message);
-            console.log('- Full error object:', error);
-            return Promise.reject(error); // Properly reject on error
+            // Return user-friendly error messages
+            let userMessage = 'Login failed. Please try again.';
+
+            switch(error.code) {
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                    userMessage = 'Invalid email or password.';
+                    break;
+                case 'auth/too-many-requests':
+                    userMessage = 'Too many failed attempts. Please try again later.';
+                    break;
+                case 'auth/network-request-failed':
+                    userMessage = 'Network error. Please check your connection.';
+                    break;
+                case 'auth/invalid-email':
+                    userMessage = 'Please enter a valid email address.';
+                    break;
+            }
+
+            return Promise.reject({ message: userMessage, code: error.code });
         });
     };
 };
