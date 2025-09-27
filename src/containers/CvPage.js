@@ -1,5 +1,4 @@
 import React from 'react';
-import { Prompt } from "react-router-dom";
 import {Helmet} from 'react-helmet';
 import Button from 'react-bootstrap/lib/Button';
 import Modal from 'react-responsive-modal';
@@ -454,16 +453,7 @@ class CvPage extends React.Component {
         return (
             <div className="container-fluid">
 
-                { 
-                    this.props.isAuthenticated === true ? 
-                        <Prompt
-                            style={{background: "red"}}
-                            when={!isEqual(this.state.aboutpageOrigin, this.state.aboutpage)}
-                            message="Changes you made may not be saved."
-                        />
-                    :
-                        null
-                }
+                
 
                 <Helmet>
                     <title>{this.state.seo && this.state.seo.title}</title>

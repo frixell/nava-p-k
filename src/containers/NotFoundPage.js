@@ -1,9 +1,9 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import ContactStrip from '../components/contactpage/ContactStrip';
 import { connect } from 'react-redux';
+import { withRouter } from "../routers/withRouter";
 
 class NotFoundPage extends React.Component {
     constructor(props) {
@@ -28,15 +28,13 @@ class NotFoundPage extends React.Component {
                         <h1 className="pagenotfound__goback__button__superheader Heebo-Medium">404</h1>
                         <h2 className="pagenotfound__goback__button__header Heebo-Medium">העמוד לא נמצא</h2>
                         <div className="pagenotfound__goback" dir="rtl">
-                            <Route render={({ history}) => (
-                                <button 
-                                    type='button'
-                                    className="pagenotfound__goback__button"
-                                    onClick={() => { history.push("/") }}
-                                >
-                                    <p className="pagenotfound__goback__button__text Heebo-Medium">בחזרה לאתר</p>
-                                </button> 
-                            )} />
+                            <button
+                                type='button'
+                                className="pagenotfound__goback__button"
+                                onClick={() => { this.props.history.push("/") }}
+                            >
+                                <p className="pagenotfound__goback__button__text Heebo-Medium">בחזרה לאתר</p>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -51,7 +49,7 @@ const mapStateToProps = (state) => ({
     lang: state.i18nState.lang
 });
 
-export default connect(mapStateToProps)(NotFoundPage); 
+export default withRouter(connect(mapStateToProps)(NotFoundPage)); 
 //<ContactStrip lang={this.props.lang} />
 
                                     // data-name="greenArrow"

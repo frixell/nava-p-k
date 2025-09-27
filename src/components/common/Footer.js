@@ -1,11 +1,27 @@
 import React from 'react';
 import HomePageIntouch from '../homepage/HomePageIntouch';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 class Footer extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    getTranslation(key) {
+        // Simple translation function based on language
+        const translations = {
+            he: {
+                allRightsReserved: "כל הזכויות שמורות",
+                programmingBy: "תכנות על ידי"
+            },
+            en: {
+                allRightsReserved: "All rights reserved",
+                programmingBy: "Programming by"
+            }
+        };
+
+        const lang = this.props.lang || 'he';
+        return translations[lang][key] || key;
     }
 
     render() {
@@ -18,22 +34,14 @@ class Footer extends React.Component {
             >
                 {/*<HomePageIntouch />*/}
                 <p className="footer__text Heebo-Regular desktop" dir={dirLang}>
-                    {this.context.t("allRightsReserved")} | {this.context.t("programmingBy")}
+                    {this.getTranslation("allRightsReserved")} | {this.getTranslation("programmingBy")}
                 </p>
                 <p className="footer__text Heebo-Regular mobile" dir={dirLang}>
-                    {this.context.t("allRightsReserved")} | {this.context.t("programmingBy")}
+                    {this.getTranslation("allRightsReserved")} | {this.getTranslation("programmingBy")}
                 </p>
             </div>
         )
     }
 };
 
-Footer.contextTypes = {
-  t: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
-});
-
-export default connect(mapStateToProps)(Footer);
+export default Footer;

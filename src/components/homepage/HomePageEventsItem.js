@@ -1,8 +1,8 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import AutosizeInput from 'react-input-autosize';
 import IconHoverGrow from '../common/IconHoverGrow';
 import { connect } from 'react-redux';
+import { withRouter } from "../../routers/withRouter";
 import PropTypes from 'prop-types';
 
 const shouldHighLight = (org, update) => {
@@ -63,19 +63,16 @@ class HomePageEventsItem extends React.Component {
                             </button>
                             <img className="homepage__event-item__image" src={this.props.event.eventImage} alt={this.props.event[this.props.lang === 'he' ? 'eventHeader' : 'eventHeaderEng']} />
                             <div className="homepage__event-item__more">
-                                <Route render={({ history}) => (
-                                    <button 
-                                        type='button'
-                                        className="homepage__event-item__button"
-                                        data-name="greenArrow"
-                                        onMouseEnter={this.props.setIconRatioOn}
-                                        onMouseLeave={this.props.setIconRatioOut}
-                                        onClick={() => { history.push(this.props.homepage.events[this.props.index].eventLink) }}
-                                    >
-                                        <p className="homepage__event-item__button__text Heebo-Regular" dir={dirLang}>{this.props.lang === 'he' ? `לכל ה${this.props.event.eventHeader} >` : `All ${this.props.event.eventHeaderEng} >`}</p>
-                                        
-                                    </button> 
-                                )} />
+                                <button
+                                    type='button'
+                                    className="homepage__event-item__button"
+                                    data-name="greenArrow"
+                                    onMouseEnter={this.props.setIconRatioOn}
+                                    onMouseLeave={this.props.setIconRatioOut}
+                                    onClick={() => { this.props.history.push(this.props.homepage.events[this.props.index].eventLink) }}
+                                >
+                                    <p className="homepage__event-item__button__text Heebo-Regular" dir={dirLang}>{this.props.lang === 'he' ? `לכל ה${this.props.event.eventHeader} >` : `All ${this.props.event.eventHeaderEng} >`}</p>
+                                </button>
                             </div>
                             <input
                                 type="text"
@@ -89,8 +86,7 @@ class HomePageEventsItem extends React.Component {
                             />
                         </div>
                     :
-                        <Route render={({ history }) => (
-                        <div className="homepage__event-item__box__in cursor__hand" onClick={() => { history.push(this.props.homepage.events[this.props.index].eventLink) }}>
+                        <div className="homepage__event-item__box__in cursor__hand" onClick={() => { this.props.history.push(this.props.homepage.events[this.props.index].eventLink) }}>
                             <div className="homepage__event-item__header">
                                 <h3 className="Heebo-Medium homepage__event-item__header-text">{this.props.event[this.props.lang === 'he' ? 'eventHeader' : 'eventHeaderEng']}</h3>
                             </div>
@@ -111,7 +107,6 @@ class HomePageEventsItem extends React.Component {
                                 
                             </div>
                         </div>
-                        )} />
                 }
             </div>
         )
@@ -127,4 +122,4 @@ const mapStateToProps = (state) => ({
     lang: state.i18nState.lang
 });
 
-export default connect(mapStateToProps)(HomePageEventsItem);
+export default withRouter(connect(mapStateToProps)(HomePageEventsItem));
