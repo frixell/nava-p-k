@@ -1,5 +1,4 @@
 import React from 'react';
-import { Prompt } from "react-router-dom";
 import {Helmet} from 'react-helmet';
 import AutosizeInput from 'react-input-autosize';
 //import { Button, Modal as ModalRB } from "react-bootstrap";
@@ -20,6 +19,7 @@ import Navigation from '../components/common/Navigation';
 import PageUpStrip from '../components/common/PageUpStrip';
 import SocialMedia from '../components/common/SocialMedia';
 import { connect } from 'react-redux';
+import { withRouter } from "../routers/withRouter";
 import { startLogout } from '../actions/auth';
 import {
     startAddCategory,
@@ -925,11 +925,6 @@ class EventPage extends React.Component {
         return (
             <div className="container-fluid">
 
-                <Prompt
-                    style={{background: "red"}}
-                    when={!isEqual(this.state.eventNameOrigin, this.state.eventName) || !isEqual(this.state.eventTextOrigin, this.state.eventText) || !isEqual(this.state.eventShowLinesOrigin, this.state.eventShowLines)}
-                    message="Changes you made may not be saved."
-                />
 
                 <Helmet>
                     <title>{`mik ein hod - ${this.props.categoryName} - ${this.state.subcategoryName} - ${this.state.eventName} - ${this.state.seo.title}`}</title>
@@ -1155,16 +1150,11 @@ const mapDispatchToProps = (dispatch) => ({
     startEditEventSeo: (seo, categoryId, eventId, link) => dispatch(startEditEventSeo(seo, categoryId, eventId, link))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventPage));
 
 
 
 
-// <Prompt
-//                         style={{background: "red"}}
-//                         when={!isEqual(itemOrigin, itemUpdate)}
-//                         message="Are you sure you want to leave me?"
-//                     />
 
 
 

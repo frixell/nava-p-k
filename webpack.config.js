@@ -20,7 +20,23 @@ module.exports = (env) => {
     return {
         entry: './src/app.js',
         resolve: {
-            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+            fallback: {
+                "buffer": false,
+                "stream": false,
+                "util": false,
+                "assert": false,
+                "path": false,
+                "zlib": false,
+                "querystring": false,
+                "url": false,
+                "crypto": false,
+                "http": false,
+                "https": false,
+                "os": false,
+                "fs": false,
+                "async_hooks": false
+            }
         },
         devtool: 'inline-source-map',
         output: {
@@ -53,7 +69,8 @@ module.exports = (env) => {
                     {
                         loader: 'css-loader',
                         options: {
-                            sourceMap: true
+                            sourceMap: true,
+                            url: false
                         }
                     },
                     {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Prompt } from "react-router-dom";
 import {Helmet} from 'react-helmet';
 import AutosizeInput from 'react-input-autosize';
 import Button from 'react-bootstrap/lib/Button';
@@ -17,6 +16,7 @@ import Navigation from '../components/common/Navigation';
 import PageUpStrip from '../components/common/PageUpStrip';
 import SocialMedia from '../components/common/SocialMedia';
 import { connect } from 'react-redux';
+import { withRouter } from "../routers/withRouter";
 import { startLogout } from '../actions/auth';
 import {
     startAddCategory,
@@ -2714,11 +2714,6 @@ class EventsPage extends React.Component {
         return (
             <div id="shopPage" className="container-fluid">
 
-                <Prompt
-                    style={{background: "red"}}
-                    when={!isEqual(this.state.categoryOrigin, this.state.category) || !isEqual(this.state.subCategoriesOrigin, this.state.subCategories) || !isEqual(this.state.itemsCurrentOrigin, this.state.itemsCurrentCheck)}
-                    message="Changes you made may not be saved."
-                />
 
                 <Helmet>
                     <title>{this.state.seo.title}</title>
@@ -3070,4 +3065,4 @@ const mapDispatchToProps = (dispatch) => ({
     setLanguage: (lang) => dispatch(setLanguage(lang))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(EventsPage);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventsPage));

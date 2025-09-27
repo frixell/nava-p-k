@@ -9,6 +9,7 @@ import {
   NavItem
 } from 'reactstrap';
 import { connect } from 'react-redux';
+import { withRouter } from "../../routers/withRouter";
 import { setLanguage } from "redux-i18n";
 import $ from 'jquery';
 
@@ -187,28 +188,28 @@ class Navigation extends React.Component {
               
               
               <NavItem>
-                <NavLink exact to={this.props.lang === 'he' ? '/' : '/en'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/' : '/en'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/research'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/research'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teaching'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הוראה' : 'Teaching'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teaching'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'הוראה' : 'Teaching'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/הרצאות' : '/Lectures'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הרצאות' : 'Lectures'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/הרצאות' : '/Lectures'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'הרצאות' : 'Lectures'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/קורות_חיים' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/קורות_חיים' : '/CV'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/אודות' : '/About'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/אודות' : '/About'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/צרו_קשר' : '/Contact'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/צרו_קשר' : '/Contact'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
               </NavItem>
               
               <NavItem>
@@ -283,28 +284,28 @@ class Navigation extends React.Component {
               </div>
               
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/צרו_קשר' : '/Contact'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/צרו_קשר' : '/Contact'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/אודות' : '/About'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/אודות' : '/About'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/קורות_חיים' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/קורות_חיים' : '/CV'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/הרצאות' : '/Lectures'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הרצאות' : 'Lectures'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/הרצאות' : '/Lectures'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'הרצאות' : 'Lectures'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teaching'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הוראה' : 'Teaching'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teaching'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'הוראה' : 'Teaching'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/Research'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/Research'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink exact to={this.props.lang === 'he' ? '/' : '/en'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
+                <NavLink to={this.props.lang === 'he' ? '/' : '/en'} className={({ isActive }) => isActive ? "nav__link nav__link--padding-top is-active nav__link--active" : "nav__link nav__link--padding-top"}>{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
               </NavItem>
               
             </Nav>
@@ -332,4 +333,4 @@ const mapDispatchToProps = (dispatch) => ({
     setLanguage: (lang) => dispatch(setLanguage(lang))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));

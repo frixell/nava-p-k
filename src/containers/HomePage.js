@@ -1,6 +1,5 @@
 import React from 'react';
 import Modal from 'react-responsive-modal';
-import { Prompt } from "react-router-dom";
 import {Helmet} from 'react-helmet';
 import AutosizeInput from 'react-input-autosize';
 import Button from 'react-bootstrap/lib/Button';
@@ -669,12 +668,6 @@ class HomePage extends React.Component {
                         <Button bsStyle="success" onClick={this.addNewCategory}>המשך</Button>
                     </div>
                 </Modal>
-                
-                <Prompt
-                    style={{background: "red"}}
-                    when={!isEqual(this.state.homepageOrigin, this.state.homepage)}
-                    message="Changes you made may not be saved."
-                /> 
 
                 <Helmet>
                 {

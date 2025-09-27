@@ -1,7 +1,5 @@
 import React from 'react';
-import { Router, Route, Routes, Link, NavLink } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-const createHistory = require("history").createBrowserHistory;
+import { BrowserRouter, Route, Routes, Link, NavLink } from 'react-router-dom';
 import ReactLoading from "react-loading";
 
 let loadImage = "";
@@ -26,12 +24,10 @@ import PublicRoute from './PublicRoute';
 import SigninPage from '../components/SigninPage';
 import { connect } from 'react-redux';
 
-export const history = typeof(window) !== "undefined" ? createHistory() : createMemoryHistory();
-
 class AppRouter extends React.Component {
     render() {
         return (
-            <Router history={history}>
+            <BrowserRouter>
                 <div>
                     <Routes>
                         <Route path="/" element={<HomePage urlLang='he' />} />
@@ -50,7 +46,7 @@ class AppRouter extends React.Component {
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </div>
-            </Router>
+            </BrowserRouter>
         )
     }
 };
