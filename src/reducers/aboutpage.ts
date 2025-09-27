@@ -37,7 +37,7 @@ export const fetchAboutPageData = createAsyncThunk('aboutpage/fetchData', async 
 // Create an async thunk for updating data
 export const updateAboutPageData = createAsyncThunk(
     'aboutpage/updateData',
-    async (aboutData: AboutPageData) => {
+    async (aboutData: Omit<AboutPageData, 'seo'>) => {
         await database.ref('website/aboutpage').update({ ...aboutData });
         return aboutData;
     }
