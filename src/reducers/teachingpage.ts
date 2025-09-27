@@ -16,20 +16,24 @@ export interface TeachingItem {
 // Define a type for the entire page data
 export interface TeachingPageData {
     teachings: TeachingItem[];
-    seo?: { [key: string]: any };
+    seo?: {
+        title: string;
+        description: string;
+        keyWords: string;
+    };
 }
 
 // Define the shape of the state for this slice
 interface TeachingPageState {
-    // We will store teachings directly on the state
-    teachings: TeachingItem[];
+    // Store all page data in a single 'data' object for consistency
+    data: TeachingPageData | null;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
 }
 
 // Define the initial state
 const initialState: TeachingPageState = {
-    teachings: [],
+    data: null,
     status: 'idle',
     error: null,
 };
@@ -48,7 +52,10 @@ export const fetchTeachingPageData = createAsyncThunk('teachingpage/fetchData', 
             });
         });
     }
-    return teachingsArray.sort((a, b) => a.order - b.order);
+    return {
+        teachings: teachingsArray.sort((a, b) => a.order - b.order),
+        seo: pageData?.seo
+    };
 });
 
 // Thunk for adding a new teaching item
@@ -80,6 +87,20 @@ export const deleteTeachingItem = createAsyncThunk('teachingpage/deleteItem', as
     return id; // Return the id of the deleted item
 });
 
+// Create an async thunk for updating SEO data
+export const updateTeachingPageSeo = createAsyncThunk(
+    'teachingpage/updateSeo',
+    async (seoData: TeachingPageData['seo']) => {
+        if (!seoData) {
+            return;
+        }
+        // Update both server-side and client-side SEO data
+        await database.ref('serverSeo/teaching/seo').update(seoData);
+        await database.ref('website/teachingpage/seo').update(seoData);
+        return seoData;
+    }
+);
+
 const teachingpageSlice = createSlice({
     name: 'teachingpage',
     initialState,
@@ -89,21 +110,32 @@ const teachingpageSlice = createSlice({
             .addCase(fetchTeachingPageData.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(fetchTeachingPageData.fulfilled, (state, action: PayloadAction<TeachingItem[]>) => {
+            .addCase(fetchTeachingPageData.fulfilled, (state, action: PayloadAction<TeachingPageData>) => {
                 state.status = 'succeeded';
-                state.teachings = action.payload;
+                state.data = action.payload;
             })
             .addCase(addTeachingItem.fulfilled, (state, action: PayloadAction<TeachingItem>) => {
-                state.teachings.push(action.payload);
+                if (state.data) {
+                    state.data.teachings.push(action.payload);
+                }
             })
             .addCase(updateTeachingItem.fulfilled, (state, action: PayloadAction<TeachingItem>) => {
-                const index = state.teachings.findIndex(item => item.id === action.payload.id);
-                if (index !== -1) {
-                    state.teachings[index] = action.payload;
+                if (state.data) {
+                    const index = state.data.teachings.findIndex(item => item.id === action.payload.id);
+                    if (index !== -1) {
+                        state.data.teachings[index] = action.payload;
+                    }
                 }
             })
             .addCase(deleteTeachingItem.fulfilled, (state, action: PayloadAction<string>) => {
-                state.teachings = state.teachings.filter(item => item.id !== action.payload);
+                if (state.data) {
+                    state.data.teachings = state.data.teachings.filter(item => item.id !== action.payload);
+                }
+            })
+            .addCase(updateTeachingPageSeo.fulfilled, (state, action: PayloadAction<TeachingPageData['seo']>) => {
+                if (state.data) {
+                    state.data.seo = action.payload;
+                }
             })
             .addCase(fetchTeachingPageData.rejected, (state, action) => {
                 state.status = 'failed';

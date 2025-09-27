@@ -1,94 +1,69 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { 
     fetchTeachingPageData, 
-    updateTeachingItem, 
+    updateTeachingPageSeo,
+    updateTeachingItem,
     deleteTeachingItem,
-    TeachingItem 
+    TeachingPageData,
+    TeachingItem
 } from '../reducers/teachingpage';
+import TeachingPageForm from './TeachingPageForm';
 
 const EditTeachingPage: React.FC = () => {
     const dispatch = useAppDispatch();
-    const { teachings, status } = useAppSelector((state) => state.teachingpage);
-    const [editableTeachings, setEditableTeachings] = useState<TeachingItem[]>([]);
+    const navigate = useNavigate();
+    const { data, status } = useAppSelector((state) => state.teachingpage);
+    const [isSaving, setIsSaving] = useState(false);
 
     useEffect(() => {
         if (status === 'idle') {
             dispatch(fetchTeachingPageData());
         }
     }, [status, dispatch]);
-
-    useEffect(() => {
-        setEditableTeachings(teachings);
-    }, [teachings]);
-
-    const handleInputChange = (index: number, field: keyof TeachingItem, value: string | number) => {
-        const updatedTeachings = [...editableTeachings];
-        (updatedTeachings[index] as any)[field] = value;
-        setEditableTeachings(updatedTeachings);
-    };
-
-    const handleSave = (item: TeachingItem) => {
-        dispatch(updateTeachingItem(item));
+    
+    const handleSubmit = async (updatedData: TeachingPageData) => {
+        setIsSaving(true);
+        const { seo, teachings } = updatedData;
+        
+        try {
+            // Create an array of promises for all the item updates
+            const updatePromises = teachings.map(item => dispatch(updateTeachingItem(item)).unwrap());
+            
+            await Promise.all([
+                ...updatePromises,
+                dispatch(updateTeachingPageSeo(seo)).unwrap()
+            ]);
+            
+            navigate('/dashboard');
+        } catch (error) {
+            console.error('Failed to save teaching page data:', error);
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     const handleDelete = (item: TeachingItem) => {
         if (window.confirm('Are you sure you want to delete this item?')) {
             dispatch(deleteTeachingItem(item));
         }
-    };
+    }
 
-    if (status === 'loading' || status === 'idle') {
+    if (status === 'loading' || !data) {
         return (
             <div style={{ width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <ReactLoading type="spinningBubbles" color="#666665" />
             </div>
         );
     }
-
+    
     return (
-        <div className="edit-page-container">
+        <div>
             <h1>Edit Teaching Page</h1>
-            {/* We can add a form to add new items here later */}
-            <div className="items-list">
-                {editableTeachings.map((item, index) => (
-                    <div key={item.id} className="form-section">
-                        <h3>Item #{item.order}</h3>
-                        <div className="form-group">
-                            <label>Details</label>
-                            <input
-                                type="text"
-                                value={item.details}
-                                onChange={(e) => handleInputChange(index, 'details', e.target.value)}
-                                className="text-input"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Description</label>
-                            <textarea
-                                value={item.description}
-                                onChange={(e) => handleInputChange(index, 'description', e.target.value)}
-                                className="textarea"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Image URL</label>
-                            <input
-                                type="text"
-                                value={item.image}
-                                onChange={(e) => handleInputChange(index, 'image', e.target.value)}
-                                className="text-input"
-                            />
-                        </div>
-                        <div className="button-group">
-                            <button onClick={() => handleSave(item)} className="button">Save</button>
-                            <button onClick={() => handleDelete(item)} className="button button--danger">Delete</button>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            <TeachingPageForm initialData={data} onSubmit={handleSubmit} onDeleteItem={handleDelete} isSaving={isSaving} />
         </div>
     );
 };
