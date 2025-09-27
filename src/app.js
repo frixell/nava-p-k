@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ReactLoading from "react-loading";
 import { Provider } from 'react-redux';
 import AppRouter, { history } from './routers/AppRouter';
@@ -93,7 +93,9 @@ const renderApp = () => {
             </Provider>
         );
         if (typeof(window) !== "undefined") {
-            render(jsx, document.getElementById('app'));
+            const container = document.getElementById('app');
+            const root = createRoot(container);
+            root.render(jsx);
         }
         hasRendered = true;
     }
@@ -101,11 +103,14 @@ const renderApp = () => {
 
 //console.log(navigator.userAgent);
 if (typeof(window) !== "undefined") {
+    const container = document.getElementById('app');
+    const root = createRoot(container);
+
     if (navigator.userAgent.toLowerCase().indexOf('msie') > -1 || navigator.userAgent.toLowerCase().indexOf('trident') > -1 || navigator.userAgent.toLowerCase().indexOf('edge') > -1 ){
         console.log("found");
-        render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><img src="/images/ie-preloader.gif" alt="זיוה קיינר - ציירת - עין הוד"/></div>, document.getElementById('app'));
+        root.render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><img src="/images/ie-preloader.gif" alt="זיוה קיינר - ציירת - עין הוד"/></div>);
     } else {
-        render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><ReactLoading type="spinningBubbles" color="#666665" /></div>, document.getElementById('app'));
+        root.render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><ReactLoading type="spinningBubbles" color="#666665" /></div>);
     }
 }
 
