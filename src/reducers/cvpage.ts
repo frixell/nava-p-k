@@ -71,6 +71,15 @@ export const fetchCVPageData = createAsyncThunk<CVPageData>(
 }
 );
 
+// Create an async thunk for updating data
+export const updateCVPageData = createAsyncThunk(
+    'cvpage/updateData',
+    async (cvData: CVPageData) => {
+        await database.ref('cvpage').update(cvData);
+        return cvData;
+    }
+);
+
 const cvpageSlice = createSlice({
     name: 'cvpage',
     initialState,
@@ -82,6 +91,10 @@ const cvpageSlice = createSlice({
             })
             .addCase(fetchCVPageData.fulfilled, (state, action: PayloadAction<CVPageData>) => {
                 state.status = 'succeeded';
+                state.data = action.payload;
+            })
+            .addCase(updateCVPageData.fulfilled, (state, action: PayloadAction<CVPageData>) => {
+                // Also update the state on successful save
                 state.data = action.payload;
             })
             .addCase(fetchCVPageData.rejected, (state, action) => {

@@ -11,6 +11,7 @@ import LoginPage from '../components/LoginPage';
 import NotFoundPage from '../components/NotFoundPage';
 import AdminDashboardPage from '../components/AdminDashboardPage';
 import EditAboutPage from '../components/EditAboutPage';
+import EditCVPage from '../components/EditCVPage';
 
 const AppRouter: React.FC = () => (
     <BrowserRouter>
@@ -35,6 +36,14 @@ const AppRouter: React.FC = () => (
                     element={
                         <PrivateRoute>
                             <EditAboutPage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/edit-cv"
+                    element={
+                        <PrivateRoute>
+                            <EditCVPage />
                         </PrivateRoute>
                     }
                 />
