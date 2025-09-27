@@ -75,10 +75,8 @@
     "react-router-dom": "^6.20.1",
     "react-share": "^2.2.0",
     "reactstrap": "^6.1.0",
-    "redux": "^5.0.1",
     "redux-i18n": "^1.5.13",
     "redux-mock-store": "^1.5.4",
-    "redux-thunk": "^2.3.0",
     "sass": "^1.26.10",
     "sass-loader": "^13.3.3",
     "ssl-express-www": "^3.0.3",
@@ -104,7 +102,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "react-test-renderer": "^18.2.0",
     "typescript": "^5.3.3",
     "webpack-dev-server": "^4.15.1"
   }

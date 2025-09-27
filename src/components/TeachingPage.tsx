@@ -7,7 +7,10 @@ import { fetchTeachingPageData } from '../reducers/teachingpage';
 const TeachingPage: React.FC = () => {
     const dispatch = useAppDispatch();
     
-    const { teachings, status, error } = useAppSelector((state) => state.teachingpage);
+    // Correctly select the nested data from the refactored slice
+    const { data, status, error } = useAppSelector((state) => state.teachingpage);
+    // Destructure teachings from data, providing a fallback empty array
+    const teachings = data?.teachings || [];
 
     useEffect(() => {
         if (status === 'idle') {
