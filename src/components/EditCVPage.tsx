@@ -3,7 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { fetchCVPageData, updateCVPageData, CVPageData } from '../reducers/cvpage';
+import { 
+    fetchCVPageData, 
+    updateCVPageData, 
+    updateCVPageSeo, 
+    CVPageData 
+} from '../reducers/cvpage';
 import CVPageForm from './CVPageForm';
 
 const EditCVPage: React.FC = () => {
@@ -20,8 +25,13 @@ const EditCVPage: React.FC = () => {
 
     const handleSubmit = async (updatedData: CVPageData) => {
         setIsSaving(true);
+        const { seo, ...pageContent } = updatedData;
+
         try {
-            await dispatch(updateCVPageData(updatedData)).unwrap();
+            await Promise.all([
+                dispatch(updateCVPageData(pageContent as CVPageData)).unwrap(),
+                dispatch(updateCVPageSeo(seo)).unwrap()
+            ]);
             navigate('/dashboard');
         } catch (error) {
             console.error('Failed to save CV page data:', error);

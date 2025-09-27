@@ -17,6 +17,11 @@ export interface CVSection {
 export interface CVPageData {
     title: string;
     sections: CVSection[];
+    seo?: {
+        title: string;
+        description: string;
+        keyWords: string;
+    };
 }
 
 // Define the shape of the state for this slice
@@ -80,6 +85,20 @@ export const updateCVPageData = createAsyncThunk(
     }
 );
 
+// Create an async thunk for updating SEO data
+export const updateCVPageSeo = createAsyncThunk(
+    'cvpage/updateSeo',
+    async (seoData: CVPageData['seo']) => {
+        if (!seoData) {
+            return;
+        }
+        // Update both server-side and client-side SEO data
+        await database.ref('serverSeo/cv/seo').update(seoData);
+        await database.ref('website/cvpage/seo').update(seoData);
+        return seoData;
+    }
+);
+
 const cvpageSlice = createSlice({
     name: 'cvpage',
     initialState,
@@ -92,6 +111,11 @@ const cvpageSlice = createSlice({
             .addCase(fetchCVPageData.fulfilled, (state, action: PayloadAction<CVPageData>) => {
                 state.status = 'succeeded';
                 state.data = action.payload;
+            })
+            .addCase(updateCVPageSeo.fulfilled, (state, action: PayloadAction<CVPageData['seo']>) => {
+                if (state.data) {
+                    state.data.seo = action.payload;
+                }
             })
             .addCase(updateCVPageData.fulfilled, (state, action: PayloadAction<CVPageData>) => {
                 // Also update the state on successful save
