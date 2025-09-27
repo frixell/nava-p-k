@@ -29,7 +29,7 @@ const EditCVPage: React.FC = () => {
 
         try {
             await Promise.all([
-                dispatch(updateCVPageData(pageContent)).unwrap(),
+                dispatch(updateCVPageData(pageContent as Omit<CVPageData, 'seo'>)).unwrap(),
                 dispatch(updateCVPageSeo(seo)).unwrap()
             ]);
             navigate('/dashboard');
