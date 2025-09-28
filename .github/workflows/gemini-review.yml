@@ -12,12 +12,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: List changed files (safe)
-        run: |
-          echo "Changed files in this PR:"
-          git fetch origin ${{ github.event.pull_request.base.ref }}
-          git diff --name-only origin/${{ github.event.pull_request.base.ref }}
-
       - name: Run Gemini AI Code Reviewer
         uses: truongnh1992/gemini-ai-code-reviewer@main
         env:
