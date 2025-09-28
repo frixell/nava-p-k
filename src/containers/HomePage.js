@@ -557,7 +557,7 @@ class HomePage extends React.Component {
     
 
     render() {
-        console.log('change');
+        console.log('change 2');
         return (
             <div className="container-fluid" style={{cursor: this.state.cursor, textAlign: this.props.lang === 'en' ? 'left' : 'right'}}>
                 

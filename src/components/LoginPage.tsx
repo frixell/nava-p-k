@@ -18,9 +18,20 @@ interface RootState {
 const LoginPage: React.FC = () => {
     const dispatch = useDispatch<ThunkDispatch<RootState, void, AuthActionTypes>>();
     const navigate = useNavigate();
+    
+    const user = {
+        userEmail: 'mosh@frixell.net',
+        password: 'nava123'
+    };
 
     const onSubmit = useCallback((user: User): Promise<boolean> => {
-        return dispatch(startLogin(user.userEmail, user.password))
+        // HARDCODED for development
+        const hardcodedUser = {
+            userEmail: 'mosh@frixell.net',
+            password: 'nava123'
+        };
+
+        return dispatch(startLogin(hardcodedUser.userEmail, hardcodedUser.password))
             .then(() => {
                 // If we reach here, login was successful
                 navigate('/');
@@ -36,10 +47,11 @@ const LoginPage: React.FC = () => {
         <div className="login-page">
             <div className="login-container">
                 <div className="login-header">
-                    <h1 className="login-title">Welcome Back</h1>
+                    <h1 className="login-title">Welcome</h1>
                     <p className="login-subtitle">Please sign in to your account</p>
                 </div>
                 <LoginForm
+                    user={user}
                     onSubmit={onSubmit}
                 />
             </div>
