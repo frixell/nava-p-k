@@ -9,17 +9,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Debug step to list changed files (optional)
-      - name: List changed files
+      - name: List changed files (safe)
         run: |
           echo "Changed files in this PR:"
-          git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          git diff --name-only origin/${{ github.event.pull_request.base.ref }}
 
-      # Run Gemini AI Code Reviewer
       - name: Run Gemini AI Code Reviewer
         uses: truongnh1992/gemini-ai-code-reviewer@main
         env:
