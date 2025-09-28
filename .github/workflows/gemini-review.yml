@@ -1,28 +1,13 @@
-name: Gemini AI Code Review
-
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-
 jobs:
   gemini-review:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.x
-
-      - name: Install dependencies
-        run: pip install --upgrade pip
-
-      - name: Run Gemini Review via Wrapper
-        run: |
-          export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
-          export GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
-          python -m pip install --upgrade pip
-          python /home/runner/work/_actions/truongnh1992/gemini-ai-code-reviewer/main/review_code_gemini.py
+      - name: Run Gemini AI Code Reviewer
+        uses: truongnh1992/gemini-ai-code-reviewer@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: "gemini-1.5-flash"
+          EXCLUDE: "**/*.md,**/*.json,**/*.lock"
