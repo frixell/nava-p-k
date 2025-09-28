@@ -1,13 +1,29 @@
+name: Gemini AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
 jobs:
   gemini-review:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
+    steps:
+      # Checkout the repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Debug step to list changed files (optional)
+      - name: List changed files
+        run: |
+          echo "Changed files in this PR:"
+          git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
+
+      # Run Gemini AI Code Reviewer
       - name: Run Gemini AI Code Reviewer
         uses: truongnh1992/gemini-ai-code-reviewer@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: "gemini-1.5-flash"
-          EXCLUDE: "**/*.md,**/*.json,**/*.lock"
+          EXCLUDE: "**/*.md,**/*.json,**/*.lock,**/*.yml,**/*.txt"
