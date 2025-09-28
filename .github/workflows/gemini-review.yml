@@ -1,0 +1,20 @@
+name: Gemini AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  gemini-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Gemini AI Code Reviewer
+        uses: truongnh1992/gemini-ai-code-reviewer@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
+          review-level: "medium"   # can be: "low", "medium", "high"
+          max-output-tokens: 1024  # controls size of AI response

@@ -2,6 +2,7 @@ node_modules/
 public/dist/
 .env.development
 .env.test
+.env
 config/
 
 # Documentation files - not needed on server
