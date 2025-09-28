@@ -14,6 +14,8 @@ jobs:
       EXCLUDE: "**/*.md,**/*.json,**/*.lock"
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - uses: truongnh1992/gemini-ai-code-reviewer@main
+      - name: Run Gemini AI Code Reviewer
+        uses: truongnh1992/gemini-ai-code-reviewer@main
