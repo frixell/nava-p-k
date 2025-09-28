@@ -13,8 +13,8 @@ jobs:
 
       - name: Run Gemini AI Code Reviewer
         uses: truongnh1992/gemini-ai-code-reviewer@main
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          gemini-api-key: ${{ secrets.GEMINI_API_KEY }}
-          review-level: "medium"   # low | medium | high
-          max-output-tokens: 1024
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: "gemini-1.5-flash" # or gemini-1.5-pro for more detailed review
+          EXCLUDE: "**/*.md,**/*.json,**/*.lock" # optional: skip docs/config files
