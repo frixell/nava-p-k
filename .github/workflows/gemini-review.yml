@@ -7,14 +7,13 @@ on:
 jobs:
   gemini-review:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GEMINI_MODEL: "gemini-1.5-flash"
+      EXCLUDE: "**/*.md,**/*.json,**/*.lock"
 
-      - name: Run Gemini AI Code Reviewer
-        uses: truongnh1992/gemini-ai-code-reviewer@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          GEMINI_MODEL: "gemini-1.5-flash" # or gemini-1.5-pro for more detailed review
-          EXCLUDE: "**/*.md,**/*.json,**/*.lock" # optional: skip docs/config files
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: truongnh1992/gemini-ai-code-reviewer@main
