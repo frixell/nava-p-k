@@ -1,0 +1,32 @@
+name: Gemini AI Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  gemini-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Debug step to ensure secrets are visible
+      - name: Debug secrets
+        run: |
+          echo "GITHUB_TOKEN set: ${GITHUB_TOKEN:+yes}"
+          echo "GEMINI_API_KEY set: ${GEMINI_API_KEY:+yes}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      # Run Gemini AI Code Reviewer
+      - name: Run Gemini AI Code Reviewer
+        uses: truongnh1992/gemini-ai-code-reviewer@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: "gemini-1.5-flash"
+          EXCLUDE: "**/*.md,**/*.json,**/*.lock,**/*.yml,**/*.txt"
