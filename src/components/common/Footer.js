@@ -9,23 +9,6 @@ class Footer extends React.Component {
         super(props);
     }
 
-    getTranslation(key) {
-        // Simple translation function based on language
-        const translations = {
-            he: {
-                allRightsReserved: "כל הזכויות שמורות",
-                programmingBy: "תכנות על ידי"
-            },
-            en: {
-                allRightsReserved: "All rights reserved",
-                programmingBy: "Programming by"
-            }
-        };
-
-        const lang = this.props.lang || 'he';
-        return translations[lang][key] || key;
-    }
-
     render() {
         const dirLang = this.props.i18n.language === 'he' ? 'rtl' : 'ltr';
         const { t } = this.props;

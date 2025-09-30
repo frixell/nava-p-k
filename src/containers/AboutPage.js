@@ -420,6 +420,7 @@ class AboutPage extends React.Component {
             <div className="container-fluid">
 
 
+
                 <Helmet>
                     <title>{this.state.seo && this.state.seo.title}</title>
                 </Helmet>

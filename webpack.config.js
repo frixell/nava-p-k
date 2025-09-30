@@ -20,20 +20,15 @@ module.exports = (env) => {
     return {
         entry: './src/app.js',
         resolve: {
-            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
             fallback: {
-                "buffer": false,
-                "stream": false,
-                "util": false,
-                "assert": false,
-                "path": false,
-                "zlib": false,
-                "querystring": false,
-                "url": false,
-                "crypto": false,
-                "http": false,
-                "https": false,
-                "os": false,
+                "zlib": require.resolve("browserify-zlib"),
+                "path": require.resolve("path-browserify"),
+                "buffer": require.resolve("buffer/"),
+                "util": require.resolve("util/"),
+                "assert": require.resolve("assert/"),
+                "stream": require.resolve("stream-browserify"),
+                "querystring": require.resolve("querystring-es3"),
                 "fs": false,
                 "async_hooks": false
             }
@@ -45,22 +40,19 @@ module.exports = (env) => {
         },
         module: {
             rules: [{
+                test: /\.(js|jsx)$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/
+            }, {
                 test: /\.(ts|tsx)$/,
                 use: [
                     {
                         loader: 'babel-loader'
                     },
                     {
-                        loader: 'ts-loader',
-                        options: {
-                            transpileOnly: true
-                        }
+                        loader: 'ts-loader'
                     }
                 ],
-                exclude: /node_modules/
-            }, {
-                loader: 'babel-loader',
-                test: /\.js$/,
                 exclude: /node_modules/
             }, {
                 test: /\.s?css$/,
@@ -69,8 +61,7 @@ module.exports = (env) => {
                     {
                         loader: 'css-loader',
                         options: {
-                            sourceMap: true,
-                            url: false
+                            sourceMap: true
                         }
                     },
                     {
@@ -101,7 +92,6 @@ module.exports = (env) => {
         ],
         devtool: isProduction ? 'source-map' : 'inline-source-map',
         devServer: {
-            port: 8080,
             static: {
                 directory: path.join(__dirname, 'public')
             },
