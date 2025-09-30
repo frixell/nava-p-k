@@ -3,7 +3,6 @@ public/dist/
 .env
 .env.development
 .env.test
-.env
 config/
 
 # Documentation files - not needed on server

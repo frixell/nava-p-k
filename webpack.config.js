@@ -22,6 +22,14 @@ module.exports = (env) => {
         entry: './src/app.js',
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+            alias: {
+                'ms': require.resolve('ms/index.js'),
+                'safe-buffer': require.resolve('safe-buffer/index.js'),
+                'debug/node_modules/ms/index.js': require.resolve('ms/index.js'),
+                'debug/node_modules/ms': require.resolve('ms/index.js'),
+                'string_decoder/node_modules/safe-buffer/index.js': require.resolve('safe-buffer/index.js'),
+                'string_decoder/node_modules/safe-buffer': require.resolve('safe-buffer/index.js')
+            },
             fallback: {
                 "buffer": false,
                 "stream": false,
