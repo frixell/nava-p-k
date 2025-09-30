@@ -1,6 +1,6 @@
 import React from 'react';
-import {Helmet} from 'react-helmet';
-import Button from 'react-bootstrap/lib/Button';
+import { Helmet } from 'react-helmet-async';
+import Button from '@mui/material/Button';
 import Modal from 'react-responsive-modal';
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
@@ -10,8 +10,8 @@ import { startLogout } from '../actions/auth';
 import { startEditTeachingPageSeo, startSetTeachingPage, startAddTeach, startShowTeach, startUpdateTeach, startUpdateTeachImage, startUpdateTeachings, startDeleteTeach } from '../actions/teachingpage';
 import Teach from './Teach';
 import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
+import { withTranslation } from 'react-i18next';
 import isEqual from 'lodash.isequal';
-import { setLanguage } from "redux-i18n";
 
 
 
@@ -117,8 +117,8 @@ class TeachingPage extends React.Component {
     }
 
     setUrlLang = () => {
-        if (this.props.urlLang !== undefined && this.props.lang !== this.props.urlLang) {
-            this.props.setLanguage(this.props.urlLang);
+        if (this.props.urlLang !== undefined && this.props.i18n.language !== this.props.urlLang) {
+            this.props.i18n.changeLanguage(this.props.urlLang);
         }
     }
 
@@ -165,26 +165,25 @@ class TeachingPage extends React.Component {
     }
     
     componentDidUpdate = (prevProps, prevState) => {
-        if (this.props.lang !== prevProps.lang) {
-            this.setState({lang: this.props.lang});
+        if (this.props.i18n.language !== prevProps.i18n.language) {
+            this.setState({lang: this.props.i18n.language});
         }
         if (!isEqual(this.props.teachingpage.teachings, prevProps.teachingpage.teachings)) {
-            teachingpage = this.props.teachingpage.teachings;
-                const teachings = [];
-                Object.keys(teachingpage).map((key) => {
-                    const keyedTeach = {id: String(key), ...teachingpage[key]};
-                    teachings.push(keyedTeach);
-                });
-            
-                teachings.sort((a, b) => {
-                    return a.order > b.order ? -1 : 1;
-                });
+            const teachings = [];
+            Object.keys(this.props.teachingpage.teachings).map((key) => {
+                const keyedTeach = {id: String(key), ...this.props.teachingpage.teachings[key]};
+                teachings.push(keyedTeach);
+            });
+        
+            teachings.sort((a, b) => {
+                return a.order > b.order ? -1 : 1;
+            });
 
-                this.setState({
-                    teachings,
-                    teachingpage,
-                    teachingpageOrigin: teachingpage
-                });
+            this.setState({
+                teachings,
+                teachingpage: this.props.teachingpage.teachings,
+                teachingpageOrigin: this.props.teachingpage.teachings
+            });
         }
     }
 
@@ -434,7 +433,6 @@ class TeachingPage extends React.Component {
         return (
             <div className="container-fluid">
 
-
                 <Helmet>
                     <title>{this.state.seo && this.state.seo.title}</title>
                 </Helmet>
@@ -503,7 +501,7 @@ class TeachingPage extends React.Component {
                         >
                             <div className="backoffice__seo__modal">
                                 <Teach
-                                    lang={this.props.lang}
+                                    lang={this.props.i18n.language}
                                     isEdit={true}
                                     isAuthenticated={this.props.isAuthenticated}
                                     teach={this.state.selectedTeach}
@@ -531,9 +529,9 @@ class TeachingPage extends React.Component {
                         {
                             this.props.isAuthenticated ?
                             
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.lang === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>
                                     <div className="backoffice__toolbar__label">
-                                        {`${this.props.lang === 'en' ? 'Exit' : 'יציאה'}`}
+                                        {`${this.props.i18n.language === 'en' ? 'Exit' : 'יציאה'}`}
                                     </div>
                                     <button className="backoffice_button" onClick={this.props.startLogout}>
                                         <img className="backoffice_icon" src="/images/backoffice/exit.svg" alt="יציאה" />
@@ -547,9 +545,9 @@ class TeachingPage extends React.Component {
                         
                         {
                             this.props.isAuthenticated && !this.state.editTeachModalIsOpen && !this.state.isEdit ?
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '85%'} : {textAlign: 'center', left: '15%'}}>
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '85%'} : {textAlign: 'center', left: '15%'}}>
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
-                                        {`${this.props.lang === 'en' ? 'Add' : 'הוספה'}`}
+                                        {`${this.props.i18n.language === 'en' ? 'Add' : 'הוספה'}`}
                                     </div>
                                     <button className="backoffice_button" onClick={this.onToggleEditTeach}>
                                         <img
@@ -565,9 +563,9 @@ class TeachingPage extends React.Component {
                         
                         {
                             this.props.isAuthenticated ?
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '80%'} : {textAlign: 'center', left: '20%'}}>
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '80%'} : {textAlign: 'center', left: '20%'}}>
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
-                                        {`${this.props.lang === 'en' ? 'SEO' : 'קידום'}`}
+                                        {`${this.props.i18n.language === 'en' ? 'SEO' : 'קידום'}`}
                                     </div>
                                     <button className="backoffice_button" onClick={this.onToggleSeo}>
                                     <img
@@ -582,7 +580,7 @@ class TeachingPage extends React.Component {
                         }
                         
                         <div className="page__header__container">
-                            <h1 className="page__header">{this.props.lang === 'en' ? 'Teaching' : 'הוראה'}</h1>
+                            <h1 className="page__header">{this.props.i18n.language === 'en' ? 'Teaching' : 'הוראה'}</h1>
                         </div>
             
                             
@@ -591,7 +589,7 @@ class TeachingPage extends React.Component {
                             this.state.teachings.map((teach, index) => {
                                 return (
                                     <Teach
-                                        lang={this.props.lang}
+                                        lang={this.props.i18n.language}
                                         index={index}
                                         key={index}
                                         onItemOrderChange={this.onItemOrderChange}
@@ -615,7 +613,7 @@ class TeachingPage extends React.Component {
                     pageupImageClassName={this.state.pageupImageClassName}
                 />
                 <div id='fake_pageupstrip'> </div>
-                <Footer lang={this.props.lang} position="relative" />
+                <Footer lang={this.props.i18n.language} position="relative" />
             </div>
         );
     }
@@ -623,8 +621,7 @@ class TeachingPage extends React.Component {
 
 const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.uid,
-    teachingpage: state.teachingpage,
-    lang: state.i18nState.lang
+    teachingpage: state.teachingpage
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -636,8 +633,7 @@ const mapDispatchToProps = (dispatch) => ({
     startUpdateTeachImage: (teach, publicid) => dispatch(startUpdateTeachImage(teach, publicid)),
     startUpdateTeachings: (fbTeachings, teachings) => dispatch(startUpdateTeachings(fbTeachings, teachings)),
     startShowTeach: (teach) => dispatch(startShowTeach(teach)),
-    startDeleteTeach: (teach) => dispatch(startDeleteTeach(teach)),
-    setLanguage: (lang) => dispatch(setLanguage(lang))
+    startDeleteTeach: (teach) => dispatch(startDeleteTeach(teach))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TeachingPage);  
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(TeachingPage));  

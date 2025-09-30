@@ -1,4 +1,4 @@
-@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 
 @import './base/settings';
 @import './base/base';
@@ -24,4 +24,11 @@
 @font-face {
   font-family: almoni-tzar-aaa-regular;
   src: url(/assets/fonts/almoni-tzar-aaa-regular.otf) format('truetype');
+}
+
+@media (min-width: 600px) {
+  .css-1ygil4i-MuiToolbar-root {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }

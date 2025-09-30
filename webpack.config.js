@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const sass = require('sass');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -59,8 +60,8 @@ module.exports = (env) => {
                 ],
                 exclude: /node_modules/
             }, {
+                test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
-                test: /\.js$/,
                 exclude: /node_modules/
             }, {
                 test: /\.s?css$/,
@@ -70,13 +71,20 @@ module.exports = (env) => {
                         loader: 'css-loader',
                         options: {
                             sourceMap: true,
-                            url: false
+                            url: {
+                                filter: (url) => !url.startsWith('/')
+                            }
                         }
                     },
                     {
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: true
+                            sourceMap: true,
+                            implementation: sass,
+                            api: 'modern',
+                            sassOptions: {
+                                silenceDeprecations: ['legacy-js-api', 'import']
+                            }
                         }
                     }
                 ]
@@ -101,7 +109,6 @@ module.exports = (env) => {
         ],
         devtool: isProduction ? 'source-map' : 'inline-source-map',
         devServer: {
-            port: 8080,
             static: {
                 directory: path.join(__dirname, 'public')
             },

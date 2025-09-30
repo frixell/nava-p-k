@@ -8,8 +8,9 @@ module.exports = {
         }
       }
     ],
-    '@babel/preset-react',
-    '@babel/preset-typescript'
+    ['@babel/preset-react', {
+      runtime: 'automatic'
+    }]
   ],
   plugins: [
     '@babel/plugin-syntax-dynamic-import'

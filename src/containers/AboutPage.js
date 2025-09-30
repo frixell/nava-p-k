@@ -1,9 +1,7 @@
 import React from 'react';
-import {Helmet} from 'react-helmet';
-//import { Button, Modal as ModalRB } from "react-bootstrap";
-import Button from 'react-bootstrap/lib/Button';
-import ModalRB from 'react-bootstrap/lib/Modal';
-import Modal from 'react-responsive-modal';
+import { Helmet } from 'react-helmet-async';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
 import AboutTopStrip from '../components/aboutpage/AboutTopStrip';
 import AboutContentStrip from '../components/aboutpage/AboutContentStrip';
 import ContactStrip from '../components/contactpage/ContactStrip';
@@ -19,9 +17,9 @@ import { iconRatioOn } from '../reusableFunctions/iconRatioOn';
 import { iconRatioOut } from '../reusableFunctions/iconRatioOut';
 import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
 import TileGallery from '../components/common/TileGallery';
-import UncontrolledCarousel from '../components/UncontrolledCarouselSlide';
 import isEqual from 'lodash.isequal';
-import { setLanguage } from "redux-i18n";
+import { setLanguage } from "react-i18next";
+import { withTranslation } from 'react-i18next';
 
 // import ReactGA from 'react-ga';
 
@@ -102,8 +100,8 @@ class AboutPage extends React.Component {
     }
 
     setUrlLang = () => {
-        if (this.props.urlLang !== undefined && this.props.lang !== this.props.urlLang) {
-            this.props.setLanguage(this.props.urlLang);
+        if (this.props.urlLang !== undefined && this.props.i18n.language !== this.props.urlLang) {
+            this.props.i18n.changeLanguage(this.props.urlLang);
         }
     }
 
@@ -421,7 +419,7 @@ class AboutPage extends React.Component {
         return (
             <div className="container-fluid">
 
-                
+
 
                 <Helmet>
                     <title>{this.state.seo && this.state.seo.title}</title>
@@ -429,7 +427,7 @@ class AboutPage extends React.Component {
                 
                 { 
                     this.props.isAuthenticated === true ? 
-                        <Modal open={this.state.seoAboutpageModalIsOpen} onClose={this.onToggleAboutpageSeo} center dir="rtl">
+                        <Modal open={this.state.seoAboutpageModalIsOpen} onClose={this.onToggleAboutpageSeo}>
                             <div className="backoffice__seo__modal">
                                 <h4 className="Heebo-Regular">seo</h4>
                                 <div className="backoffice__seo__modal__left">
@@ -473,7 +471,7 @@ class AboutPage extends React.Component {
                                     />
                                     <br />
                                 </div>
-                                <Button bsStyle="success" onClick={this.updateAboutpageSeo}>עדכון</Button>
+                                <Button variant="contained" color="primary" onClick={this.updateAboutpageSeo}>עדכון</Button>
                             </div>
                         </Modal>
                     :
@@ -493,9 +491,9 @@ class AboutPage extends React.Component {
                         {
                             this.props.isAuthenticated ?
                             
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.lang === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>
                                     <div className="backoffice__toolbar__label">
-                                        {`${this.props.lang === 'en' ? 'Exit' : 'יציאה'}`}
+                                        {`${this.props.i18n.language === 'en' ? 'Exit' : 'יציאה'}`}
                                     </div>
                                     <button className="backoffice_button" onClick={this.props.startLogout}>
                                         <img className="backoffice_icon" src="/images/backoffice/exit.svg" alt="יציאה" />
@@ -507,9 +505,9 @@ class AboutPage extends React.Component {
                         
                         {
                             this.props.isAuthenticated ?
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '85%'} : {textAlign: 'center', left: '15%'}}>
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '85%'} : {textAlign: 'center', left: '15%'}}>
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
-                                        {`${this.props.lang === 'en' ? 'Save' : 'שמירה'}`}
+                                        {`${this.props.i18n.language === 'en' ? 'Save' : 'שמירה'}`}
                                     </div>
                                     <button className="backoffice_button" onClick={this.onUpdateAboutPage}>
                                         <img className="backoffice_icon" src="/images/backoffice/save.svg" alt="שמירת אודות" />
@@ -521,9 +519,9 @@ class AboutPage extends React.Component {
                         
                         {
                             this.props.isAuthenticated ?
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '80%'} : {textAlign: 'center', left: '20%'}}>
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '80%'} : {textAlign: 'center', left: '20%'}}>
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
-                                        {`${this.props.lang === 'en' ? 'SEO' : 'קידום'}`}
+                                        {`${this.props.i18n.language === 'en' ? 'SEO' : 'קידום'}`}
                                     </div>
                                     <button className="backoffice_button" onClick={this.onToggleAboutpageSeo}>
                                     <img
@@ -539,7 +537,7 @@ class AboutPage extends React.Component {
                         
                         
                         <div className="page__header__container">
-                            <h1 className="page__header">{this.props.lang === 'en' ? 'About' : 'אודות'}</h1>
+                            <h1 className="page__header">{this.props.i18n.language === 'en' ? 'About' : 'אודות'}</h1>
                         </div>
                             
                             
@@ -553,7 +551,7 @@ class AboutPage extends React.Component {
                             uploadWidget={this.uploadWidget}
                             key={`homepage-events-item-slogen`}
                             setData={this.setData}
-                            lang={this.props.lang}
+                            lang={this.props.i18n.language}
                         />
                             
                         <AboutContentStrip
@@ -566,7 +564,7 @@ class AboutPage extends React.Component {
                             aboutpageOrigin={this.state.aboutpageOrigin}
                             aboutpage={this.state.aboutpage}
                             setData={this.setData}
-                            lang={this.props.lang}
+                            lang={this.props.i18n.language}
                         />            
                     </div>
                 </div>
@@ -576,7 +574,7 @@ class AboutPage extends React.Component {
                     pageupImageClassName={this.state.pageupImageClassName}
                 />
                 <div id='fake_pageupstrip'> </div>
-                <Footer lang={this.props.lang} position="relative" />
+                <Footer lang={this.props.i18n.language} position="relative" />
             </div>
         );
     }
@@ -584,8 +582,7 @@ class AboutPage extends React.Component {
 
 const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.uid,
-    aboutpage: state.aboutpage,
-    lang: state.i18nState.lang
+    aboutpage: state.aboutpage
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -594,8 +591,7 @@ const mapDispatchToProps = (dispatch) => ({
     startEditAboutPage: (fbAboutpage, aboutpage) => dispatch(startEditAboutPage(fbAboutpage, aboutpage)),
     startEditAboutPageSeo: (seo) => dispatch(startEditAboutPageSeo(seo)),
     startSaveAboutImage: (image, publicId) => dispatch(startSaveAboutImage(image, publicId)),
-    startDeleteAboutImage: (fbImages, images, publicid) => dispatch(startDeleteAboutImage(fbImages, images, publicid)),
-    setLanguage: (lang) => dispatch(setLanguage(lang))
+    startDeleteAboutImage: (fbImages, images, publicid) => dispatch(startDeleteAboutImage(fbImages, images, publicid))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AboutPage);  
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AboutPage));  

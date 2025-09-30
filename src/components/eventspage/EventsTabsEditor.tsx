@@ -1,9 +1,11 @@
 import React from 'react';
 import isEqual from 'lodash.isequal';
-import Button from 'react-bootstrap/lib/Button';
+import Button from '@mui/material/Button';
 import AutosizeInput from 'react-input-autosize';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { withTranslation } from 'react-i18next';
 
 const shouldHighLight = (org, update) => {
     if (isEqual(org, update)) {
@@ -19,8 +21,9 @@ class EventsTabsEditor extends React.Component {
     }
 
     render() {
+        const { t, i18n } = this.props;
         //console.log(this.props);
-        const dirLang = this.props.lang === 'he' ? 'rtl' : 'ltr';
+        const dirLang = i18n.language === 'he' ? 'rtl' : 'ltr';
         return (
             <div className="backoffice__edit__events__tabs__box" hidden={this.props.hideSubcategoriesEditPanel}>
             {
@@ -29,7 +32,7 @@ class EventsTabsEditor extends React.Component {
                     
                     this.props.subcategories.map((subCategory, index) => {
                         //console.log(subCategory);
-                        return  <div className="backoffice__edit__events__tabs__in__box" key={subCategory.id + index} dir={this.props.lang === 'he' ? 'rtl' : 'ltr'}>
+                        return  <div className="backoffice__edit__events__tabs__in__box" key={subCategory.id + index} dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
                                     <Button
                                         id="btn-x"
                                         data-id={subCategory.id}
@@ -73,8 +76,8 @@ class EventsTabsEditor extends React.Component {
                                         data-index={index}
                                         className="events__tabs__button"
                                         type="text"
-                                        placeholder={this.props.lang === 'he' ? 'שם תת קטגוריה' : 'Subcategory name'}
-                                        value={this.props.lang === 'he' ? this.props.subcategories[index].name : this.props.subcategories[index].nameEng}
+                                        placeholder={i18n.language === 'he' ? 'שם תת קטגוריה' : 'Subcategory name'}
+                                        value={i18n.language === 'he' ? this.props.subcategories[index].name : this.props.subcategories[index].nameEng}
                                         onChange={this.props.onSubcategoryNameChange}
                                         onBlur={this.props.onSubcategoryNameBlur}
                                     />
@@ -85,19 +88,11 @@ class EventsTabsEditor extends React.Component {
                     null
             }
             <div className="backoffice__events__tabs__update__box">
-                <Button className="backoffice__events__tabs__update btn-success" onClick={this.props.updateSubcategories}>{this.context.t("update")}</Button>
+                <Button className="backoffice__events__tabs__update btn-success" onClick={this.props.updateSubcategories}>{t("update")}</Button>
             </div>
         </div>
         );
     }
 }
 
-EventsTabsEditor.contextTypes = {
-  t: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
-});
-
-export default connect(mapStateToProps)(EventsTabsEditor);
+export default withTranslation()(EventsTabsEditor);

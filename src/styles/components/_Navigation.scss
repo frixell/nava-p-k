@@ -45,6 +45,7 @@
 }
 
 .navbar__brand {
+    visibility: visible;
     border: 0.2rem solid rgba(0, 0, 0, 0);
     vertical-align: middle;
     color: $white;
@@ -57,7 +58,7 @@
     padding-top: 0rem;
     padding-top: 1vw;
     padding-bottom: 0rem;
-    float: right;
+    margin-bottom: 7px;
 }
 
 .navbar__brand__eng {
@@ -75,6 +76,7 @@
     padding-bottom: 0rem;
     padding-left: 1rem;
     float: left;
+    margin-bottom: 7px;
 }
 
 .navbar__brand:hover {
@@ -91,8 +93,9 @@
 
 .navbar-light .navbar-nav {
     margin-top: 1vw;
-    margin-left: 23rem;
-    margin-right: 18rem;
+    margin-left: 2rem;
+    margin-right: 1rem;
+    align-items: flex-end;
 }
 
 .nav__logo {
@@ -164,29 +167,29 @@
     border: 0.2rem solid rgba(0, 0, 0, 0);
     margin-left: 0.4rem;
     margin-right: 0.4rem;
+    margin-bottom: 10px;
     vertical-align: middle;
     color: $white;
     font-family: $font;
     font-weight: $fontRegular;
-    font-size: 1.4rem;
+    font-size: 15px;
     _text-shadow: 1px 1px $white;
     letter-spacing: 0.1px;
-    min-height: 2.2rem;
-    padding-top: 0rem;
-    padding-bottom: 0rem;
+    height: 22px;
+    min-height: 22px;
+    line-height: 22px;
+    padding-top: 0;
+    padding-bottom: 0;
     padding-left: 1rem;
     padding-right: 1rem;
     text-align: center;
+    text-transform: capitalize;
 }
 
 
 
 .nav__link:hover {
-    /*border: 0.2rem solid;
-    border-image-source: url('/images/navigation/nav_item_bg.svg');
-    border-image-slice: 1.5 1.5 1.5 1.5; 
-    border-image-repeat: repeat;*/
-    border: 0.2rem dotted $white;
+    border: 2px dotted $white;
     margin-left: 0.4rem;
     margin-right: 0.4rem;
     color: $white;
@@ -198,17 +201,21 @@
 
 
 .nav__link--active {
-    /*border: 0.2rem solid;
-    border-image-source: url('/images/navigation/nav_item_bg.svg');
-    border-image-slice: 1.5 1.5 1.5 1.5; 
-    border-image-repeat: repeat;*/
-    border: 0.2rem dotted $white;
+    border: 2px dotted $white;
     margin-left: 0.4rem;
     margin-right: 0.4rem;
+    margin-bottom: 10px;
     color: $white;
     text-decoration: none;
     padding-left: 1rem;
     padding-right: 1rem;
+    font-size: 15px;
+    height: 22px;
+    min-height: 22px;
+    line-height: 22px;
+    padding-top: 0;
+    padding-bottom: 0;
+    text-transform: capitalize;
 }
 
 
@@ -235,10 +242,6 @@
     pointer-events: none;
     fill: $lightblue;
 }
-
-// .accessibility-color--light {
-//     background: $gray !important;
-// }
 
 .nav__link--padding-top {
     padding-top: 0rem;
@@ -347,8 +350,6 @@
     }
 
     .navbar__header__mobile {
-        
-        //////////////////////////////////////////////////////////////////////
         position: relative;
         display: flex;
         align-items: flex-start;
@@ -397,10 +398,6 @@
     }
 
     .nav__link--active {
-        /*border: 0.45rem solid;
-        border-image-source: url('/images/navigation/nav_item_bg.svg');
-        border-image-repeat: repeat;
-        border-image-slice: 3.5;*/
         border: 0.45rem dotted $lightblue;
         margin-left: 0.7rem;
         margin-right: 0.7rem;

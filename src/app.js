@@ -4,6 +4,7 @@ import ReactLoading from "react-loading";
 import { Provider } from 'react-redux';
 import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
+import { HelmetProvider } from 'react-helmet-async';
 import {
     startSetCategories
 } from './actions/eventspage';
@@ -25,7 +26,8 @@ import './styles/styles.scss';
 var firebase = require("firebase/app");
 require("firebase/auth");
 
-import I18n from "redux-i18n";
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n/i18n';
 
 // with Immutable.js:
 //import I18n from "redux-i18n/immutable"
@@ -82,19 +84,28 @@ const store = configureStore();
 
 
 let hasRendered = false;
+let root;
+
+if (typeof document !== 'undefined') {
+    const container = document.getElementById('app');
+    if (container) {
+        root = createRoot(container);
+    }
+}
+
 const renderApp = () => {
     //console.log(initialLang);
     if (!hasRendered && initialLang !== 'none') {
         const jsx = (
             <Provider store={store}>
-                <I18n translations={translations} initialLang={initialLang} fallbackLang="en">
-                    <AppRouter />
-                </I18n>
+                <I18nextProvider i18n={i18n}>
+                    <HelmetProvider>
+                        <AppRouter />
+                    </HelmetProvider>
+                </I18nextProvider>
             </Provider>
         );
-        if (typeof(window) !== "undefined") {
-            const container = document.getElementById('app');
-            const root = createRoot(container);
+        if (root) {
             root.render(jsx);
         }
         hasRendered = true;
@@ -102,10 +113,7 @@ const renderApp = () => {
 };
 
 //console.log(navigator.userAgent);
-if (typeof(window) !== "undefined") {
-    const container = document.getElementById('app');
-    const root = createRoot(container);
-
+if (root && typeof(window) !== "undefined") {
     if (navigator.userAgent.toLowerCase().indexOf('msie') > -1 || navigator.userAgent.toLowerCase().indexOf('trident') > -1 || navigator.userAgent.toLowerCase().indexOf('edge') > -1 ){
         console.log("found");
         root.render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><img src="/images/ie-preloader.gif" alt="זיוה קיינר - ציירת - עין הוד"/></div>);

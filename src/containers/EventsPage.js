@@ -1,7 +1,8 @@
 import React from 'react';
-import {Helmet} from 'react-helmet';
+import { Prompt } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 import AutosizeInput from 'react-input-autosize';
-import Button from 'react-bootstrap/lib/Button';
+import Button from '@mui/material/Button';
 import Modal from 'react-responsive-modal';
 import ContactStrip from '../components/contactpage/ContactStrip';
 import CustomersStrip from '../components/common/CustomersStrip';
@@ -16,7 +17,6 @@ import Navigation from '../components/common/Navigation';
 import PageUpStrip from '../components/common/PageUpStrip';
 import SocialMedia from '../components/common/SocialMedia';
 import { connect } from 'react-redux';
-import { withRouter } from "../routers/withRouter";
 import { startLogout } from '../actions/auth';
 import {
     startAddCategory,
@@ -48,8 +48,8 @@ import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
 import { handleEventsSaveButtonScroll } from '../reusableFunctions/handleEventsSaveButtonScroll';
 import isEqual from 'lodash.isequal';
 import { stringReplace } from '../reusableFunctions/stringReplace';
+import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { setLanguage } from "redux-i18n";
 
 import ReactGA from 'react-ga';
 
@@ -449,8 +449,8 @@ class EventsPage extends React.Component {
     }
 
     setUrlLang = () => {
-        if (this.props.lang !== this.props.urlLang) {
-            this.props.setLanguage(this.props.urlLang);
+        if (this.props.i18n.language !== this.props.urlLang) {
+            this.props.i18n.changeLanguage(this.props.urlLang);
         }
     }
 
@@ -903,7 +903,7 @@ class EventsPage extends React.Component {
             itemsCurrent
         });
         if(subcategoryId === '') {
-            if (this.props.lang === 'he') {
+            if (this.props.i18n.language === 'he') {
                 this.props.history.push(`/${stringReplace(this.state.category.name, ' ', '_')}`);
                 this.setGoogleAnalytics(`/${stringReplace(this.state.category.name, ' ', '_')}`);
             } else {
@@ -911,7 +911,7 @@ class EventsPage extends React.Component {
                 this.setGoogleAnalytics(`/${stringReplace(this.state.category.nameEng, ' ', '_')}`);
             }
         } else {
-            if (this.props.lang === 'he') {
+            if (this.props.i18n.language === 'he') {
                 this.props.history.push(`/${stringReplace(subcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
                 this.setGoogleAnalytics(`/${stringReplace(subcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
             } else {
@@ -1070,7 +1070,7 @@ class EventsPage extends React.Component {
                 category
             });
         } else {
-            if (this.props.lang === 'he') {
+            if (this.props.i18n.language === 'he') {
                 subcategory.text = e.target.value;
             } else {
                 subcategory.textEng = e.target.value;
@@ -1312,7 +1312,7 @@ class EventsPage extends React.Component {
         const index = e.target.dataset.index;
         const subCategoryNewName = e.target.value;
         const subCategories = JSON.parse(JSON.stringify(this.state.subCategories));
-        if (this.props.lang === 'he') {
+        if (this.props.i18n.language === 'he') {
             subCategories[index].name = subCategoryNewName;
         } else {
             subCategories[index].nameEng = subCategoryNewName;
@@ -2110,7 +2110,7 @@ class EventsPage extends React.Component {
     onEventNameChange = (e) => {
         let eventName = this.state.eventNameOrigin;
         let eventNameEng = this.state.eventNameEngOrigin;
-        if (this.props.lang === 'he') {
+        if (this.props.i18n.language === 'he') {
             eventName = e.target.value;
             this.setState({
                 eventName
@@ -2133,7 +2133,7 @@ class EventsPage extends React.Component {
     onEventTextChange = (e) => {
         let eventText = this.state.eventTextOrigin;
         let eventTextEng = this.state.eventTextEngOrigin;
-        if (this.props.lang === 'he') {
+        if (this.props.i18n.language === 'he') {
             eventText = e.target.value;
             this.setState({
                 eventText
@@ -2171,7 +2171,7 @@ class EventsPage extends React.Component {
     onUpdateEvent = () => {
         let nameFlag = false;
         this.props.eventsObject.allEvents.map((event, index) => {
-            if (this.props.lang === 'he') {
+            if (this.props.i18n.language === 'he') {
                 if(event.name === this.state.eventName && this.state.eventName !== this.state.eventNameOrigin) {
                     nameFlag = true;
                 }
@@ -2223,7 +2223,7 @@ class EventsPage extends React.Component {
 
                     let subcategoryNameEng = this.state.subcategoryNameEng || 'All';
 
-                    if (this.props.lang === 'he') {
+                    if (this.props.i18n.language === 'he') {
                         this.props.history.push(`/${stringReplace(eventName, ' ', '_')}/${stringReplace(this.state.subcategoryName, ' ', '_')}/${stringReplace(this.props.categoryName, ' ', '_')}`);
                         this.setGoogleAnalytics(`/${stringReplace(eventName, ' ', '_')}/${stringReplace(this.state.subcategoryName, ' ', '_')}/${stringReplace(this.props.categoryName, ' ', '_')}`);
                     } else {
@@ -2461,7 +2461,7 @@ class EventsPage extends React.Component {
         if (linkSubcategoryNameEng === '' || linkSubcategoryNameEng === undefined) {
             linkSubcategoryNameEng = "All";
         }
-        if (this.props.lang === 'he') {
+        if (this.props.i18n.language === 'he') {
             if (eventName) {
                 this.props.history.push(`/${stringReplace(eventName, ' ', '_')}/${stringReplace(linkSubcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
                 this.setGoogleAnalytics(`/${stringReplace(eventName, ' ', '_')}/${stringReplace(linkSubcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
@@ -2550,7 +2550,7 @@ class EventsPage extends React.Component {
         if (linkSubcategoryNameEng === '' || linkSubcategoryNameEng === undefined) {
             linkSubcategoryNameEng = "All";
         }
-        if (this.props.lang === 'he') {
+        if (this.props.i18n.language === 'he') {
             if (eventName) {
                 this.props.history.push(`/${stringReplace(eventName, ' ', '_')}/${stringReplace(linkSubcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
                 this.setGoogleAnalytics(`/${stringReplace(eventName, ' ', '_')}/${stringReplace(linkSubcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
@@ -2636,7 +2636,7 @@ class EventsPage extends React.Component {
             subcategoryNameEng = 'All';
         }
 
-        if (this.props.lang === 'he') {
+        if (this.props.i18n.language === 'he') {
             this.props.history.push(`/${stringReplace(nextItem, ' ', '_')}/${stringReplace(subcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
             this.setGoogleAnalytics(`/${stringReplace(nextItem, ' ', '_')}/${stringReplace(subcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
             this.setLangLink(this.state.category, stringReplace(subcategoryName, ' ', '_'), stringReplace(subcategoryNameEng, ' ', '_'), nextItem, nextItemEng);
@@ -2695,7 +2695,7 @@ class EventsPage extends React.Component {
             subcategoryNameEng = 'All';
         }
 
-        if (this.props.lang === 'he') {
+        if (this.props.i18n.language === 'he') {
             this.props.history.push(`/${stringReplace(prevItem, ' ', '_')}/${stringReplace(subcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
             this.setGoogleAnalytics(`/${stringReplace(prevItem, ' ', '_')}/${stringReplace(subcategoryName, ' ', '_')}/${stringReplace(this.state.category.name, ' ', '_')}`);
             this.setLangLink(this.state.category, stringReplace(subcategoryName, ' ', '_'), stringReplace(subcategoryNameEng, ' ', '_'), prevItem, prevItemEng);
@@ -2714,6 +2714,11 @@ class EventsPage extends React.Component {
         return (
             <div id="shopPage" className="container-fluid">
 
+                <Prompt
+                    style={{background: "red"}}
+                    when={!isEqual(this.state.categoryOrigin, this.state.category) || !isEqual(this.state.subCategoriesOrigin, this.state.subCategories) || !isEqual(this.state.itemsCurrentOrigin, this.state.itemsCurrentCheck)}
+                    message="Changes you made may not be saved."
+                />
 
                 <Helmet>
                     <title>{this.state.seo.title}</title>
@@ -2902,7 +2907,7 @@ class EventsPage extends React.Component {
                             isAuthenticated={this.props.isAuthenticated}
                             onChange={this.onCategoryNameChange}
                             onUpdateCategory={this.onUpdateCategory}
-                            lang={this.props.lang}
+                            lang={this.props.i18n.language}
                         />
                         <EventsTabs
                             categoryId={this.state.category.id}
@@ -2914,7 +2919,7 @@ class EventsPage extends React.Component {
                             setSubcategoryId={this.setSubcategoryId}
                             startAddNewSubcategory={this.startAddNewSubcategory}
                             startEditSubcategory={this.startEditSubcategory}
-                            lang={this.props.lang}
+                            lang={this.props.i18n.language}
                         />
 
 
@@ -2924,7 +2929,7 @@ class EventsPage extends React.Component {
                                 <EventsTabsEditor 
                                     subcategories={this.state.subCategories} 
                                     category={this.state.category}
-                                    lang={this.props.lang} 
+                                    lang={this.props.i18n.language} 
                                     onSubcategoryNameChange={this.onSubcategoryNameChange}
                                     onSubcategoryNameBlur={this.onSubcategoryNameBlur}
                                     onSubcategoryOrderChange={this.onSubcategoryOrderChange}
@@ -2950,7 +2955,7 @@ class EventsPage extends React.Component {
                             isAuthenticated={this.props.isAuthenticated}
                             onChange={this.onCategoryTextChange}
                             onCategoryShowLinesChange={this.onCategoryShowLinesChange}
-                            lang={this.props.lang}
+                            lang={this.props.i18n.language}
                         />
                         
                         <EventsEvents 
@@ -2982,7 +2987,7 @@ class EventsPage extends React.Component {
                             toggleHookEvent={this.toggleHookEvent}
                             updateItems={this.updateItems}
                             onInfoToggleOpen={this.onInfoToggleOpen}
-                            lang={this.props.lang}
+                            lang={this.props.i18n.language}
                             backofficeSaveButtonClassName={this.state.backofficeSaveButtonClassName}
                         />
                     </div>
@@ -3022,8 +3027,8 @@ class EventsPage extends React.Component {
                 />
                 <div id='fake_pageupstrip'> </div>
 
-                <ContactStrip lang={this.props.lang} />
-                <Footer lang={this.props.lang} />
+                <ContactStrip lang={this.props.i18n.language} />
+                <Footer lang={this.props.i18n.language} />
             </div>
         );
     }
@@ -3042,27 +3047,26 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     startLogout: () => dispatch(startLogout()),
     startAddCategory: (category) => dispatch(startAddCategory(category)),
-    startAddSubcategory: (subcategory, order) => dispatch(startAddSubcategory(subcategory, order)),
     startSetSubcategories: (categoryId) => dispatch(startSetSubcategories(categoryId)),
-    startAddItem: (item, categoryId, catOrder, subcategoryId, order) => dispatch(startAddItem(item, categoryId, catOrder, subcategoryId, order)),
+    startAddSubcategory: (subcategory, order) => dispatch(startAddSubcategory(subcategory, order)),
     startSetItems: (categoryId) => dispatch(startSetItems(categoryId)),
-    startUpdateEventImage: (id, image) => dispatch(startUpdateEventImage(id, image)),
-    setCategoryId: (id) => dispatch(setCategoryId(id)),
-    setSubcategoryId: (id) => dispatch(setSubcategoryId(id)),
-    startSetImages: (eventId, categoryId, itemLocation) => dispatch(startSetImages(eventId, categoryId, itemLocation)),
+    startAddItem: (item, categoryId, catOrder, subcategoryId, order) => dispatch(startAddItem(item, categoryId, catOrder, subcategoryId, order)),
+    startUpdateEventImage: (eventId, image) => dispatch(startUpdateEventImage(eventId, image)),
+    setCategoryId: (categoryId) => dispatch(setCategoryId(categoryId)),
+    setSubcategoryId: (subcategoryId) => dispatch(setSubcategoryId(subcategoryId)),
     startEditCategory: (category) => dispatch(startEditCategory(category)),
-    startEditSubCategories: (fbSubcategories, subcategories, categoryId) => dispatch(startEditSubCategories(fbSubcategories, subcategories, categoryId)),
-    startHookSubcategory: ( fbSubcategoriesToUpdate, fbEventsToUpdate ) => dispatch(startHookSubcategory( fbSubcategoriesToUpdate, fbEventsToUpdate )),
-    startHookEvent: ( fbEventsToUpdate ) => dispatch(startHookEvent( fbEventsToUpdate )),
+    startEditSubCategories: (fbSubCategories, subcategories, categoryId) => dispatch(startEditSubCategories(fbSubCategories, subcategories, categoryId)),
+    startHookSubcategory: (fbSubcategoriesToUpdate, fbEventsToUpdate) => dispatch(startHookSubcategory(fbSubcategoriesToUpdate, fbEventsToUpdate)),
+    startHookEvent: (fbEventsToUpdate) => dispatch(startHookEvent(fbEventsToUpdate)),
     startToggleShowSubcategory: (categoryId, subcategoryId, visible) => dispatch(startToggleShowSubcategory(categoryId, subcategoryId, visible)),
     startToggleShowEvent: (categoryId, subcategoryId, eventId, visible) => dispatch(startToggleShowEvent(categoryId, subcategoryId, eventId, visible)),
-    startEditEvents: ( fbEvents, events, categoryId ) => dispatch(startEditEvents( fbEvents, events, categoryId )),
-    startEditEvent: (eventName, eventNameEng, eventText, eventTextEng, eventShowLines, eventId) => dispatch(startEditEvent(eventName, eventNameEng, eventText, eventTextEng, eventShowLines, eventId)),
+    startEditEvents: (fbItems, items, categoryId, subcategoryId) => dispatch(startEditEvents(fbItems, items, categoryId, subcategoryId)),
+    startEditEvent: (event, categoryId, subcategoryId) => dispatch(startEditEvent(event, categoryId, subcategoryId)),
+    startSetImages: (eventId, categoryId, itemLocation) => dispatch(startSetImages(eventId, categoryId, itemLocation)),
     startSetAllSubcategories: () => dispatch(startSetAllSubcategories()),
     startSetAllEvents: () => dispatch(startSetAllEvents()),
-    startEditSeo: (seo, categoryId, link) => dispatch(startEditSeo(seo, categoryId, link)),
-    startEditSubSeo: (seo, categoryId, subcategoryId, link) => dispatch(startEditSubSeo(seo, categoryId, subcategoryId, link)),
-    setLanguage: (lang) => dispatch(setLanguage(lang))
+    startEditSeo: (seo, categoryId, subcategoryId) => dispatch(startEditSeo(seo, categoryId, subcategoryId)),
+    startEditSubSeo: (seo, categoryId, subcategoryId) => dispatch(startEditSubSeo(seo, categoryId, subcategoryId))
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EventsPage));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(EventsPage));

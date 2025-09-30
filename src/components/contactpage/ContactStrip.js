@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withTranslation } from 'react-i18next';
 import ContactMap from './ContactMap';
 import ContactForm from './ContactForm';
 import ContactFollow from './ContactFollow';
@@ -12,16 +13,16 @@ export class ContactStrip extends React.Component {
     };
     render() {
         return (
-            <div className={this.props.lang === 'he' ? 'container-fluid contactstrip__box' : 'container-fluid contactstrip__box contactstrip__box__eng'} dir={this.props.lang === 'he' ? 'ltr' : 'rtl'}>
+            <div className={this.props.i18n.language === 'he' ? 'container-fluid contactstrip__box' : 'container-fluid contactstrip__box contactstrip__box__eng'} dir={this.props.i18n.language === 'he' ? 'ltr' : 'rtl'}>
                 
                 <ContactForm
                     style='strip'
-                    lang={this.props.lang}
+                    lang={this.props.i18n.language}
                     onSubmit={this.onSubmit}
                 />
                 <ContactContact
                     style='strip'
-                    lang={this.props.lang}
+                    lang={this.props.i18n.language}
                 />
             </div>
         );
@@ -32,9 +33,9 @@ const mapDispatchToProps = (dispatch) => ({
     startSendMessage: (message) => dispatch(startSendMessage(message))
 });
 
-export default connect(undefined, mapDispatchToProps)(ContactStrip);
+export default connect(undefined, mapDispatchToProps)(withTranslation()(ContactStrip));
 
 // <ContactMap
 //                     style='strip'
-//                     lang={this.props.lang}
+//                     lang={this.props.i18n.language}
 //                 />

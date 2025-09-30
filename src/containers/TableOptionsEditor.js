@@ -11,12 +11,12 @@ class TableOptionsEditor extends React.Component {
     }
     
     componentDidMount = () => {
-        this.setState({ lang: this.props.lang });     
+        this.setState({ lang: this.props.i18n.language });     
     }
     
     componentDidUpdate = (prevProps) => {
-        if (this.props.lang !== prevProps.lang) {
-            this.setState({ lang: this.props.lang });         
+        if (this.props.i18n.language !== prevProps.lang) {
+            this.setState({ lang: this.props.i18n.language });         
         }
     }
     
@@ -79,7 +79,7 @@ class TableOptionsEditor extends React.Component {
                                                         background: '#6c7680',
                                                         color: '#fff',
                                                         cursor: 'pointer',
-                                                        textAlign: this.props.lang === 'en' ? 'left' : 'right'
+                                                        textAlign: this.props.i18n.language === 'en' ? 'left' : 'right'
                                                     }} 
                                                     onClick={this.props.hideTableOptions}
                                                 >
@@ -97,9 +97,9 @@ class TableOptionsEditor extends React.Component {
                                                                 height: '100%',
                                                                 padding: '10px',
                                                                 display: 'flex',
-                                                                flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse',
-                                                                justifyContent: this.props.lang === 'en' ? 'flex-start' : 'flex-end',
-                                                                textAlign: this.props.lang === 'en' ? 'left' : 'right',
+                                                                flexDirection: this.props.i18n.language === 'en' ? 'row' : 'row-reverse',
+                                                                justifyContent: this.props.i18n.language === 'en' ? 'flex-start' : 'flex-end',
+                                                                textAlign: this.props.i18n.language === 'en' ? 'left' : 'right',
                                                                 borderBottom: '1px solid black'
                                                             }}>
                                                                 <div style={{
@@ -120,7 +120,7 @@ class TableOptionsEditor extends React.Component {
                                                                     lineHeight: '12px',
                                                                     width: '370px',
                                                                 }}>
-                                                                    {this.props.lang === 'en' ? option.name : option.nameHebrew || option.name}
+                                                                    {this.props.i18n.language === 'en' ? option.name : option.nameHebrew || option.name}
                                                                 </div>
                                                             </div>
                                                         )

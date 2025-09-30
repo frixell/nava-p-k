@@ -4,6 +4,8 @@ import { Route } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 
+import { withTranslation } from 'react-i18next';
+
 export class DifferentPage extends React.Component {
     render() {
         return (
@@ -25,8 +27,4 @@ export class DifferentPage extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
-});
-
-export default connect(mapStateToProps)(DifferentPage);
+export default withTranslation()(DifferentPage);

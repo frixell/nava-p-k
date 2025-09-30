@@ -1,6 +1,6 @@
 import React from 'react';
-import {Helmet} from 'react-helmet';
-import Button from 'react-bootstrap/lib/Button';
+import { Helmet } from 'react-helmet-async';
+import Button from '@mui/material/Button';
 import Modal from 'react-responsive-modal';
 import CvContentStrip from '../components/cvpage/CvContentStrip';
 import Footer from '../components/common/Footer';
@@ -10,8 +10,8 @@ import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
 import { startSetCvPage, startEditCvPage, startEditCvPageSeo, startAddCvImage, startDeleteCvImage } from '../actions/cvpage';
 import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
+import { withTranslation } from 'react-i18next';
 import isEqual from 'lodash.isequal';
-import { setLanguage } from "redux-i18n";
 
 
 class CvPage extends React.Component {
@@ -94,8 +94,8 @@ class CvPage extends React.Component {
     }
 
     setUrlLang = () => {
-        if (this.props.urlLang !== undefined && this.props.lang !== this.props.urlLang) {
-            this.props.setLanguage(this.props.urlLang);
+        if (this.props.urlLang !== undefined && this.props.i18n.language !== this.props.urlLang) {
+            this.props.i18n.changeLanguage(this.props.urlLang);
         }
     }
 
@@ -453,8 +453,6 @@ class CvPage extends React.Component {
         return (
             <div className="container-fluid">
 
-                
-
                 <Helmet>
                     <title>{this.state.seo && this.state.seo.title}</title>
                 </Helmet>
@@ -525,9 +523,9 @@ class CvPage extends React.Component {
                         {
                             this.props.isAuthenticated ?
                             
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.lang === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>
                                     <div className="backoffice__toolbar__label">
-                                        {`${this.props.lang === 'en' ? 'Exit' : 'יציאה'}`}
+                                        {`${this.props.i18n.language === 'en' ? 'Exit' : 'יציאה'}`}
                                     </div>
                                     <button className="backoffice_button" onClick={this.props.startLogout}>
                                         <img className="backoffice_icon" src="/images/backoffice/exit.svg" alt="יציאה" />
@@ -539,9 +537,9 @@ class CvPage extends React.Component {
                         
                         {
                             this.props.isAuthenticated ?
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '85%'} : {textAlign: 'center', left: '15%'}}>
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '85%'} : {textAlign: 'center', left: '15%'}}>
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
-                                        {`${this.props.lang === 'en' ? 'Save' : 'שמירה'}`}
+                                        {`${this.props.i18n.language === 'en' ? 'Save' : 'שמירה'}`}
                                     </div>
                                     <button className="backoffice_button" onClick={this.onUpdateAboutPage}>
                                         <img className="backoffice_icon" src="/images/backoffice/save.svg" alt="שמירת אודות" />
@@ -553,9 +551,9 @@ class CvPage extends React.Component {
                         
                         {
                             this.props.isAuthenticated ?
-                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '80%'} : {textAlign: 'center', left: '20%'}}>
+                                <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '80%'} : {textAlign: 'center', left: '20%'}}>
                                     <div className="backoffice__toolbar__label" style={{color: this.state.needSave ? 'red' : 'aqua'}}>
-                                        {`${this.props.lang === 'en' ? 'SEO' : 'קידום'}`}
+                                        {`${this.props.i18n.language === 'en' ? 'SEO' : 'קידום'}`}
                                     </div>
                                     <button className="backoffice_button" onClick={this.onToggleAboutpageSeo}>
                                     <img
@@ -571,7 +569,7 @@ class CvPage extends React.Component {
                         
                         
                         <div className="page__header__container">
-                            <h1 className="page__header">{this.props.lang === 'en' ? 'CV' : 'קורות חיים'}</h1>
+                            <h1 className="page__header">{this.props.i18n.language === 'en' ? 'CV' : 'קורות חיים'}</h1>
                         </div>
                             
                         <CvContentStrip
@@ -584,7 +582,7 @@ class CvPage extends React.Component {
                             cvpageOrigin={this.state.cvpageOrigin}
                             cvpage={this.state.cvpage}
                             setData={this.setData}
-                            lang={this.props.lang}
+                            lang={this.props.i18n.language}
                         />            
                     </div>
                 </div>
@@ -594,7 +592,7 @@ class CvPage extends React.Component {
                     pageupImageClassName={this.state.pageupImageClassName}
                 />
                 <div id='fake_pageupstrip'> </div>
-                <Footer lang={this.props.lang} position="relative" />
+                <Footer lang={this.props.i18n.language} position="relative" />
             </div>
         );
     }
@@ -602,8 +600,7 @@ class CvPage extends React.Component {
 
 const mapStateToProps = (state) => ({
     isAuthenticated: !!state.auth.uid,
-    cvpage: state.cvpage,
-    lang: state.i18nState.lang
+    cvpage: state.cvpage
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -612,8 +609,7 @@ const mapDispatchToProps = (dispatch) => ({
     startEditCvPage: (fbCvpage, cvpage) => dispatch(startEditCvPage(fbCvpage, cvpage)),
     startEditCvPageSeo: (seo) => dispatch(startEditCvPageSeo(seo)),
     startAddCvImage: (image, order) => dispatch(startAddCvImage(image, order)),
-    startDeleteCvImage: (fbImages, images, publicid) => dispatch(startDeleteCvImage(fbImages, images, publicid)),
-    setLanguage: (lang) => dispatch(setLanguage(lang))
+    startDeleteCvImage: (fbImages, images, publicid) => dispatch(startDeleteCvImage(fbImages, images, publicid))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CvPage);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(CvPage));

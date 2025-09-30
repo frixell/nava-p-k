@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes, Link, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ReactLoading from "react-loading";
 
 let loadImage = "";
@@ -24,10 +24,12 @@ import PublicRoute from './PublicRoute';
 import SigninPage from '../components/SigninPage';
 import { connect } from 'react-redux';
 
+
+
 class AppRouter extends React.Component {
     render() {
         return (
-            <BrowserRouter>
+            <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <div>
                     <Routes>
                         <Route path="/" element={<HomePage urlLang='he' />} />
@@ -42,11 +44,11 @@ class AppRouter extends React.Component {
                         <Route path="/צרו_קשר" element={<ContactPage />} />
                         <Route path="/Contact" element={<ContactPage />} />
                         <Route path="/signin" element={<SigninPage />} />
-                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </div>
-            </BrowserRouter>
+            </Router>
         )
     }
 };

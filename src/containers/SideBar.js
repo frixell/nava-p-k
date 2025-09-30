@@ -1,6 +1,7 @@
 import React from 'react';
 import isEqual from 'lodash.isequal';
 import { addQuarters } from 'date-fns';
+import { withTranslation } from 'react-i18next';
 
 var windowWidth   = window.innerWidth
                     || document.documentElement.clientWidth
@@ -24,16 +25,16 @@ class SideBar extends React.Component {
         this.setState({
             categories: this.props.categories,
             points: this.props.points,
-            lang: this.props.lang
+            lang: this.props.i18n.language
         });
     }
     
     componentDidUpdate = (prevProps) => {
-        if (!isEqual(this.props.points, prevProps.points) || !isEqual(this.props.categories, prevProps.categories || this.props.lang !== prevProps.lang)) {
+        if (!isEqual(this.props.points, prevProps.points) || !isEqual(this.props.categories, prevProps.categories || this.props.i18n.language !== prevProps.lang)) {
             this.setState({
                 categories: this.props.categories,
                 points: this.props.points,
-                lang: this.props.lang
+                lang: this.props.i18n.language
             });
         }
     }
@@ -71,7 +72,7 @@ class SideBar extends React.Component {
                     }
                     :
                     {
-                        height: this.props.lang === 'en' ? windowHeight - 60 : windowHeight - 60,
+                        height: this.props.i18n.language === 'en' ? windowHeight - 60 : windowHeight - 60,
                         display: 'flex',
                         flexDirection: 'column'
                     }
@@ -81,7 +82,7 @@ class SideBar extends React.Component {
                     style={ windowWidth < 768 ? 
                         {
                             display: 'flex',
-                            flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse',
+                            flexDirection: this.props.i18n.language === 'en' ? 'row' : 'row-reverse',
                             paddingTop: '20px'
                         }
                         :
@@ -92,11 +93,11 @@ class SideBar extends React.Component {
                     }
                 >
                     <div className="sidebar__image__box">
-                        <img className={this.props.lang === 'en' ? " sidebar__image--en" : " sidebar__image--he"} src="https://res.cloudinary.com/dewafmxth/image/upload/v1587375229/nava_ky02kt.jpg" />
+                        <img className={this.props.i18n.language === 'en' ? " sidebar__image--en" : " sidebar__image--he"} src="https://res.cloudinary.com/dewafmxth/image/upload/v1587375229/nava_ky02kt.jpg" />
                     </div>
                     <div>
-                        <div className={`sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
-                            {this.props.lang === 'en' ?
+                        <div className={`sidebar__text__box${this.props.i18n.language === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
+                            {this.props.i18n.language === 'en' ?
                                     'Urban regeneration comparative global case studies' 
                                 : 
                                     'התחדשות ערונית מקרי מחקר השוואתי גלובלי'
@@ -104,10 +105,10 @@ class SideBar extends React.Component {
                             }
                         </div>
                         <div
-                            className={`mobile sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}
+                            className={`mobile sidebar__text__box${this.props.i18n.language === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}
                             style={{paddingTop: '3rem'}}
                         >
-                            {this.props.lang === 'en' ?
+                            {this.props.i18n.language === 'en' ?
                                     'New tool for comparative research' 
                                 : 
                                     'כלי חדש למחקר השוואתי'
@@ -123,7 +124,7 @@ class SideBar extends React.Component {
                         {
                             display: 'flex',
                             flexWrap: 'wrap',
-                            flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse',
+                            flexDirection: this.props.i18n.language === 'en' ? 'row' : 'row-reverse',
                             justifyContent: 'flex-start',
                             alignItems: 'center',
                             marginTop: '7px',
@@ -160,16 +161,15 @@ class SideBar extends React.Component {
                                     <div
                                         onClick={this.handleSideBarCategoryClick}
                                         data-id={category.id}
-                                        className={`sidebar__listCategory${this.props.lang === 'en' ? ' sidebar__listCategory--en' : ' sidebar__listCategory--he'}`}
-                                        title={this.props.lang === 'en' ? category.name : category.nameHebrew}
+                                        className={`sidebar__listCategory${this.props.i18n.language === 'en' ? ' sidebar__listCategory--en' : ' sidebar__listCategory--he'}`}
                                         style={
                                             windowWidth < 768 ?
                                             {
                                                 color: this.props.categoryColors[index].colorHex,
                                                 border: `1px dotted ${this.props.categoryColors[index].colorHex}`,
                                                 padding: 2,
-                                                paddingRight: this.props.lang === 'en' ? '6px': '2px',
-                                                paddingLeft: this.props.lang === 'en' ? '2px': '6px'
+                                                paddingRight: this.props.i18n.language === 'en' ? '6px': '2px',
+                                                paddingLeft: this.props.i18n.language === 'en' ? '2px': '6px'
                                             }
                                             :
                                             {
@@ -178,11 +178,8 @@ class SideBar extends React.Component {
                                         }
                                 >
                                         <div
-                                            className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`}
-                                        />
-                                        <span className="sidebar__listCategory__text">
-                                            {this.props.lang === 'en' ? category.name : category.nameHebrew}
-                                        </span>
+                                            className={`sidebar__arrow${this.props.i18n.language === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes(category.id) ? ' sidebar__arrow--open' : ''}`} 
+                                        /> {this.props.i18n.language === 'en' ? category.name : category.nameHebrew}
                                     </div>
                                     {
                                         this.state.openCategories.includes(category.id) ?
@@ -194,11 +191,11 @@ class SideBar extends React.Component {
                                                         <div
                                                             onClick={this.props.handleSideBarClick}
                                                             data-id={point.id}
-                                                            className={`sidebar__listItem${this.props.lang === 'en' ? ' sidebar__listItem--en' : ' sidebar__listItem--he'}${this.props.sidebarClickedItemId === point.id ? ' sidebar__listCategory--selected' : ''}`}
+                                                            className={`sidebar__listItem${this.props.i18n.language === 'en' ? ' sidebar__listItem--en' : ' sidebar__listItem--he'}${this.props.sidebarClickedItemId === point.id ? ' sidebar__listCategory--selected' : ''}`}
                                                             key={index}
-                                                            dir={this.props.lang === 'en' ? ' ltr' : 'rtl'}
+                                                            dir={this.props.i18n.language === 'en' ? ' ltr' : 'rtl'}
                                                         >
-                                                            - {this.props.lang === 'en' ? point.title : point.titleHebrew || point.title}
+                                                            - {this.props.i18n.language === 'en' ? point.title : point.titleHebrew || point.title}
                                                         </div>
                                                     );
                                                 }
@@ -222,18 +219,15 @@ class SideBar extends React.Component {
                     {
                         this.props.isAuthenticated && hasUnconectedProjects ? 
                             <div
-                                className={`sidebar__listCategory${this.props.lang === 'en' ? ' sidebar__listCategory--en' : ' sidebar__listCategory--he'}`}
+                                className={`sidebar__listCategory${this.props.i18n.language === 'en' ? ' sidebar__listCategory--en' : ' sidebar__listCategory--he'}`}
                                 style={{marginTop: '10px'}}
                                 onClick={this.handleSideBarCategoryClick}
                                 data-id={'notConnectedProjects'}
                                 title={this.props.lang === 'en' ? 'Not Connected' : 'לא מחובר'}
                             >
                                 <div
-                                    className={`sidebar__arrow${this.props.lang === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes('notConnectedProjects') ? ' sidebar__arrow--open' : ''}`}
-                                />
-                                <span className="sidebar__listCategory__text">
-                                    {this.props.lang === 'en' ? 'Not Connected' : 'לא מחובר'}
-                                </span>
+                                    className={`sidebar__arrow${this.props.i18n.language === 'en' ? ' sidebar__arrow--en' : ' sidebar__arrow--he'}${this.state.openCategories.includes('notConnectedProjects') ? ' sidebar__arrow--open' : ''}`} 
+                                /> {this.props.i18n.language === 'en' ? ' Not Connected' : 'לא מחובר'}
                             </div>
                         :
                         null
@@ -246,10 +240,10 @@ class SideBar extends React.Component {
                                     <div
                                         onClick={this.props.handleSideBarClick}
                                         data-id={point.id}
-                                        className={`sidebar__listItem${this.props.lang === 'en' ? ' sidebar__listItem--en' : ' sidebar__listItem--he'}${this.props.sidebarClickedItemId === point.id ? ' sidebar__listItem--selected' : ''}`}
+                                        className={`sidebar__listItem${this.props.i18n.language === 'en' ? ' sidebar__listItem--en' : ' sidebar__listItem--he'}${this.props.sidebarClickedItemId === point.id ? ' sidebar__listItem--selected' : ''}`}
                                         style={{color: 'aqua'}}
                                         key={index}
-                                        dir={this.props.lang === 'en' ? ' ltr' : 'rtl'}
+                                        dir={this.props.i18n.language === 'en' ? ' ltr' : 'rtl'}
                                     >
                                         - {point.title}
                                     </div>
@@ -259,8 +253,8 @@ class SideBar extends React.Component {
                         })
                     }
                 </div>
-                <div className={`desktop sidebar__text__box${this.props.lang === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
-                    {this.props.lang === 'en' ?
+                <div className={`desktop sidebar__text__box${this.props.i18n.language === 'en' ? " sidebar__text__box--en" : " sidebar__text__box--he"}`}>
+                    {this.props.i18n.language === 'en' ?
                             'New tool for comparative research' 
                         : 
                             'כלי חדש למחקר השוואתי'
@@ -272,4 +266,4 @@ class SideBar extends React.Component {
     }
 } 
 
-export default SideBar;
+export default withTranslation()(SideBar);

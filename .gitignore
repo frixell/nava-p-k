@@ -1,11 +1,14 @@
 node_modules/
 public/dist/
+.env
 .env.development
 .env.test
 .env
 config/
 
 # Documentation files - not needed on server
+CODEX.md
+GEMINI.md
 CLAUDE.md
 GEMINI.md
 PLAN.md

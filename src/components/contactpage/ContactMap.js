@@ -52,7 +52,7 @@ class ContactMap extends React.Component {
       }
       if (this.state.windowWidth<767) {
         if (this.props.style === 'strip') {
-          if (this.props.lang === 'he') {
+          if (this.props.i18n.language === 'he') {
             style = {
               width: '80vw',
               height: '80vw',
@@ -68,7 +68,7 @@ class ContactMap extends React.Component {
             }
           }
         } else if (this.props.style === 'page') {
-          if (this.props.lang === 'he') {
+          if (this.props.i18n.language === 'he') {
             style = {
               width: '80vw',
               height: '80vw',
@@ -86,7 +86,7 @@ class ContactMap extends React.Component {
         }
       } else {
         if (this.props.style === 'strip') {
-          if (this.props.lang === 'he') {
+          if (this.props.i18n.language === 'he') {
             style = {
               width: '20vw',
               height: '20vw',
@@ -102,7 +102,7 @@ class ContactMap extends React.Component {
             }
           }
         } else if (this.props.style === 'page') {
-          if (this.props.lang === 'he') {
+          if (this.props.i18n.language === 'he') {
             style = {
               width: '40vw',
               height: '40vw',
