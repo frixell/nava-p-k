@@ -4,6 +4,7 @@ import ReactLoading from "react-loading";
 import { Provider } from 'react-redux';
 import AppRouter from './routers/AppRouter';
 import configureStore from './store/configureStore';
+import { HelmetProvider } from 'react-helmet-async';
 import {
     startSetCategories
 } from './actions/eventspage';
@@ -83,8 +84,14 @@ const store = configureStore();
 
 
 let hasRendered = false;
-const container = document.getElementById('app');
-const root = createRoot(container);
+let root;
+
+if (typeof document !== 'undefined') {
+    const container = document.getElementById('app');
+    if (container) {
+        root = createRoot(container);
+    }
+}
 
 const renderApp = () => {
     //console.log(initialLang);
@@ -92,11 +99,13 @@ const renderApp = () => {
         const jsx = (
             <Provider store={store}>
                 <I18nextProvider i18n={i18n}>
-                    <AppRouter />
+                    <HelmetProvider>
+                        <AppRouter />
+                    </HelmetProvider>
                 </I18nextProvider>
             </Provider>
         );
-        if (typeof(window) !== "undefined") {
+        if (root) {
             root.render(jsx);
         }
         hasRendered = true;
@@ -104,10 +113,7 @@ const renderApp = () => {
 };
 
 //console.log(navigator.userAgent);
-if (typeof(window) !== "undefined") {
-    const container = document.getElementById('app');
-    const root = createRoot(container);
-
+if (root && typeof(window) !== "undefined") {
     if (navigator.userAgent.toLowerCase().indexOf('msie') > -1 || navigator.userAgent.toLowerCase().indexOf('trident') > -1 || navigator.userAgent.toLowerCase().indexOf('edge') > -1 ){
         console.log("found");
         root.render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><img src="/images/ie-preloader.gif" alt="זיוה קיינר - ציירת - עין הוד"/></div>);

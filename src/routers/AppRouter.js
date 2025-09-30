@@ -29,7 +29,7 @@ import { connect } from 'react-redux';
 class AppRouter extends React.Component {
     render() {
         return (
-            <Router>
+            <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <div>
                     <Routes>
                         <Route path="/" element={<HomePage urlLang='he' />} />

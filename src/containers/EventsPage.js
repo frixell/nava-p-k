@@ -1,6 +1,6 @@
 import React from 'react';
 import { Prompt } from "react-router-dom";
-import {Helmet} from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import AutosizeInput from 'react-input-autosize';
 import Button from '@mui/material/Button';
 import Modal from 'react-responsive-modal';

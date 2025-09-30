@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
-import {Helmet} from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import AutosizeInput from 'react-input-autosize';
 import Button from '@mui/material/Button';
 import PointTest from './PointTest';

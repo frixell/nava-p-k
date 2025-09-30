@@ -1,5 +1,5 @@
 import React from 'react';
-import {Helmet} from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import Button from '@mui/material/Button';
 import Modal from 'react-responsive-modal';
 import Footer from '../components/common/Footer';

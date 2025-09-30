@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const sass = require('sass');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -20,15 +21,20 @@ module.exports = (env) => {
     return {
         entry: './src/app.js',
         resolve: {
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
+            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
             fallback: {
-                "zlib": require.resolve("browserify-zlib"),
-                "path": require.resolve("path-browserify"),
-                "buffer": require.resolve("buffer/"),
-                "util": require.resolve("util/"),
-                "assert": require.resolve("assert/"),
-                "stream": require.resolve("stream-browserify"),
-                "querystring": require.resolve("querystring-es3"),
+                "buffer": false,
+                "stream": false,
+                "util": false,
+                "assert": false,
+                "path": false,
+                "zlib": false,
+                "querystring": false,
+                "url": false,
+                "crypto": false,
+                "http": false,
+                "https": false,
+                "os": false,
                 "fs": false,
                 "async_hooks": false
             }
@@ -40,19 +46,22 @@ module.exports = (env) => {
         },
         module: {
             rules: [{
-                test: /\.(js|jsx)$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/
-            }, {
                 test: /\.(ts|tsx)$/,
                 use: [
                     {
                         loader: 'babel-loader'
                     },
                     {
-                        loader: 'ts-loader'
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true
+                        }
                     }
                 ],
+                exclude: /node_modules/
+            }, {
+                test: /\.(js|jsx)$/,
+                loader: 'babel-loader',
                 exclude: /node_modules/
             }, {
                 test: /\.s?css$/,
@@ -61,13 +70,21 @@ module.exports = (env) => {
                     {
                         loader: 'css-loader',
                         options: {
-                            sourceMap: true
+                            sourceMap: true,
+                            url: {
+                                filter: (url) => !url.startsWith('/')
+                            }
                         }
                     },
                     {
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: true
+                            sourceMap: true,
+                            implementation: sass,
+                            api: 'modern',
+                            sassOptions: {
+                                silenceDeprecations: ['legacy-js-api', 'import']
+                            }
                         }
                     }
                 ]
