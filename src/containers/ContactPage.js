@@ -11,19 +11,21 @@ import Navigation from '../components/common/Navigation';
 import { startSendMessage } from '../actions/messages';
 import PropTypes from 'prop-types';
 
+import { withTranslation } from 'react-i18next';
+
 export class ContactPage extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        const langDir = this.props.lang === 'he' ? 'rtl' : 'ltr';
+        const langDir = this.props.i18n.language === 'he' ? 'rtl' : 'ltr';
         return (
             <div className="container-fluid">
                 <Navigation {...this.props} />
                 <div className="contactpage__structure">
                     <div className="contactpage__container">
-                       <ContactStrip lang={this.props.lang} />
+                       <ContactStrip lang={this.props.i18n.language} />
                     </div>
                 </div>
                 <Footer />
@@ -32,16 +34,11 @@ export class ContactPage extends React.Component {
     }
 }
 
-ContactPage.contextTypes = {
-  t: PropTypes.func.isRequired
-}
-
 const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
 });
 
 const mapDispatchToProps = (dispatch) => ({
     startSendMessage: (message) => dispatch(startSendMessage(message))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactPage);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ContactPage));

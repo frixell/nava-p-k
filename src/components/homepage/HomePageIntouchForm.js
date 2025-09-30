@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 
+import { withTranslation } from 'react-i18next';
+
+
 class HomePageIntouchForm extends React.Component {
     constructor(props) {
         super(props);
@@ -46,7 +49,8 @@ class HomePageIntouchForm extends React.Component {
         this.onToggleMailSentModal();
     };
     render() {
-        const dirLang = this.props.lang === 'he' ? 'rtl' : 'ltr';
+        const { t, i18n } = this.props;
+        const dirLang = i18n.language === 'he' ? 'rtl' : 'ltr';
         return (
             <div className="homepage__intouch__form__box">
                 <Modal
@@ -74,12 +78,12 @@ class HomePageIntouchForm extends React.Component {
                 </Modal>
 
                 {this.state.error && <p>{this.state.error}</p>}
-                <form className={this.props.lang === 'he' ? `homepage__intouch__form` : `homepage__intouch__form homepage__intouch__form__eng`} onSubmit={this.onSubmit} dir={dirLang}>
+                <form className={i18n.language === 'he' ? `homepage__intouch__form` : `homepage__intouch__form homepage__intouch__form__eng`} onSubmit={this.onSubmit} dir={dirLang}>
                     <input
                         type="text"
                         name="firstname"
                         id="given-name"
-                        placeholder={this.context.t("namePlaceholder")}
+                        placeholder={t("namePlaceholder")}
                         value={this.state.name}
                         onChange={this.onNameChange}
                     />
@@ -87,7 +91,7 @@ class HomePageIntouchForm extends React.Component {
                         type="email"
                         name="email"
                         id="email"
-                        placeholder={this.context.t("emailPlaceholder")}
+                        placeholder={t("emailPlaceholder")}
                         value={this.state.email}
                         onChange={this.onEmailChange}
                     />
@@ -99,19 +103,11 @@ class HomePageIntouchForm extends React.Component {
                     <input type="hidden" name="exists" id="exists" value="merge" />
                     <input type="hidden" name="restore" id="restore" value="restoreondeleted" />
                     
-                    <button className="homepage__intouch__button Heebo-Regular">{this.context.t("send")}</button>
+                    <button className="homepage__intouch__button Heebo-Regular">{t("send")}</button>
                 </form>
             </div>
         )
     }
 }
 
-HomePageIntouchForm.contextTypes = {
-  t: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
-});
-
-export default connect(mapStateToProps)(HomePageIntouchForm);
+export default withTranslation()(HomePageIntouchForm);

@@ -39,11 +39,11 @@ class EventsTabs extends React.Component {
     }
 
     render() {
-        const dirLang = this.props.lang === 'he' ? 'rtl' : 'ltr';
+        const dirLang = this.props.i18n.language === 'he' ? 'rtl' : 'ltr';
         return (
             <div className="events__tabs__box">
             
-                <div className={this.props.lang === 'he' ? 'events__tabs__box--right' : 'events__tabs__box--right events__tabs__box--right__eng'}>
+                <div className={this.props.i18n.language === 'he' ? 'events__tabs__box--right' : 'events__tabs__box--right events__tabs__box--right__eng'}>
                     
                     <div className={this.props.subCategoriesOrigin ? shouldHighLight(this.props.subCategoriesOrigin, this.state.subCategories) : ""}>
                     <div className="events__tabs__tabs__box" dir={dirLang}>
@@ -54,7 +54,7 @@ class EventsTabs extends React.Component {
                             className={this.state.subcategoryId === '' ? "events__tabs__button events__tabs__button--selected" : "events__tabs__button"} 
                             onClick={this.props.setSubcategoryId}
                         >
-                            {this.props.lang === 'he' ? 'הכל' : 'All'}
+                            {this.props.i18n.language === 'he' ? 'הכל' : 'All'}
                         </button>
                         {
                             this.state.subCategories.length > 0 ?
@@ -68,7 +68,7 @@ class EventsTabs extends React.Component {
                                                     className={this.props.subcategoryId === subCategory.id ? "events__tabs__button events__tabs__button--selected" : "events__tabs__button"}
                                                     onClick={this.props.setSubcategoryId}
                                                 >
-                                                    {this.props.lang === 'he' ? subCategory.name : subCategory.nameEng}
+                                                    {this.props.i18n.language === 'he' ? subCategory.name : subCategory.nameEng}
                                                 </button>
                                     }
                                          

@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { withTranslation } from 'react-i18next';
+
 class ContactContact extends React.Component {
     constructor(props) {
         super(props);
@@ -32,10 +34,11 @@ class ContactContact extends React.Component {
 
     render() {
         //console.log(this.props.event);
-        const dirLang = this.props.lang === 'he' ? 'rtl' : 'ltr';
+        const { i18n } = this.props;
+        const dirLang = i18n.language === 'he' ? 'rtl' : 'ltr';
         return (
 
-            <div className={this.props.lang === 'he' ? `contact__contact__box--${this.props.style}` : `contact__contact__box--${this.props.style} contact__contact__box__eng--${this.props.style}`}>
+            <div className={i18n.language === 'he' ? `contact__contact__box--${this.props.style}` : `contact__contact__box--${this.props.style} contact__contact__box__eng--${this.props.style}`}>
                 
                 <div className={`contact__contact__text__line--${this.props.style}`} dir={dirLang} onClick={this.gotoPhone}>
                     <p className={`contact__contact__text--${this.props.style} Heebo-Regular`} dir='ltr'>+972505966599</p>
@@ -56,15 +59,7 @@ class ContactContact extends React.Component {
     }
 };
 
-ContactContact.contextTypes = {
-  t: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
-});
-
-export default connect(mapStateToProps)(ContactContact);
+export default withTranslation()(ContactContact);
 
 
 

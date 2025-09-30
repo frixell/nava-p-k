@@ -25,7 +25,8 @@ import './styles/styles.scss';
 var firebase = require("firebase/app");
 require("firebase/auth");
 
-import I18n from "redux-i18n";
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n/i18n';
 
 // with Immutable.js:
 //import I18n from "redux-i18n/immutable"
@@ -82,19 +83,20 @@ const store = configureStore();
 
 
 let hasRendered = false;
+const container = document.getElementById('app');
+const root = createRoot(container);
+
 const renderApp = () => {
     //console.log(initialLang);
     if (!hasRendered && initialLang !== 'none') {
         const jsx = (
             <Provider store={store}>
-                <I18n translations={translations} initialLang={initialLang} fallbackLang="en">
+                <I18nextProvider i18n={i18n}>
                     <AppRouter />
-                </I18n>
+                </I18nextProvider>
             </Provider>
         );
         if (typeof(window) !== "undefined") {
-            const container = document.getElementById('app');
-            const root = createRoot(container);
             root.render(jsx);
         }
         hasRendered = true;

@@ -44,14 +44,14 @@ class MapViewTest extends Component {
         //if (map) console.log('map.layers.items[0].graphics.items[0].symbol.color.a', map.layers.items[0].graphics.items[0].symbol.color);
         //if (map) map.layers.items[0].graphics.items[0].symbol.color = {r:0,g:0,b:0,a:1};
         //if (map) console.log('map.layers.items[0].graphics.items[0].symbol.color.a 2', map.layers.items[0].graphics.items[0].symbol.color);
-        if (this.props.lang !== prevProps.lang) {
-            this.setState({lang: this.props.lang});
+        if (this.props.i18n.language !== prevProps.lang) {
+            this.setState({lang: this.props.i18n.language});
             
-            if (this.props.lang === 'en') {
+            if (this.props.i18n.language === 'en') {
                 if (view) {
-                    view.ui.move("zoom", this.props.lang === 'en' ? 'top-right' : 'top-left');
-                    view.ui.move(searchWidget, this.props.lang === 'en' ? 'bottom-left' : 'bottom-right');
-                    view.popup.lang = this.props.lang;
+                    view.ui.move("zoom", this.props.i18n.language === 'en' ? 'top-right' : 'top-left');
+                    view.ui.move(searchWidget, this.props.i18n.language === 'en' ? 'bottom-left' : 'bottom-right');
+                    view.popup.lang = this.props.i18n.language;
                     view.popup.title = this.state.selectedPoint && this.state.selectedPoint.title;
                     view.popup.content = this.state.selectedPoint && this.state.selectedPoint.content;
                     expandThisAction = {
@@ -63,9 +63,9 @@ class MapViewTest extends Component {
                 }
             } else {
                 if (view) {
-                    view.ui.move("zoom", this.props.lang === 'en' ? 'top-right' : 'top-left');
-                    view.ui.move(searchWidget, this.props.lang === 'en' ? 'bottom-left' : 'bottom-right');
-                    view.popup.lang = this.props.lang;
+                    view.ui.move("zoom", this.props.i18n.language === 'en' ? 'top-right' : 'top-left');
+                    view.ui.move(searchWidget, this.props.i18n.language === 'en' ? 'bottom-left' : 'bottom-right');
+                    view.popup.lang = this.props.i18n.language;
                     view.popup.title = this.state.selectedPoint && this.state.selectedPoint.titleHebrew;
                     view.popup.content = this.state.selectedPoint && this.state.selectedPoint.contentHebrew;
                     expandThisAction = {
@@ -493,7 +493,7 @@ class MapViewTest extends Component {
                 });
                 map.add(graphicsLayer);
                 
-                view.ui.move("zoom", this.props.lang === 'en' ? 'top-right' : 'top-left');
+                view.ui.move("zoom", this.props.i18n.language === 'en' ? 'top-right' : 'top-left');
                 
                 
                 // Search Widget
@@ -507,10 +507,10 @@ class MapViewTest extends Component {
                     index: 2
                 });
                 
-                view.ui.move(searchWidget, this.props.lang === 'en' ? 'bottom-left' : 'bottom-right');
+                view.ui.move(searchWidget, this.props.i18n.language === 'en' ? 'bottom-left' : 'bottom-right');
                 
                 expandThisAction = {
-                    title: this.props.lang === 'en' ? 'Expand' : 'הרחבה',
+                    title: this.props.i18n.language === 'en' ? 'Expand' : 'הרחבה',
                     id: 'expand-this',
                     className: 'esri-icon-zoom-out-fixed'
                 };

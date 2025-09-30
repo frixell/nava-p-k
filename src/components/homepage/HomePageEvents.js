@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 
+import { withTranslation } from 'react-i18next';
+
+
 class HomePageEvents extends React.Component {
     constructor(props) {
         super(props);
@@ -12,13 +15,13 @@ class HomePageEvents extends React.Component {
         }
     }
     render () {
-        const { homepage, homepageOrigin } = this.props;
+        const { homepage, homepageOrigin, t, i18n } = this.props;
         const changedBorder = homepage.pleasedText !== homepageOrigin.pleasedText ? "edit__changed__bg" : "edit__bg";
         return (
             <div className="homepage__events__box align-text-center">
             
                 <div className="homepage__events-header">
-                    <h1 className="homepage__events-header__text Heebo-Medium" dir="rtl">{this.context.t("homepageEventsTitle")}</h1>
+                    <h1 className="homepage__events-header__text Heebo-Medium" dir="rtl">{t("homepageEventsTitle")}</h1>
                 </div>
                 
 
@@ -26,22 +29,22 @@ class HomePageEvents extends React.Component {
                     <div className="homepage__pleased__body">
                         {
                             this.props.isAuthenticated === true ?
-                            <div className="homepage__pleased__content" dir={this.props.lang === 'he' ? 'rtl' : 'ltr'}>
+                            <div className="homepage__pleased__content" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
                                 <div className={changedBorder}>
                                     <textarea
                                         data-name='eventLink'
                                         data-action='setString'
                                         placeholder="טקסט ׳אודות׳"
-                                        value={this.props.lang === 'he' ? homepage.pleasedText : homepage.pleasedTextEng}
+                                        value={i18n.language === 'he' ? homepage.pleasedText : homepage.pleasedTextEng}
                                         onChange={this.props.onChange}
                                     />
                                 </div>
                             </div>
                             :
-                            <div className="homepage__pleased__content" dir={this.props.lang === 'he' ? 'rtl' : 'ltr'}>
+                            <div className="homepage__pleased__content" dir={i18n.language === 'he' ? 'rtl' : 'ltr'}>
                                 <textarea
                                     readOnly
-                                    value={this.props.lang === 'he' ? homepage.pleasedText : homepage.pleasedTextEng}
+                                    value={i18n.language === 'he' ? homepage.pleasedText : homepage.pleasedTextEng}
                                 />
                             </div>
                         }
@@ -79,13 +82,4 @@ class HomePageEvents extends React.Component {
     }
 }
 
-HomePageEvents.contextTypes = {
-  t: PropTypes.func.isRequired
-}
-
-
-const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
-});
-
-export default connect(mapStateToProps)(HomePageEvents);
+export default withTranslation()(HomePageEvents);

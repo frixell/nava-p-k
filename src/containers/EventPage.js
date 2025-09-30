@@ -1,9 +1,8 @@
 import React from 'react';
 import {Helmet} from 'react-helmet';
 import AutosizeInput from 'react-input-autosize';
-//import { Button, Modal as ModalRB } from "react-bootstrap";
-import Button from 'react-bootstrap/lib/Button';
-import ModalRB from 'react-bootstrap/lib/Modal';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
 import Modal from 'react-responsive-modal';
 import ContactStrip from '../components/contactpage/ContactStrip';
 import CustomersStrip from '../components/common/CustomersStrip';

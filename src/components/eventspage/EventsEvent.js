@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-//import { Button } from "react-bootstrap";
-import Button from 'react-bootstrap/lib/Button';
+import Button from '@mui/material/Button';
 import UploadImageButton from '../common/UploadImageButton';
 import { stringReplace } from '../../reusableFunctions/stringReplace';
 
@@ -184,10 +183,10 @@ class EventsEvent extends React.Component {
                     data-currentitems={this.props.itemsCurrent}
                     hidden={this.state.hover} 
                     className="events__event__item__title Heebo-Regular" 
-                    dir={this.props.lang === 'he' ? "rtl" : "ltr"}
+                    dir={this.props.i18n.language === 'he' ? "rtl" : "ltr"}
                     onClick={this.props.isAuthenticated ? this.props.onInfoToggleOpen : null}
                 >
-                    {this.props.lang === 'he' ? this.props.title : this.props.titleEng}
+                    {this.props.i18n.language === 'he' ? this.props.title : this.props.titleEng}
                 </h2>
                 
                 
@@ -219,5 +218,5 @@ export default EventsEvent;
 //                     className="events__event__item__text Heebo-Regular" 
 //                     dir="rtl"
 //                 >
-//                     {this.props.lang === 'he' ? this.props.text : this.props.textEng}
+//                     {this.props.i18n.language === 'he' ? this.props.text : this.props.textEng}
 //                 </p>

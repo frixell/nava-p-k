@@ -1,8 +1,9 @@
 import React from 'react';
 import Modal from 'react-responsive-modal';
+import 'react-responsive-modal/styles.css';
 import {Helmet} from 'react-helmet';
 import AutosizeInput from 'react-input-autosize';
-import Button from 'react-bootstrap/lib/Button';
+import Button from '@mui/material/Button';
 import PointTest from './PointTest';
 import DomPopup from './DomPopup';
 //online version
@@ -17,8 +18,8 @@ import Navigation from '../components/common/Navigation';
 import { connect } from 'react-redux';
 import { startLogout } from '../actions/auth';
 import { startAddPoint, startEditProject } from '../actions/points';
+import { withTranslation } from 'react-i18next';
 import isEqual from 'lodash.isequal';
-import { setLanguage } from "redux-i18n";
 import ProjectDetailsPage from './ProjectDetailsPage';
 import {
     startAddCategory,
@@ -91,7 +92,7 @@ class HomePage extends React.Component {
                 }
                 
                 if(name === 'title') {
-                    if (this.props.lang === 'en') {
+                    if (this.props.i18n.language === 'en') {
                         selectedProject[name] = value;
                         selectedProject.extendedContent[name] = value;
                     } else {
@@ -102,7 +103,7 @@ class HomePage extends React.Component {
                 }
                 
                 if(name === 'content') {
-                    if (this.props.lang === 'en') {
+                    if (this.props.i18n.language === 'en') {
                         selectedProject[name] = `<img src='${selectedProject.extendedContent.image}' />${value}`;
                         selectedProject.extendedContent[name] = value;
                     } else {
@@ -112,7 +113,7 @@ class HomePage extends React.Component {
                     break;
                 }
                 
-                if (this.props.lang === 'en') {
+                if (this.props.i18n.language === 'en') {
                     selectedProject.extendedContent[name] = value;
                 } else {
                     selectedProject.extendedContent[name+'Hebrew'] = value;
@@ -203,8 +204,8 @@ class HomePage extends React.Component {
     }
 
     setUrlLang = () => {
-        if (this.props.urlLang !== undefined && this.props.lang !== this.props.urlLang) {
-            this.props.setLanguage(this.props.urlLang);
+        if (this.props.urlLang !== undefined && this.props.i18n.language !== this.props.urlLang) {
+            this.props.i18n.changeLanguage(this.props.urlLang);
         }
     }
 
@@ -225,8 +226,8 @@ class HomePage extends React.Component {
     }
     
     componentDidUpdate = (prevProps, prevState) => {
-        if (this.props.lang !== prevProps.lang) {
-            this.setState({lang: this.props.lang});
+        if (this.props.i18n.language !== prevProps.i18n.language) {
+            this.setState({lang: this.props.i18n.language});
         }
         if (!isEqual(this.props.categories, prevProps.categories)) {
             this.setState({categories: this.props.categories});
@@ -559,7 +560,7 @@ class HomePage extends React.Component {
     render() {
         console.log('change 3');
         return (
-            <div className="container-fluid" style={{cursor: this.state.cursor, textAlign: this.props.lang === 'en' ? 'left' : 'right'}}>
+            <div className="container-fluid" style={{cursor: this.state.cursor, textAlign: this.props.i18n.language === 'en' ? 'left' : 'right'}}>
                 
                 <Modal
                     open={this.state.editCategoriesModalIsOpen}
@@ -668,10 +669,12 @@ class HomePage extends React.Component {
                         <Button bsStyle="success" onClick={this.addNewCategory}>המשך</Button>
                     </div>
                 </Modal>
+                
+
 
                 <Helmet>
                 {
-                    this.props.lang === "he" ?
+                    this.props.i18n.language === "he" ?
                         <title>{this.state.seo.title}</title>
                     :
                         <title>{this.state.seo.titleEng}</title>
@@ -688,9 +691,9 @@ class HomePage extends React.Component {
                 {
                     this.props.isAuthenticated ?
                     
-                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.lang === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '90%'} : {textAlign: 'center', left: '10%'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label">
-                                {`${this.props.lang === 'en' ? 'Exit' : 'יציאה'}`}
+                                {`${this.props.i18n.language === 'en' ? 'Exit' : 'יציאה'}`}
                             </div>
                             <button className="backoffice_button" onClick={this.props.startLogout}>
                                 <img className="backoffice_icon" src="/images/backoffice/exit.svg" alt="יציאה" />
@@ -702,9 +705,9 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && this.state.selectedProject ?
-                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '83%'} : {textAlign: 'center', left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '83%'} : {textAlign: 'center', left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label" style={{textAlign: 'center', color: this.state.needSave ? 'red' : 'aqua'}}>
-                                {`${this.props.lang === 'en' ? 'Save' : 'שמירה'}`}
+                                {`${this.props.i18n.language === 'en' ? 'Save' : 'שמירה'}`}
                             </div>
                             <button className="backoffice_button" onClick={this.onUpdateProject}>
                                 <img className="backoffice_icon" src="/images/backoffice/save.svg" alt="שמירה" />
@@ -716,9 +719,9 @@ class HomePage extends React.Component {
                 
                 {
                     this.props.isAuthenticated && !this.state.selectedProject ?
-                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--add-project" style={this.props.lang === 'en' ? {textAlign: 'center', left: '83%'} : {textAlign: 'center', left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
+                        <div className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--add-project" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '83%'} : {textAlign: 'center', left: '17%'}}>{/* $( window ).width() / 2 - 85 */}
                             <div className="backoffice__toolbar__label" style={{width: '7rem', textAlign: 'center', color: this.state.allowAddPoint ? 'red' : 'aqua'}}>
-                                {`${this.props.lang === 'en' ? 'Add project' : 'הוספת פרוייקט'}`}
+                                {`${this.props.i18n.language === 'en' ? 'Add project' : 'הוספת פרוייקט'}`}
                             </div>
                             <button className="backoffice_button" onClick={this.allowAddPoint}>
                                 <img className="backoffice_icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת פרוייקט" />
@@ -731,9 +734,9 @@ class HomePage extends React.Component {
                 
                 {this.props.isAuthenticated ? 
                 (
-                    <div className="backoffice__nav__toolbar__buttons" style={this.props.lang === 'en' ? {textAlign: 'center', left: '76%'} : {textAlign: 'center', left: '24%'}}>
-                        <div className="backoffice__toolbar__label" style={this.props.lang === 'en' ? {paddingLeft: '6px', textAlign: 'center'} : {textAlign: 'center'}}>
-                            {`${this.props.lang === 'en' ? 'Manage categories' : 'ניהול קטגוריות'}`}
+                    <div className="backoffice__nav__toolbar__buttons" style={this.props.i18n.language === 'en' ? {textAlign: 'center', left: '76%'} : {textAlign: 'center', left: '24%'}}>
+                        <div className="backoffice__toolbar__label" style={this.props.i18n.language === 'en' ? {paddingLeft: '6px', textAlign: 'center'} : {textAlign: 'center'}}>
+                            {`${this.props.i18n.language === 'en' ? 'Manage categories' : 'ניהול קטגוריות'}`}
                         </div>
                         <div style={{
                             position: 'relative',
@@ -779,7 +782,7 @@ class HomePage extends React.Component {
                             :
                                 {
                                     display: 'flex',
-                                    flexDirection: this.props.lang === 'en' ? 'row' : 'row-reverse'
+                                    flexDirection: this.props.i18n.language === 'en' ? 'row' : 'row-reverse'
                                 }
                             }
                 >
@@ -790,7 +793,7 @@ class HomePage extends React.Component {
                         categories={this.state.categories}
                         points={this.props.points}
                         isAuthenticated={this.props.isAuthenticated}
-                        lang={this.props.lang}
+                        lang={this.props.i18n.language}
                         categoryColors={this.state.categoryColors}
                         setOpenCategories={this.setOpenCategories}
                     />
@@ -798,7 +801,7 @@ class HomePage extends React.Component {
                     {
                         this.state.selectedProject ?
                             <div
-                                className={`homepage__project__details__container${this.props.lang === 'en' ? ' homepage__project__details__container--en' : ' homepage__project__details__container--he'}`}
+                                className={`homepage__project__details__container${this.props.i18n.language === 'en' ? ' homepage__project__details__container--en' : ' homepage__project__details__container--he'}`}
                                 style={ 
                                     $( window ).width() < 768 ? 
                                     {
@@ -808,7 +811,7 @@ class HomePage extends React.Component {
                                     }
                                     :
                                     { 
-                                        height: this.props.lang === 'en' ? $( window ).height() - 60 : $( window ).height() - 65,
+                                        height: this.props.i18n.language === 'en' ? $( window ).height() - 60 : $( window ).height() - 65,
                                         width: $( window ).width() - 170
                                     }
                                 }
@@ -822,7 +825,7 @@ class HomePage extends React.Component {
                                     isAuthenticated={this.props.isAuthenticated}
                                     onChange={this.setData}
                                     uploadWidget={this.uploadWidget}
-                                    lang={this.props.lang}
+                                    lang={this.props.i18n.language}
                                     categoryColors={this.state.categoryColors}
                                 />
                             </div>
@@ -840,9 +843,9 @@ class HomePage extends React.Component {
                             }
                             :
                             { 
-                                float: this.props.lang === 'en' ? 'right' : 'left',
+                                float: this.props.i18n.language === 'en' ? 'right' : 'left',
                                 display: 'inline-block',
-                                height: this.props.lang === 'en' ? 
+                                height: this.props.i18n.language === 'en' ? 
                                             $( window ).height() - 60 
                                         : 
                                             $( window ).height() - 60, 
@@ -859,14 +862,14 @@ class HomePage extends React.Component {
                             selectedProject={this.state.selectedProject}
                             setSelectedProject={this.setSelectedProject}
                             handleExpandProject={this.handleExpandProject}
-                            lang={this.props.lang}
+                            lang={this.props.i18n.language}
                             categoryColors={this.state.categoryColors}
                             openCategories={this.state.openCategories}
                         />
                     </div>
                 </div>
                 
-                <Footer lang={this.props.lang} position="absolute" />
+                <Footer lang={this.props.i18n.language} position="absolute" />
             </div>
         );
     }
@@ -879,13 +882,11 @@ const mapStateToProps = (state) => ({
     points: state.points,
     tableTemplate: state.tableTemplate,
     homepage: state.homepage,
-    navigation: state.navigation,
-    lang: state.i18nState.lang
+    navigation: state.navigation
 });
 
 const mapDispatchToProps = (dispatch) => ({
     startLogout: () => dispatch(startLogout()),
-    setLanguage: (lang) => dispatch(setLanguage(lang)),
     startAddPoint: (point) => dispatch(startAddPoint(point)),
     startEditProject: (project) => dispatch(startEditProject(project)),
     startToggleShowCategory: (categoryId, visible) => dispatch(startToggleShowCategory(categoryId, visible)),
@@ -893,7 +894,7 @@ const mapDispatchToProps = (dispatch) => ({
     startAddCategory: (category) => dispatch(startAddCategory(category))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(HomePage));
 
 
 

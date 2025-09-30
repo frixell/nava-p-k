@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { withTranslation } from 'react-i18next';
+
 class AboutTopStrip extends React.Component {
     constructor(props) {
         super(props);
@@ -14,15 +16,15 @@ class AboutTopStrip extends React.Component {
 
     componentDidMount = () => {
         this.setState({
-            lang: this.props.lang
+            lang: this.props.i18n.language
         });
     }
 
     render () {
-        console.log('this.props.lang');
-        console.log(this.props.lang);
+        console.log('this.props.i18n.language');
+        console.log(this.props.i18n.language);
         console.log(this.props.slogen)
-        const langDir = this.props.lang === 'he' ? 'rtl' : 'ltr';
+        const langDir = this.props.i18n.language === 'he' ? 'rtl' : 'ltr';
         return (
             <div className="about__topstrip__box" dir={langDir}>
                 { 
@@ -30,7 +32,7 @@ class AboutTopStrip extends React.Component {
                         <div
                             className="backoffice__toolbar__buttons backoffice__toolbar__buttons--save-project"
                             style={
-                                this.props.lang === 'en' ? 
+                                this.props.i18n.language === 'en' ? 
                                     {
                                         width: '5rem',
                                         textAlign: 'center',
@@ -51,7 +53,7 @@ class AboutTopStrip extends React.Component {
                                 }
                         >
                             <div className="backoffice__toolbar__label" style={{width: '5rem', color: this.state.needSave ? 'red' : 'aqua'}}>
-                                {this.props.lang === 'en' ? 'Image' : 'תמונה'}
+                                {this.props.i18n.language === 'en' ? 'Image' : 'תמונה'}
                             </div>
                             <button
                                 className="backoffice_button"
@@ -81,12 +83,4 @@ class AboutTopStrip extends React.Component {
     }
 };
 
-AboutTopStrip.contextTypes = {
-    t: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
-});
-
-export default connect(mapStateToProps)(AboutTopStrip);
+export default withTranslation()(AboutTopStrip);

@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import UncontrolledCarousel from '../UncontrolledCarousel';
-//import { Button } from "react-bootstrap";
-import Button from 'react-bootstrap/lib/Button';
-import { connect } from 'react-redux';
-import Modal from 'react-responsive-modal';
+import { Button, Modal } from '@mui/material';
 import {
     startAddDesktopGallery,
     startSetDesktopGallery,
@@ -487,16 +483,9 @@ class HomePageCarousel extends React.Component {
 
             {
               this.props.desktopGallery && this.props.mobileGallery ?
-                <UncontrolledCarousel className="carousel__fade"
-                  slide={false}
-                  pause={false}
-                  controls={false}
-                  keyboard={false}
-                  ride='carousel'
-                  interval='5000'
-                  media={this.props.media}
-                  items={this.props.media === 'desktop' ? this.state.desktopImages : this.state.mobileImages}
-                />
+                <div>
+                  <img className="w-100" src={this.props.media === 'desktop' ? this.state.desktopImages[0].src : this.state.mobileImages[0].src} alt={this.props.media === 'desktop' ? this.state.desktopImages[0].altText : this.state.mobileImages[0].altText} />
+                </div>
               :
               null
             }
