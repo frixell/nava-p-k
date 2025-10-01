@@ -777,12 +777,15 @@ class HomePage extends React.Component {
                 <div style={ $( window ).width() < 768 ? 
                                 {
                                     display: 'flex',
-                                    flexDirection: 'column-reverse'
+                                    flexDirection: 'column-reverse',
+                                    alignItems: 'stretch'
                                 }
                             :
                                 {
                                     display: 'flex',
-                                    flexDirection: this.props.i18n.language === 'en' ? 'row' : 'row-reverse'
+                                    flexDirection: this.props.i18n.language === 'en' ? 'row' : 'row-reverse',
+                                    alignItems: 'stretch',
+                                    height: 'calc(100vh - var(--toolbar-height))'
                                 }
                             }
                 >
@@ -811,7 +814,7 @@ class HomePage extends React.Component {
                                     }
                                     :
                                     { 
-                                        height: this.props.i18n.language === 'en' ? $( window ).height() - 60 : $( window ).height() - 65,
+                                        height: 'calc(100vh - var(--toolbar-height))',
                                         width: $( window ).width() - 170
                                     }
                                 }
@@ -845,10 +848,7 @@ class HomePage extends React.Component {
                             { 
                                 float: this.props.i18n.language === 'en' ? 'right' : 'left',
                                 display: 'inline-block',
-                                height: this.props.i18n.language === 'en' ? 
-                                            $( window ).height() - 60 
-                                        : 
-                                            $( window ).height() - 60, 
+                                height: 'calc(100vh - var(--toolbar-height))', 
                                 width: $( window ).width() - 170 
                             }
                         }

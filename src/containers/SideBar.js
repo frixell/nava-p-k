@@ -72,7 +72,7 @@ class SideBar extends React.Component {
                     }
                     :
                     {
-                        height: this.props.i18n.language === 'en' ? windowHeight - 60 : windowHeight - 60,
+                        height: 'calc(100vh - var(--toolbar-height))',
                         display: 'flex',
                         flexDirection: 'column'
                     }

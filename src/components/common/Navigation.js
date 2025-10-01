@@ -15,6 +15,38 @@ const Navigation = (props) => {
     }
   }, []);
 
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
+    }
+
+    const updateToolbarHeight = () => {
+      const desktopToolbar = document.querySelector('.navbar-light .MuiToolbar-root');
+      const mobileToolbar = document.querySelector('.mobile .MuiToolbar-root');
+
+      const isVisible = (element) => {
+        if (!element || !element.parentElement) {
+          return false;
+        }
+        const style = window.getComputedStyle(element.parentElement);
+        return style.display !== 'none' && style.visibility !== 'hidden';
+      };
+
+      const activeToolbar = isVisible(desktopToolbar) ? desktopToolbar : (isVisible(mobileToolbar) ? mobileToolbar : (desktopToolbar || mobileToolbar));
+      const fallback = parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('--toolbar-height')) || 0;
+      const height = activeToolbar ? activeToolbar.offsetHeight : fallback;
+
+      // document.documentElement.style.setProperty('--toolbar-height', `${height}px`);
+    };
+
+    updateToolbarHeight();
+    window.addEventListener('resize', updateToolbarHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateToolbarHeight);
+    };
+  }, []);
+
   const toggle = () => {
     setIsOpen(!isOpen);
   };
