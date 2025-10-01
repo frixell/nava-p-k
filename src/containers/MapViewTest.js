@@ -615,21 +615,28 @@ class MapViewTest extends Component {
                     
                     view.hitTest(event).then(function(response) {
                         // console.log('hitTest response', response);
-                        let results = response.results[0].graphic;
-                        if (results) {
-                            let titleHebrew = results.point.titleHebrew;
-                            let contentHebrew = results.point.contentHebrew;
-                            let title = results.point.title;
-                            let content = results.point.content;
-                            setAction(results.point);
-                            view.popup.open({
-                                project: results.point || {},
-                                title: view.popup.lang === 'en' ? title : titleHebrew,
-                                location: event.mapPoint,
-                                content: view.popup.lang === 'en' ? content : contentHebrew,
-                                actions: [expandThisAction]
-                            });
+                        const graphicResult = response.results && response.results.find((item) => item && item.graphic && item.graphic.point);
+                        if (!graphicResult || !graphicResult.graphic) {
+                            return;
                         }
+
+                        const { point } = graphicResult.graphic;
+                        if (!point) {
+                            return;
+                        }
+
+                        const titleHebrew = point.titleHebrew;
+                        const contentHebrew = point.contentHebrew;
+                        const title = point.title;
+                        const content = point.content;
+                        setAction(point);
+                        view.popup.open({
+                            project: point || {},
+                            title: view.popup.lang === 'en' ? title : titleHebrew,
+                            location: event.mapPoint,
+                            content: view.popup.lang === 'en' ? content : contentHebrew,
+                            actions: [expandThisAction]
+                        });
                     });
                 });
             

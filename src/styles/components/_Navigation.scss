@@ -40,8 +40,9 @@
 
 
 .fakeNav {
-    height: 5rem;
-    display: none;
+    height: var(--toolbar-height);
+    display: block;
+    width: 100%;
 }
 
 .navbar__brand {
@@ -309,7 +310,7 @@
     }
 
     .fakeNav {
-        height: 17vw;
+        height: var(--toolbar-height);
         display: block;
     }
 
@@ -531,7 +532,7 @@
     }
 
     .fakeNav {
-        height: 11vw;
+        height: var(--toolbar-height);
     }
 
     .homepage__event-item-box textarea {

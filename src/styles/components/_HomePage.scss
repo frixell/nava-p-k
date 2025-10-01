@@ -930,7 +930,9 @@ input[type="email"]::-webkit-input-placeholder {
     background: $white;
     padding: 20px;
     padding-top: 30px;
-    top: 60px;
+    top: var(--toolbar-height);
+    box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .homepage__project__details__container--en {
@@ -985,10 +987,11 @@ input[type="email"]::-webkit-input-placeholder {
 
 .homepage__sidebar__container {
     display: inline-block;
-    padding-top: 20px;
+    padding-top: 0;
     padding-right: 10px;
     width: 162px;
     background: $black;
+    box-sizing: border-box;
 }
 
 .tableTemplate__category__name {
