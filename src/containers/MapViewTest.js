@@ -263,13 +263,13 @@ class MapViewTest extends Component {
             })
             if (showPoint || this.props.openCategories.length === 0) {
                 if (pointCategories.length > 0) {
-                    let colorIndex = 0;
-                    this.props.categories.map((category, index) => {
-                        if (category.id === pointCategories[0]) {
-                            colorIndex = index;
-                        }
-                    });
-                    markerSymbolColor = this.props.categoryColors[colorIndex].color;
+                    let colorIndex = this.props.categories.findIndex((category) => category.id === pointCategories[0]);
+                    if (colorIndex < 0) {
+                        markerSymbolColor = [226, 119, 40];
+                    } else {
+                        const paletteEntry = this.props.categoryColors[colorIndex];
+                        markerSymbolColor = paletteEntry && paletteEntry.color ? paletteEntry.color : [226, 119, 40];
+                    }
                 }
                 
                 let yIndex = 0;
@@ -342,13 +342,9 @@ class MapViewTest extends Component {
                             center: [point.x, point.y]
                         };
                         
-                        let colorIndex = 0;
-                        this.props.categories.map((propsCategory, index) => {
-                            if (propsCategory.id === category) {
-                                colorIndex = index;
-                            }
-                        });
-                        markerSymbolColor = this.props.categoryColors[colorIndex].color;
+                    const colorIndex = this.props.categories.findIndex((propsCategory) => propsCategory.id === category);
+                    const paletteEntry = colorIndex >= 0 ? this.props.categoryColors[colorIndex] : undefined;
+                    markerSymbolColor = paletteEntry && paletteEntry.color ? paletteEntry.color : [226, 119, 40];
                         
                         
                         simpleFillSymbol = {

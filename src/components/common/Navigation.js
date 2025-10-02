@@ -80,23 +80,23 @@ const Navigation = (props) => {
               </Button>
               <div style={{ flexGrow: 1 }} />
               <div>
-                <Button color="inherit" component={NavLink} to="/" className={pathname === '/' ? 'is-active nav__link--active' : 'nav__link'}>ראשי</Button>
-                <Button color="inherit" component={NavLink} to="/מחקר" className={pathname === '/מחקר' ? 'is-active nav__link--active' : 'nav__link'}>מחקר</Button>
-                <Button color="inherit" component={NavLink} to="/הוראה" className={pathname === '/הוראה' ? 'is-active nav__link--active' : 'nav__link'}>הוראה</Button>
-                <Button color="inherit" component={NavLink} to="/הרצאות" className={pathname === '/הרצאות' ? 'is-active nav__link--active' : 'nav__link'}>הרצאות</Button>
-                <Button color="inherit" component={NavLink} to="/פרסומים" className={pathname === '/פרסומים' ? 'is-active nav__link--active' : 'nav__link'}>פרסומים</Button>
-                <Button color="inherit" component={NavLink} to="/קורות_חיים" className={pathname === '/קורות_חיים' ? 'is-active nav__link--active' : 'nav__link'}>קו״ח</Button>
-                <Button color="inherit" component={NavLink} to="/אודות" className={pathname === '/אודות' ? 'is-active nav__link--active' : 'nav__link'}>אודות</Button>
                 <Button color="inherit" component={NavLink} to="/צרו_קשר" className={pathname === '/צרו_קשר' ? 'is-active nav__link--active' : 'nav__link'}>צרו קשר</Button>
+                <Button color="inherit" component={NavLink} to="/אודות" className={pathname === '/אודות' ? 'is-active nav__link--active' : 'nav__link'}>אודות</Button>
+                <Button color="inherit" component={NavLink} to="/קורות_חיים" className={pathname === '/קורות_חיים' ? 'is-active nav__link--active' : 'nav__link'}>קו״ח</Button>
+                <Button color="inherit" component={NavLink} to="/פרסומים" className={pathname === '/פרסומים' ? 'is-active nav__link--active' : 'nav__link'}>פרסומים</Button>
+                <Button color="inherit" component={NavLink} to="/הרצאות" className={pathname === '/הרצאות' ? 'is-active nav__link--active' : 'nav__link'}>הרצאות</Button>
+                <Button color="inherit" component={NavLink} to="/הוראה" className={pathname === '/הוראה' ? 'is-active nav__link--active' : 'nav__link'}>הוראה</Button>
+                <Button color="inherit" component={NavLink} to="/מחקר" className={pathname === '/מחקר' ? 'is-active nav__link--active' : 'nav__link'}>מחקר</Button>
+                <Button color="inherit" component={NavLink} to="/" className={pathname === '/' ? 'is-active nav__link--active' : 'nav__link'}>ראשי</Button>
               </div>
               <Button color="inherit" href="/" style={{textTransform: 'none'}} className="navbar__brand">
-                <div style={{marginTop: '-0.9vw', textAlign: 'right', lineHeight: '1.2'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div>
+                <div style={{marginBottom: '2px', textAlign: 'right', lineHeight: '1.2'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div>
               </Button>
             </>
           ) : (
             <>
               <Button color="inherit" href="/" style={{textTransform: 'none'}} className="navbar__brand navbar__brand__eng">
-                <div style={{marginTop: '-0.8vw', lineHeight: '140%'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>
+                <div style={{marginBottom: '1px', lineHeight: '140%'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>
               </Button>
               <div>
                 <Button color="inherit" component={NavLink} to="/en" className={pathname === '/en' ? 'is-active nav__link--active' : 'nav__link'}>Home</Button>
