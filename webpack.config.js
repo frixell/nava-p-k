@@ -60,10 +60,7 @@ module.exports = (env) => {
                         loader: 'babel-loader'
                     },
                     {
-                        loader: 'ts-loader',
-                        options: {
-                            transpileOnly: true
-                        }
+                        loader: 'ts-loader'
                     }
                 ],
                 exclude: /node_modules/

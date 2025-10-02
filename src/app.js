@@ -114,11 +114,25 @@ const renderApp = () => {
 
 //console.log(navigator.userAgent);
 if (root && typeof(window) !== "undefined") {
-    if (navigator.userAgent.toLowerCase().indexOf('msie') > -1 || navigator.userAgent.toLowerCase().indexOf('trident') > -1 || navigator.userAgent.toLowerCase().indexOf('edge') > -1 ){
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isLegacyIE = userAgent.indexOf('msie') > -1 || userAgent.indexOf('trident') > -1 || userAgent.indexOf('edge') > -1;
+
+    if (isLegacyIE) {
         console.log("found");
-        root.render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><img src="/images/ie-preloader.gif" alt="זיוה קיינר - ציירת - עין הוד"/></div>);
+        root.render(
+            <div className="app__loading-screen">
+                <img src="/images/ie-preloader.gif" alt="זיוה קיינר - ציירת - עין הוד" />
+            </div>
+        );
     } else {
-        root.render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><ReactLoading type="spinningBubbles" color="#666665" /></div>);
+        root.render(
+            <div className="app__loading-screen">
+                <div className="app__loading-spinner">
+                    <ReactLoading type="spinningBubbles" color="#666665" />
+                    <p>Loading portfolio…</p>
+                </div>
+            </div>
+        );
     }
 }
 

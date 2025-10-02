@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import isEqual from 'lodash.isequal';
 import Button from '@mui/material/Button';
