@@ -15,7 +15,7 @@ class EventsHeader extends React.Component {
         super(props);
     }
     render() {
-        //console.log(this.props.i18n.language);
+        //console.log(this.props.lang);
         return (
             <div className="events__header__box">
                 { 
@@ -30,9 +30,9 @@ class EventsHeader extends React.Component {
                 }
                 {
                     this.props.isAuthenticated === true ?
-                        <h1 className="events__header Heebo-Regular" dir="rtl">{this.props.i18n.language === 'he' ? this.props.categoryName : this.props.categoryNameEng}</h1>
+                        <h1 className="events__header Heebo-Regular" dir="rtl">{this.props.lang === 'he' ? this.props.categoryName : this.props.categoryNameEng}</h1>
                     :
-                        <h1 className="events__header Heebo-Regular" dir="rtl">{this.props.i18n.language === 'he' ? this.props.categoryName : this.props.categoryNameEng}</h1>
+                        <h1 className="events__header Heebo-Regular" dir="rtl">{this.props.lang === 'he' ? this.props.categoryName : this.props.categoryNameEng}</h1>
                 }
                 
             </div>

@@ -9,8 +9,6 @@ import AnimateHeight from 'react-animate-height';
 import AutosizeInput from 'react-input-autosize';
 import Textarea from 'react-expanding-textarea';
 
-import { withTranslation } from 'react-i18next';
-
 const shouldHighLight = (org, update) => {
     if ( org === update ) {
         return 'width_100 edit__bg';
@@ -82,10 +80,9 @@ class EventHeader extends React.Component {
 
     render() {
         const { height } = this.state;
-        const { i18n } = this.props;
-        const dirLang = i18n.language === 'he' ? 'rtl' : 'ltr';
+        const dirLang = this.props.lang === 'he' ? 'rtl' : 'ltr';
         console.log(this.props.eventText);
-        console.log(i18n.language);
+        console.log(this.props.lang);
         return (
             <div className="event__header__box" dir={dirLang}>
                 { 
@@ -125,7 +122,7 @@ class EventHeader extends React.Component {
 
                     
 
-                    <div className={i18n.language === 'he' ? `event__header__in__box` : `event__header__in__box event__header__in__box__eng`} dir={dirLang}>
+                    <div className={this.props.lang === 'he' ? `event__header__in__box` : `event__header__in__box event__header__in__box__eng`} dir={dirLang}>
                         
                         {
                             this.props.isAuthenticated === true ?
@@ -138,16 +135,16 @@ class EventHeader extends React.Component {
                                         data-field='name'
                                         data-action={this.props.action}
                                         placeholder="שם הציור"
-                                        value={i18n.language === 'he' ? this.props.eventName || this.state.eventNameEng : this.props.eventNameEng || this.state.eventNameEng}
+                                        value={this.props.lang === 'he' ? this.props.eventName || this.state.eventNameEng : this.props.eventNameEng || this.state.eventNameEng}
                                         onChange={this.props.onEventNameChange}
                                         dir={dirLang}
                                     />
                                 </div>
                             :
-                                <h2 className="event__header Heebo-Regular">{i18n.language === 'he' ? this.props.eventName || this.state.eventNameEng : this.props.eventNameEng || this.state.eventNameEng}</h2>
+                                <h2 className="event__header Heebo-Regular">{this.props.lang === 'he' ? this.props.eventName || this.state.eventNameEng : this.props.eventNameEng || this.state.eventNameEng}</h2>
                         }
 
-                        <div className={i18n.language === 'he' ? `event__text__box` : `event__text__box event__text__box__eng`}>
+                        <div className={this.props.lang === 'he' ? `event__text__box` : `event__text__box event__text__box__eng`}>
                             <AnimateHeight
                             duration={ 500 }
                             height={ 'auto' }>
@@ -156,21 +153,21 @@ class EventHeader extends React.Component {
                                         <div className={shouldHighLight(this.props.eventTextOrigin, this.props.eventText)}>
                                             <Textarea
                                                 className="events__text Heebo-Regular"
-                                                value={i18n.language === 'he' ? this.props.eventText : this.props.eventTextEng}
+                                                value={this.props.lang === 'he' ? this.props.eventText : this.props.eventTextEng}
                                                 data-field="text"
                                                 data-action='setString'
                                                 data-name={`item${this.props.index}`}
                                                 data-index={this.props.index}
                                                 placeholder="תוכן"
                                                 onChange={ this.props.onEventTextChange }
-                                                dir={i18n.language === 'he' ? "rtl" : "ltr"}
+                                                dir={this.props.lang === 'he' ? "rtl" : "ltr"}
                                             />
                                         </div>
                                     :
                                         <Textarea
                                             className="events__text Heebo-Regular"
                                             value={this.props.eventText}
-                                            dir={i18n.language === 'he' ? "rtl" : "ltr"}
+                                            dir={this.props.lang === 'he' ? "rtl" : "ltr"}
                                             readOnly
                                         />
                                 }           
@@ -204,4 +201,12 @@ class EventHeader extends React.Component {
     }
 }
 
-export default withTranslation()(EventHeader);
+EventHeader.contextTypes = {
+  t: PropTypes.func.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    lang: state.i18nState.lang
+});
+
+export default connect(mapStateToProps)(EventHeader);

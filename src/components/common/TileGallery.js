@@ -1,5 +1,6 @@
 import React from 'react';
-import Button from '@mui/material/Button';
+//import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/lib/Button';
 import PropTypes from 'prop-types';
 
 import Photo, { photoPropType } from './Photo';

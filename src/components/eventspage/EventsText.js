@@ -216,10 +216,10 @@ export default class EventsText extends React.Component {
 
     render() {
         const { height } = this.state;
-        const dirLang = this.props.i18n.language === 'he' ? 'rtl' : 'ltr';
+        const dirLang = this.props.lang === 'he' ? 'rtl' : 'ltr';
         //console.log(this.props.showLines);
         return (
-            <div className={this.props.i18n.language === 'he' ? 'events__text__box' : 'events__text__box events__text__box__eng'}>
+            <div className={this.props.lang === 'he' ? 'events__text__box' : 'events__text__box events__text__box__eng'}>
                 
                 <div className="events__text__flexbox" dir={dirLang}>
                     <AnimateHeight
@@ -230,7 +230,7 @@ export default class EventsText extends React.Component {
                                 <div className={shouldHighLight(this.props.categoryTextOrigin, this.props.categoryText)}>
                                     <Textarea
                                         className="events__text Heebo-Regular"
-                                        value={this.props.categoryText ? this.props.i18n.language === 'he' ? this.props.categoryText : this.props.categoryTextEng : this.props.i18n.language === 'he' ? this.state.categoryText : this.state.categoryTextEng}
+                                        value={this.props.categoryText ? this.props.lang === 'he' ? this.props.categoryText : this.props.categoryTextEng : this.props.lang === 'he' ? this.state.categoryText : this.state.categoryTextEng}
                                         data-field="text"
                                         data-action='setString'
                                         data-name={`item${this.props.index}`}
@@ -243,7 +243,7 @@ export default class EventsText extends React.Component {
                             :
                                 <Textarea
                                     className="events__text Heebo-Regular"
-                                    value={this.props.i18n.language === 'he' ? this.props.categoryText : this.props.categoryTextEng}
+                                    value={this.props.lang === 'he' ? this.props.categoryText : this.props.categoryTextEng}
                                     readOnly
                                 />
                         }
@@ -258,7 +258,7 @@ export default class EventsText extends React.Component {
                         onMouseLeave={this.props.setIconRatioOut}
                         onClick={this.toggle}
                     >
-                        <p className="events__text__more__button__text Heebo-Regular">{`${this.props.i18n.language === 'he' ? '< קראו עוד' : 'Read more >'}`}</p>
+                        <p className="events__text__more__button__text Heebo-Regular">{`${this.props.lang === 'he' ? '< קראו עוד' : 'Read more >'}`}</p>
                     </button>
                 </div>
                 { 

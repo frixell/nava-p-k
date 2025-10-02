@@ -1,10 +1,5 @@
-:root {
-    --toolbar-height: 58px;
-}
-
 html {
     font-size: 50%;
-    height: 100%;
 }
 
 @media (min-width: 768px) {
@@ -95,8 +90,6 @@ body {
     font-family: $font;
     font-size: $m-size;
     background-color: $offwhite;
-    margin: 0;
-    min-height: 100vh;
 }
 
 h3 {
@@ -238,7 +231,4 @@ button:disabled {
 .page__header {
     font-size: 3rem;
     text-align: center;
-}
-#app {
-    min-height: 100vh;
 }

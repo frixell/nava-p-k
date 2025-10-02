@@ -1,10 +1,9 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import { render } from 'react-dom';
 import ReactLoading from "react-loading";
 import { Provider } from 'react-redux';
-import AppRouter from './routers/AppRouter';
+import AppRouter, { history } from './routers/AppRouter';
 import configureStore from './store/configureStore';
-import { HelmetProvider } from 'react-helmet-async';
 import {
     startSetCategories
 } from './actions/eventspage';
@@ -26,8 +25,7 @@ import './styles/styles.scss';
 var firebase = require("firebase/app");
 require("firebase/auth");
 
-import { I18nextProvider } from 'react-i18next';
-import i18n from './i18n/i18n';
+import I18n from "redux-i18n";
 
 // with Immutable.js:
 //import I18n from "redux-i18n/immutable"
@@ -84,55 +82,30 @@ const store = configureStore();
 
 
 let hasRendered = false;
-let root;
-
-if (typeof document !== 'undefined') {
-    const container = document.getElementById('app');
-    if (container) {
-        root = createRoot(container);
-    }
-}
-
 const renderApp = () => {
     //console.log(initialLang);
     if (!hasRendered && initialLang !== 'none') {
         const jsx = (
             <Provider store={store}>
-                <I18nextProvider i18n={i18n}>
-                    <HelmetProvider>
-                        <AppRouter />
-                    </HelmetProvider>
-                </I18nextProvider>
+                <I18n translations={translations} initialLang={initialLang} fallbackLang="en">
+                    <AppRouter />
+                </I18n>
             </Provider>
         );
-        if (root) {
-            root.render(jsx);
+        if (typeof(window) !== "undefined") {
+            render(jsx, document.getElementById('app'));
         }
         hasRendered = true;
     }
 };
 
 //console.log(navigator.userAgent);
-if (root && typeof(window) !== "undefined") {
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isLegacyIE = userAgent.indexOf('msie') > -1 || userAgent.indexOf('trident') > -1 || userAgent.indexOf('edge') > -1;
-
-    if (isLegacyIE) {
+if (typeof(window) !== "undefined") {
+    if (navigator.userAgent.toLowerCase().indexOf('msie') > -1 || navigator.userAgent.toLowerCase().indexOf('trident') > -1 || navigator.userAgent.toLowerCase().indexOf('edge') > -1 ){
         console.log("found");
-        root.render(
-            <div className="app__loading-screen">
-                <img src="/images/ie-preloader.gif" alt="זיוה קיינר - ציירת - עין הוד" />
-            </div>
-        );
+        render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><img src="/images/ie-preloader.gif" alt="זיוה קיינר - ציירת - עין הוד"/></div>, document.getElementById('app'));
     } else {
-        root.render(
-            <div className="app__loading-screen">
-                <div className="app__loading-spinner">
-                    <ReactLoading type="spinningBubbles" color="#666665" />
-                    <p>Loading portfolio…</p>
-                </div>
-            </div>
-        );
+        render(<div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><ReactLoading type="spinningBubbles" color="#666665" /></div>, document.getElementById('app'));
     }
 }
 
