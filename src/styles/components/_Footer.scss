@@ -1,13 +1,24 @@
 .footer__box {
     width: 100%;
     background: none;
-    position: absolute;
+    left: 0;
 }
 
-.footer__box--en {
+.footer__box--absolute {
+    position: absolute;
     bottom: 0;
 }
 
+.footer__box--relative {
+    position: relative;
+}
+
+.footer__box--fixed {
+    position: fixed;
+    bottom: 0;
+}
+
+.footer__box--en,
 .footer__box--he {
     bottom: 0;
 }
@@ -15,7 +26,7 @@
 .footer__text {
     padding: 0;
     margin: 0;
-    color: $gray;
+    color: var(--color-text-muted, $gray);
     font-size: 1.15rem;
     width: 100%;
     text-align: center;
@@ -38,11 +49,15 @@
     .footer__box {
         height: 2.4rem;
         background: $black;
-        position: fixed;
         bottom: 0;
         z-index: 5007;
     }
-    
+
+    .footer__box--absolute,
+    .footer__box--relative {
+        position: fixed;
+    }
+
     .footer__box--en {
         padding-left: 0rem;
     }

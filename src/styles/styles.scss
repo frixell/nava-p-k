@@ -1,16 +1,12 @@
 
 
 @import './base/settings';
+@import './base/tokens';
 @import './base/base';
 
+@import './components/GlobalUI';
 @import './components/TeachingPage';
-@import './components/AboutPage';
 @import './components/Backoffice';
-@import './components/CustomersStrip';
-@import './components/ContactStrip';
-@import './components/ContactPage';
-@import './components/EventsPage';
-@import './components/EventPage';
 @import './components/Footer';
 @import './components/HomePage';
 @import './components/LoginPage';

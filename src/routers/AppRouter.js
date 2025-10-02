@@ -1,17 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ReactLoading from "react-loading";
-
-let loadImage = "";
-if (typeof(window) !== "undefined") {
-    if (navigator.userAgent.toLowerCase().indexOf('msie') > -1 || navigator.userAgent.toLowerCase().indexOf('trident') > -1 || navigator.userAgent.toLowerCase().indexOf('edge') > -1 ){
-        console.log("found");
-        loadImage = <div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><img src="/images/ie-preloader.gif" alt="נאוה קיינר-פרסוב Nava Kainer-Persov" /></div>;
-    } else {
-        loadImage = <div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><ReactLoading type="spinningBubbles" color="#666665" /></div>;
-    }
-}
-
 import AboutPage from '../containers/AboutPage';
 import TeachingPage from '../containers/TeachingPage';
 import CvPage from '../containers/CvPage';

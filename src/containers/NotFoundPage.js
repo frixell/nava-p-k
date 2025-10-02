@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
-import ContactStrip from '../components/contactpage/ContactStrip';
 import { withTranslation } from 'react-i18next';
 
 const NotFoundPage = (props) => {

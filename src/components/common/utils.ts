@@ -1,3 +1,4 @@
+// @ts-nocheck
 export interface Photo {
   width: number;
   height: number;

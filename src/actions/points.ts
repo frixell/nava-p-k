@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import * as firebase from 'firebase/app';

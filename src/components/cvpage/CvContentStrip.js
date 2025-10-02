@@ -100,7 +100,7 @@ class CvContentStrip extends React.Component {
     render() {
         const { i18n } = this.props;
         const dirLang = i18n.language === 'he' ? 'rtl' : 'ltr';
-        console.log('cvpage-', this.props.cvpage);
+        console.log('cvpage-22', this.props.cvpage);
         console.log('this.props.i18n.language- ', i18n.language);
         return (
         <div className="about__content__box" dir={dirLang}>
