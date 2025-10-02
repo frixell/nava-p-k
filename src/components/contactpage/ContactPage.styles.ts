@@ -23,39 +23,57 @@ export const Card = styled.article({
   gap: '1.6rem'
 });
 
-export const CardHeading = styled.h2({
-  margin: 0,
-  fontSize: '2rem',
-  fontWeight: 600,
-  color: 'var(--color-text-primary, #2f3a3f)'
-});
+export const CardHeading = styled('h2', {
+    shouldForwardProp: (prop) => prop !== 'direction'
+})<{ direction: 'ltr' | 'rtl' }>(({ direction }) => ({
+    margin: 0,
+    fontSize: '2rem',
+    fontWeight: 600,
+    color: 'var(--color-text-primary, #2f3a3f)',
+    textAlign: direction === 'rtl' ? 'right' : 'left',
+    direction
+}));
 
-export const CardSubheading = styled.p({
-  margin: 0,
-  fontSize: '1.4rem',
-  color: 'var(--color-text-muted, #6d767a)'
-});
+export const CardSubheading = styled('p', {
+    shouldForwardProp: (prop) => prop !== 'direction'
+})<{ direction: 'ltr' | 'rtl' }>(({ direction }) => ({
+    margin: 0,
+    fontSize: '1.4rem',
+    color: 'var(--color-text-muted, #6d767a)',
+    textAlign: direction === 'rtl' ? 'right' : 'left',
+    direction
+}));
 
 export const FieldStack = styled.div({
   display: 'grid',
   gap: '1.2rem'
 });
 
-export const InputField = styled.input({
+export const InputField = styled('input', {
+  shouldForwardProp: (prop) => prop !== 'direction'
+})<{ direction: 'ltr' | 'rtl' }>(({ direction }) => ({
   width: '100%',
   padding: '1.1rem 1.4rem',
   borderRadius: '0.8rem',
   border: '1px solid rgba(15, 23, 42, 0.12)',
   fontSize: '1.4rem',
   transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+  boxSizing: 'border-box',
+  direction,
+  textAlign: direction === 'rtl' ? 'right' : 'left',
+  '&::placeholder': {
+    textAlign: direction === 'rtl' ? 'right' : 'left'
+  },
   '&:focus': {
     outline: 'none',
     borderColor: 'var(--color-accent-secondary, #4f7a6a)',
     boxShadow: '0 0 0 3px rgba(79, 122, 106, 0.16)'
   }
-});
+}));
 
-export const TextAreaField = styled.textarea({
+export const TextAreaField = styled('textarea', {
+  shouldForwardProp: (prop) => prop !== 'direction'
+})<{ direction: 'ltr' | 'rtl' }>(({ direction }) => ({
   width: '100%',
   minHeight: '12rem',
   padding: '1.1rem 1.4rem',
@@ -64,15 +82,23 @@ export const TextAreaField = styled.textarea({
   fontSize: '1.4rem',
   resize: 'vertical',
   transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+  boxSizing: 'border-box',
+  direction,
+  textAlign: direction === 'rtl' ? 'right' : 'left',
+  '&::placeholder': {
+    textAlign: direction === 'rtl' ? 'right' : 'left'
+  },
   '&:focus': {
     outline: 'none',
     borderColor: 'var(--color-accent-secondary, #4f7a6a)',
     boxShadow: '0 0 0 3px rgba(79, 122, 106, 0.16)'
   }
-});
+}));
 
-export const PrimaryButton = styled.button({
-  alignSelf: 'flex-start',
+export const PrimaryButton = styled('button', {
+  shouldForwardProp: (prop) => prop !== 'direction'
+})<{ direction?: 'ltr' | 'rtl' }>(({ direction = 'ltr' }) => ({
+  alignSelf: direction === 'rtl' ? 'flex-end' : 'flex-start',
   padding: '0.9rem 1.8rem',
   borderRadius: '999px',
   background: 'var(--color-accent-secondary, #4f7a6a)',
@@ -91,7 +117,7 @@ export const PrimaryButton = styled.button({
     cursor: 'default',
     boxShadow: 'none'
   }
-});
+}));
 
 export const ErrorMessage = styled.p({
   margin: 0,

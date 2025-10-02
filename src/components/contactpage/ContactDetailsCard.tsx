@@ -35,8 +35,8 @@ const ContactDetailsCard: React.FC<ContactDetailsCardProps> = ({ language }) => 
 
   return (
     <Card style={{ direction: dir }}>
-      <CardHeading>{t('contact.details.title', 'Let’s stay in touch')}</CardHeading>
-      <CardSubheading>{t('contact.details.subtitle', 'Call, write or follow on social media.')}</CardSubheading>
+      <CardHeading direction={dir}>{t('contact.details.title', 'Let’s stay in touch')}</CardHeading>
+      <CardSubheading direction={dir}>{t('contact.details.subtitle', 'Call, write or follow on social media.')}</CardSubheading>
 
       <LinkList>
         <LinkItem>

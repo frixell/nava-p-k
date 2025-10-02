@@ -84,8 +84,8 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
 
   return (
     <Card>
-      <CardHeading>{t('contact.form.title', 'Let’s talk')}</CardHeading>
-      <CardSubheading>{t('contact.form.subtitle', 'Leave your details and I’ll get back to you soon.')}</CardSubheading>
+      <CardHeading direction={dir}>{t('contact.form.title', 'Let’s talk')}</CardHeading>
+      <CardSubheading direction={dir}>{t('contact.form.subtitle', 'Leave your details and I’ll get back to you soon.')}</CardSubheading>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
@@ -97,6 +97,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
             onChange={handleChange('name')}
             placeholder={t('namePlaceholder', 'Full name *')}
             required
+            direction={dir}
           />
           <InputField
             type="tel"
@@ -104,6 +105,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
             onChange={handleChange('phone')}
             placeholder={t('phonePlaceholder', 'Phone *')}
             required
+            direction={dir}
           />
           <InputField
             type="email"
@@ -111,15 +113,17 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
             onChange={handleChange('email')}
             placeholder={t('emailPlaceholder', 'Email *')}
             required
+            direction={dir}
           />
           <TextAreaField
             value={form.message}
             onChange={handleChange('message')}
             placeholder={t('messagePlaceholder', 'How can I help? *')}
             required
+            direction={dir}
           />
         </FieldStack>
-        <PrimaryButton type="submit" disabled={isSubmitting} style={{ marginTop: '1.6rem' }}>
+        <PrimaryButton type="submit" disabled={isSubmitting} style={{ marginTop: '1.6rem' }} direction={dir}>
           {isSubmitting ? t('contact.form.sending', 'Sending…') : t('sendMessage', 'Send message')}
         </PrimaryButton>
       </form>
@@ -128,7 +132,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
         <SuccessContent>
           <SuccessTitle>{t('contact.form.successTitle', 'Thank you!')}</SuccessTitle>
           <SuccessBody>{t('contact.form.successBody', 'I will reach out as soon as possible.')}</SuccessBody>
-          <PrimaryButton type="button" onClick={() => setSuccessOpen(false)}>
+          <PrimaryButton type="button" onClick={() => setSuccessOpen(false)} direction={dir}>
             {t('contact.form.successButton', 'Close')}
           </PrimaryButton>
         </SuccessContent>

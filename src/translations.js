@@ -18,7 +18,22 @@ export const translations = {
     "send": "שלח",
     "allRightsReserved": "© כל הזכויות שמורות לנאוה קיינר-פרסוב",
     "programmingBy": "אתר של frixell",
-    "joinNewsletter": "הצטרפו לרשימת התפוצה של נאוה קיינר-פרסוב"
+    "joinNewsletter": "הצטרפו לרשימת התפוצה של נאוה קיינר-פרסוב",
+    "contact.meta.title": "צור קשר • נאוה קיינר-פרסוב",
+    "contact.form.title": "בואו נדבר",
+    "contact.form.subtitle": "השאירו פרטים ואחזור אליכם בהקדם.",
+    "contact.form.sending": "שולחת…",
+    "contact.form.successTitle": "תודה!",
+    "contact.form.successBody": "אחזור אליכם בהקדם האפשרי.",
+    "contact.form.successButton": "סגירה",
+    "contact.errors.missingRequired": "אנא מלאו את כל השדות החיוניים (*)",
+    "contact.errors.invalidEmail": "אנא הזינו כתובת דוא״ל תקינה.",
+    "contact.errors.invalidMessage": "שתפו כמה מילים כדי שאדע כיצד לעזור.",
+    "contact.errors.submitFailed": "אירעה שגיאה בעת שליחת ההודעה. בבקשה נסו שוב מאוחר יותר.",
+    "contact.details.title": "נשמור על קשר",
+    "contact.details.subtitle": "אפשר להתקשר, לשלוח הודעה או לעקוב ברשתות החברתיות.",
+    "contact.details.facebook": "פייסבוק",
+    "contact.details.instagram": "אינסטגרם"
   },
   "en": {
     "homepageEventsTitle": "Nava Kainer-Persov",
@@ -39,6 +54,21 @@ export const translations = {
     "send": "Send",
     "allRightsReserved": "© All rights reserved to Nava Kainer-Persov",
     "programmingBy": "Website by frixell",
-    "joinNewsletter": "Join Nava Kainer-Persov's mailinglist"
+    "joinNewsletter": "Join Nava Kainer-Persov's mailinglist",
+    "contact.meta.title": "Contact • Nava Kainer-Persov",
+    "contact.form.title": "Let’s talk",
+    "contact.form.subtitle": "Leave your details and I’ll get back to you soon.",
+    "contact.form.sending": "Sending…",
+    "contact.form.successTitle": "Thank you!",
+    "contact.form.successBody": "I will reach out as soon as possible.",
+    "contact.form.successButton": "Close",
+    "contact.errors.missingRequired": "Please fill in all required fields (*)",
+    "contact.errors.invalidEmail": "Please enter a valid email address.",
+    "contact.errors.invalidMessage": "Please share a short message so I know how to help.",
+    "contact.errors.submitFailed": "Something went wrong while sending your message. Please try again later.",
+    "contact.details.title": "Let’s stay in touch",
+    "contact.details.subtitle": "Call, write or follow on social media.",
+    "contact.details.facebook": "Facebook",
+    "contact.details.instagram": "Instagram"
   }
 }
