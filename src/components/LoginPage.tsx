@@ -1,62 +1,76 @@
-// @ts-nocheck
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { ThunkDispatch } from 'redux-thunk';
 import LoginForm from './LoginForm';
 import { startLogin, AuthActionTypes } from '../actions/auth';
-import { ThunkDispatch } from 'redux-thunk';
+import {
+    AuthCard,
+    AuthHeader,
+    AuthPage,
+    AuthSubtitle,
+    AuthTitle,
+    SecondaryAction,
+    SecondaryLink
+} from './auth/AuthStyles';
 
-interface User {
+interface Credentials {
     userEmail: string;
     password: string;
 }
 
 interface RootState {
     auth: { uid?: string };
-    [key: string]: any;
+    [key: string]: unknown;
 }
+
+const DEV_CREDENTIALS: Credentials = {
+    userEmail: 'mosh@frixell.net',
+    password: 'nava123'
+};
 
 const LoginPage: React.FC = () => {
     const dispatch = useDispatch<ThunkDispatch<RootState, void, AuthActionTypes>>();
     const navigate = useNavigate();
-    
-    const user = {
-        userEmail: 'mosh@frixell.net',
-        password: 'nava123'
-    };
 
-    const onSubmit = useCallback((user: User): Promise<boolean> => {
-        // HARDCODED for development
-        const hardcodedUser = {
-            userEmail: 'mosh@frixell.net',
-            password: 'nava123'
-        };
+    const initialCredentials = useMemo(() => DEV_CREDENTIALS, []);
 
-        return dispatch(startLogin(hardcodedUser.userEmail, hardcodedUser.password))
-            .then(() => {
-                // If we reach here, login was successful
-                navigate('/');
-                return true;
-            })
-            .catch(() => {
-                // If we reach here, login failed
-                return false;
-            });
+    const handleSubmit = useCallback(async (credentials: Credentials): Promise<boolean> => {
+        try {
+            await dispatch(startLogin(credentials.userEmail, credentials.password));
+            navigate('/');
+            return true;
+        } catch (error) {
+            if (process.env.NODE_ENV !== 'production') {
+                console.error('Login failed:', error);
+            }
+            return false;
+        }
     }, [dispatch, navigate]);
 
+    const navigateToSignup = useCallback(() => {
+        navigate('/signin');
+    }, [navigate]);
+
     return (
-        <div className="login-page">
-            <div className="login-container">
-                <div className="login-header">
-                    <h1 className="login-title">Welcome</h1>
-                    <p className="login-subtitle">Please sign in to your account</p>
-                </div>
+        <AuthPage>
+            <AuthCard>
+                <AuthHeader>
+                    <AuthTitle>Welcome back</AuthTitle>
+                    <AuthSubtitle>Please sign in to your account</AuthSubtitle>
+                </AuthHeader>
                 <LoginForm
-                    user={user}
-                    onSubmit={onSubmit}
+                    initialCredentials={initialCredentials}
+                    onSubmit={handleSubmit}
                 />
-            </div>
-        </div>
+                <SecondaryAction>
+                    Don&apos;t have an account?
+                    <SecondaryLink type="button" onClick={navigateToSignup}>
+                        Create one
+                    </SecondaryLink>
+                </SecondaryAction>
+            </AuthCard>
+        </AuthPage>
     );
 };
 

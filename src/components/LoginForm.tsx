@@ -1,44 +1,54 @@
-// @ts-nocheck
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Input from '../shared/components/Input';
-import Button from '../shared/components/Button';
 import PasswordInput from '../shared/components/PasswordInput';
 import { validateLoginCredentials } from '../utils/validation';
-import { LoginCredentialsInput } from '../utils/dataTransformers';
+import type { LoginCredentialsInput } from '../utils/dataTransformers';
+import {
+    AuthForm,
+    ErrorBanner,
+    ErrorIcon,
+    Spinner,
+    SpinnerWrapper,
+    SubmitButton
+} from './auth/AuthStyles';
 
-interface LoginFormProps {
-    user: { userEmail: string; password: string };
-    onSubmit: (user: { userEmail: string; password: string }) => Promise<boolean>;
+interface Credentials {
+    userEmail: string;
+    password: string;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ user, onSubmit }) => {
-    const [userEmail, setUserEmail] = useState('');
-    const [password, setPassword] = useState('');
+interface LoginFormProps {
+    initialCredentials?: Credentials;
+    onSubmit(credentials: Credentials): Promise<boolean>;
+}
+
+const DEFAULT_CREDENTIALS: Credentials = {
+    userEmail: '',
+    password: ''
+};
+
+const LoginForm: React.FC<LoginFormProps> = ({ initialCredentials = DEFAULT_CREDENTIALS, onSubmit }) => {
+    const [userEmail, setUserEmail] = useState(initialCredentials.userEmail);
+    const [password, setPassword] = useState(initialCredentials.password);
     const [connecting, setConnecting] = useState(false);
     const [error, setError] = useState('');
-    
+
     useEffect(() => {
-        setUserEmail(user.userEmail);
-        setPassword(user.password);
-    }, [user]);
+        setUserEmail(initialCredentials.userEmail);
+        setPassword(initialCredentials.password);
+    }, [initialCredentials]);
 
-    const onUserEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUserEmail(e.target.value);
-    };
+    const validationMessages = useMemo(() => ({
+        invalidCredentials: 'Please provide user email and password',
+        invalidEmail: 'Please provide a valid email address',
+        weakPassword: 'Password should be at least 6 characters.'
+    }), []);
 
-    const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-    };
-
-    const handleSubmit = useCallback(async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
         const credentials: LoginCredentialsInput = { userEmail, password };
-        const validation = validateLoginCredentials(credentials, {
-            invalidCredentials: 'Please provide user email and password',
-            invalidEmail: 'Please provide a valid email address',
-            weakPassword: 'Password should be at least 6 characters.'
-        });
+        const validation = validateLoginCredentials(credentials, validationMessages);
 
         if (!validation.isValid) {
             setError(validation.message);
@@ -50,7 +60,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ user, onSubmit }) => {
 
         try {
             const success = await onSubmit(validation.value);
-            if (success === false) {
+            if (!success) {
                 setError('Please provide valid user name and password');
             }
         } catch (submitError) {
@@ -61,45 +71,50 @@ const LoginForm: React.FC<LoginFormProps> = ({ user, onSubmit }) => {
         } finally {
             setConnecting(false);
         }
-    }, [userEmail, password, onSubmit]);
+    }, [userEmail, password, onSubmit, validationMessages]);
 
     return (
-        <div className="login-form">
+        <>
             {error && (
-                <div className="error-message">
-                    <span className="error-icon">⚠️</span>
+                <ErrorBanner role="alert">
+                    <ErrorIcon aria-hidden>⚠️</ErrorIcon>
                     {error}
-                </div>
+                </ErrorBanner>
             )}
+
             {connecting ? (
-                <div className="connecting-state">
-                    <div className="spinner"></div>
+                <SpinnerWrapper>
+                    <Spinner role="status" aria-label="Signing you in" />
                     <p>Signing you in...</p>
-                </div>
+                </SpinnerWrapper>
             ) : (
-                <form onSubmit={handleSubmit} className="login-form-inputs">
+                <AuthForm onSubmit={handleSubmit} noValidate>
                     <Input
                         label="Email Address"
-                        id="email"
+                        id="login-email"
                         type="email"
-                        placeholder="Enter your email"
                         autoFocus
                         value={userEmail}
-                        onChange={onUserEmailChange}
+                        onChange={(event) => setUserEmail(event.target.value)}
+                        required
                     />
                     <PasswordInput
                         label="Password"
-                        id="password"
-                        placeholder="Enter your password"
+                        id="login-password"
                         value={password}
-                        onChange={onPasswordChange}
+                        onChange={(event) => setPassword(event.target.value)}
+                        required
                     />
-                    <Button type="submit" className="login-button">
+                    <SubmitButton
+                        type="submit"
+                        disableElevation
+                        disabled={connecting}
+                    >
                         Sign In
-                    </Button>
-                </form>
+                    </SubmitButton>
+                </AuthForm>
             )}
-        </div>
+        </>
     );
 };
 

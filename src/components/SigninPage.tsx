@@ -4,6 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { ThunkDispatch } from 'redux-thunk';
 import SigninForm from './SigninForm';
 import { signin, AuthActionTypes } from '../actions/auth';
+import {
+    AuthCard,
+    AuthHeader,
+    AuthPage,
+    AuthSubtitle,
+    AuthTitle,
+    SecondaryAction,
+    SecondaryLink
+} from './auth/AuthStyles';
 
 interface Credentials {
     userEmail: string;
@@ -32,16 +41,26 @@ const SigninPage: React.FC = () => {
         }
     }, [dispatch, navigate]);
 
+    const navigateToLogin = useCallback(() => {
+        navigate('/login');
+    }, [navigate]);
+
     return (
-        <div className="login-page">
-            <div className="login-container">
-                <div className="login-header">
-                    <h1 className="login-title">Create account</h1>
-                    <p className="login-subtitle">Sign up to access the dashboard</p>
-                </div>
+        <AuthPage>
+            <AuthCard>
+                <AuthHeader>
+                    <AuthTitle>Create account</AuthTitle>
+                    <AuthSubtitle>Sign up to access the dashboard</AuthSubtitle>
+                </AuthHeader>
                 <SigninForm onSubmit={handleSubmit} />
-            </div>
-        </div>
+                <SecondaryAction>
+                    Already have an account?
+                    <SecondaryLink type="button" onClick={navigateToLogin}>
+                        Sign in
+                    </SecondaryLink>
+                </SecondaryAction>
+            </AuthCard>
+        </AuthPage>
     );
 };
 

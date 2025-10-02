@@ -1,9 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Input from '../shared/components/Input';
 import PasswordInput from '../shared/components/PasswordInput';
-import Button from '../shared/components/Button';
 import { validateLoginCredentials } from '../utils/validation';
 import type { LoginCredentialsInput } from '../utils/dataTransformers';
+import {
+    AuthForm,
+    ErrorBanner,
+    ErrorIcon,
+    Spinner,
+    SpinnerWrapper,
+    SubmitButton
+} from './auth/AuthStyles';
 
 interface Credentials {
     userEmail: string;
@@ -67,28 +74,28 @@ const SigninForm: React.FC<SigninFormProps> = ({ initialCredentials = DEFAULT_CR
     }, [userEmail, password, onSubmit, validationMessages]);
 
     return (
-        <div className="login-form">
+        <>
             {error && (
-                <div className="error-message">
-                    <span className="error-icon" aria-hidden>⚠️</span>
+                <ErrorBanner role="alert">
+                    <ErrorIcon aria-hidden>⚠️</ErrorIcon>
                     {error}
-                </div>
+                </ErrorBanner>
             )}
             {connecting ? (
-                <div className="connecting-state">
-                    <div className="spinner" aria-hidden />
+                <SpinnerWrapper>
+                    <Spinner role="status" aria-label="Creating your account" />
                     <p>Creating your account...</p>
-                </div>
+                </SpinnerWrapper>
             ) : (
-                <form onSubmit={handleSubmit} className="login-form-inputs">
+                <AuthForm onSubmit={handleSubmit} noValidate>
                     <Input
                         label="Email Address"
                         id="signin-email"
                         type="email"
-                        placeholder="Enter your email"
                         autoFocus
                         value={userEmail}
                         onChange={(event) => setUserEmail(event.target.value)}
+                        required
                     />
                     <PasswordInput
                         label="Password"
@@ -96,13 +103,18 @@ const SigninForm: React.FC<SigninFormProps> = ({ initialCredentials = DEFAULT_CR
                         placeholder="Create a password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
+                        required
                     />
-                    <Button type="submit" className="login-button">
+                    <SubmitButton
+                        type="submit"
+                        disableElevation
+                        disabled={connecting}
+                    >
                         Create Account
-                    </Button>
-                </form>
+                    </SubmitButton>
+                </AuthForm>
             )}
-        </div>
+        </>
     );
 };
 
