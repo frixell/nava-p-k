@@ -40,7 +40,7 @@ export const startSetDesktopGallery = (): GalleryThunk<Promise<DesktopGalleryIma
     const snapshot = await firebase.database().ref('website/desktopGallery/').once('value');
     const desktopImages: DesktopGalleryImage[] = [];
 
-    snapshot.forEach((childSnapshot) => {
+    snapshot.forEach((childSnapshot: any) => {
       desktopImages.push({
         id: childSnapshot.key ?? undefined,
         ...childSnapshot.val()

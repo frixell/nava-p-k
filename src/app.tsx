@@ -7,8 +7,8 @@ import { I18nextProvider } from 'react-i18next';
 import AppRouter from './routers/AppRouter';
 import configureStore, { AppDispatch } from './store/configureStore';
 import { startSetCategories } from './actions/eventspage';
-import { startGetCategories } from './actions/categories';
-import { startGetPoints } from './actions/points';
+import { startGetCategories } from './store/slices/categoriesSlice';
+import { startGetPoints } from './store/slices/pointsSlice';
 import { startGetTableTemplate } from './actions/tableTemplate';
 import { login, logout } from './store/slices/authSlice';
 import i18n from './i18n/i18n';
@@ -76,7 +76,7 @@ const bootstrap = async () => {
 
 bootstrap();
 
-firebase.auth().onAuthStateChanged((user) => {
+firebase.auth().onAuthStateChanged((user: any) => {
   if (user) {
     dispatch(login(user.uid) as any);
   } else {

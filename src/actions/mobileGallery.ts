@@ -40,7 +40,7 @@ export const startSetMobileGallery = (): GalleryThunk<Promise<MobileGalleryImage
     const snapshot = await firebase.database().ref('website/mobileGallery/').once('value');
     const mobileImages: MobileGalleryImage[] = [];
 
-    snapshot.forEach((childSnapshot) => {
+    snapshot.forEach((childSnapshot: any) => {
       mobileImages.push({
         id: childSnapshot.key ?? undefined,
         ...childSnapshot.val()

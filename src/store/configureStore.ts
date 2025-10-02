@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import pointsReducer from '../reducers/points';
-import categoriesReducer from '../reducers/categories';
+import pointsReducer from './slices/pointsSlice';
+import categoriesReducer from './slices/categoriesSlice';
 import tableTemplateReducer from '../reducers/tableTemplate';
 import aboutpageReducer from '../reducers/aboutpage';
 import cvpageReducer from '../reducers/cvpage';

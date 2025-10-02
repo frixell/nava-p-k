@@ -4,13 +4,13 @@ import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import { connect } from 'react-redux';
 import { startLogout } from '../store/slices/authSlice';
-import { startAddPoint, startEditProject } from '../actions/points';
+import { startAddPoint, startEditProject } from '../store/slices/pointsSlice';
 import { withTranslation } from 'react-i18next';
 import {
     startAddCategory,
     startEditCategories,
     startToggleShowCategory,
-} from '../actions/categories';
+} from '../store/slices/categoriesSlice';
 import { useHomePageController, HomePageControllerProps } from './homepage/useHomePageController';
 import CategoryManagerModal from './homepage/CategoryManagerModal';
 import NewCategoryModal from './homepage/NewCategoryModal';
@@ -150,7 +150,8 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
     startEditProject: (project: Parameters<typeof startEditProject>[0]) => dispatch(startEditProject(project) as any),
     startToggleShowCategory: (categoryId: string, visible: boolean) => dispatch(startToggleShowCategory(categoryId, visible) as any),
     startEditCategories: (fbCategories: Record<string, unknown>, categories: any[]) => dispatch(startEditCategories(fbCategories, categories) as any),
-    startAddCategory: (category: Parameters<typeof startAddCategory>[0]) => dispatch(startAddCategory(category) as any)
+    startAddCategory: (category: Parameters<typeof startAddCategory>[0], order: number) =>
+        dispatch(startAddCategory({ ...category, order }) as any)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(HomePage));
