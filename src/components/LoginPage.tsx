@@ -1,9 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ThunkDispatch } from 'redux-thunk';
 import LoginForm from './LoginForm';
-import { startLogin, AuthActionTypes } from '../actions/auth';
+import { startLogin } from '../actions/auth';
 import {
     AuthCard,
     AuthHeader,
@@ -13,15 +11,11 @@ import {
     SecondaryAction,
     SecondaryLink
 } from './auth/AuthStyles';
+import { useAppDispatch } from '../store/hooks';
 
 interface Credentials {
     userEmail: string;
     password: string;
-}
-
-interface RootState {
-    auth: { uid?: string };
-    [key: string]: unknown;
 }
 
 const DEV_CREDENTIALS: Credentials = {
@@ -30,14 +24,14 @@ const DEV_CREDENTIALS: Credentials = {
 };
 
 const LoginPage: React.FC = () => {
-    const dispatch = useDispatch<ThunkDispatch<RootState, void, AuthActionTypes>>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const initialCredentials = useMemo(() => DEV_CREDENTIALS, []);
 
     const handleSubmit = useCallback(async (credentials: Credentials): Promise<boolean> => {
         try {
-            await dispatch(startLogin(credentials.userEmail, credentials.password));
+            await dispatch(startLogin(credentials.userEmail, credentials.password) as any);
             navigate('/');
             return true;
         } catch (error) {

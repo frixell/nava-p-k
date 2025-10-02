@@ -3,10 +3,9 @@ import ReactLoading from 'react-loading';
 import { Provider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
 import { I18nextProvider } from 'react-i18next';
-import type { AnyAction } from 'redux';
 
 import AppRouter from './routers/AppRouter';
-import configureStore from './store/configureStore';
+import configureStore, { AppDispatch } from './store/configureStore';
 import { startSetCategories } from './actions/eventspage';
 import { startGetCategories } from './actions/categories';
 import { startGetPoints } from './actions/points';
@@ -22,7 +21,7 @@ if (typeof window !== 'undefined') {
 import './styles/styles.scss';
 
 const store = configureStore();
-const dispatch = store.dispatch as unknown as (action: AnyAction) => Promise<unknown> | unknown;
+const dispatch = store.dispatch as AppDispatch;
 
 const container = typeof document !== 'undefined' ? document.getElementById('app') : null;
 const root: Root | null = container ? createRoot(container) : null;
@@ -66,10 +65,10 @@ renderLoading();
 
 const bootstrap = async () => {
   try {
-    await dispatch(startGetTableTemplate() as unknown as AnyAction);
-    await dispatch(startGetCategories() as unknown as AnyAction);
-    await dispatch(startGetPoints() as unknown as AnyAction);
-    await dispatch(startSetCategories() as unknown as AnyAction);
+    await dispatch(startGetTableTemplate() as any);
+    await dispatch(startGetCategories() as any);
+    await dispatch(startGetPoints() as any);
+    await dispatch(startSetCategories() as any);
   } finally {
     renderApp();
   }
@@ -79,8 +78,8 @@ bootstrap();
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    dispatch(login(user.uid) as unknown as AnyAction);
+    dispatch(login(user.uid) as any);
   } else {
-    dispatch(logout() as unknown as AnyAction);
+    dispatch(logout() as any);
   }
 });

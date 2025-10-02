@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash.isequal';
 import { startLogout } from '../actions/auth';
 import type { SeoPayload } from '../types/seo';
+import type { RootState } from '../types/store';
 import {
   startSetAboutPage,
   startEditAboutPage,
@@ -33,13 +34,6 @@ type AboutPageData = Record<string, unknown> & {
   seo?: SeoFormState;
 };
 
-interface RootState {
-  auth: {
-    uid?: string;
-  };
-  aboutpage: AboutPageData;
-}
-
 const defaultSeo: SeoFormState = {
   title: '',
   description: '',
@@ -60,11 +54,14 @@ interface UseAboutPageStateParams {
 }
 
 export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
 
-  const isAuthenticated = useSelector((state: RootState) => Boolean(state.auth.uid));
-  const aboutpageFromStore = useSelector((state: RootState) => state.aboutpage);
+  const isAuthenticated = useAppSelector((state: RootState) => {
+    const authState = state.auth as { uid?: string | null } | undefined;
+    return Boolean(authState?.uid);
+  });
+  const aboutpageFromStore = useAppSelector((state: RootState) => state.aboutpage);
 
   const [aboutpage, setAboutpage] = useState<AboutPageData>(defaultAboutPage);
   const [aboutpageOrigin, setAboutpageOrigin] = useState<AboutPageData | null>(null);

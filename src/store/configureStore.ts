@@ -28,12 +28,10 @@ export type RootState = ReturnType<typeof rootReducer>;
 const composeEnhancers =
   (typeof window !== 'undefined' && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
 
-const configureStore = () => {
-  const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
-  return store;
-};
+export const createAppStore = () =>
+  createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
-export type AppStore = ReturnType<typeof configureStore>;
+export type AppStore = ReturnType<typeof createAppStore>;
 export type AppDispatch = AppStore['dispatch'];
 
-export default configureStore;
+export default createAppStore;

@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ThunkDispatch } from 'redux-thunk';
 import SigninForm from './SigninForm';
-import { signin, AuthActionTypes } from '../actions/auth';
+import { signin } from '../actions/auth';
 import {
     AuthCard,
     AuthHeader,
@@ -13,24 +11,20 @@ import {
     SecondaryAction,
     SecondaryLink
 } from './auth/AuthStyles';
+import { useAppDispatch } from '../store/hooks';
 
 interface Credentials {
     userEmail: string;
     password: string;
 }
 
-interface RootState {
-    auth: { uid?: string };
-    [key: string]: unknown;
-}
-
 const SigninPage: React.FC = () => {
-    const dispatch = useDispatch<ThunkDispatch<RootState, void, AuthActionTypes>>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     const handleSubmit = useCallback(async (credentials: Credentials): Promise<boolean> => {
         try {
-            await dispatch(signin(credentials.userEmail, credentials.password));
+            await dispatch(signin(credentials.userEmail, credentials.password) as any);
             navigate('/');
             return true;
         } catch (error) {

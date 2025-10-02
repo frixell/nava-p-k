@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import type { ThunkDispatch } from 'redux-thunk';
 import type { AnyAction } from 'redux';
-import type { RootState as StoreRootState } from '../../types/store';
+import {
+    useAppDispatch,
+    useAppSelector
+} from '../../store/hooks';
+import type { RootState } from '../../types/store';
 import {
     startSetTeachingPage,
     startEditTeachingPageSeo,
@@ -27,10 +29,6 @@ import {
 import type { SeoPayload } from '../../types/seo';
 
 declare const cloudinary: any;
-
-type RootState = StoreRootState;
-
-type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
 
 interface UseTeachingPageArgs {
     urlLang?: string;
@@ -93,13 +91,13 @@ const buildTeachings = (source?: TeachItem[] | Record<string, TeachItem>): Teach
     sortTeachings(toTeachArray(source).map(normalizeTeach));
 
 export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeachingPageResult => {
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
 
-    const isAuthenticated = useSelector<RootState, boolean>((state) => {
+    const isAuthenticated = useAppSelector((state: RootState) => {
         const authState = state.auth as { uid?: string | null } | undefined;
         return Boolean(authState?.uid);
     });
-    const teachingStore = useSelector<RootState, TeachingPageStore>((state) =>
+    const teachingStore = useAppSelector((state: RootState) =>
         (state.teachingpage as TeachingPageStore) || {}
     );
 

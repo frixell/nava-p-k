@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import Navigation from '../components/common/Navigation';
 import PageUpStrip from '../components/common/PageUpStrip';
 import Footer from '../components/common/Footer';
@@ -12,15 +11,19 @@ import CvToolbar from './CvToolbar';
 import CvSeoModal from './CvSeoModal';
 import CvBody from './CvBody';
 import { PageContainer, PageUpSpacer, FakePageUpStripAnchor } from './PageLayout.styles';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import type { RootState } from '../types/store';
 
-interface RootState { auth: { uid?: string }; cvpage: any }
 interface CvPageProps { urlLang?: string }
 
 const CvPage: React.FC<CvPageProps> = ({ urlLang }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
-  const isAuthenticated = useSelector((state: RootState) => Boolean(state.auth.uid));
-  const cvpageData = useSelector((state: RootState) => state.cvpage);
+  const isAuthenticated = useAppSelector((state: RootState) => {
+    const authState = state.auth as { uid?: string | null } | undefined;
+    return Boolean(authState?.uid);
+  });
+  const cvpageData = useAppSelector((state: RootState) => state.cvpage);
 
   const loadCvPage: () => void = useCallback(() => {
     dispatch(startSetCvPage() as any);

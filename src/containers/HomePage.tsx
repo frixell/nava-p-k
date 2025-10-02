@@ -3,8 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import { connect } from 'react-redux';
-import { AnyAction } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
 import { startLogout } from '../actions/auth';
 import { startAddPoint, startEditProject } from '../actions/points';
 import { withTranslation } from 'react-i18next';
@@ -18,17 +16,7 @@ import CategoryManagerModal from './homepage/CategoryManagerModal';
 import NewCategoryModal from './homepage/NewCategoryModal';
 import HomePageToolbar from './homepage/HomePageToolbar';
 import HomePageLayout from './homepage/HomePageLayout';
-
-interface RootState {
-    auth: { uid?: string | null };
-    categories: any[];
-    points: any[];
-    tableTemplate: any;
-    homepage: any;
-    navigation: any;
-}
-
-type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
+import type { RootState, AppDispatch } from '../types/store';
 
 type HomePageProps = HomePageControllerProps & {
     homepage: any;
@@ -144,22 +132,25 @@ const HomePage: React.FC<HomePageProps> = (props) => {
 }; 
 
 
-const mapStateToProps = (state: RootState) => ({
-    isAuthenticated: !!state.auth.uid,
-    categories: state.categories,
-    points: state.points,
-    tableTemplate: state.tableTemplate,
-    homepage: state.homepage,
-    navigation: state.navigation
-});
+const mapStateToProps = (state: RootState) => {
+    const authState = state.auth as { uid?: string | null } | undefined;
+    return {
+        isAuthenticated: Boolean(authState?.uid),
+        categories: state.categories,
+        points: state.points,
+        tableTemplate: state.tableTemplate,
+        homepage: state.homepage,
+        navigation: state.navigation
+    };
+};
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
-    startLogout: () => dispatch(startLogout()),
-    startAddPoint: (point: Parameters<typeof startAddPoint>[0]) => dispatch(startAddPoint(point)),
-    startEditProject: (project: Parameters<typeof startEditProject>[0]) => dispatch(startEditProject(project)),
-    startToggleShowCategory: (categoryId: string, visible: boolean) => dispatch(startToggleShowCategory(categoryId, visible)),
-    startEditCategories: (fbCategories: Record<string, unknown>, categories: any[]) => dispatch(startEditCategories(fbCategories, categories)),
-    startAddCategory: (category: Parameters<typeof startAddCategory>[0]) => dispatch(startAddCategory(category))
+    startLogout: () => dispatch(startLogout() as any),
+    startAddPoint: (point: Parameters<typeof startAddPoint>[0]) => dispatch(startAddPoint(point) as any),
+    startEditProject: (project: Parameters<typeof startEditProject>[0]) => dispatch(startEditProject(project) as any),
+    startToggleShowCategory: (categoryId: string, visible: boolean) => dispatch(startToggleShowCategory(categoryId, visible) as any),
+    startEditCategories: (fbCategories: Record<string, unknown>, categories: any[]) => dispatch(startEditCategories(fbCategories, categories) as any),
+    startAddCategory: (category: Parameters<typeof startAddCategory>[0]) => dispatch(startAddCategory(category) as any)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(HomePage));
