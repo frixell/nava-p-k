@@ -1,31 +1,47 @@
 // TeachingPage Reducer
 
-const teachingpageReducerDefaultState = {};
+const defaultSeo = { title: '', description: '', keyWords: '' };
 
- export default (state = teachingpageReducerDefaultState, action) => {
-    const teachingpage = state;
+const initialState = {
+    teachings: [],
+    seo: defaultSeo
+};
+
+export default (state = initialState, action) => {
     switch (action.type) {
         case 'EDIT_TEACHINGPAGE_SEO':
-            teachingpage.seo = action.seo;
-            return teachingpage;
+            return {
+                ...state,
+                seo: action.seo || defaultSeo
+            };
         case 'SET_TEACHINGPAGE':
-            teachingpage.teachings = action.teachings;
-            teachingpage.seo = action.seo;
-            return teachingpage;
+            return {
+                ...state,
+                teachings: Array.isArray(action.teachings) ? [...action.teachings] : [],
+                seo: action.seo || defaultSeo
+            };
         case 'UPDATE_TEACHINGS':
-            teachingpage.teachings = action.teachings;
-            return teachingpage;
+            return {
+                ...state,
+                teachings: Array.isArray(action.teachings) ? [...action.teachings] : []
+            };
         case 'ADD_TEACH':
-            teachingpage.teachings.push(action.teach);
-            return teachingpage;
+            return {
+                ...state,
+                teachings: [...state.teachings, action.teach]
+            };
         case 'UPDATE_TEACH':
-            const teachIndex = teachingpage.teachings.findIndex(t => t.id === action.teach.id);
-            teachingpage.teachings[teachIndex] = action.teach;
-            return teachingpage;
+            return {
+                ...state,
+                teachings: state.teachings.map((teach) =>
+                    teach.id === action.teach.id ? { ...teach, ...action.teach } : teach
+                )
+            };
         case 'DELETE_TEACH':
-            const updatedTeachings = teachingpage.teachings.filter(t => t.id !== action.teach.id);
-            teachingpage.teachings = updatedTeachings;
-            return teachingpage;
+            return {
+                ...state,
+                teachings: state.teachings.filter((teach) => teach.id !== action.teach.id)
+            };
         default:
             return state;
     }
