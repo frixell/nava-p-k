@@ -415,7 +415,7 @@ export const startToggleShowSubcategory = (
 };
 
 // DELETE ACTIONS
-export const deleteImage = (
+export const deleteEventImage = (
     images: EventImage[], 
     eventId: string, 
     categoryId: string
