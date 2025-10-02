@@ -57,6 +57,7 @@ const HomeProjectPanel: React.FC<HomeProjectPanelProps> = ({
                 lang={language}
                 i18n={i18n}
                 categoryColors={categoryColors}
+                categoryId={selectedProject?.categoryId}
             />
         </ProjectContainer>
     );
