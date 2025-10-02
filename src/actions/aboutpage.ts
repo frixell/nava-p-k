@@ -1,8 +1,9 @@
 import type { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import database from '../firebase/firebase';
-
-type RootState = any;
+import type { RootState } from '../types/store';
+import type { SeoPayload } from '../types/seo';
+import type { ImageAsset } from '../types/content';
 
 type AboutThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
 
@@ -23,12 +24,12 @@ export const startEditAboutPage = (
   };
 };
 
-export const editAboutPageSeo = (seo: any) => ({
+export const editAboutPageSeo = (seo: SeoPayload) => ({
   type: 'EDIT_ABOUTPAGE_SEO' as const,
   seo
 });
 
-export const startEditAboutPageSeo = (seo: any): AboutThunk<Promise<void>> => {
+export const startEditAboutPageSeo = (seo: SeoPayload): AboutThunk<Promise<void>> => {
   return async (dispatch) => {
     await database.ref('serverSeo/about/seo').update(seo);
     await database.ref('website/aboutpage/seo').update(seo);
@@ -50,24 +51,15 @@ export const startSetAboutPage = (): AboutThunk<Promise<AboutPagePayload>> => {
   };
 };
 
-type AboutImage = {
-  publicId?: string;
-  src?: string;
-  width?: string | number;
-  height?: string | number;
-  alt?: string;
-  order?: number;
-};
-
-export const saveAboutImage = (image: AboutImage) => ({
+export const saveAboutImage = (image: ImageAsset) => ({
   type: 'SAVE_ABOUT_IMAGE' as const,
   image
 });
 
 export const startSaveAboutImage = (
-  imageData: Partial<AboutImage> = {},
+  imageData: Partial<ImageAsset> = {},
   publicIdToDelete?: string
-): AboutThunk<Promise<AboutImage>> => {
+): AboutThunk<Promise<ImageAsset>> => {
   return async (dispatch) => {
     const {
       publicId = '',
@@ -77,7 +69,7 @@ export const startSaveAboutImage = (
       alt = ''
     } = imageData;
 
-    const image: AboutImage = {
+    const image: ImageAsset = {
       publicId,
       src,
       width,

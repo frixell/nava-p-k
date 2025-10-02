@@ -2,19 +2,12 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import type { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
+import type { RootState } from '../types/store';
+import type { ImageAsset } from '../types/content';
 
-type RootState = any;
 type GalleryThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
 
-type MobileGalleryImage = {
-  id?: string;
-  publicId?: string;
-  src?: string;
-  width?: number | string;
-  height?: number | string;
-  alt?: string;
-  order?: number;
-};
+type MobileGalleryImage = ImageAsset;
 
 export const editMobileGallery = (mobileImages: MobileGalleryImage[]) => ({
   type: 'SET_MOBILE_GALLERY' as const,

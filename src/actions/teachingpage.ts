@@ -1,36 +1,51 @@
 import type { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import database from '../firebase/firebase';
+import type { TeachItem } from '../containers/teaching/types';
+import type { RootState } from '../types/store';
+import type { SeoPayload } from '../types/seo';
 
-type RootState = any;
+export type TeachingsMap = Record<string, TeachItem>;
+export type TeachCollection = TeachingsMap | TeachItem[] | null | undefined;
+
 type TeachingThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
 
-type TeachEntity = Record<string, any>;
-type TeachCollection = Record<string, TeachEntity> | TeachEntity[] | null | undefined;
-
-type TeachingPageSnapshot = {
+type SnapshotValue = {
   teachings?: TeachCollection;
-  seo?: any;
+  seo?: SeoPayload;
 } | null;
 
-const normalizeTeachings = (source: TeachCollection): TeachEntity[] => {
+const normalizeTeach = (teach: Partial<TeachItem>, fallbackId: string): TeachItem => ({
+  id: teach.id ?? fallbackId,
+  publicId: teach.publicId,
+  image: teach.image ?? null,
+  details: teach.details ?? '',
+  description: teach.description ?? '',
+  detailsHebrew: teach.detailsHebrew ?? '',
+  descriptionHebrew: teach.descriptionHebrew ?? '',
+  order: typeof teach.order === 'number' ? teach.order : undefined,
+  visible: teach.visible,
+  ...teach
+});
+
+const normalizeTeachings = (source: TeachCollection): TeachItem[] => {
   if (!source) {
     return [];
   }
 
   if (Array.isArray(source)) {
-    return source.map((teach) => ({ ...teach }));
+    return source.map((item, index) => normalizeTeach(item, item.id ?? String(index)));
   }
 
-  return Object.keys(source).map((key) => ({ id: key, ...source[key] }));
+  return Object.keys(source).map((key) => normalizeTeach(source[key], key));
 };
 
-export const editTeachingPageSeo = (seo: any) => ({
+export const editTeachingPageSeo = (seo: SeoPayload) => ({
   type: 'EDIT_TEACHINGPAGE_SEO' as const,
   seo
 });
 
-export const startEditTeachingPageSeo = (seo: any): TeachingThunk<Promise<void>> => {
+export const startEditTeachingPageSeo = (seo: SeoPayload): TeachingThunk<Promise<void>> => {
   return async (dispatch) => {
     await database.ref('serverSeo/teaching/seo').update(seo);
     await database.ref('website/teachingpage/seo').update(seo);
@@ -38,7 +53,7 @@ export const startEditTeachingPageSeo = (seo: any): TeachingThunk<Promise<void>>
   };
 };
 
-export const setTeachingPage = (teachings: TeachEntity[], seo?: any) => ({
+export const setTeachingPage = (teachings: TeachItem[], seo?: SeoPayload) => ({
   type: 'SET_TEACHINGPAGE' as const,
   teachings,
   seo
@@ -47,21 +62,21 @@ export const setTeachingPage = (teachings: TeachEntity[], seo?: any) => ({
 export const startSetTeachingPage = (): TeachingThunk<Promise<void>> => {
   return async (dispatch) => {
     const snapshot = await database.ref('website/teachingpage').once('value');
-    const teachingpage: TeachingPageSnapshot = snapshot.val();
-    const teachingsArray = normalizeTeachings(teachingpage?.teachings);
-    dispatch(setTeachingPage(teachingsArray, teachingpage?.seo));
+    const value: SnapshotValue = snapshot.val();
+    const teachingsArray = normalizeTeachings(value?.teachings ?? null);
+    dispatch(setTeachingPage(teachingsArray, value?.seo));
   };
 };
 
-export const updateTeachings = (teachings: TeachEntity[]) => ({
+export const updateTeachings = (teachings: TeachItem[]) => ({
   type: 'UPDATE_TEACHINGS' as const,
   teachings
 });
 
 export const startUpdateTeachings = (
-  fbTeachings: Record<string, unknown>,
-  teachings: TeachEntity[]
-): TeachingThunk<Promise<TeachEntity[]>> => {
+  fbTeachings: TeachingsMap,
+  teachings: TeachItem[]
+): TeachingThunk<Promise<TeachItem[]>> => {
   return async (dispatch) => {
     await database.ref('website/teachingpage/teachings').update(fbTeachings);
     dispatch(updateTeachings(teachings));
@@ -69,71 +84,47 @@ export const startUpdateTeachings = (
   };
 };
 
-export const addTeach = (teach: TeachEntity) => ({
+export const addTeach = (teach: TeachItem) => ({
   type: 'ADD_TEACH' as const,
   teach
 });
 
 export const startAddTeach = (
-  teachData: TeachEntity = {},
+  teachData: Partial<TeachItem> = {},
   order: number
-): TeachingThunk<Promise<TeachEntity[]>> => {
+): TeachingThunk<Promise<TeachItem[]>> => {
   return async (dispatch, getState) => {
-    const teach = {
-      publicId: '',
-      image: '',
-      details: '',
-      description: '',
-      detailsHebrew: '',
-      descriptionHebrew: '',
-      ...teachData,
+    const firebaseTeach = {
+      publicId: teachData.publicId ?? '',
+      image: teachData.image ?? '',
+      details: teachData.details ?? '',
+      description: teachData.description ?? '',
+      detailsHebrew: teachData.detailsHebrew ?? '',
+      descriptionHebrew: teachData.descriptionHebrew ?? '',
       order
     };
 
-    const ref = await database.ref('website/teachingpage/teachings').push(teach);
-    const localTeach: TeachEntity = {
-      ...teach,
-      id: ref.key
-    };
+    const ref = await database.ref('website/teachingpage/teachings').push(firebaseTeach);
+    const localTeach = normalizeTeach({ ...firebaseTeach, id: ref.key ?? '' }, ref.key ?? '');
 
-    const state = getState();
-    const existingStore: TeachCollection = state?.teachingpage?.teachings;
-    const nextTeachings = normalizeTeachings(existingStore);
-    nextTeachings.push(localTeach);
+    const state = getState() as RootState & { teachingpage?: { teachings?: TeachCollection } };
+    const existingTeachings = normalizeTeachings(state.teachingpage?.teachings ?? null);
+    const nextTeachings = [...existingTeachings, localTeach];
 
     dispatch(addTeach(localTeach));
     return nextTeachings;
   };
 };
 
-export const updateTeach = (teach: TeachEntity) => ({
+export const updateTeach = (teach: TeachItem) => ({
   type: 'UPDATE_TEACH' as const,
   teach
 });
 
-export const startUpdateTeach = (teachData: TeachEntity = {}): TeachingThunk<Promise<string>> => {
+export const startUpdateTeach = (teachData: Partial<TeachItem> = {}): TeachingThunk<Promise<string>> => {
   return async (dispatch) => {
-    const {
-      id = '',
-      publicId = '',
-      image = '',
-      details = '',
-      description = '',
-      detailsHebrew = '',
-      descriptionHebrew = '',
-      order
-    } = teachData;
-
-    const teach: TeachEntity = {
-      id,
-      publicId,
-      image,
-      details,
-      description,
-      detailsHebrew,
-      descriptionHebrew,
-      order
-    };
+    const id = teachData.id ?? '';
+    const teach = normalizeTeach(teachData, id);
 
     await database.ref(`website/teachingpage/teachings/${id}`).update(teach);
     dispatch(updateTeach(teach));
@@ -141,37 +132,18 @@ export const startUpdateTeach = (teachData: TeachEntity = {}): TeachingThunk<Pro
   };
 };
 
-export const updateTeachImage = (teach: TeachEntity) => ({
+export const updateTeachImage = (teach: TeachItem) => ({
   type: 'UPDATE_TEACH' as const,
   teach
 });
 
 export const startUpdateTeachImage = (
-  teachData: TeachEntity = {},
+  teachData: Partial<TeachItem> = {},
   publicid?: string
 ): TeachingThunk<Promise<string>> => {
   return async (dispatch) => {
-    const {
-      id = '',
-      publicId = '',
-      image = '',
-      details = '',
-      description = '',
-      detailsHebrew = '',
-      descriptionHebrew = '',
-      order
-    } = teachData;
-
-    const teach: TeachEntity = {
-      id,
-      publicId,
-      image,
-      details,
-      description,
-      detailsHebrew,
-      descriptionHebrew,
-      order
-    };
+    const id = teachData.id ?? '';
+    const teach = normalizeTeach(teachData, id);
 
     if (publicid) {
       await fetch('/deleteImage', {
@@ -189,49 +161,32 @@ export const startUpdateTeachImage = (
   };
 };
 
-export const showTeach = (teach: TeachEntity) => ({
+export const showTeach = (teach: TeachItem) => ({
   type: 'UPDATE_TEACH' as const,
   teach
 });
 
-export const startShowTeach = (teach: TeachEntity): TeachingThunk<Promise<void>> => {
+export const startShowTeach = (teach: TeachItem): TeachingThunk<Promise<void>> => {
   return async (dispatch) => {
     await database.ref(`website/teachingpage/teachings/${teach.id}`).update(teach);
     dispatch(showTeach(teach));
   };
 };
 
-export const deleteTeach = (teach: TeachEntity) => ({
+export const deleteTeach = (teach: TeachItem) => ({
   type: 'DELETE_TEACH' as const,
   teach
 });
 
-export const startDeleteTeach = (teachData: TeachEntity = {}): TeachingThunk<Promise<string>> => {
+export const startDeleteTeach = (teachData: Partial<TeachItem> = {}): TeachingThunk<Promise<string>> => {
   return async (dispatch) => {
-    const {
-      id = '',
-      publicId = '',
-      image = '',
-      details = '',
-      description = '',
-      detailsHebrew = '',
-      descriptionHebrew = '',
-      order
-    } = teachData;
-
-    const teach: TeachEntity = {
-      id,
-      publicId,
-      image,
-      details,
-      description,
-      detailsHebrew,
-      descriptionHebrew,
-      order
-    };
+    const id = teachData.id ?? '';
+    const teach = normalizeTeach(teachData, id);
 
     const imagePublicId =
-      (image && typeof image === 'object' && 'publicId' in image ? image.publicId : undefined) ?? publicId;
+      (teach.image && typeof teach.image === 'object' && 'publicId' in teach.image
+        ? (teach.image as { publicId?: string }).publicId
+        : undefined) ?? teach.publicId;
 
     if (imagePublicId) {
       await fetch('/deleteImage', {

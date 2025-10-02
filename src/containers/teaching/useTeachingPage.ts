@@ -275,7 +275,10 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
         if (!draftTeach) {
             return;
         }
-        const previousId = draftTeach.image?.publicId;
+        const previousId =
+            typeof draftTeach.image === 'object' && draftTeach.image !== null && 'publicId' in draftTeach.image
+                ? draftTeach.image.publicId
+                : draftTeach.publicId;
         const teachId = draftTeach.id;
 
         const widget = cloudinary.openUploadWidget(

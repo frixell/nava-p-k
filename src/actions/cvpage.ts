@@ -1,22 +1,14 @@
 import type { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import database from '../firebase/firebase';
+import type { RootState } from '../types/store';
+import type { SeoPayload } from '../types/seo';
+import type { ImageAsset } from '../types/content';
 
-type RootState = any;
 type CvThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
 
 type CvPagePayload = Record<string, unknown> | null;
-type CvSeoPayload = Record<string, unknown> | { title: string; description: string; keyWords: string } | any;
-
-type CvImage = {
-  id?: string;
-  publicId?: string;
-  src?: string;
-  width?: string | number;
-  height?: string | number;
-  alt?: string;
-  order?: number;
-};
+type CvImage = ImageAsset;
 
 export const editCvPage = (cvpage: CvPagePayload) => ({
   type: 'EDIT_CVPAGE' as const,
@@ -33,12 +25,12 @@ export const startEditCvPage = (
   };
 };
 
-export const editCvPageSeo = (seo: CvSeoPayload) => ({
+export const editCvPageSeo = (seo: SeoPayload) => ({
   type: 'EDIT_CVPAGE_SEO' as const,
   seo
 });
 
-export const startEditCvPageSeo = (seo: CvSeoPayload): CvThunk<Promise<void>> => {
+export const startEditCvPageSeo = (seo: SeoPayload): CvThunk<Promise<void>> => {
   return async (dispatch) => {
     await database.ref('serverSeo/cv/seo').update(seo);
     await database.ref('website/cvpage/seo').update(seo);
@@ -93,8 +85,8 @@ export const startAddCvImage = (
       ...image
     };
 
-    const state = getState();
-    const existingImages: Record<string, CvImage> = state?.cvpage?.cvimages ?? {};
+    const state = getState() as RootState & { cvpage?: { cvimages?: Record<string, CvImage> } };
+    const existingImages: Record<string, CvImage> = state.cvpage?.cvimages ?? {};
     const nextImages: Record<string, CvImage> = {
       ...existingImages,
       [ref.key as string]: localImage

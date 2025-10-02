@@ -8,13 +8,14 @@ export interface TeachImage {
 export interface TeachItem {
     id: string;
     publicId?: string;
-    image?: TeachImage | null;
+    image?: TeachImage | string | null;
     details?: string;
     description?: string;
     detailsHebrew?: string;
     descriptionHebrew?: string;
     order?: number;
     visible?: boolean | string;
+    [key: string]: unknown;
 }
 
 export interface TeachingSeo {

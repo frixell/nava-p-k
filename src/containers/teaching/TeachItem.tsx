@@ -75,6 +75,9 @@ const TeachItem: React.FC<TeachItemProps> = ({
     };
 
     const isVisible = teach.visible ?? true;
+    const teachImage = typeof teach.image === 'string'
+        ? { src: teach.image }
+        : teach.image ?? null;
 
     return (
         <Card onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
@@ -116,11 +119,11 @@ const TeachItem: React.FC<TeachItemProps> = ({
                 )}
             </CardHeader>
 
-            {teach.image?.src && (
+            {teachImage?.src && (
                 <Image
-                    src={teach.image.src}
-                    width={teach.image.width}
-                    height={teach.image.height}
+                    src={teachImage.src}
+                    width={teachImage.width}
+                    height={teachImage.height}
                     alt={isHebrew ? 'תמונה' : 'Image'}
                 />
             )}

@@ -19,7 +19,7 @@ module.exports = (env) => {
     });
     
     return {
-        entry: './src/app.js',
+        entry: './src/app.tsx',
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
             alias: {
