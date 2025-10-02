@@ -1,5 +1,1 @@
-export interface SeoPayload {
-  title?: string;
-  description?: string;
-  keyWords?: string;
-}
+export type SeoPayload = Partial<Record<string, string>>;

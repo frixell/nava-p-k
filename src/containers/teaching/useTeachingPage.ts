@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { ThunkDispatch } from 'redux-thunk';
 import type { AnyAction } from 'redux';
+import type { RootState as StoreRootState } from '../../types/store';
 import {
     startSetTeachingPage,
     startEditTeachingPageSeo,
@@ -23,13 +24,11 @@ import {
     EMPTY_TEACH,
     DEFAULT_SEO
 } from './types';
+import type { SeoPayload } from '../../types/seo';
 
 declare const cloudinary: any;
 
-interface RootState {
-    auth: { uid?: string | null };
-    teachingpage: TeachingPageStore;
-}
+type RootState = StoreRootState;
 
 type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
 
@@ -96,8 +95,13 @@ const buildTeachings = (source?: TeachItem[] | Record<string, TeachItem>): Teach
 export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeachingPageResult => {
     const dispatch = useDispatch<AppDispatch>();
 
-    const isAuthenticated = useSelector<RootState, boolean>((state) => Boolean(state.auth?.uid));
-    const teachingStore = useSelector<RootState, TeachingPageStore>((state) => state.teachingpage || {});
+    const isAuthenticated = useSelector<RootState, boolean>((state) => {
+        const authState = state.auth as { uid?: string | null } | undefined;
+        return Boolean(authState?.uid);
+    });
+    const teachingStore = useSelector<RootState, TeachingPageStore>((state) =>
+        (state.teachingpage as TeachingPageStore) || {}
+    );
 
     const [teachings, setTeachings] = useState<TeachItem[]>(() => buildTeachings(teachingStore.teachings));
     const [draftTeach, setDraftTeach] = useState<TeachItem | null>(null);
@@ -169,7 +173,7 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
     }, []);
 
     const saveSeo = useCallback(async () => {
-        await dispatch(startEditTeachingPageSeo(seo) as unknown as AnyAction);
+        await dispatch(startEditTeachingPageSeo(seo as unknown as SeoPayload) as unknown as AnyAction);
         setSeoModalOpen(false);
     }, [dispatch, seo]);
 

@@ -1,6 +1,6 @@
-export interface TeachImage {
-    publicId?: string;
-    src?: string;
+import type { ImageAsset } from '../../types/content';
+
+export interface TeachImage extends ImageAsset {
     width?: number;
     height?: number;
 }

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash.isequal';
 import { startLogout } from '../actions/auth';
+import type { SeoPayload } from '../types/seo';
 import {
   startSetAboutPage,
   startEditAboutPage,
@@ -168,7 +169,7 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
   }, []);
 
   const submitSeo = useCallback(async () => {
-    await dispatch(startEditAboutPageSeo(seo) as any);
+    await dispatch(startEditAboutPageSeo(seo as unknown as SeoPayload) as any);
     toggleSeoModal();
   }, [dispatch, seo, toggleSeoModal]);
 

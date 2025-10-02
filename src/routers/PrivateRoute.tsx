@@ -9,7 +9,10 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ redirectTo = '/', children }) => {
-  const isAuthenticated = useSelector<RootState, boolean>((state) => !!state.auth?.uid);
+  const isAuthenticated = useSelector<RootState, boolean>((state) => {
+    const auth = state.auth as { uid?: string | null } | undefined;
+    return Boolean(auth?.uid);
+  });
 
   if (!isAuthenticated) {
     return <Navigate to={redirectTo} replace />;
