@@ -2,6 +2,7 @@
 //import database from '../firebase/firebase';
 var firebase = require("firebase/app");
 require("firebase/database");
+const { deleteImage } = require('../services/imageService');
 
 // add costumer
 
@@ -71,21 +72,10 @@ export const startSetCostumers = () => {
 
 export const startDeleteCostumer = ( fbCostumers, costumers, publicid ) => {
     return (dispatch) => {
-        var method = 'POST';
-        //var action = 'http://localhost:3000/deleteImage';
-        var action = '/deleteImage';
-        var xhr = new XMLHttpRequest();
-        var data = '';
-        data += 'publicid=' + publicid;
-        xhr.open(method, action);
-        xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded')
-        xhr.send(data);
-        xhr.addEventListener('load', function (e) {
-            var data = e.target.responseText;
-            console.log(data);
+        return deleteImage(publicid).finally(() => {
+            return firebase.database().ref('website/costumers').update(fbCostumers).then(() => {
+                //dispatch(editCostumers( costumers ));
+            })
         });
-        return firebase.database().ref('website/costumers').update(fbCostumers).then(() => {
-            //dispatch(editCostumers( costumers ));
-        })
     };
 };

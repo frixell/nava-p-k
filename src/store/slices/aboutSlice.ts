@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import database from '../../firebase/firebase';
 import type { SeoPayload } from '../../types/seo';
 import type { ImageAsset } from '../../types/content';
+import { deleteImage } from '../../services/imageService';
 
 type AboutPageState = Record<string, unknown> | null;
 
@@ -73,13 +74,7 @@ export const startSaveAboutImage = (
   };
 
   if (publicIdToDelete) {
-    await fetch('/deleteImage', {
-      method: 'POST',
-      body: `publicid=${publicIdToDelete}`,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
+    await deleteImage(publicIdToDelete);
   }
 
   await database.ref('website/aboutpage/image').update(image);

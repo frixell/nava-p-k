@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import database from '../../firebase/firebase';
 import type { ImageAsset } from '../../types/content';
 import type { SeoPayload } from '../../types/seo';
+import { deleteImage } from '../../services/imageService';
 
 export type CvPageState = Record<string, unknown> | null;
 
@@ -44,7 +45,10 @@ export const startEditCvPageSeo = (seo: SeoPayload) => async (dispatch: any) => 
   dispatch(updateCvSeo(seo));
 };
 
-export const startAddCvImage = (imageData: Partial<ImageAsset> = {}, order: number) => async (dispatch: any, getState: any) => {
+export const startAddCvImage = (
+  imageData: Partial<ImageAsset> = {},
+  order: number
+) => async (dispatch: any, getState: any) => {
   const {
     publicId = '',
     src = '',
@@ -70,9 +74,14 @@ export const startAddCvImage = (imageData: Partial<ImageAsset> = {}, order: numb
 
   const state = getState();
   const existingImages: Record<string, ImageAsset> = state?.cvpage?.cvimages ?? {};
-  const nextImages: ImageAsset[] = Object.keys({ ...existingImages, [ref.key as string]: localImage }).map((key) => ({
+  const mergedImages: Record<string, ImageAsset> = {
+    ...existingImages,
+    [ref.key as string]: localImage
+  };
+
+  const nextImages: ImageAsset[] = Object.keys(mergedImages).map((key) => ({
     id: key,
-    ...(existingImages[key] ?? localImage)
+    ...mergedImages[key]
   }));
 
   dispatch(setCvImages(nextImages));
@@ -84,10 +93,7 @@ export const startDeleteCvImage = (
   images: ImageAsset[],
   publicid: string
 ) => async (dispatch: any) => {
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', '/deleteImage');
-  xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
-  xhr.send(`publicid=${publicid}`);
+  await deleteImage(publicid);
 
   await database.ref().child('website/cvpage/cvimages').update(fbImages);
   dispatch(setCvImages(images));

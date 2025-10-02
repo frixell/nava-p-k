@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
+const { deleteImage } = require('../services/imageService');
 
 // Types
 interface Homepage {
@@ -130,33 +131,10 @@ export const startDeleteHomePageImage = (
     publicid: string
 ): HomepageThunk<Promise<void>> => {
     return async (dispatch: Dispatch<HomepageActionTypes>) => {
-        try {
-            const response = await fetch('/deleteImage', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `publicid=${encodeURIComponent(publicid)}`
-            });
-            
-            if (!response.ok) {
-                throw new Error(`Failed to delete image: ${response.status}`);
-            }
-            
-            const result = await response.text();
-            if (process.env.NODE_ENV === 'development') {
-                console.log('Image deletion result:', result);
-            }
-            
-            return firebase.database().ref('website/').update(homepage).then(() => {
-                dispatch(editHomePage(homepage));
-            });
-        } catch (error) {
-            if (process.env.NODE_ENV === 'development') {
-                console.error('Error deleting image:', error);
-            }
-            throw error;
-        }
+        await deleteImage(publicid);
+        return firebase.database().ref('website/').update(homepage).then(() => {
+            dispatch(editHomePage(homepage));
+        });
     };
 };
 

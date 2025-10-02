@@ -4,6 +4,7 @@ import type { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import type { RootState } from '../types/store';
 import type { ImageAsset } from '../types/content';
+import { deleteImage } from '../services/imageService';
 
 type GalleryThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
 
@@ -59,10 +60,7 @@ export const startDeleteMobileGallery = (
   publicid: string
 ): GalleryThunk<Promise<void>> => {
   return async (dispatch) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/deleteImage');
-    xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
-    xhr.send(`publicid=${publicid}`);
+    await deleteImage(publicid);
 
     await firebase.database().ref('website/mobileGallery').update(fbMobileImages);
     dispatch(setMobileGallery(mobileImages));

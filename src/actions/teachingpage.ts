@@ -1,6 +1,7 @@
 import type { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import database from '../firebase/firebase';
+import { deleteImage } from '../services/imageService';
 import type { TeachItem } from '../containers/teaching/types';
 import type { RootState } from '../types/store';
 import type { SeoPayload } from '../types/seo';
@@ -146,13 +147,7 @@ export const startUpdateTeachImage = (
     const teach = normalizeTeach(teachData, id);
 
     if (publicid) {
-      await fetch('/deleteImage', {
-        method: 'POST',
-        body: `publicid=${publicid}`,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
+      await deleteImage(publicid);
     }
 
     await database.ref(`website/teachingpage/teachings/${id}`).update(teach);
@@ -189,13 +184,7 @@ export const startDeleteTeach = (teachData: Partial<TeachItem> = {}): TeachingTh
         : undefined) ?? teach.publicId;
 
     if (imagePublicId) {
-      await fetch('/deleteImage', {
-        method: 'POST',
-        body: `publicid=${String(imagePublicId)}`,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      });
+      await deleteImage(String(imagePublicId));
     }
 
     await database.ref(`website/teachingpage/teachings/${id}`).remove();

@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import * as firebase from 'firebase/app';
 import 'firebase/database';
+import { deleteImage as deleteImageFromService } from '../services/imageService';
 
 // Types
 interface Category {
@@ -312,32 +313,6 @@ export const startAddSubcategory = (
 };
 
 // Modern fetch utility for image deletion
-const deleteImageFromCloudinary = async (publicId: string): Promise<void> => {
-    try {
-        const response = await fetch('/deleteImage', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `publicid=${encodeURIComponent(publicId)}`
-        });
-        
-        if (!response.ok) {
-            throw new Error(`Failed to delete image: ${response.status}`);
-        }
-        
-        const result = await response.text();
-        if (process.env.NODE_ENV === 'development') {
-            console.log('Image deletion result:', result);
-        }
-    } catch (error) {
-        if (process.env.NODE_ENV === 'development') {
-            console.error('Error deleting image:', error);
-        }
-        throw error;
-    }
-};
-
 // SEO ACTIONS
 export const editSeo = (seo: SeoData, categoryId: string): EventsActionTypes => ({
     type: 'EDIT_SEO',
@@ -461,7 +436,7 @@ export const startDeleteImage = (
     return async (dispatch: Dispatch<EventsActionTypes>) => {
         try {
             // Delete from Cloudinary first
-            await deleteImageFromCloudinary(publicId);
+            await deleteImageFromService(publicId);
             
             // Then update Firebase
             return firebase.database().ref().child('eventsImages').update(fbImages).then(() => {
