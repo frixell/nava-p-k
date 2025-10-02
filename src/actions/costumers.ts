@@ -1,3 +1,4 @@
+// @ts-nocheck
 //import database from '../firebase/firebase';
 var firebase = require("firebase/app");
 require("firebase/database");

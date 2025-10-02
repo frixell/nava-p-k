@@ -1,17 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes, Link, NavLink } from 'react-router-dom';
-import ReactLoading from "react-loading";
-
-let loadImage = "";
-if (typeof(window) !== "undefined") {
-    if (navigator.userAgent.toLowerCase().indexOf('msie') > -1 || navigator.userAgent.toLowerCase().indexOf('trident') > -1 || navigator.userAgent.toLowerCase().indexOf('edge') > -1 ){
-        console.log("found");
-        loadImage = <div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><img src="/images/ie-preloader.gif" alt="נאוה קיינר-פרסוב Nava Kainer-Persov" /></div>;
-    } else {
-        loadImage = <div style={{width:'100vw', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}><ReactLoading type="spinningBubbles" color="#666665" /></div>;
-    }
-}
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import AboutPage from '../containers/AboutPage';
 import TeachingPage from '../containers/TeachingPage';
 import CvPage from '../containers/CvPage';
@@ -24,10 +12,12 @@ import PublicRoute from './PublicRoute';
 import SigninPage from '../components/SigninPage';
 import { connect } from 'react-redux';
 
+
+
 class AppRouter extends React.Component {
     render() {
         return (
-            <BrowserRouter>
+            <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <div>
                     <Routes>
                         <Route path="/" element={<HomePage urlLang='he' />} />
@@ -42,11 +32,11 @@ class AppRouter extends React.Component {
                         <Route path="/צרו_קשר" element={<ContactPage />} />
                         <Route path="/Contact" element={<ContactPage />} />
                         <Route path="/signin" element={<SigninPage />} />
-                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </div>
-            </BrowserRouter>
+            </Router>
         )
     }
 };

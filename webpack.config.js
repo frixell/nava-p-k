@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const sass = require('sass');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -21,6 +22,14 @@ module.exports = (env) => {
         entry: './src/app.js',
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+            alias: {
+                'ms': require.resolve('ms/index.js'),
+                'safe-buffer': require.resolve('safe-buffer/index.js'),
+                'debug/node_modules/ms/index.js': require.resolve('ms/index.js'),
+                'debug/node_modules/ms': require.resolve('ms/index.js'),
+                'string_decoder/node_modules/safe-buffer/index.js': require.resolve('safe-buffer/index.js'),
+                'string_decoder/node_modules/safe-buffer': require.resolve('safe-buffer/index.js')
+            },
             fallback: {
                 "buffer": false,
                 "stream": false,
@@ -51,16 +60,13 @@ module.exports = (env) => {
                         loader: 'babel-loader'
                     },
                     {
-                        loader: 'ts-loader',
-                        options: {
-                            transpileOnly: true
-                        }
+                        loader: 'ts-loader'
                     }
                 ],
                 exclude: /node_modules/
             }, {
+                test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
-                test: /\.js$/,
                 exclude: /node_modules/
             }, {
                 test: /\.s?css$/,
@@ -70,13 +76,20 @@ module.exports = (env) => {
                         loader: 'css-loader',
                         options: {
                             sourceMap: true,
-                            url: false
+                            url: {
+                                filter: (url) => !url.startsWith('/')
+                            }
                         }
                     },
                     {
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: true
+                            sourceMap: true,
+                            implementation: sass,
+                            api: 'modern',
+                            sassOptions: {
+                                silenceDeprecations: ['legacy-js-api', 'import']
+                            }
                         }
                     }
                 ]
