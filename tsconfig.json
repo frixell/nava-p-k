@@ -29,22 +29,8 @@
     "skipLibCheck": true
   },
   "include": [
-    "src/containers/Cv**/*",
-    "src/containers/AboutPage.tsx",
-    "src/containers/AboutPage.styles.ts",
-    "src/containers/PageLayout.styles.ts",
-    "src/containers/HomePage.tsx",
-    "src/containers/ContactPage.tsx",
-    "src/shared/components/backoffice/**/*",
-    "types/vendors.d.ts",
-    "src/shared/components/Button.tsx",
-    "src/shared/components/Input.tsx",
-    "src/shared/components/PasswordInput.tsx",
-    "src/shared/components/backoffice/BackofficeToolbar.styles.ts",
-    "src/shared/components/backoffice/SeoModal.styles.ts",
-    "src/shared/components/backoffice/SeoModal.tsx",
-    "src/shared/components/backoffice/BackofficeToolbar.tsx",
-    "src/components/contactpage/**/*"
+    "src/**/*",
+    "types/**/*"
   ],
   "exclude": [
     "node_modules",

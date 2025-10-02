@@ -1,5 +1,5 @@
 import React from 'react';
-import MapViewTest from '../MapViewTest';
+import MapView from '../MapView';
 import { MapContainer } from './HomePageLayout.styles';
 
 interface HomeMapPanelProps {
@@ -42,7 +42,7 @@ const HomeMapPanel: React.FC<HomeMapPanelProps> = ({
             isEnglish={isEnglish}
             viewportWidth={viewportWidth}
         >
-            <MapViewTest
+            <MapView
                 categories={categories}
                 sidebarClickedItemId={sidebarClickedItemId}
                 points={points}
