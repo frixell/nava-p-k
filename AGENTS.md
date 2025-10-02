@@ -9,6 +9,8 @@
 - `yarn build:dev` / `yarn build:prod`: emit development or optimized bundles into `public/`.
 - `yarn test`: run Jest via `jest.config.json` with CI-compatible defaults.
 
+> Branching note: the canonical integration branch is `dev` (the older `gem` line is no longer used). Base new feature branches and deployments from `dev` unless project leads specify otherwise.
+
 ## Coding Style & Naming Conventions
 Stick to modern ES modules, 4-space indentation, single quotes, and trailing commas where they aid diffs. Use PascalCase for React components and folders, camelCase for functions, Redux actions, and filenames like `eventTable.reducer.js`. Keep SCSS partials named after their component counterparts and import them through `src/styles/styles.scss`; avoid diverging formatting without a shared ESLint/Prettier config.
 

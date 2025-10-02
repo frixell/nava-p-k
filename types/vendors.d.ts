@@ -61,3 +61,16 @@ declare module 'react-input-autosize' {
   const AutosizeInput: FC<AutosizeInputProps>;
   export default AutosizeInput;
 }
+
+declare module 'circle-to-polygon' {
+  type Coordinate = [number, number];
+  interface CirclePolygon {
+    coordinates: Coordinate[][][];
+  }
+  export default function circleToPolygon(
+    center: Coordinate,
+    radius: number,
+    numberOfEdges: number,
+    options?: Record<string, unknown>
+  ): CirclePolygon;
+}
