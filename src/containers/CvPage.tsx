@@ -5,7 +5,11 @@ import Navigation from '../components/common/Navigation';
 import PageUpStrip from '../components/common/PageUpStrip';
 import Footer from '../components/common/Footer';
 import { useCvPageState } from './useCvPageState';
-import { startSetCvPage, startEditCvPage, startEditCvPageSeo } from '../actions/cvpage';
+import {
+  startSetCvPage,
+  startEditCvPage,
+  startEditCvPageSeo
+} from '../store/slices/cvSlice';
 import { startLogout } from '../store/slices/authSlice';
 import CvToolbar from './CvToolbar';
 import CvSeoModal from './CvSeoModal';

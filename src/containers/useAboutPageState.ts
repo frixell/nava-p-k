@@ -10,7 +10,7 @@ import {
   startEditAboutPage,
   startEditAboutPageSeo,
   startSaveAboutImage
-} from '../actions/aboutpage';
+} from '../store/slices/aboutSlice';
 import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
 import type { SeoFormState } from '../shared/components/backoffice/SeoModal';
 
