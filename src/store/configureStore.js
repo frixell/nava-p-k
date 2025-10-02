@@ -9,6 +9,7 @@ import navigationReducer from '../reducers/navigation';
 import pointsReducer from '../reducers/points';
 import categoriesReducer from '../reducers/categories';
 import tableTemplateReducer from '../reducers/tableTemplate';
+import {i18nState} from "redux-i18n";
 
 //const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENTION_COMPOSE__ || compose;
 
@@ -31,7 +32,8 @@ export default () => {
             teachingpage: teachingpageReducer,
             auth: authReducer,
             homepage: homepageReducer,
-            navigation: navigationReducer
+            navigation: navigationReducer,
+            i18nState
         }),
         composeEnhancers(applyMiddleware(thunk))
         //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

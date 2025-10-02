@@ -1,5 +1,7 @@
 import React from "react";
-import Button from '@mui/material/Button';
+import Slider from "react-slick";
+//import { Button } from "react-bootstrap";
+import Button from 'react-bootstrap/lib/Button';
 import { connect } from 'react-redux';
 import {
     startAddCostumers,
@@ -225,7 +227,7 @@ class CustomersStrip extends React.Component {
             :
                 null
         }
-        <div className="customers__slider">
+        <Slider className="customers__slider" {...settings}>
           
           {
             this.state.costumers.map((costumer, index) => {
@@ -234,7 +236,7 @@ class CustomersStrip extends React.Component {
                       </div>
             })
           }
-        </div>
+        </Slider>
 
         { 
           this.props.isAuthenticated === true ? 
@@ -251,8 +253,7 @@ class CustomersStrip extends React.Component {
                                               data-publicid={costumer.publicId}
                                               data-index={index}
                                               data-showstatus={false}
-                                              variant="contained"
-                                              color="secondary"
+                                              className="backoffice__events__tabs__remove btn-danger"
                                               onClick={this.onDeleteCostumer}
                                           >
                                               X
@@ -280,7 +281,7 @@ class CustomersStrip extends React.Component {
                           null
                   }
                   <div className="backoffice__events__tabs__update__box">
-                      <Button variant="contained" color="primary" onClick={this.updateCostumers}>עדכון</Button>
+                      <Button className="backoffice__events__tabs__update btn-success" onClick={this.updateCostumers}>עדכון</Button>
                   </div>
               </div>
           :
