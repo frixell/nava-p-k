@@ -2,8 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { withTranslation } from 'react-i18next';
+
 class EventNavigation extends React.Component {
     render() {
+        const { t } = this.props;
         return (
     
             <div className="event__navigation__box">
@@ -33,7 +36,7 @@ class EventNavigation extends React.Component {
                             onMouseLeave={this.props.setIconRatioOut}
                             onClick={this.props.gotoPrevEvent}
                         >
-                            {this.context.t("prevPainting")}
+                            {t("prevPainting")}
                         </button> 
                     </div>
 
@@ -47,7 +50,7 @@ class EventNavigation extends React.Component {
                             onMouseLeave={this.props.setIconRatioOut}
                             onClick={this.props.gotoNextEvent}
                         >
-                            {this.context.t("nextPainting")}
+                            {t("nextPainting")}
                             
                         </button> 
                     </div>
@@ -61,12 +64,4 @@ class EventNavigation extends React.Component {
     }
 };
 
-EventNavigation.contextTypes = {
-  t: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
-});
-
-export default connect(mapStateToProps)(EventNavigation);
+export default withTranslation()(EventNavigation);

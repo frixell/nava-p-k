@@ -1,327 +1,135 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem
-} from 'reactstrap';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { AppBar, Toolbar, Button } from '@mui/material';
 import { connect } from 'react-redux';
-import { setLanguage } from "redux-i18n";
+import { withTranslation } from 'react-i18next';
 import $ from 'jquery';
 
-import ReactGA from 'react-ga';
+const Navigation = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
-function initializeReactGA(url) {
-    ReactGA.initialize('UA-128960221-1');
-    ReactGA.pageview(url);
-}
-//initializeReactGA();
-
-
-class Navigation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      fixed: 'none',
-      isOpen: false,
-      accessibilityIcon: 'accessibility',
-      eventsCategoriesReverse: [],
-      lang: '',
-      category: '',
-      subcategory: '',
-      event: ''
-    };
-  }
-
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
-
-  fixedTop = () => {
-    document.getElementsByClassName("navbar-light")[1].style.position = "fixed";
-    document.getElementsByClassName("navbar-light")[1].style.top = 0;
-    document.getElementById('fakeNav').style.display = "block";
-    const homepageCarouselDone = true;
-    
-    this.setState({
-        fixed: 'top'
-    });
-    if (typeof(window) !== "undefined") {
-      window.scrollTo(0, -20);
-    }
-  }
-
-  setIconChangeOn = (e) => {
-        switch(e.target.dataset.name) {
-            case 'accessibility':
-                return this.setState({ 
-                    accessibilityIcon: 'accessibilityHover'
-                });
-            default:
-                return null;
-        }
-        
-    }
-
-    setIconChangeOut = (e) => {
-        switch(e.target.dataset.name) {
-            case 'accessibility':
-                return this.setState({ 
-                    accessibilityIcon: 'accessibility'
-                });
-            default:
-                return null;
-        }
-    }
-
-  componentDidMount = () => {
-    let windowWidth = 0;
-    if (typeof(window) !== "undefined") {
-      windowWidth = $( window ).width();
-    }
-    this.setState({ 
-        windowWidth
-    });
+  useEffect(() => {
     if(document.getElementById('enable-toolbar-trigger')) {
       document.getElementById('enable-toolbar-buttons').style.textAlign = "right";
     }
-    
-    let location = '/';
-    if (typeof(window) !== "undefined") {
-      location = window.location.href;
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return;
     }
-    this.fixedTop();
-  }
 
-  componentDidUpdate = () => {
-    if (!this.state.windowWidth) {
-      let windowWidth = 0;
-      if (typeof(window) !== "undefined") {
-        windowWidth = $( window ).width();
-      }
-      this.setState({ 
-          windowWidth
-      });
-    }
-  }
+    const updateToolbarHeight = () => {
+      const desktopToolbar = document.querySelector('.navbar-light .MuiToolbar-root');
+      const mobileToolbar = document.querySelector('.mobile .MuiToolbar-root');
 
-  componentWillUnmount = () => {
-    let location = '/';
-    if (typeof(window) !== "undefined") {
-      const location = window.location.href;
-    }
-    const page = location.substring(location.lastIndexOf("/"), location.length);
-    if (page === '/') {
-      if (typeof(window) !== "undefined") {
-        window.removeEventListener('scroll', this.handleScroll);
-      }
-    }
-  }
+      const isVisible = (element) => {
+        if (!element || !element.parentElement) {
+          return false;
+        }
+        const style = window.getComputedStyle(element.parentElement);
+        return style.display !== 'none' && style.visibility !== 'hidden';
+      };
 
-  handleScroll = () => {
-    if ($('#navbarD').css('display') === 'block') {
-      var navbarTop = document.getElementById('navbarD').getBoundingClientRect().top;
-    } else {
-      var navbarTop = document.getElementById('navbarM').getBoundingClientRect().top;
-    }
-    if (navbarTop < -1 && this.state.fixed === 'none') {
-      this.fixedTop();
-    }
-  }
+      const activeToolbar = isVisible(desktopToolbar) ? desktopToolbar : (isVisible(mobileToolbar) ? mobileToolbar : (desktopToolbar || mobileToolbar));
+      const fallback = parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('--toolbar-height')) || 0;
+      const height = activeToolbar ? activeToolbar.offsetHeight : fallback;
 
-  pageToTopD = () => {
-    if (typeof(window) !== "undefined") {
-        window.scroll({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-        });
-    }
-  }
+      // document.documentElement.style.setProperty('--toolbar-height', `${height}px`);
+    };
 
-  pageToTopM = () => {
-    if (typeof(window) !== "undefined") {
-        window.scroll({
-            top: 0,
-            left: 0,
-            behavior: 'smooth'
-        });
-    }
-  }
+    updateToolbarHeight();
+    window.addEventListener('resize', updateToolbarHeight);
 
-  setLang = () => {
-      const lang = this.props.lang === 'he' ? 'en' : 'he';
-      this.props.setLanguage(lang);
-      if (lang === 'he') {
-        this.props.history.push(this.props.langLink);
-        // initializeReactGA(`/${this.props.langLink}`);
-      } else {
-        this.props.history.push(this.props.langLinkEng);
-        // initializeReactGA(`/${this.props.langLinkEng}`);
-      }
-      
-  }
+    return () => {
+      window.removeEventListener('resize', updateToolbarHeight);
+    };
+  }, []);
 
-
-  render() {
-    const langDir = this.props.lang === 'he' ? 'ltr' : 'rtl';
-    return (
-      <div className="container-fluid">
-        
-        <div id="fakeNav" className="fakeNav" />
-        <Navbar id="navbarD" light className={`container-fluid navbar__shadow desktop`} expand="md" fixed={this.state.fixed} dir={this.langDir}>
-          <div className={this.props.lang === 'he' ? 'container-fluid navbar__header__container' : 'container-fluid navbar__header__container__eng'} dir={this.props.lang === 'he' ? 'ltr' : 'rtl'}>
-            <div className="container-fluid navbar__header">
-              <NavbarBrand className={this.props.lang === 'he' ? 'navbar__brand' : 'navbar__brand__eng'} href="/">{this.props.lang === 'he' ? <div style={{marginTop: '-0.9vw', textAlign: 'right'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div> : <div style={{marginTop: '-0.8vw', lineHeight: '140%'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>}</NavbarBrand>
-              <NavbarToggler onClick={this.toggle} />
-            </div>
-          </div>
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="navbar__nav" className={this.props.lang === 'he' ? 'ml-auto' : 'mr-auto'} navbar dir={this.props.lang === 'he' ? 'rtl' : 'ltr'}>
-              
-              
-              <NavItem>
-                <NavLink exact to={this.props.lang === 'he' ? '/' : '/en'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/research'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teaching'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הוראה' : 'Teaching'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/הרצאות' : '/Lectures'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הרצאות' : 'Lectures'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/קורות_חיים' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/אודות' : '/About'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/צרו_קשר' : '/Contact'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
-              </NavItem>
-              
-              <NavItem>
-                <div onClick={this.setLang} className="nav__link nav__link--padding-top" style={this.props.lang === 'he' ? {position: 'fixed', top: '2vw', left: '0'} : {position: 'fixed', top: '2vw', right: '0'}}>{this.props.lang === 'he' ? 'EN' : 'עב'}</div>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </Navbar>
-
-
-
-
-
-
-
-
-        <Navbar id="navbarM" light className={`container-fluid mobile`} expand="md" fixed={this.state.fixed}>
-          <div className={this.props.lang === 'he' ? 'container-fluid navbar__header__container navbar__shadow' : 'container-fluid navbar__header__container__eng navbar__shadow'} dir={this.langDir}>
-          
-            <div
-              className="container-fluid navbar__header__mobile"
-              dir={this.langDir}
-              style={
-                this.props.lang === 'he' ?
-                {
-                  flexDirection: 'row'
-                }
-                :
-                {
-                  flexDirection: 'row-reverse'
-                }
-              }
-            >
-              <NavbarToggler className="navbar__toggler ml-auto" onClick={this.toggle} />
-              <button className="nav__lang__mobile">
-                <div onClick={this.setLang} className="navbar__lang">{this.props.lang === 'he' ? 'EN' : 'עב'}</div>
-              </button>
-              <button
-                  className="nav__phone__mobile"
-                  data-name="phone"
-                  onClick={this.gotoPhone}
-              >
-                  <img className="nav__link__phone__mobile" src="/images/navigation/phone_mobile_white.png" alt="טלפון" />
-              </button>
-              <NavbarBrand className="navbar__brand" href="/">{this.props.lang === 'he' ? <div style={{marginTop: '-0.9vw', textAlign: 'right'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div> : <div style={{marginTop: '-0.8vw', lineHeight: '140%'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>}</NavbarBrand>
-              
-            </div>
-          </div>
-          <Collapse className="navbar__collapse" isOpen={this.state.isOpen} navbar>
-            <Nav className="navbar__nav" className="m-auto" navbar>
-              <div className="nav__social__box">
-                <img className="nav__social__seperator" src="/images/navigation/nav-social-seperator.png" alt="קו הפרדה" />
-                <button
-                    className="homepage__socialmedia-button mobile_inline"
-                    onClick={this.gotoFacebook}
-                >
-                    <img className="nav__link__facebook__mobile" src="/images/navigation/facebook_mobile.svg" alt="פייסבוק" />
-                </button>
-                <button
-                    className="homepage__socialmedia-button mobile_inline"
-                    onClick={this.gotoInstagram}
-                >
-                    <img className="nav__link__instagram__mobile" src="/images/navigation/instagram_mobile.svg" alt="אינסטגרם" />
-                </button>
-                <button
-                    className="homepage__socialmedia-button mobile_inline"
-                    onClick={this.gotoMail}
-                >
-                    <img className="nav__link__mail__mobile" src="/images/navigation/mail_mobile.svg" alt="אימייל" />
-                </button>
-                <img className="nav__social__seperator" src="/images/navigation/nav-social-seperator.png" alt="קו הפרדה" />
-              </div>
-              
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/צרו_קשר' : '/Contact'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'צרו קשר' : 'Contact'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/אודות' : '/About'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'אודות' : 'About'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/קורות_חיים' : '/CV'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'קו״ח' : 'CV'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/פרסומים' : '/Publication'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'פרסומים' : 'Publication'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/הרצאות' : '/Lectures'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הרצאות' : 'Lectures'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/הוראה' : '/Teaching'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'הוראה' : 'Teaching'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={this.props.lang === 'he' ? '/מחקר' : '/Research'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'מחקר' : 'Research'}</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink exact to={this.props.lang === 'he' ? '/' : '/en'} className="nav__link nav__link--padding-top" activeClassName="is-active nav__link--active">{this.props.lang === 'he' ? 'ראשי' : 'Home'}</NavLink>
-              </NavItem>
-              
-            </Nav>
-          </Collapse>
-        </Navbar>
-
-
-
-
-
-      </div>
-
-
-
-      
-    );
+  const toggle = () => {
+    setIsOpen(!isOpen);
   };
+
+  const setLang = () => {
+    const newLang = props.i18n.language === 'he' ? 'en' : 'he';
+    props.i18n.changeLanguage(newLang);
+    if (newLang === 'he') {
+      navigate(props.langLink);
+    } else {
+      navigate(props.langLinkEng);
+    }
+  };
+
+  const { i18n } = props;
+  const { pathname } = window.location;
+
+  return (
+    <div className="container-fluid">
+      <div id="fakeNav" className="fakeNav" />
+      <AppBar position="fixed" color="transparent" className="navbar-light">
+        <Toolbar style={{ justifyContent: 'space-between', alignItems: 'flex-end', paddingBottom: '20px'}}>
+          {i18n.language === 'he' ? (
+            <>
+              <Button 
+                color="inherit" 
+                onClick={setLang}
+                className="nav__link"
+              >
+                EN
+              </Button>
+              <div style={{ flexGrow: 1 }} />
+              <div>
+                <Button color="inherit" component={NavLink} to="/" className={pathname === '/' ? 'is-active nav__link--active' : 'nav__link'}>ראשי</Button>
+                <Button color="inherit" component={NavLink} to="/מחקר" className={pathname === '/מחקר' ? 'is-active nav__link--active' : 'nav__link'}>מחקר</Button>
+                <Button color="inherit" component={NavLink} to="/הוראה" className={pathname === '/הוראה' ? 'is-active nav__link--active' : 'nav__link'}>הוראה</Button>
+                <Button color="inherit" component={NavLink} to="/הרצאות" className={pathname === '/הרצאות' ? 'is-active nav__link--active' : 'nav__link'}>הרצאות</Button>
+                <Button color="inherit" component={NavLink} to="/פרסומים" className={pathname === '/פרסומים' ? 'is-active nav__link--active' : 'nav__link'}>פרסומים</Button>
+                <Button color="inherit" component={NavLink} to="/קורות_חיים" className={pathname === '/קורות_חיים' ? 'is-active nav__link--active' : 'nav__link'}>קו״ח</Button>
+                <Button color="inherit" component={NavLink} to="/אודות" className={pathname === '/אודות' ? 'is-active nav__link--active' : 'nav__link'}>אודות</Button>
+                <Button color="inherit" component={NavLink} to="/צרו_קשר" className={pathname === '/צרו_קשר' ? 'is-active nav__link--active' : 'nav__link'}>צרו קשר</Button>
+              </div>
+              <Button color="inherit" href="/" style={{textTransform: 'none'}} className="navbar__brand">
+                <div style={{marginTop: '-0.9vw', textAlign: 'right', lineHeight: '1.2'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button color="inherit" href="/" style={{textTransform: 'none'}} className="navbar__brand navbar__brand__eng">
+                <div style={{marginTop: '-0.8vw', lineHeight: '140%'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>
+              </Button>
+              <div>
+                <Button color="inherit" component={NavLink} to="/en" className={pathname === '/en' ? 'is-active nav__link--active' : 'nav__link'}>Home</Button>
+                <Button color="inherit" component={NavLink} to="/research" className={pathname === '/research' ? 'is-active nav__link--active' : 'nav__link'}>Research</Button>
+                <Button color="inherit" component={NavLink} to="/Teaching" className={pathname === '/Teaching' ? 'is-active nav__link--active' : 'nav__link'}>Teaching</Button>
+                <Button color="inherit" component={NavLink} to="/Lectures" className={pathname === '/Lectures' ? 'is-active nav__link--active' : 'nav__link'}>Lectures</Button>
+                <Button color="inherit" component={NavLink} to="/Publication" className={pathname === '/Publication' ? 'is-active nav__link--active' : 'nav__link'}>Publication</Button>
+                <Button color="inherit" component={NavLink} to="/CV" className={pathname === '/CV' ? 'is-active nav__link--active' : 'nav__link'}>CV</Button>
+                <Button color="inherit" component={NavLink} to="/About" className={pathname === '/About' ? 'is-active nav__link--active' : 'nav__link'}>About</Button>
+                <Button color="inherit" component={NavLink} to="/Contact" className={pathname === '/Contact' ? 'is-active nav__link--active' : 'nav__link'}>Contact</Button>
+              </div>
+              <div style={{ flexGrow: 1 }} />
+              <Button 
+                color="inherit" 
+                onClick={setLang}
+                className="nav__link"
+              >
+                עב
+              </Button>
+            </>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      <AppBar position="fixed" color="default" className="mobile">
+        <Toolbar>
+          <Button color="inherit" href="/">{i18n.language === 'he' ? <div style={{marginTop: '-0.9vw', textAlign: 'right'}}>נאוה קיינר-פרסוב<br />אדריכלית ומתכננת ערים</div> : <div style={{marginTop: '-0.8vw', lineHeight: '140%'}}>Nava Kainer-Persov, PhD<br />Architect & Urban Planner</div>}</Button>
+          <div style={{ flexGrow: 1 }} />
+          <Button color="inherit" onClick={setLang}>{i18n.language === 'he' ? 'EN' : 'עב'}</Button>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => ({
@@ -329,7 +137,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setLanguage: (lang) => dispatch(setLanguage(lang))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Navigation));

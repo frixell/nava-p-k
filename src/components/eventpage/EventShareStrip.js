@@ -21,16 +21,21 @@ import PropTypes from 'prop-types';
  
 
 
+import { withTranslation } from 'react-i18next';
+ 
+
+
 class EventShareStrip extends React.Component {
     render() {
-        const dirLang = this.props.lang === 'he' ? 'rtl' : 'ltr';
+        const { t, i18n } = this.props;
+        const dirLang = i18n.language === 'he' ? 'rtl' : 'ltr';
         return (
     
             <div className="event__sharestrip__box" dir={dirLang}>
                 
                 <div className={`events__eventshare__share ${this.props.style === 'desktop' ? 'desktop_flex' : 'mobile_flex'}`} dir={dirLang}>
                     
-                    <p className={this.props.lang === 'he' ? `events__eventshare__text Heebo-Regular` : `events__eventshare__text events__eventshare__text__eng Heebo-Regular`} dir={dirLang}>{this.context.t("shareWithFriends")}</p>
+                    <p className={i18n.language === 'he' ? `events__eventshare__text Heebo-Regular` : `events__eventshare__text events__eventshare__text__eng Heebo-Regular`} dir={dirLang}>{t("shareWithFriends")}</p>
 
                     <ShareLink link={this.props.currentURL}>
                     {link => (
@@ -49,12 +54,4 @@ class EventShareStrip extends React.Component {
     }
 };
 
-EventShareStrip.contextTypes = {
-  t: PropTypes.func.isRequired
-}
-
-const mapStateToProps = (state) => ({
-    lang: state.i18nState.lang
-});
-
-export default connect(mapStateToProps)(EventShareStrip);
+export default withTranslation()(EventShareStrip);

@@ -1,18 +1,15 @@
-@import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 
 @import './base/settings';
+@import './base/tokens';
 @import './base/base';
 
+@import './components/GlobalUI';
 @import './components/TeachingPage';
-@import './components/AboutPage';
 @import './components/Backoffice';
-@import './components/CustomersStrip';
-@import './components/ContactStrip';
-@import './components/ContactPage';
-@import './components/EventsPage';
-@import './components/EventPage';
 @import './components/Footer';
 @import './components/HomePage';
+@import './components/LoginPage';
 @import './components/NotFoundPage';
 @import './components/Navigation';
 @import './components/PageUpStrip';
@@ -23,4 +20,11 @@
 @font-face {
   font-family: almoni-tzar-aaa-regular;
   src: url(/assets/fonts/almoni-tzar-aaa-regular.otf) format('truetype');
+}
+
+@media (min-width: 600px) {
+  .css-1ygil4i-MuiToolbar-root {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }

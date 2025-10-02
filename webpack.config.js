@@ -1,7 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const CompressionPlugin = require('compression-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const sass = require('sass');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -13,10 +14,39 @@ if (process.env.NODE_ENV === 'test') {
 
 module.exports = (env) => {
     const isProduction = env === "production";
-    const CSSExtract = new ExtractTextPlugin('styles.css');
+    const CSSExtract = new MiniCssExtractPlugin({
+        filename: 'styles.css'
+    });
     
     return {
         entry: './src/app.js',
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+            alias: {
+                'ms': require.resolve('ms/index.js'),
+                'safe-buffer': require.resolve('safe-buffer/index.js'),
+                'debug/node_modules/ms/index.js': require.resolve('ms/index.js'),
+                'debug/node_modules/ms': require.resolve('ms/index.js'),
+                'string_decoder/node_modules/safe-buffer/index.js': require.resolve('safe-buffer/index.js'),
+                'string_decoder/node_modules/safe-buffer': require.resolve('safe-buffer/index.js')
+            },
+            fallback: {
+                "buffer": false,
+                "stream": false,
+                "util": false,
+                "assert": false,
+                "path": false,
+                "zlib": false,
+                "querystring": false,
+                "url": false,
+                "crypto": false,
+                "http": false,
+                "https": false,
+                "os": false,
+                "fs": false,
+                "async_hooks": false
+            }
+        },
         devtool: 'inline-source-map',
         output: {
             filename: 'bundle.js',
@@ -24,27 +54,45 @@ module.exports = (env) => {
         },
         module: {
             rules: [{
+                test: /\.(ts|tsx)$/,
+                use: [
+                    {
+                        loader: 'babel-loader'
+                    },
+                    {
+                        loader: 'ts-loader'
+                    }
+                ],
+                exclude: /node_modules/
+            }, {
+                test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
-                test: /\.js$/,
                 exclude: /node_modules/
             }, {
                 test: /\.s?css$/,
-                use: CSSExtract.extract({
-                    use: [
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                sourceMap: true
-                            }
-                        },
-                        {
-                            loader: 'sass-loader',
-                            options: {
-                                sourceMap: true
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            sourceMap: true,
+                            url: {
+                                filter: (url) => !url.startsWith('/')
                             }
                         }
-                    ]
-                })
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: true,
+                            implementation: sass,
+                            api: 'modern',
+                            sassOptions: {
+                                silenceDeprecations: ['legacy-js-api', 'import']
+                            }
+                        }
+                    }
+                ]
             }]
         },
         plugins: [
@@ -66,9 +114,13 @@ module.exports = (env) => {
         ],
         devtool: isProduction ? 'source-map' : 'inline-source-map',
         devServer: {
-            contentBase: path.join(__dirname, 'public'),
+            static: {
+                directory: path.join(__dirname, 'public')
+            },
             historyApiFallback: true,
-            publicPath: '/dist/'
+            devMiddleware: {
+                publicPath: '/dist/'
+            }
         }
     }
 };
