@@ -1,5 +1,5 @@
 import React from 'react';
-import SideBar from '../SideBar';
+import TypedSideBar from './TypedSideBar';
 
 interface HomeSidebarPanelProps {
     language: string;
@@ -23,7 +23,7 @@ const HomeSidebarPanel: React.FC<HomeSidebarPanelProps> = ({
     handleSideBarClick
 }) => {
     return (
-        <SideBar
+        <TypedSideBar
             sidebarClickedItemId={sidebarClickedItemId}
             handleSideBarClick={handleSideBarClick}
             categories={categories}

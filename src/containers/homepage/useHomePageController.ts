@@ -27,7 +27,7 @@ export interface HomePageControllerProps {
     startToggleShowCategory: (categoryId: string, visible: boolean) => Promise<any>;
     startEditCategories: (fbCategories: Record<string, any>, categories: any[]) => Promise<any>;
     startAddCategory: (category: any, order: number) => Promise<any>;
-    startLogout?: () => void;
+    startLogout: () => Promise<void>;
     navigation?: any;
     homepage?: any;
 }

@@ -185,7 +185,7 @@ const SideBar = ({
     isAuthenticated,
     setOpenCategories,
     handleSideBarClick,
-    categoryColors = [],
+    categoryColors = ([]),
     sidebarClickedItemId
 }) => {
     const [localCategories, setLocalCategories] = useState(categories);
