@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash.isequal';
-import { startLogout } from '../actions/auth';
+import { startLogout } from '../store/slices/authSlice';
 import type { SeoPayload } from '../types/seo';
 import type { RootState } from '../types/store';
 import {

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoginForm from './LoginForm';
-import { startLogin } from '../actions/auth';
+import { startLogin } from '../store/slices/authSlice';
 import {
     AuthCard,
     AuthHeader,
@@ -31,7 +31,7 @@ const LoginPage: React.FC = () => {
 
     const handleSubmit = useCallback(async (credentials: Credentials): Promise<boolean> => {
         try {
-            await dispatch(startLogin(credentials.userEmail, credentials.password) as any);
+            await dispatch(startLogin({ email: credentials.userEmail, password: credentials.password }));
             navigate('/');
             return true;
         } catch (error) {

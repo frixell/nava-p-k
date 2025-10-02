@@ -6,7 +6,7 @@ import PageUpStrip from '../components/common/PageUpStrip';
 import Footer from '../components/common/Footer';
 import { useCvPageState } from './useCvPageState';
 import { startSetCvPage, startEditCvPage, startEditCvPageSeo } from '../actions/cvpage';
-import { startLogout } from '../actions/auth';
+import { startLogout } from '../store/slices/authSlice';
 import CvToolbar from './CvToolbar';
 import CvSeoModal from './CvSeoModal';
 import CvBody from './CvBody';

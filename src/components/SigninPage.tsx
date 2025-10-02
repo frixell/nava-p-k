@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SigninForm from './SigninForm';
-import { signin } from '../actions/auth';
+import { startSignin } from '../store/slices/authSlice';
 import {
     AuthCard,
     AuthHeader,
@@ -24,7 +24,7 @@ const SigninPage: React.FC = () => {
 
     const handleSubmit = useCallback(async (credentials: Credentials): Promise<boolean> => {
         try {
-            await dispatch(signin(credentials.userEmail, credentials.password) as any);
+            await dispatch(startSignin({ email: credentials.userEmail, password: credentials.password }));
             navigate('/');
             return true;
         } catch (error) {

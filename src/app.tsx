@@ -10,7 +10,7 @@ import { startSetCategories } from './actions/eventspage';
 import { startGetCategories } from './actions/categories';
 import { startGetPoints } from './actions/points';
 import { startGetTableTemplate } from './actions/tableTemplate';
-import { login, logout } from './actions/auth';
+import { login, logout } from './store/slices/authSlice';
 import i18n from './i18n/i18n';
 import { firebase } from './firebase/firebase';
 

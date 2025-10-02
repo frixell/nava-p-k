@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import { connect } from 'react-redux';
-import { startLogout } from '../actions/auth';
+import { startLogout } from '../store/slices/authSlice';
 import { startAddPoint, startEditProject } from '../actions/points';
 import { withTranslation } from 'react-i18next';
 import {
