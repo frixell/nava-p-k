@@ -80,9 +80,20 @@ export const useCvPageState = ({
     return () => undefined;
   }, [needSave]);
 
-  const setData = useCallback((event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  type DataEvent = ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | {
+    target: {
+      value: string;
+      dataset?: {
+        action?: string;
+        name?: string;
+      };
+    };
+  };
+
+  const setData = useCallback((event: DataEvent) => {
     const { value, dataset } = event.target;
-    const { name, action } = dataset;
+    const name = dataset?.name;
+    const action = dataset?.action;
     if (!name) return;
     setCvpage((prev: any) => {
       const next = { ...prev };

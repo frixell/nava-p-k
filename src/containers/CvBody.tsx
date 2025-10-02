@@ -1,5 +1,5 @@
-import React, { type ChangeEvent } from 'react';
-import CvContentStrip from '../components/cvpage/CvContentStrip';
+import React from 'react';
+import CvContentStrip, { type SyntheticSetDataEvent } from '../components/cvpage/CvContentStrip';
 import { CvStructure, CvLeftColumn, HeaderContainer, PageHeading } from './CvBody.styles';
 
 interface CvBodyProps {
@@ -7,7 +7,7 @@ interface CvBodyProps {
   language: string;
   cvpage: any;
   cvpageOrigin: any;
-  setData: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  setData: (event: SyntheticSetDataEvent) => void;
 }
 
 const CvBody: React.FC<CvBodyProps> = ({ isAuthenticated, language, cvpage, cvpageOrigin, setData }) => (
@@ -18,14 +18,9 @@ const CvBody: React.FC<CvBodyProps> = ({ isAuthenticated, language, cvpage, cvpa
       </HeaderContainer>
       <CvContentStrip
         isAuthenticated={isAuthenticated}
-        action="setString"
-        name="cv"
-        index="cv"
-        item={cvpage?.about}
         cvpageOrigin={cvpageOrigin}
         cvpage={cvpage}
         setData={setData}
-        lang={language}
       />
     </CvLeftColumn>
   </CvStructure>
