@@ -156,6 +156,7 @@ class ProjectDetailsPage extends React.Component {
                             tableTemplate={this.props.tableTemplate}
                             setTableOptions={this.setTableOptions}
                             hideTableOptions={this.hideTableOptions}
+                            i18n={this.props.i18n}
                             lang={this.props.i18n.language}
                         />
                     :
@@ -174,6 +175,7 @@ class ProjectDetailsPage extends React.Component {
                             hideCategoryEditor={this.state.hideCategoryEditor}
                             toggleCategoryEditor={this.toggleCategoryEditor}
                             setProjectCategories={this.setProjectCategories}
+                            i18n={this.props.i18n}
                             lang={this.props.i18n.language}
                         />
                     :

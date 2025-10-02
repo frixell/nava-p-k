@@ -14,6 +14,7 @@ interface HomeProjectPanelProps {
     onChange: (event: any) => void;
     uploadWidget: (event: any) => void;
     language: string;
+    i18n: { language: string };
     categoryColors: any[];
     hideProject: () => void;
 }
@@ -30,6 +31,7 @@ const HomeProjectPanel: React.FC<HomeProjectPanelProps> = ({
     onChange,
     uploadWidget,
     language,
+    i18n,
     categoryColors,
     hideProject
 }) => {
@@ -53,6 +55,7 @@ const HomeProjectPanel: React.FC<HomeProjectPanelProps> = ({
                 onChange={onChange}
                 uploadWidget={uploadWidget}
                 lang={language}
+                i18n={i18n}
                 categoryColors={categoryColors}
             />
         </ProjectContainer>

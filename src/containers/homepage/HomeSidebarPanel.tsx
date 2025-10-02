@@ -1,14 +1,16 @@
 import React from 'react';
-import TypedSideBar from './TypedSideBar';
+import SideBar from '../SideBar';
+import { CategoryColor, SidebarCategory, SidebarPoint } from '../sidebar/CategoryList';
 
 interface HomeSidebarPanelProps {
     language: string;
     sidebarClickedItemId: string | null;
-    categories: any[];
-    points: any[];
+    categories: SidebarCategory[];
+    points: SidebarPoint[];
     isAuthenticated: boolean;
-    categoryColors: any[];
-    setOpenCategories: (openCategories: any[]) => void;
+    categoryColors: CategoryColor[];
+    setOpenCategories: (openCategories: string[]) => void;
+    openCategories: string[];
     handleSideBarClick: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
@@ -20,20 +22,20 @@ const HomeSidebarPanel: React.FC<HomeSidebarPanelProps> = ({
     isAuthenticated,
     categoryColors,
     setOpenCategories,
+    openCategories,
     handleSideBarClick
-}) => {
-    return (
-        <TypedSideBar
-            sidebarClickedItemId={sidebarClickedItemId}
-            handleSideBarClick={handleSideBarClick}
-            categories={categories}
-            points={points}
-            isAuthenticated={isAuthenticated}
-            lang={language}
-            categoryColors={categoryColors}
-            setOpenCategories={setOpenCategories}
-        />
-    );
-};
+}) => (
+    <SideBar
+        sidebarClickedItemId={sidebarClickedItemId}
+        handleSideBarClick={handleSideBarClick}
+        categories={categories}
+        points={points}
+        isAuthenticated={isAuthenticated}
+        language={language}
+        categoryColors={categoryColors}
+        setOpenCategories={setOpenCategories}
+        openCategories={openCategories}
+    />
+);
 
 export default HomeSidebarPanel;

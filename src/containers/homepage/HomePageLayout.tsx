@@ -10,6 +10,7 @@ const HomePageLayout: React.FC<HomePageLayoutProps> = ({
     isMobileViewport,
     viewportWidth,
     language,
+    i18n,
     sidebarClickedItemId,
     categories,
     sidebarPoints,
@@ -40,6 +41,7 @@ const HomePageLayout: React.FC<HomePageLayoutProps> = ({
                 isAuthenticated={isAuthenticated}
                 categoryColors={categoryColors}
                 setOpenCategories={setOpenCategories}
+                openCategories={openCategories}
                 handleSideBarClick={handleSideBarClick}
             />
 
@@ -55,6 +57,7 @@ const HomePageLayout: React.FC<HomePageLayoutProps> = ({
                 onChange={onProjectChange}
                 uploadWidget={uploadWidget}
                 language={language}
+                i18n={i18n}
                 categoryColors={categoryColors}
                 hideProject={hideProject}
             />

@@ -3,6 +3,7 @@ export interface HomePageLayoutProps {
     isMobileViewport: boolean;
     viewportWidth: number;
     language: string;
+    i18n: { language: string };
     sidebarClickedItemId: string | null;
     categories: any[];
     sidebarPoints: any[];
@@ -10,6 +11,7 @@ export interface HomePageLayoutProps {
     isAuthenticated: boolean;
     categoryColors: any[];
     setOpenCategories: (openCategories: any[]) => void;
+    openCategories: string[];
     handleSideBarClick: (event: React.MouseEvent<HTMLDivElement>) => void;
     selectedProject: any;
     table: any[];
@@ -21,5 +23,4 @@ export interface HomePageLayoutProps {
     allowAddPoint: boolean;
     setSelectedProject: (project: any) => void;
     handleExpandProject: (project: any) => void;
-    openCategories: any[];
 }

@@ -121,6 +121,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                     isMobileViewport={isMobileViewport}
                     viewportWidth={viewportWidth}
                     language={props.i18n.language}
+                    i18n={props.i18n}
                     sidebarClickedItemId={state.sidebarClickedItemId}
                     categories={state.categories}
                     sidebarPoints={props.points}
