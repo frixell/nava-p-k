@@ -103,7 +103,7 @@ const CvPage: React.FC<CvPageProps> = ({ urlLang }) => {
       <PageUpSpacer isHidden={isSpacerHidden} hidden={isSpacerHidden} aria-hidden={isSpacerHidden} />
       <PageUpStrip pageupImageClassName={pageupImageClassName} />
       <FakePageUpStripAnchor id="fake_pageupstrip" />
-      <Footer lang={i18n.language} position="relative" />
+      <Footer position="relative" />
     </PageContainer>
   );
 };

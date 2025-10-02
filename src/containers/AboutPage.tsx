@@ -87,7 +87,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ urlLang }) => {
       <PageUpSpacer isHidden={isSpacerHidden} aria-hidden={isSpacerHidden} />
       <PageUpStrip pageupImageClassName={pageupImageClassName} />
       <FakePageUpStripAnchor id="fake_pageupstrip" />
-      <Footer lang={i18n.language} position="relative" />
+      <Footer position="relative" />
     </PageContainer>
   );
 };

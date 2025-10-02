@@ -65,7 +65,7 @@ const TeachingPage: React.FC<TeachingPageProps> = ({ urlLang }) => {
             <div hidden={teaching.pageupImageClassName === 'pageup__image'} className="pageup__image__fake desktop" />
             <PageUpStrip pageupImageClassName={teaching.pageupImageClassName} />
             <div id="fake_pageupstrip" />
-            <Footer lang={language} position="relative" />
+            <Footer position="relative" />
 
             <TeachingSeoModal
                 open={teaching.seoModalOpen}

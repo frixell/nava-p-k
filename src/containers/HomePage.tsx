@@ -97,12 +97,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                         <title>{state.seo.titleEng}</title>
                 }
                 </Helmet>
-                <Navigation 
-                    {...props}
-                    langLink='/עב'
-                    langLinkEng='/en'
-                    categories={null}
-                />
+                <Navigation langLink='/עב' langLinkEng='/en' />
                 <HomePageToolbar
                     isAuthenticated={props.isAuthenticated}
                     isEnglish={isEnglish}
@@ -143,7 +138,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
                     openCategories={state.openCategories}
                 />
                 
-                <Footer lang={props.i18n.language} position="absolute" />
+                <Footer position="absolute" />
             </div>
         );
 }; 

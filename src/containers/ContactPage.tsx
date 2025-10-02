@@ -48,7 +48,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ urlLang }) => {
         </CardGrid>
       </ContactLayout>
 
-      <Footer lang={i18n.language} position="relative" />
+      <Footer position="relative" />
     </PageContainer>
   );
 };
