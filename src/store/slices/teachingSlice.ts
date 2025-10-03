@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { Dispatch } from 'redux';
 import database from '../../firebase/firebase';
 import { deleteImage } from '../../services/imageService';
 import type { TeachItem, TeachingSeo } from '../../containers/teaching/types';
 import type { SeoPayload } from '../../types/seo';
-import type { RootState } from '../configureStore';
+import type { AppDispatch, AppThunk, RootState } from '../configureStore';
 
 export type TeachingsMap = Record<string, TeachItem>;
 export type TeachCollection = TeachingsMap | TeachItem[] | null | undefined;
@@ -104,7 +103,9 @@ export const {
     removeTeach
 } = teachingSlice.actions;
 
-export const startSetTeachingPage = () => async (dispatch: Dispatch) => {
+export const startSetTeachingPage = (): AppThunk<Promise<TeachItem[]>> => async (
+    dispatch: AppDispatch
+) => {
     const snapshot = await database.ref('website/teachingpage').once('value');
     const value = snapshot.val() as SnapshotValue;
     const teachingsArray = normalizeTeachings(value?.teachings ?? null);
@@ -112,7 +113,9 @@ export const startSetTeachingPage = () => async (dispatch: Dispatch) => {
     return teachingsArray;
 };
 
-export const startEditTeachingPageSeo = (seo: SeoPayload) => async (dispatch: Dispatch) => {
+export const startEditTeachingPageSeo = (seo: SeoPayload): AppThunk<Promise<void>> => async (
+    dispatch
+) => {
     await database.ref('serverSeo/teaching/seo').update(seo);
     await database.ref('website/teachingpage/seo').update(seo);
     dispatch(setTeachingSeo(seo));
@@ -121,7 +124,7 @@ export const startEditTeachingPageSeo = (seo: SeoPayload) => async (dispatch: Di
 export const startUpdateTeachings = (
     fbTeachings: TeachingsMap,
     teachings: TeachItem[]
-) => async (dispatch: Dispatch) => {
+): AppThunk<Promise<TeachItem[]>> => async (dispatch: AppDispatch) => {
     await database.ref('website/teachingpage/teachings').update(fbTeachings);
     dispatch(replaceTeachings(teachings));
     return teachings;
@@ -130,7 +133,10 @@ export const startUpdateTeachings = (
 export const startAddTeach = (
     teachData: Partial<TeachItem> = {},
     order: number
-) => async (dispatch: Dispatch, getState: () => RootState) => {
+): AppThunk<Promise<TeachItem[]>> => async (
+    dispatch: AppDispatch,
+    getState: () => RootState
+) => {
     const firebaseTeach = {
         publicId: teachData.publicId ?? '',
         image: teachData.image ?? '',
@@ -152,7 +158,9 @@ export const startAddTeach = (
     return nextTeachings.map((teach: TeachItem) => ({ ...teach }));
 };
 
-export const startUpdateTeach = (teachData: Partial<TeachItem> = {}) => async (dispatch: Dispatch) => {
+export const startUpdateTeach = (
+    teachData: Partial<TeachItem> = {}
+): AppThunk<Promise<string>> => async (dispatch: AppDispatch) => {
     const id = teachData.id ?? '';
     const teach = normalizeTeach(teachData, id);
 
@@ -164,7 +172,7 @@ export const startUpdateTeach = (teachData: Partial<TeachItem> = {}) => async (d
 export const startUpdateTeachImage = (
     teachData: Partial<TeachItem> = {},
     publicid?: string
-) => async (dispatch: Dispatch) => {
+): AppThunk<Promise<string>> => async (dispatch: AppDispatch) => {
     const id = teachData.id ?? '';
     const teach = normalizeTeach(teachData, id);
 
@@ -177,12 +185,16 @@ export const startUpdateTeachImage = (
     return id;
 };
 
-export const startShowTeach = (teach: TeachItem) => async (dispatch: Dispatch) => {
+export const startShowTeach = (
+    teach: TeachItem
+): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
     await database.ref(`website/teachingpage/teachings/${teach.id}`).update(teach);
     dispatch(updateTeach(teach));
 };
 
-export const startDeleteTeach = (teachData: Partial<TeachItem> = {}) => async (dispatch: Dispatch) => {
+export const startDeleteTeach = (
+    teachData: Partial<TeachItem> = {}
+): AppThunk<Promise<string>> => async (dispatch: AppDispatch) => {
     const id = teachData.id ?? '';
     const teach = normalizeTeach(teachData, id);
 

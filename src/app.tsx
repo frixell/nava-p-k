@@ -5,7 +5,7 @@ import { I18nextProvider } from 'react-i18next';
 import { ThemeProvider } from '@mui/material/styles';
 
 import AppRouter from './routers/AppRouter';
-import configureStore, { AppDispatch } from './store/configureStore';
+import configureStore, { AppDispatch, AppStore } from './store/configureStore';
 import { startGetCategories } from './store/slices/categoriesSlice';
 import { startGetPoints } from './store/slices/pointsSlice';
 import { startGetTableTemplate } from './store/slices/tableTemplateSlice';
@@ -21,8 +21,8 @@ if (typeof window !== 'undefined') {
 }
 import './styles/styles.scss';
 
-const store = configureStore();
-const dispatch = store.dispatch as AppDispatch;
+const store: AppStore = configureStore();
+const dispatch: AppDispatch = store.dispatch;
 
 const container = typeof document !== 'undefined' ? document.getElementById('app') : null;
 const root: Root | null = container ? createRoot(container) : null;
@@ -66,21 +66,23 @@ renderLoading();
 const bootstrap = async () => {
   try {
     await Promise.all([
-      dispatch(startGetTableTemplate() as any),
-      dispatch(startGetCategories() as any),
-      dispatch(startGetPoints() as any)
+      dispatch(startGetTableTemplate()),
+      dispatch(startGetCategories()),
+      dispatch(startGetPoints())
     ]);
   } finally {
     renderApp();
   }
 };
 
-bootstrap();
+void bootstrap();
 
-firebase.auth().onAuthStateChanged((user: any) => {
-  if (user) {
-    dispatch(login(user.uid) as any);
-  } else {
-    dispatch(logout() as any);
+firebase.auth().onAuthStateChanged((user: firebase.User | null) => {
+  const uid = typeof user?.uid === 'string' ? user.uid : null;
+  if (uid) {
+    dispatch(login(uid));
+    return;
   }
+
+  dispatch(logout());
 });

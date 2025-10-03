@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import firebase from 'firebase/app';
 import 'firebase/database';
 
+import type { AppDispatch, AppThunk } from '../configureStore';
+
 export interface ExtendedContent {
   content: string;
   image: string;
@@ -48,28 +50,36 @@ const pointsSlice = createSlice({
 
 export const { setPoints, addPoint, editProject } = pointsSlice.actions;
 
-export const startGetPoints = () => async (dispatch: any) => {
+export const startGetPoints = (): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
   const snapshot = await firebase.database().ref('points').once('value');
   const points: Point[] = [];
-  snapshot.forEach((childSnapshot: any) => {
-    points.push({
-      id: childSnapshot.key ?? undefined,
-      ...childSnapshot.val()
-    });
+
+  snapshot.forEach((childSnapshot: firebase.database.DataSnapshot) => {
+    const pointData = childSnapshot.val() as Point | null;
+    if (pointData) {
+      points.push({ id: childSnapshot.key ?? undefined, ...pointData });
+    }
+    return false;
   });
+
   dispatch(setPoints(points));
 };
 
-export const startEditProject = (payload: { project: Point }) => async (dispatch: any) => {
+export const startEditProject = (
+  payload: { project: Point }
+): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
   const { id, ...rest } = payload.project;
   if (!id) {
     return;
   }
+
   await firebase.database().ref(`points/${id}`).update(rest);
   dispatch(editProject(payload.project));
 };
 
-export const startAddPoint = (pointData: Partial<Point> = {}) => async (dispatch: any) => {
+export const startAddPoint = (
+  pointData: Partial<Point> = {}
+): AppThunk<Promise<Point | undefined>> => async (dispatch: AppDispatch) => {
   const {
     title = 'title',
     content = 'content',

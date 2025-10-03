@@ -41,8 +41,9 @@
 
 ## Build & Performance
 - Enable modern bundling (Vite or Webpack 5) with tree-shaking, dynamic imports for admin-only views, and bundle analyzer targets.
-  - Prototype Vite alongside current Webpack; compare cold start/HMR and verify compatibility with our Firebase/i18n setup.
-  - If staying on Webpack, jump to v5, add `@loadable/component`-style code splitting, and wire `webpack-bundle-analyzer` to track regressions.
+  - Prototype Vite alongside current Webpack; compare cold start/HMR, verify compatibility with our Firebase/i18n setup, and document required polyfill/shim work (e.g., Firebase, Cloudinary upload widget).
+  - If staying on Webpack, jump to v5, add `@loadable/component`-style code splitting, and wire `webpack-bundle-analyzer` to track regressions; record current bundle size baselines first.
+  - Capture build metrics (dev server first paint, production bundle size, compress ratio) before/after each experiment so improvements are quantifiable.
 - Introduce a service worker or preloading strategy for hero imagery/videos if page weight is still high.
   - Audit current Lighthouse/WebPageTest metrics; document LCP/CLS and largest static assets per locale.
   - Evaluate Workbox-based precaching for hero assets vs. srcset-based responsive loading; proof-of-concept whichever offers better control.

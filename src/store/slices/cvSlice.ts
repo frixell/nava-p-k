@@ -3,6 +3,7 @@ import database from '../../firebase/firebase';
 import type { ImageAsset } from '../../types/content';
 import type { SeoPayload } from '../../types/seo';
 import { deleteImage } from '../../services/imageService';
+import type { AppDispatch, AppThunk, RootState } from '../configureStore';
 
 export type CvPageState = Record<string, unknown> | null;
 
@@ -27,28 +28,35 @@ const cvSlice = createSlice({
 
 export const { setCvPage, updateCvPage, updateCvSeo, setCvImages } = cvSlice.actions;
 
-export const startSetCvPage = () => async (dispatch: any) => {
+export const startSetCvPage = (): AppThunk<Promise<CvPageState>> => async (
+  dispatch: AppDispatch
+) => {
   const snapshot = await database.ref('website/cvpage/').once('value');
-  const cvpage = snapshot.val() ?? null;
+  const cvpage = (snapshot.val() ?? null) as CvPageState;
   dispatch(setCvPage(cvpage));
   return cvpage;
 };
 
-export const startEditCvPage = (fbCvpage: Record<string, unknown>, cvpage: CvPageState) => async (dispatch: any) => {
+export const startEditCvPage = (
+  fbCvpage: Record<string, unknown>,
+  cvpage: CvPageState
+): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
   await database.ref('website/cvpage').update({ ...fbCvpage });
   dispatch(updateCvPage(cvpage));
 };
 
-export const startEditCvPageSeo = (seo: SeoPayload) => async (dispatch: any) => {
-  await database.ref('serverSeo/cv/seo').update(seo as any);
-  await database.ref('website/cvpage/seo').update(seo as any);
+export const startEditCvPageSeo = (seo: SeoPayload): AppThunk<Promise<void>> => async (
+  dispatch: AppDispatch
+) => {
+  await database.ref('serverSeo/cv/seo').update(seo);
+  await database.ref('website/cvpage/seo').update(seo);
   dispatch(updateCvSeo(seo));
 };
 
 export const startAddCvImage = (
   imageData: Partial<ImageAsset> = {},
   order: number
-) => async (dispatch: any, getState: any) => {
+): AppThunk<Promise<ImageAsset[]>> => async (dispatch: AppDispatch, getState: () => RootState) => {
   const {
     publicId = '',
     src = '',
@@ -72,8 +80,9 @@ export const startAddCvImage = (
     ...image
   };
 
-  const state = getState();
-  const existingImages: Record<string, ImageAsset> = state?.cvpage?.cvimages ?? {};
+  const state: RootState = getState();
+  const existingImages: Record<string, ImageAsset> = (state.cvpage?.cvimages as
+    Record<string, ImageAsset> | undefined) ?? {};
   const mergedImages: Record<string, ImageAsset> = {
     ...existingImages,
     [ref.key as string]: localImage
@@ -92,7 +101,7 @@ export const startDeleteCvImage = (
   fbImages: Record<string, unknown>,
   images: ImageAsset[],
   publicid: string
-) => async (dispatch: any) => {
+): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
   await deleteImage(publicid);
 
   await database.ref().child('website/cvpage/cvimages').update(fbImages);

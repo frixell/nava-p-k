@@ -2,6 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import firebase from 'firebase/app';
 import 'firebase/database';
 
+import type { AppDispatch, AppThunk } from '../configureStore';
+
+type DataSnapshot = firebase.database.DataSnapshot;
+
 export interface Category {
   id?: string;
   name?: string;
@@ -35,20 +39,24 @@ const categoriesSlice = createSlice({
 
 export const { setCategories, addCategory, updateCategories, toggleCategoryVisibility } = categoriesSlice.actions;
 
-export const startGetCategories = () => async (dispatch: any) => {
+export const startGetCategories = (): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
   const snapshot = await firebase.database().ref('categories').once('value');
   const categories: Category[] = [];
-  snapshot.forEach((childSnapshot: any) => {
-    categories.push({
-      id: childSnapshot.key ?? undefined,
-      ...childSnapshot.val()
-    });
+
+  snapshot.forEach((childSnapshot: DataSnapshot) => {
+    const categoryData = childSnapshot.val() as Partial<Category> | null;
+    if (categoryData) {
+      categories.push({ id: childSnapshot.key ?? undefined, ...categoryData });
+    }
+    return false;
   });
 
   dispatch(setCategories(categories));
 };
 
-export const startAddCategory = (categoryData: Partial<Category> = {}) => async (dispatch: any) => {
+export const startAddCategory = (
+  categoryData: Partial<Category> = {}
+): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
   const { name = '', order, isVisible = false, type = 'category' } = categoryData;
   const category = { name, order, isVisible, type };
   const ref = await firebase.database().ref('categories').push(category);
@@ -58,12 +66,15 @@ export const startAddCategory = (categoryData: Partial<Category> = {}) => async 
 export const startEditCategories = (
   fbCategories: Record<string, unknown>,
   categories: Category[]
-) => async (dispatch: any) => {
+): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
   await firebase.database().ref('categories').update(fbCategories);
   dispatch(updateCategories(categories));
 };
 
-export const startToggleShowCategory = (categoryId: string, visible: boolean) => async (dispatch: any) => {
+export const startToggleShowCategory = (
+  categoryId: string,
+  visible: boolean
+): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
   await firebase.database().ref(`categories/${categoryId}`).update({ isVisible: visible });
   dispatch(toggleCategoryVisibility({ categoryId, visible }));
 };

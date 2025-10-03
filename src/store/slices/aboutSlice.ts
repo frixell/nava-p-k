@@ -3,6 +3,7 @@ import database from '../../firebase/firebase';
 import type { SeoPayload } from '../../types/seo';
 import type { ImageAsset } from '../../types/content';
 import { deleteImage } from '../../services/imageService';
+import type { AppDispatch, AppThunk } from '../configureStore';
 
 type AboutPageState = Record<string, unknown> | null;
 
@@ -32,21 +33,26 @@ export const {
   saveAboutImage
 } = aboutSlice.actions;
 
-export const startSetAboutPage = () => async (dispatch: any) => {
+export const startSetAboutPage = (): AppThunk<Promise<AboutPageState>> => async (
+  dispatch: AppDispatch
+) => {
   const snapshot = await database.ref('website/aboutpage/').once('value');
-  dispatch(setAboutPage(snapshot.val() ?? null));
-  return snapshot.val() ?? null;
+  const value = snapshot.val() ?? null;
+  dispatch(setAboutPage(value));
+  return value as AboutPageState;
 };
 
 export const startEditAboutPage = (
   fbAboutpage: Record<string, unknown>,
   aboutpage: AboutPageState
-) => async (dispatch: any) => {
+): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
   await database.ref('website/aboutpage').update({ ...fbAboutpage });
   dispatch(updateAboutPage(aboutpage));
 };
 
-export const startEditAboutPageSeo = (seo: SeoPayload) => async (dispatch: any) => {
+export const startEditAboutPageSeo = (seo: SeoPayload): AppThunk<Promise<void>> => async (
+  dispatch: AppDispatch
+) => {
   await database.ref('serverSeo/about/seo').update(seo);
   await database.ref('website/aboutpage/seo').update(seo);
   dispatch(updateAboutSeo(seo));
@@ -55,7 +61,7 @@ export const startEditAboutPageSeo = (seo: SeoPayload) => async (dispatch: any) 
 export const startSaveAboutImage = (
   imageData: Partial<ImageAsset> = {},
   publicIdToDelete?: string
-) => async (dispatch: any) => {
+): AppThunk<Promise<ImageAsset>> => async (dispatch: AppDispatch) => {
   const {
     publicId = '',
     src = '',
