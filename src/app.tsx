@@ -1,5 +1,4 @@
 import { createRoot, Root } from 'react-dom/client';
-import ReactLoading from 'react-loading';
 import { Provider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
 import { I18nextProvider } from 'react-i18next';
@@ -11,6 +10,7 @@ import { startGetPoints } from './store/slices/pointsSlice';
 import { startGetTableTemplate } from './store/slices/tableTemplateSlice';
 import { login, logout } from './store/slices/authSlice';
 import i18n from './i18n/i18n';
+import LoadingScreen from './components/common/LoadingScreen';
 import { firebase } from './firebase/firebase';
 
 if (typeof window !== 'undefined') {
@@ -50,23 +50,18 @@ const renderLoading = () => {
     return;
   }
 
-  root.render(
-    <div className="app__loading-screen">
-      <div className="app__loading-spinner">
-        <ReactLoading type="spinningBubbles" color="#666665" />
-        <p>Loading portfolio…</p>
-      </div>
-    </div>
-  );
+  root.render(<LoadingScreen />);
 };
 
 renderLoading();
 
 const bootstrap = async () => {
   try {
-    await dispatch(startGetTableTemplate() as any);
-    await dispatch(startGetCategories() as any);
-    await dispatch(startGetPoints() as any);
+    await Promise.all([
+      dispatch(startGetTableTemplate() as any),
+      dispatch(startGetCategories() as any),
+      dispatch(startGetPoints() as any)
+    ]);
   } finally {
     renderApp();
   }

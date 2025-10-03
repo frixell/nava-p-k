@@ -1,16 +1,16 @@
 # Modernization Plan
 
-## Finish TypeScript Migration
-- Convert remaining JS entry points (`src/app.js`, Firebase bootstrap, router modules) to TS/TSX so types flow end-to-end.
-- Replace ad-hoc `any` signatures in freshly migrated actions/hooks with shared domain types; extract a `src/types` bundle for Firebase entities, SEO payloads, etc.
+## ✅ Finish TypeScript Migration
+- Converted remaining JS entry points (`src/app.tsx`, Firebase bootstrap, router modules) to TS/TSX so types flow end-to-end.
+- Replaced ad-hoc `any` signatures in migrated actions/hooks with shared domain types under `src/types`.
 
-## Tidy State + Data Layer
-- Replace home‑grown Redux plumbing with Redux Toolkit slices (or RTK Query) to shrink boilerplate, standardize async calls, and make optimistic updates safer.
-- Introduce type-safe selectors and dispatch hooks (`useAppDispatch`, `useAppSelector`) to remove repeated `RootState = any` patterns.
+## ✅ Tidy State + Data Layer
+- Replaced home‑grown Redux plumbing with Redux Toolkit slices to shrink boilerplate, standardize async calls, and simplify optimistic updates.
+- Introduced type-safe selectors and dispatch hooks (`useAppDispatch`, `useAppSelector`) to remove repeated `RootState = any` patterns.
 
-## Drop Legacy Dependencies
-- Remove jQuery usage (IP lookup, DOM height calculations); use `fetch` and `ResizeObserver`.
-- Audit Cloudinary/`XMLHttpRequest` code; replace with `fetch`/SDK helpers and centralized upload utilities.
+## ✅ Drop Legacy Dependencies
+- Removed jQuery usage (IP lookup, DOM height calculations) in favour of `fetch` and ResizeObserver.
+- Audited Cloudinary integrations and replaced ad-hoc requests with helpers (no raw `XMLHttpRequest`).
 
 ## Routing & Entry Refresh
 - Refactor `AppRouter` and `src/app.js` into a typed composition that supports code-splitting (React.lazy) and Suspense fallbacks.
