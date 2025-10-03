@@ -6,10 +6,9 @@ import { I18nextProvider } from 'react-i18next';
 
 import AppRouter from './routers/AppRouter';
 import configureStore, { AppDispatch } from './store/configureStore';
-import { startSetCategories } from './actions/eventspage';
 import { startGetCategories } from './store/slices/categoriesSlice';
 import { startGetPoints } from './store/slices/pointsSlice';
-import { startGetTableTemplate } from './actions/tableTemplate';
+import { startGetTableTemplate } from './store/slices/tableTemplateSlice';
 import { login, logout } from './store/slices/authSlice';
 import i18n from './i18n/i18n';
 import { firebase } from './firebase/firebase';
@@ -68,7 +67,6 @@ const bootstrap = async () => {
     await dispatch(startGetTableTemplate() as any);
     await dispatch(startGetCategories() as any);
     await dispatch(startGetPoints() as any);
-    await dispatch(startSetCategories() as any);
   } finally {
     renderApp();
   }

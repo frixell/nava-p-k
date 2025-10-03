@@ -1,14 +1,13 @@
 import React, { useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import Navigation from '../components/common/Navigation';
 import Footer from '../components/common/Footer';
 import ContactFormCard from '../components/contactpage/ContactFormCard';
 import ContactDetailsCard from '../components/contactpage/ContactDetailsCard';
 import { PageContainer } from './PageLayout.styles';
 import { ContactLayout, CardGrid } from '../components/contactpage/ContactPage.styles';
-import { startSendMessage } from '../actions/messages';
+import { submitContactMessage } from '../services/contactService';
 import type { ContactFormInput } from '../utils/dataTransformers';
 
 interface ContactPageProps {
@@ -17,17 +16,15 @@ interface ContactPageProps {
 
 const ContactPage: React.FC<ContactPageProps> = ({ urlLang }) => {
   const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
-
   if (urlLang && i18n.language !== urlLang) {
     i18n.changeLanguage(urlLang);
   }
 
   const handleSubmit = useCallback(
     async (payload: ContactFormInput) => {
-      await dispatch(startSendMessage(payload) as any);
+      await submitContactMessage(payload);
     },
-    [dispatch]
+    []
   );
 
   const langLink = '/צרו_קשר';

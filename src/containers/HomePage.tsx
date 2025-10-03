@@ -20,7 +20,6 @@ import type { RootState, AppDispatch } from '../types/store';
 
 type HomePageProps = HomePageControllerProps & {
     homepage: any;
-    navigation: any;
 };
 
 const HomePage: React.FC<HomePageProps> = (props) => {
@@ -139,8 +138,7 @@ const mapStateToProps = (state: RootState) => {
         categories: state.categories,
         points: state.points,
         tableTemplate: state.tableTemplate,
-        homepage: state.homepage,
-        navigation: state.navigation
+        homepage: state.homepage
     };
 };
 

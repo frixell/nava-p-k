@@ -14,7 +14,7 @@ import {
     startUpdateTeachImage,
     startUpdateTeachings,
     startDeleteTeach
-} from '../../actions/teachingpage';
+} from '../../store/slices/teachingSlice';
 import { startLogout } from '../../store/slices/authSlice';
 import { handlePageScroll } from '../../reusableFunctions/handlePageScroll';
 import isEqual from 'lodash.isequal';

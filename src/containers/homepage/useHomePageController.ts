@@ -28,7 +28,6 @@ export interface HomePageControllerProps {
     startEditCategories: (fbCategories: Record<string, any>, categories: any[]) => Promise<any>;
     startAddCategory: (category: any, order: number) => Promise<any>;
     startLogout: () => Promise<void>;
-    navigation?: any;
     homepage?: any;
 }
 
@@ -66,7 +65,6 @@ export const useHomePageController = (props: HomePageControllerProps) => {
             title: 'נאוה קיינר-פרסוב',
             titleEng: 'Nava Kainer-Persov'
         },
-        navigation: {},
         points: props.points,
         allowAddPoint: false,
         sidebarClickedItemId: null,

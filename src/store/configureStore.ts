@@ -5,10 +5,9 @@ import categoriesReducer from './slices/categoriesSlice';
 import tableTemplateReducer from './slices/tableTemplateSlice';
 import aboutpageReducer from './slices/aboutSlice';
 import cvpageReducer from './slices/cvSlice';
-import teachingpageReducer from '../reducers/teachingpage';
+import teachingpageReducer from './slices/teachingSlice';
 import authReducer from './slices/authSlice';
-import homepageReducer from '../reducers/homepage';
-import navigationReducer from '../reducers/navigation';
+import homepageReducer from './slices/homepageSlice';
 
 export const createAppStore = () =>
   configureStore({
@@ -20,8 +19,7 @@ export const createAppStore = () =>
       cvpage: cvpageReducer,
       teachingpage: teachingpageReducer,
       auth: authReducer,
-      homepage: homepageReducer,
-      navigation: navigationReducer
+      homepage: homepageReducer
     },
     middleware: (getDefaultMiddleware: any) =>
       getDefaultMiddleware({ serializableCheck: false })
