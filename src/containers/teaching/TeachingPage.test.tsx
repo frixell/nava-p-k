@@ -9,7 +9,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { http, HttpResponse } from 'msw';
 
 import TeachingPage from '../TeachingPage';
-import createAppStore, { AppStore } from '../../store/configureStore';
+import { createAppStore, type AppStore } from '../../store/configureStore';
 import appTheme from '../../styles/theme';
 import { login } from '../../store/slices/authSlice';
 import { server } from '../../tests/msw/server';
@@ -26,11 +26,20 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('../../firebase/firebase');
 
+type FirebaseStateSnapshot = {
+  website?: {
+    teachingpage?: {
+      teachings?: Record<string, unknown>;
+    };
+  };
+};
+
 const firebaseModule = jest.requireMock('../../firebase/firebase') as {
   __resetMockFirebase: (initial?: Record<string, unknown>) => void;
-  __getMockFirebaseState: () => Record<string, any>;
+  __getMockFirebaseState: () => FirebaseStateSnapshot;
 };
-const { __resetMockFirebase, __getMockFirebaseState } = firebaseModule;
+const { __resetMockFirebase: resetMockFirebase, __getMockFirebaseState: getMockFirebaseState } =
+  firebaseModule;
 
 const renderTeachingPage = (store: AppStore) =>
   render(
@@ -47,7 +56,7 @@ const renderTeachingPage = (store: AppStore) =>
 
 describe('TeachingPage smoke flow', () => {
   beforeEach(() => {
-    __resetMockFirebase({
+    resetMockFirebase({
       website: {
         teachingpage: {
           teachings: {
@@ -91,22 +100,23 @@ describe('TeachingPage smoke flow', () => {
     const hideButton = await screen.findByRole('button', { name: /hide teaching item/i });
     await userEvent.click(hideButton);
 
-    await waitFor(() =>
-      expect(screen.getByRole('button', { name: /show teaching item/i })).toBeTruthy()
-    );
+    const showButton = await screen.findByRole('button', { name: /show teaching item/i });
+    // eslint-disable-next-line jest-dom/prefer-in-document
+    expect(showButton).toBeTruthy();
 
     fireEvent.mouseEnter(card);
     const deleteButton = screen.getByRole('button', { name: /delete teaching item/i });
     await userEvent.click(deleteButton);
 
-    await waitFor(() => expect(screen.queryByTestId('teach-card-teach-1')).toBeNull());
+    await waitFor(() => {
+      // eslint-disable-next-line jest-dom/prefer-in-document
+      expect(screen.queryByTestId('teach-card-teach-1')).toBeNull();
+    });
 
     expect(deleteImageSpy).toHaveBeenCalledTimes(1);
     expect(deleteImageSpy.mock.calls[0]?.[0]).toContain('public-1');
 
-    const state = __getMockFirebaseState() as {
-      website?: { teachingpage?: { teachings?: Record<string, unknown> } };
-    };
+    const state = getMockFirebaseState();
     const teachingsState = Object.keys(state.website?.teachingpage?.teachings ?? {});
     expect(teachingsState).toEqual([]);
   });

@@ -1,15 +1,15 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 
 import TeachList from './TeachList';
 import type { TeachItem } from './types';
 
-
 jest.mock('@mui/material/Tooltip', () => ({
   __esModule: true,
-  default: ({ children }: { children: ReactNode }) => <>{children}</>
+  default: ({ children }: { children: ReactNode }): ReactElement | null =>
+    (children as ReactElement) ?? null
 }));
 
 const baseTeach: TeachItem = {
@@ -23,11 +23,13 @@ const baseTeach: TeachItem = {
 describe('TeachList', () => {
   it('renders teaching items and triggers callbacks when authenticated', async () => {
     const user = userEvent.setup();
-    const onEdit = jest.fn((_teach: TeachItem) => undefined);
-    const onDelete = jest.fn((_id: string) => undefined);
-    const onToggleVisibility = jest.fn((_id: string, _visible: boolean) => undefined);
-    const onOrderChange = jest.fn((_id: string, _order: number) => undefined);
-    const onOrderCommit = jest.fn(async (_id: string, _order: number) => undefined);
+    const onEdit = jest.fn<(teach: TeachItem) => void>();
+    const onDelete = jest.fn<(id: string) => void>();
+    const onToggleVisibility = jest.fn<(id: string, visible: boolean) => void>();
+    const onOrderChange = jest.fn<(id: string, order: number) => void>();
+    const onOrderCommit = jest
+      .fn<(id: string, order: number) => Promise<void>>()
+      .mockResolvedValue(undefined);
 
     render(
       <TeachList

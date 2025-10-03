@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.eslint.json',
     tsconfigRootDir: __dirname,
     ecmaVersion: 2021,
     sourceType: 'module'
@@ -14,6 +14,7 @@ module.exports = {
     node: true
   },
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'testing-library', 'jest-dom', 'prettier'],
+  ignorePatterns: ['public/', 'dist/', 'coverage/', 'node_modules/'],
   extends: [
     'airbnb',
     'airbnb-typescript',
@@ -39,6 +40,7 @@ module.exports = {
     'react/jsx-filename-extension': ['warn', { extensions: ['.jsx', '.tsx'] }],
     'react/function-component-definition': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'react/require-default-props': 'off',
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': [
@@ -58,6 +60,7 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
+    'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['state', 'draft'] }],
     'prettier/prettier': 'error'
   },
   overrides: [

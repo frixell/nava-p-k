@@ -1,0 +1,23 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": false,
+        "noEmit": true,
+        "rootDir": "."
+    },
+    "include": [
+        "src/**/*",
+        "types/**/*",
+        "server/**/*",
+        "jest.config.*",
+        "babel.config.js",
+        "webpack.config.js"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "public/dist",
+        "public/build"
+    ]
+}

@@ -20,7 +20,10 @@ export const buildSeo = (overrides: Partial<TeachingSeo> = {}): TeachingSeo => (
   ...overrides
 });
 
-export const buildTeachingPageState = (teachings: Record<string, TeachItem>, seo?: TeachingSeo) => ({
+export const buildTeachingPageState = (
+  teachings: Record<string, TeachItem>,
+  seo?: TeachingSeo
+) => ({
   website: {
     teachingpage: {
       teachings,
@@ -28,4 +31,3 @@ export const buildTeachingPageState = (teachings: Record<string, TeachItem>, seo
     }
   }
 });
-
