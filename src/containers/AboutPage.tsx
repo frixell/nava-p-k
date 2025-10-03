@@ -20,10 +20,11 @@ const AboutPage: React.FC<AboutPageProps> = ({ urlLang }) => {
     isSeoModalOpen, langLink, langLinkEng, updateField, saveAboutPage, toggleSeoModal,
     handleSeoChange, submitSeo, handleLogout, openUploadWidget } = useAboutPageState({ urlLang });
   const isSpacerHidden = pageupImageClassName === 'pageup__image';
-  const textKey = i18n.language === 'en' ? 'slogen' : 'slogenHebrew';
+  const isHebrew = i18n.language === 'he';
+  const direction: 'ltr' | 'rtl' = isHebrew ? 'rtl' : 'ltr';
 
   return (
-    <PageContainer>
+    <PageContainer dir={direction}>
       <Helmet>
         <title>{seo.title}</title>
       </Helmet>
@@ -51,7 +52,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ urlLang }) => {
 
       <CvToolbar
         isAuthenticated={isAuthenticated}
-        isEnglish={i18n.language === 'en'}
+        isEnglish={!isHebrew}
         needSave={needSave}
         onSave={saveAboutPage}
         onSeo={toggleSeoModal}
@@ -66,11 +67,8 @@ const AboutPage: React.FC<AboutPageProps> = ({ urlLang }) => {
           </HeaderContainer>
 
           <AboutTopStrip
-            language={i18n.language}
             isAuthenticated={isAuthenticated}
             image={aboutpage.image}
-            text={aboutpage[textKey] as string}
-            onTextChange={(value) => updateField('setString', textKey, value)}
             onRequestUpload={openUploadWidget}
           />
 

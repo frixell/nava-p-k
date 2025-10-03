@@ -28,7 +28,7 @@
 
 
 
-@media (max-width: $mobileMaxWidth) {
+@media (max-width: 768px) {
     .desktop {
         display: none;
     }
@@ -60,7 +60,7 @@
 }
 
 .backoffice__gray__text {
-    color: $gray;
+    color: var(--color-text-muted, #666665);
 }
 
 .cursor__hand {
@@ -79,7 +79,7 @@
     height: auto !important;
 }
 
-@media (max-width: $mobileMaxWidth) {
+@media (max-width: 768px) {
     .react-parallax-bgimage {
         width: 100% !important;
         height: auto !important;

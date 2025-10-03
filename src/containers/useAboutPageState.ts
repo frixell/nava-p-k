@@ -92,7 +92,7 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
 
   useEffect(() => {
     if (urlLang && i18n.language !== urlLang) {
-      i18n.changeLanguage(urlLang);
+      void i18n.changeLanguage(urlLang);
     }
   }, [i18n, urlLang]);
 
@@ -223,7 +223,7 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
     pageupImageClassName,
     isSeoModalOpen,
     langLink: '/אודות',
-    langLinkEng: '/about',
+    langLinkEng: '/About',
     updateField,
     saveAboutPage,
     toggleSeoModal,

@@ -25,9 +25,9 @@
     margin-top: 30rem;
     padding-right: 3rem;
     padding-left: 3rem;
-    color: $gray;
-    font-family: $font;
-    font-weight: $fontMedium;
+    color: var(--color-text-muted, #666665);
+    font-family: var(--font-family-base, "Heebo", "Helvetica Neue", Arial, sans-serif);
+    font-weight: var(--font-weight-medium, 500);
     font-size: 2rem;
     text-align: right;
     border: none;
@@ -50,7 +50,7 @@
 }
 
 .workshop__topstrip__text {
-    color: $gray;
+    color: var(--color-text-muted, #666665);
     font-size: 3.1rem;
     position: absolute;
     z-index: 4;
@@ -93,7 +93,7 @@
 }
 
 .workshop__content__header {
-    color: $gray;
+    color: var(--color-text-muted, #666665);
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -126,7 +126,7 @@
 }
 
 .workshop__content__text {
-    color: $gray;
+    color: var(--color-text-muted, #666665);
     margin: 0;
     padding: 0;
     display: inline-block;
@@ -189,7 +189,7 @@
 }
 
 .workshop__content__footer {
-    color: $gray;
+    color: var(--color-text-muted, #666665);
     margin: 0;
     padding: 0;
     display: inline-block;
@@ -218,8 +218,8 @@
 
 
 .workshop__content__box input {
-    font-family: $font;
-    font-weight: $fontRegular;
+    font-family: var(--font-family-base, "Heebo", "Helvetica Neue", Arial, sans-serif);
+    font-weight: var(--font-weight-regular, 400);
     width: 5rem;
     height: 2rem;
     position: absolute;
@@ -233,7 +233,7 @@
 
 
 
-@media (max-width: $tabletMaxWidth) {
+@media (max-width: 1024px) {
     .workshop__topstrip__box {
         width: 72rem;
         height: 45rem;
@@ -267,7 +267,7 @@
 
 
 
-@media (max-width: $mobileMaxWidth) {
+@media (max-width: 768px) {
 
     .workshop__topstrip__slogen {
         width: 90vw;
@@ -311,7 +311,7 @@
     }
 
     .workshop__topstrip__text {
-        color: $gray;
+        color: var(--color-text-muted, #666665);
         font-size: 4.5rem;
         position: relative;
         display: block;

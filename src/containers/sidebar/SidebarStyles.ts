@@ -20,7 +20,7 @@ export const SidebarContainer = styled('div', filterProps)<{ isMobile: boolean }
     height: isMobile ? 'auto' : 'calc(100vh - var(--toolbar-height))',
     paddingTop: 0,
     paddingRight: isMobile ? 0 : '10px',
-    background: 'var(--color-on-surface)',
+    background: 'var(--color-background-dark, #000000)',
     boxSizing: 'border-box',
     overflow: 'hidden'
 }));

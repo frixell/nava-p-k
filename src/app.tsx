@@ -2,6 +2,7 @@ import { createRoot, Root } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
 import { I18nextProvider } from 'react-i18next';
+import { ThemeProvider } from '@mui/material/styles';
 
 import AppRouter from './routers/AppRouter';
 import configureStore, { AppDispatch } from './store/configureStore';
@@ -10,6 +11,7 @@ import { startGetPoints } from './store/slices/pointsSlice';
 import { startGetTableTemplate } from './store/slices/tableTemplateSlice';
 import { login, logout } from './store/slices/authSlice';
 import i18n from './i18n/i18n';
+import appTheme from './styles/theme';
 import LoadingScreen from './components/common/LoadingScreen';
 import { firebase } from './firebase/firebase';
 
@@ -32,13 +34,15 @@ const renderApp = () => {
   }
 
   const jsx = (
-    <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <HelmetProvider>
-          <AppRouter />
-        </HelmetProvider>
-      </I18nextProvider>
-    </Provider>
+    <ThemeProvider theme={appTheme}>
+      <Provider store={store}>
+        <I18nextProvider i18n={i18n}>
+          <HelmetProvider>
+            <AppRouter />
+          </HelmetProvider>
+        </I18nextProvider>
+      </Provider>
+    </ThemeProvider>
   );
 
   root.render(jsx);
@@ -50,7 +54,11 @@ const renderLoading = () => {
     return;
   }
 
-  root.render(<LoadingScreen />);
+  root.render(
+    <ThemeProvider theme={appTheme}>
+      <LoadingScreen />
+    </ThemeProvider>
+  );
 };
 
 renderLoading();

@@ -21,7 +21,7 @@ const SubHeading = styled.h4({
 
 const AlertMessage = styled.h4({
     margin: '0 0 1.6rem',
-    color: '#d14343',
+    color: 'var(--color-error, #d14343)',
     fontFamily: 'Heebo, sans-serif'
 });
 
@@ -46,8 +46,8 @@ const SubmitButton = styled.button({
     padding: '0.9rem 1.8rem',
     borderRadius: '999px',
     border: 'none',
-    background: '#2e7d32',
-    color: '#fff',
+    background: 'var(--color-accent-alt, #2e7d32)',
+    color: 'var(--color-surface, #fff)',
     fontSize: '1.4rem',
     cursor: 'pointer'
 });

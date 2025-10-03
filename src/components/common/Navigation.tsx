@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Button } from '@mui/material';
+import { AppBar, Toolbar, Button, Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface NavigationProps {
@@ -55,122 +55,101 @@ const Navigation: React.FC<NavigationProps> = ({ langLink, langLinkEng }) => {
     return () => window.removeEventListener('resize', updateToolbarHeight);
   }, []);
 
+  const isHebrew = i18n.language === 'he';
+
   const setLang = () => {
-    const newLang = i18n.language === 'he' ? 'en' : 'he';
-    i18n.changeLanguage(newLang);
-    navigate(newLang === 'he' ? langLink : langLinkEng);
+    const nextLang = isHebrew ? 'en' : 'he';
+    i18n.changeLanguage(nextLang).then(() => {
+      navigate(nextLang === 'he' ? langLink : langLinkEng);
+    });
   };
 
   const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
-  const isHebrew = i18n.language === 'he';
+
+  const navLinks = isHebrew
+    ? [
+        { to: '/', label: 'ראשי' },
+        { to: '/מחקר', label: 'מחקר' },
+        { to: '/הוראה', label: 'הוראה' },
+        { to: '/הרצאות', label: 'הרצאות' },
+        { to: '/פרסומים', label: 'פרסומים' },
+        { to: '/קורות_חיים', label: 'קו״ח' },
+        { to: '/אודות', label: 'אודות' },
+        { to: '/צרו_קשר', label: 'צרו קשר' }
+      ]
+    : [
+        { to: '/en', label: 'Home' },
+        { to: '/research', label: 'Research' },
+        { to: '/Teaching', label: 'Teaching' },
+        { to: '/Lectures', label: 'Lectures' },
+        { to: '/Publication', label: 'Publication' },
+        { to: '/CV', label: 'CV' },
+        { to: '/About', label: 'About' },
+        { to: '/Contact', label: 'Contact' }
+      ];
+
+  const brandButton = isHebrew ? (
+    <Button
+      color="inherit"
+      href="/עב"
+      style={{ textTransform: 'none' }}
+      className="navbar__brand"
+    >
+      <div style={{ marginBottom: '2px', textAlign: 'right', lineHeight: '1.2' }}>
+        נאוה קיינר-פרסוב
+        <br />
+        אדריכלית ומתכננת ערים
+      </div>
+    </Button>
+  ) : (
+    <Button
+      color="inherit"
+      href="/"
+      style={{ textTransform: 'none' }}
+      className="navbar__brand navbar__brand__eng"
+    >
+      <div style={{ marginBottom: '1px', lineHeight: '140%' }}>
+        Nava Kainer-Persov, PhD
+        <br />
+        Architect & Urban Planner
+      </div>
+    </Button>
+  );
 
   return (
     <div className="container-fluid">
       <div id="fakeNav" className="fakeNav" />
       <AppBar position="fixed" color="transparent" className="navbar-light">
-        <Toolbar style={{ justifyContent: 'space-between', alignItems: 'flex-end', paddingBottom: '20px' }}>
-          {isHebrew ? (
-            <>
-              <Button color="inherit" onClick={setLang} className="nav__link">
-                EN
-              </Button>
-              <div style={{ flexGrow: 1 }} />
-              <div>
-                <Button color="inherit" component={NavLink} to="/צרו_קשר" className={pathname === '/צרו_קשר' ? 'is-active nav__link--active' : 'nav__link'}>
-                  צרו קשר
+        <Toolbar
+          sx={{ justifyContent: 'space-between', alignItems: 'flex-end', pb: '20px' }}
+          dir={isHebrew ? 'rtl' : 'ltr'}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '1rem', flexWrap: 'wrap' }}>
+            {brandButton}
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: isHebrew ? 'flex-end' : 'flex-start' }}>
+              {navLinks.map(({ to, label }) => (
+                <Button
+                  key={to}
+                  color="inherit"
+                  component={NavLink}
+                  to={to}
+                  className={pathname === to ? 'is-active nav__link--active' : 'nav__link'}
+                >
+                  {label}
                 </Button>
-                <Button color="inherit" component={NavLink} to="/אודות" className={pathname === '/אודות' ? 'is-active nav__link--active' : 'nav__link'}>
-                  אודות
-                </Button>
-                <Button color="inherit" component={NavLink} to="/קורות_חיים" className={pathname === '/קורות_חיים' ? 'is-active nav__link--active' : 'nav__link'}>
-                  קו״ח
-                </Button>
-                <Button color="inherit" component={NavLink} to="/פרסומים" className={pathname === '/פרסומים' ? 'is-active nav__link--active' : 'nav__link'}>
-                  פרסומים
-                </Button>
-                <Button color="inherit" component={NavLink} to="/הרצאות" className={pathname === '/הרצאות' ? 'is-active nav__link--active' : 'nav__link'}>
-                  הרצאות
-                </Button>
-                <Button color="inherit" component={NavLink} to="/הוראה" className={pathname === '/הוראה' ? 'is-active nav__link--active' : 'nav__link'}>
-                  הוראה
-                </Button>
-                <Button color="inherit" component={NavLink} to="/מחקר" className={pathname === '/מחקר' ? 'is-active nav__link--active' : 'nav__link'}>
-                  מחקר
-                </Button>
-                <Button color="inherit" component={NavLink} to="/" className={pathname === '/' ? 'is-active nav__link--active' : 'nav__link'}>
-                  ראשי
-                </Button>
-              </div>
-              <Button color="inherit" href="/" style={{ textTransform: 'none' }} className="navbar__brand">
-                <div style={{ marginBottom: '2px', textAlign: 'right', lineHeight: '1.2' }}>
-                  נאוה קיינר-פרסוב
-                  <br />
-                  אדריכלית ומתכננת ערים
-                </div>
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button color="inherit" href="/" style={{ textTransform: 'none' }} className="navbar__brand navbar__brand__eng">
-                <div style={{ marginBottom: '1px', lineHeight: '140%' }}>
-                  Nava Kainer-Persov, PhD
-                  <br />
-                  Architect & Urban Planner
-                </div>
-              </Button>
-              <div>
-                <Button color="inherit" component={NavLink} to="/en" className={pathname === '/en' ? 'is-active nav__link--active' : 'nav__link'}>
-                  Home
-                </Button>
-                <Button color="inherit" component={NavLink} to="/research" className={pathname === '/research' ? 'is-active nav__link--active' : 'nav__link'}>
-                  Research
-                </Button>
-                <Button color="inherit" component={NavLink} to="/Teaching" className={pathname === '/Teaching' ? 'is-active nav__link--active' : 'nav__link'}>
-                  Teaching
-                </Button>
-                <Button color="inherit" component={NavLink} to="/Lectures" className={pathname === '/Lectures' ? 'is-active nav__link--active' : 'nav__link'}>
-                  Lectures
-                </Button>
-                <Button color="inherit" component={NavLink} to="/Publication" className={pathname === '/Publication' ? 'is-active nav__link--active' : 'nav__link'}>
-                  Publication
-                </Button>
-                <Button color="inherit" component={NavLink} to="/CV" className={pathname === '/CV' ? 'is-active nav__link--active' : 'nav__link'}>
-                  CV
-                </Button>
-                <Button color="inherit" component={NavLink} to="/About" className={pathname === '/About' ? 'is-active nav__link--active' : 'nav__link'}>
-                  About
-                </Button>
-                <Button color="inherit" component={NavLink} to="/Contact" className={pathname === '/Contact' ? 'is-active nav__link--active' : 'nav__link'}>
-                  Contact
-                </Button>
-              </div>
-              <div style={{ flexGrow: 1 }} />
-              <Button color="inherit" onClick={setLang} className="nav__link">
-                עב
-              </Button>
-            </>
-          )}
+              ))}
+            </Box>
+          </Box>
+          <Button color="inherit" onClick={setLang} className="nav__link">
+            {isHebrew ? 'EN' : 'עב'}
+          </Button>
         </Toolbar>
       </AppBar>
 
       <AppBar position="fixed" color="default" className="mobile">
-        <Toolbar>
-          <Button color="inherit" href="/">
-            {isHebrew ? (
-              <div style={{ marginTop: '-0.9vw', textAlign: 'right' }}>
-                נאוה קיינר-פרסוב
-                <br />
-                אדריכלית ומתכננת ערים
-              </div>
-            ) : (
-              <div style={{ marginTop: '-0.8vw', lineHeight: '140%' }}>
-                Nava Kainer-Persov, PhD
-                <br />
-                Architect & Urban Planner
-              </div>
-            )}
-          </Button>
-          <div style={{ flexGrow: 1 }} />
+        <Toolbar dir={isHebrew ? 'rtl' : 'ltr'}>
+          {brandButton}
+          <Box sx={{ flexGrow: 1 }} />
           <Button color="inherit" onClick={setLang}>
             {isHebrew ? 'EN' : 'עב'}
           </Button>

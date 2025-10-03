@@ -4,7 +4,7 @@
 
 .navbar-light {
     height: 5.5rem;
-    background: $black;
+    background: var(--color-background-dark, #000000);
 }
 
 .navbar__header__container {
@@ -27,7 +27,7 @@
 
 
 .navbar__shadow {
-    box-shadow: 0 4px 4px -4px $white;
+    box-shadow: 0 4px 4px -4px var(--color-surface, #ffffff);
 }
 
 .navbar__header {
@@ -49,11 +49,11 @@
     visibility: visible;
     border: 0.2rem solid rgba(0, 0, 0, 0);
     vertical-align: middle;
-    color: $white;
-    font-family: $font;
-    font-weight: $fontRegular;
+    color: var(--color-surface, #ffffff);
+    font-family: var(--font-family-base, "Heebo", "Helvetica Neue", Arial, sans-serif);
+    font-weight: var(--font-weight-regular, 400);
     font-size: 1.6rem;
-    _text-shadow: 1px 1px $white;
+    _text-shadow: 1px 1px var(--color-surface, #ffffff);
     letter-spacing: 0.1px;
     min-height: 2.2rem;
     padding-top: 0rem;
@@ -65,11 +65,11 @@
 .navbar__brand__eng {
     border: 0.2rem solid rgba(0, 0, 0, 0);
     vertical-align: middle;
-    color: $white;
-    font-family: $font;
-    font-weight: $fontRegular;
+    color: var(--color-surface, #ffffff);
+    font-family: var(--font-family-base, "Heebo", "Helvetica Neue", Arial, sans-serif);
+    font-weight: var(--font-weight-regular, 400);
     font-size: 1.6rem;
-    _text-shadow: 1px 1px $white;
+    _text-shadow: 1px 1px var(--color-surface, #ffffff);
     letter-spacing: 0.1px;
     min-height: 2.2rem;
     padding-top: 0rem;
@@ -81,11 +81,11 @@
 }
 
 .navbar__brand:hover {
-    color: $white !important;
+    color: var(--color-surface, #ffffff) !important;
 }
 
 .navbar-light .navbar-brand {
-    color: $white !important;
+    color: var(--color-surface, #ffffff) !important;
 }
 
 .navbar__nav {
@@ -124,7 +124,7 @@
 
 
 .accessibility-color--dark {
-    fill: $white !important;
+    fill: var(--color-surface, #ffffff) !important;
 }
 
 .nav-item--accessibility {
@@ -170,11 +170,11 @@
     margin-right: 0.4rem;
     margin-bottom: 10px;
     vertical-align: middle;
-    color: $white;
-    font-family: $font;
-    font-weight: $fontRegular;
+    color: var(--color-surface, #ffffff);
+    font-family: var(--font-family-base, "Heebo", "Helvetica Neue", Arial, sans-serif);
+    font-weight: var(--font-weight-regular, 400);
     font-size: 15px;
-    _text-shadow: 1px 1px $white;
+    _text-shadow: 1px 1px var(--color-surface, #ffffff);
     letter-spacing: 0.1px;
     height: 22px;
     min-height: 22px;
@@ -190,10 +190,10 @@
 
 
 .nav__link:hover {
-    border: 2px dotted $white;
+    border: 2px dotted var(--color-surface, #ffffff);
     margin-left: 0.4rem;
     margin-right: 0.4rem;
-    color: $white;
+    color: var(--color-surface, #ffffff);
     text-decoration: none;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -202,11 +202,11 @@
 
 
 .nav__link--active {
-    border: 2px dotted $white;
+    border: 2px dotted var(--color-surface, #ffffff);
     margin-left: 0.4rem;
     margin-right: 0.4rem;
     margin-bottom: 10px;
-    color: $white;
+    color: var(--color-surface, #ffffff);
     text-decoration: none;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -222,18 +222,18 @@
 
 @media all and (-ms-high-contrast:none){
     .nav__link { border: 0.15rem solid rgba(0, 0, 0, 0); }
-    .nav__link:hover { border: 0.15rem dotted $lightblue; } 
-    .nav__link--active { border: 0.15rem dotted $lightblue; }
+    .nav__link:hover { border: 0.15rem dotted var(--color-accent-secondary, #5eae88); } 
+    .nav__link--active { border: 0.15rem dotted var(--color-accent-secondary, #5eae88); }
     *::-ms-backdrop, .nav__link { border: 0.15rem solid rgba(0, 0, 0, 0); }
-    *::-ms-backdrop, .nav__link:hover { border: 0.15rem dotted $lightblue; }
-    *::-ms-backdrop, .nav__link--active { border: 0.15rem dotted $lightblue; }
+    *::-ms-backdrop, .nav__link:hover { border: 0.15rem dotted var(--color-accent-secondary, #5eae88); }
+    *::-ms-backdrop, .nav__link--active { border: 0.15rem dotted var(--color-accent-secondary, #5eae88); }
 }
 
 /*----MS Edge Browser CSS Start----*/
 @supports ( position:-ms-page ) {
     .nav__link { border: 0.15rem solid rgba(0, 0, 0, 0); }
-    .nav__link:hover { border: 0.15rem dotted $lightblue; }
-    .nav__link--active { border: 0.15rem dotted $lightblue; }
+    .nav__link:hover { border: 0.15rem dotted var(--color-accent-secondary, #5eae88); }
+    .nav__link--active { border: 0.15rem dotted var(--color-accent-secondary, #5eae88); }
 }
 /*----MS Edge Browser CSS End----*/
 
@@ -241,7 +241,7 @@
 
 .svg-icon {
     pointer-events: none;
-    fill: $lightblue;
+    fill: var(--color-accent-secondary, #5eae88);
 }
 
 .nav__link--padding-top {
@@ -258,11 +258,11 @@
 
 
 .accessibility-color--dark {
-    fill:#3e3939;
+    fill: var(--color-text-main, #3e3939);
 }
 
 .accessibility-color--light {
-    fill:#fff;
+    fill: var(--color-surface, #fff);
 }
 
 
@@ -273,7 +273,7 @@
 
 
 
-@media (max-width: $tabletMaxWidth) {
+@media (max-width: 1024px) {
     .nav__logo {
         width: 6rem;
     }
@@ -294,7 +294,7 @@
 
 
 
-@media (max-width: $mobileMaxWidth) {
+@media (max-width: 768px) {
 
     .carousel_logo {
         width: 48%;
@@ -342,7 +342,7 @@
     }
 
     #navbarM {
-        background: $black;
+        background: var(--color-background-dark, #000000);
         height: 8rem;
     }
 
@@ -371,10 +371,10 @@
         padding-top: 0.8rem;
         padding-left: 0.5rem;
         padding-right: 1vw;
-        color: $white;
-        font-family: $font;
-        font-weight: $fontRegular;
-        _text-shadow: 1px 1px $blue;
+        color: var(--color-surface, #ffffff);
+        font-family: var(--font-family-base, "Heebo", "Helvetica Neue", Arial, sans-serif);
+        font-weight: var(--font-weight-regular, 400);
+        _text-shadow: 1px 1px var(--color-accent, #3f67a7);
         letter-spacing: 0.1px;
     }
 
@@ -399,7 +399,7 @@
     }
 
     .nav__link--active {
-        border: 0.45rem dotted $lightblue;
+        border: 0.45rem dotted var(--color-accent-secondary, #5eae88);
         margin-left: 0.7rem;
         margin-right: 0.7rem;
         padding-left: 0.3rem;
@@ -498,7 +498,7 @@
     .navbar-light .navbar-nav {
         width: 100.5vw;
         height: 100.5vh;
-        background: $black;
+        background: var(--color-background-dark, #000000);
         flex-direction: column-reverse;
         justify-content: center;
         align-items: center;

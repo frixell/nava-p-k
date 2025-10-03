@@ -2,8 +2,9 @@
 import { useCallback, useEffect } from 'react';
 import isEqual from 'lodash.isequal';
 import useMergeState from '../../utils/useMergeState';
+import { appTokens } from '../../styles/theme';
 
-const categoryColorsHEX = ['#409191', '#c1617e', '#5eae88', '#a6c98d', '#db8976', '#e8e2a4', '#e5b682'];
+const categoryColorsHEX = appTokens.categoryPalette;
 const categoryColorsRGBOpacity = 1;
 const categoryColorsRGB = [
     [64, 145, 145, categoryColorsRGBOpacity],

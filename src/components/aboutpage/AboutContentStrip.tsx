@@ -4,6 +4,7 @@ import { EditorState, ContentState, convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import { ContentSection, ContentContainer, Viewer, Note } from './AboutContentStrip.styles';
+import { appTokens } from '../../styles/theme';
 import type { AboutPageData } from '../../containers/useAboutPageState';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
@@ -65,7 +66,7 @@ const AboutContentStrip: React.FC<AboutContentStripProps> = ({
                 blockType: { inDropdown: true },
                 fontSize: { options: ['12', '14', '16', '18', '20', '24', '32'] },
                 list: { inDropdown: true },
-                colorPicker: { colors: ['#000000', '#FFFFFF', '#fbc02d', '#53b0a1', '#666665'] },
+                colorPicker: { colors: appTokens.colorPickerPalette },
                 link: { inDropdown: true }
               }}
             />

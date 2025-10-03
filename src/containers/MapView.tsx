@@ -571,7 +571,7 @@ const MapView: React.FC<MapViewProps> = ({
   }, [localPoints, normalisedOpenCategories, categories, categoryColors]);
 
   return (
-    <div style={{ height: '100%', color: '#000' }}>
+    <div style={{ height: '100%', color: 'var(--color-text-main, #000)' }}>
       <div ref={containerRef} id="pointTestViewDiv" style={{ height: getViewportWidth() < 768 ? getViewportWidth() * 0.6 : '100%', width: '100%' }} />
     </div>
   );

@@ -1,61 +1,68 @@
 import styled from '@emotion/styled';
+import type { AppTheme } from '../../styles/theme';
 
-export const ContactLayout = styled.section({
+export const ContactLayout = styled.section(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: '3rem',
-  padding: '6rem clamp(1.5rem, 4vw, 4rem) 6rem'
-});
+  gap: theme.app.spacing['2xl'],
+  padding: `${theme.app.spacing['2xl']} clamp(${theme.app.spacing.md}, 4vw, ${theme.app.spacing.xl}) ${theme.app.spacing['2xl']}`
+}));
 
-export const CardGrid = styled.div({
+export const CardGrid = styled.div(({ theme }) => ({
   display: 'grid',
-  gap: '2.5rem',
+  gap: theme.app.spacing.xl,
   gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))'
-});
+}));
 
-export const Card = styled.article({
-  background: '#fff',
+export const Card = styled.article(({ theme }) => ({
+  background: theme.app.colors.surface,
   borderRadius: '1rem',
-  boxShadow: '0 1.5rem 3rem rgba(15, 23, 42, 0.08)',
-  padding: '2.4rem',
+  boxShadow: theme.app.shadows.card,
+  padding: theme.app.spacing['2xl'],
   display: 'flex',
   flexDirection: 'column',
-  gap: '1.6rem'
-});
+  gap: theme.app.spacing.lg
+}));
 
 export const CardHeading = styled('h2', {
     shouldForwardProp: (prop) => prop !== 'direction'
-})<{ direction: 'ltr' | 'rtl' }>(({ direction }) => ({
+})<{ direction: 'ltr' | 'rtl' }>(({ theme, direction }) => ({
     margin: 0,
     fontSize: '2rem',
-    fontWeight: 600,
-    color: 'var(--color-text-primary, #2f3a3f)',
+    fontWeight: theme.app.typography.weights.bold,
+    color: `var(--color-text-main, ${theme.app.colors.text.primary})`,
     textAlign: direction === 'rtl' ? 'right' : 'left',
     direction
 }));
 
 export const CardSubheading = styled('p', {
     shouldForwardProp: (prop) => prop !== 'direction'
-})<{ direction: 'ltr' | 'rtl' }>(({ direction }) => ({
+})<{ direction: 'ltr' | 'rtl' }>(({ theme, direction }) => ({
     margin: 0,
     fontSize: '1.4rem',
-    color: 'var(--color-text-muted, #6d767a)',
+    color: `var(--color-text-muted, ${theme.app.colors.text.muted})`,
     textAlign: direction === 'rtl' ? 'right' : 'left',
     direction
 }));
 
-export const FieldStack = styled.div({
+export const FieldStack = styled.div(({ theme }) => ({
   display: 'grid',
-  gap: '1.2rem'
+  gap: theme.app.spacing.sm
+}));
+
+const focusOutline = (theme: AppTheme) => ({
+  outline: 'none',
+  borderColor: `var(--color-accent-secondary, ${theme.app.colors.accent.secondary})`,
+  boxShadow: `0 0 0 3px rgba(79, 122, 106, 0.16)`
 });
 
 export const InputField = styled('input', {
   shouldForwardProp: (prop) => prop !== 'direction'
-})<{ direction: 'ltr' | 'rtl' }>(({ direction }) => ({
+})<{ direction: 'ltr' | 'rtl' }>(({ theme, direction }) => ({
   width: '100%',
   padding: '1.1rem 1.4rem',
   borderRadius: '0.8rem',
-  border: '1px solid rgba(15, 23, 42, 0.12)',
+  border: `1px solid rgba(15, 23, 42, 0.12)`,
   fontSize: '1.4rem',
   transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
   boxSizing: 'border-box',
@@ -64,21 +71,17 @@ export const InputField = styled('input', {
   '&::placeholder': {
     textAlign: direction === 'rtl' ? 'right' : 'left'
   },
-  '&:focus': {
-    outline: 'none',
-    borderColor: 'var(--color-accent-secondary, #4f7a6a)',
-    boxShadow: '0 0 0 3px rgba(79, 122, 106, 0.16)'
-  }
+  '&:focus': focusOutline(theme)
 }));
 
 export const TextAreaField = styled('textarea', {
   shouldForwardProp: (prop) => prop !== 'direction'
-})<{ direction: 'ltr' | 'rtl' }>(({ direction }) => ({
+})<{ direction: 'ltr' | 'rtl' }>(({ theme, direction }) => ({
   width: '100%',
   minHeight: '12rem',
   padding: '1.1rem 1.4rem',
   borderRadius: '0.8rem',
-  border: '1px solid rgba(15, 23, 42, 0.12)',
+  border: `1px solid rgba(15, 23, 42, 0.12)`,
   fontSize: '1.4rem',
   resize: 'vertical',
   transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
@@ -88,23 +91,19 @@ export const TextAreaField = styled('textarea', {
   '&::placeholder': {
     textAlign: direction === 'rtl' ? 'right' : 'left'
   },
-  '&:focus': {
-    outline: 'none',
-    borderColor: 'var(--color-accent-secondary, #4f7a6a)',
-    boxShadow: '0 0 0 3px rgba(79, 122, 106, 0.16)'
-  }
+  '&:focus': focusOutline(theme)
 }));
 
 export const PrimaryButton = styled('button', {
   shouldForwardProp: (prop) => prop !== 'direction'
-})<{ direction?: 'ltr' | 'rtl' }>(({ direction = 'ltr' }) => ({
+})<{ direction?: 'ltr' | 'rtl' }>(({ theme, direction = 'ltr' }) => ({
   alignSelf: direction === 'rtl' ? 'flex-end' : 'flex-start',
   padding: '0.9rem 1.8rem',
   borderRadius: '999px',
-  background: 'var(--color-accent-secondary, #4f7a6a)',
-  color: '#fff',
+  background: `var(--color-accent, ${theme.app.colors.accent.primary})`,
+  color: `var(--color-surface, ${theme.app.colors.text.inverse})`,
   fontSize: '1.4rem',
-  fontWeight: 500,
+  fontWeight: theme.app.typography.weights.medium,
   border: 'none',
   cursor: 'pointer',
   transition: 'transform 0.15s ease, box-shadow 0.15s ease',
@@ -119,56 +118,56 @@ export const PrimaryButton = styled('button', {
   }
 }));
 
-export const ErrorMessage = styled.p({
+export const ErrorMessage = styled.p(({ theme }) => ({
   margin: 0,
   fontSize: '1.3rem',
-  color: '#d14343'
-});
+  color: `var(--color-error, ${theme.app.colors.error.main})`
+}));
 
-export const SuccessContent = styled.div({
-  padding: '1rem',
+export const SuccessContent = styled.div(({ theme }) => ({
+  padding: theme.app.spacing.md,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '1.2rem',
+  gap: theme.app.spacing.md,
   textAlign: 'center'
-});
+}));
 
-export const SuccessTitle = styled.h3({
+export const SuccessTitle = styled.h3(({ theme }) => ({
   margin: 0,
   fontSize: '1.8rem',
-  fontWeight: 600
-});
+  fontWeight: theme.app.typography.weights.bold
+}));
 
-export const SuccessBody = styled.p({
+export const SuccessBody = styled.p(({ theme }) => ({
   margin: 0,
   fontSize: '1.4rem',
-  color: 'var(--color-text-muted, #6d767a)'
-});
+  color: `var(--color-text-muted, ${theme.app.colors.text.muted})`
+}));
 
-export const LinkList = styled.ul({
+export const LinkList = styled.ul(({ theme }) => ({
   listStyle: 'none',
   margin: 0,
   padding: 0,
   display: 'grid',
-  gap: '0.8rem'
-});
+  gap: theme.app.spacing.sm
+}));
 
-export const LinkItem = styled.li({
+export const LinkItem = styled.li(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: '0.8rem',
+  gap: theme.app.spacing.sm,
   fontSize: '1.5rem'
-});
+}));
 
-export const LinkAnchor = styled.a({
+export const LinkAnchor = styled.a(({ theme }) => ({
   color: 'inherit',
   textDecoration: 'none',
   transition: 'color 0.2s ease',
   display: 'inline-flex',
   alignItems: 'center',
-  gap: '0.6rem',
+  gap: theme.app.spacing.xs,
   '&:hover': {
-    color: 'var(--color-accent-secondary, #4f7a6a)'
+    color: `var(--color-accent-secondary, ${theme.app.colors.accent.secondary})`
   }
-});
+}));

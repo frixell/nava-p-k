@@ -8,8 +8,6 @@
     width: 100%;
 }
 
-////
-
 .homepage__socialmedia-box {
     width: 3.5rem;
     margin-left: 0.4rem;
@@ -38,26 +36,9 @@
     cursor: pointer;
 }
 
-@-moz-document url-prefix() {
-    .homepage__socialmedia-button {
-        height: 3em;
-    }
-}
-
-.homepage__socialmedia__right-border {
-    width: 0.25rem;
-}
-
 .homepage__socialmedia-image {
     width: 2rem;
 }
-
-//
-
-/*----MS Edge Browser CSS Start----*/
-/*----MS Edge Browser CSS End----*/
-
-//
 
 input[type="email"] {
     text-align: left;
@@ -78,125 +59,47 @@ input[type="email"]::-webkit-input-placeholder {
 }
 
 .esri-basemap-gallery__item-title {
-    _display: none;
+    display: none;
 }
 
 .esri-basemap-gallery__item-thumbnail {
     margin-bottom: 0 !important;
 }
 
-.esri-ui-top-left {  
-    max-width: 25px;
-}
-
-.esri-ui-manual-container>.esri-component {
-    background: transparent;
-}
-
-.esri-popup__main-container {
-    width: 600px !important;
-}
-
-#sidebarDiv {
-    width: 240px;
-    padding: 10px;
-    height: 200px;
-  }
-
-  #overlayDiv {
-    z-index: 1;
-    position: absolute;
-    margin: auto auto;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 280px;
-    height: 180px;
-    padding: 10px;
-    background-color: white;
-    border: 1px solid grey;
-    visibility: hidden;
-  }
-
-  input[type="text"] {
-    width: 100%;
-  }
-  
-  
-  // save styles
-  
-  #formDiv {
-    width: 100%;
-  }
-
-  .esri-item-list__scroller {
-    overflow-y: visible;
-  }
-
-  .editArea-container {
-    background: #fff;
+.editArea-container {
+    background: var(--color-surface, #fff);
     line-height: 1.5em;
     overflow: auto;
     padding: 12px 15px;
     width: 300px;
-  }
+}
 
-  .list-heading {
-    font-weight: normal;
+.list-heading {
+    font-weight: var(--font-weight-medium, 500);
     margin-top: 20px;
     margin-bottom: 10px;
-    color: #323232;
-  }
+    color: var(--color-text-main, #323232);
+}
 
-  .or-wrap {
-    background-color: #e0e0e0;
+.or-wrap {
+    background-color: var(--color-surface-muted, #e0e0e0);
     height: 1px;
     margin: 2em 0;
     overflow: visible;
-  }
+}
 
-  .or-text {
-    background: #fff;
+.or-text {
+    background: var(--color-surface, #fff);
     line-height: 0;
     padding: 0 1em;
     position: relative;
     bottom: 0.75em;
-  }
+}
 
-  /* override default styles */
-  .esri-feature-form {
-    background: #fff;
-  }
+.esri-feature-form {
+    background: var(--color-surface, #fff);
+}
 
-  .esri-feature-templates {
-    width: 400px;
-  }
-
-  .esri-feature-templates__section-header {
-    display: none;
-  }
-
-  .esri-feature-templates__section {
-    box-shadow: none;
-  }
-
-  .esri-feature-templates__scroller {
-    max-height: 200px;
-  }
-  
-  // end save styles
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 .toolbarClassName {
     font-size: 14px;
     line-height: 16px;
@@ -208,570 +111,52 @@ input[type="email"]::-webkit-input-placeholder {
     flex-wrap: nowrap;
 }
 
-.editor__line__height > span > p {
-    margin-bottom: 14px !important;
-    line-height: 16px !important;
-}
-
-#viewDiv {
-    padding: 0;
-    margin: 0;
-    height: 100%;
-    width: 100%;
-  }
-
-  #infoDiv {
-    position: absolute;
-    top: 15px;
-    left: 60px;
-  }
-
-  #infoDiv input {
-    border: none;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 2px;
-  }
-
-.wrapperClassName {
-    font-size: 14px;
-    line-height: 16px;
-    margin-right: 10px;
-    padding: 0;
-    margin: 0;
-}
-
-.editorClassName {
-    font-size: 14px;
-    line-height: 16px;
-    width: 100%;
-    color: $gray;
-    padding: 0;
-    margin: 0;
-    padding-right: 10px;
-    padding-top: 0px;
-    padding-bottom: 20px;
-    overflow: hidden;
-}
-
+.editorClassName,
 .editorReadOnlyClassName {
     font-size: 14px;
     line-height: 16px;
     width: 100%;
-    color: $gray;
-    padding: 0;
+    color: var(--color-text-muted, #666665);
+    padding: 0 0 20px 0;
     margin: 0;
     padding-right: 10px;
-    padding-top: 4rem;
-    padding-bottom: 0px;
     overflow: hidden;
 }
 
-.blockTypeClassName {
-    font-size: 1.3rem;
-    line-height: 1.6rem;
-    padding: 0;
-    margin: 0;
-    margin-left: 2px;
-    width: 80px;
+.editorReadOnlyClassName {
+    padding-top: 4rem;
+    padding-bottom: 0;
 }
 
-.fontSizeClassName {
-    font-size: 1.3rem;
-    line-height: 1.6rem;
-    padding: 0;
-    margin: 0;
-    margin-left: 2px;
-    width: 40px;
-}
-
+.blockTypeClassName,
+.fontSizeClassName,
 .fontFamilyClassName {
     font-size: 1.3rem;
     line-height: 1.6rem;
-    width: 100%;
-    padding: 0;
     margin: 0;
     margin-left: 2px;
+}
+.fontSizeClassName {
+    width: 40px;
+}
+.fontFamilyClassName {
     width: 120px;
 }
 
-.public-DraftStyleDefault-block {
-    margin: 0 !important;
-}
-
-.demo-icon {
-    width: 30px !important;
-    height: 30px !important;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-.rdw-link-wrapper {
-    width: 30px !important;
-    height: 30px !important;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-}
-
-.esri-basemap-gallery__item {
-    width: auto !important;
-    margin: 0 !important;
-    padding: 0px !important;
-    padding-top: 10px !important;
-    padding-left: 10px !important;
-}
-
-.project__container {
-    display: flex;
-    justify-content: space-between;
-    height: '100%';
-    width: '100%';
-}
-
-.project__container--en {
-    flex-direction: row;
-}
-
-.project__container--he {
-    flex-direction: row-reverse;
-}
-
-.sidebar__categories__box {
-    width: 100%;
-    margin-top: 25px;
-    margin-bottom: 25px;
-}
-
-.tableTemplate__category__name {
-    font-size: 14px;
-    font-weight: bold;
-    width: 20%;
-    min-height: 50px;
-    padding: 5px;
-    border-bottom: 1px solid black;
-}
-
-.tableTemplate__category__name--en {
-    border-right: 1px solid black;
-}
-
-.tableTemplate__category__name--he {
-    border-left: 1px solid black;
-    text-align: right;
-}
-
-.tableTemplate__subcategory__name {
-    font-weight: bold;
-    width: 40%;
-    height: 100%;
-    padding: 5px;
-    line-height: 12px;
-}
-
-.tableTemplate__subcategory__name--en {
-    border-right: 1px solid black;
-}
-
-.tableTemplate__subcategory__name--he {
-    border-left: 1px solid black;
-    text-align: right;
-}
-
-.tableTemplate__option__name {
-    width: 100%;
-    height: 100%;
-    padding: 5px;
-    line-height: 12px;
-}
-
-.tableTemplate__option__name--en {
-    _border-right: 1px solid black;
-}
-
-.tableTemplate__option__name--he {
-    text-align: right;
-}
-
-.homepage__intouch__button:hover
-{
-    -webkit-transition: all $buttonScaleTime ease-in;
-    -webkit-transform: scale(1.15);
-    -ms-transition: all $buttonScaleTime ease-in;
-    -ms-transform: scale(1.15);   
-    -moz-transition: all $buttonScaleTime ease-in;
-    -moz-transform: scale(1.15);
-    transition: all $buttonScaleTime ease-in;
+.homepage__intouch__button:hover {
+    transition: all 0.25s ease-in;
     transform: scale(1.15);
 }
 
-//
-
-::-webkit-scrollbar {
-        -webkit-appearance: none;
-        width: 7px;
-}
-::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: rgba(0,0,0,.5);
-    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+.tableTemplate__category__name,
+.tableTemplate__subcategory__name,
+.tableTemplate__option__name {
+    padding: 5px;
+    border: 1px solid var(--color-border, rgba(0, 0, 0, 0.1));
 }
 
-//
-
-.design {
-    width: 46%;
-    height: auto;
-}
-
-.fest {
-    width: 46%;
-    height: auto;
-}
-
-.fun {
-    width: 48%;
-    height: auto;
-}
-
-.vip {
-    width: 42%;
-    height: auto;
-}
-
-.vacation {
-    width: 38%;
-    height: auto;
-}
-
-.conference {
-    width: 48%;
-    height: auto;
-}
-
-.sales {
-    width: 30%;
-    height: auto;
-}
-
-.company {
-    width: 38%;
-    height: auto;
-}
-
-.w-100 {
-    height: 100vh;
-}
-
-@media (max-width: $tabletMaxWidth) {
-     .homepage__left {
+@media (max-width: 1024px) {
+    .homepage__left {
         width: 72rem;
     }
-
-    //
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 }
-
-@media (max-width: $mobileMaxWidth) {
-    
-        
-        
-        
-    
-    .tableTemplate__subcategory__name {
-        width: 50%;
-    }
-    
-    .tableTemplate__category__name {
-        font-size: 12px;
-        letter-spacing: -0.2px;
-        width: 30%;
-    }
-
-    .project__container--en {
-        flex-direction: column;
-    }
-    
-    .project__container--he {
-        flex-direction: column;
-    }
-    
-        
-        
-    .homepage__socialmedia-button {
-        height: 3.5rem;
-        margin-top: 0.1rem;
-        max-width: 5rem;
-    }
-
-    .homepage__structure {
-        padding-top: 0;
-    }
-    .homepage__left {
-        width: 100vw;
-    }
-    .w-100 {
-        height: 100vh;
-    }
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    .homepage__pleaseed__button {
-        margin-left: 0.3rem;
-        display: flex;
-        justify-content: center;
-        align-content: center;
-        background: none;
-        border: none;
-        position: relative;
-        -webkit-transition: all 20ms ease-in;
-        -webkit-transform: scale(1); 
-        -ms-transition: all 20ms ease-in;
-        -ms-transform: scale(1); 
-        -moz-transition: all 20ms ease-in;
-        -moz-transform: scale(1);
-        transition: all 20ms ease-in;
-        transform: scale(1);   
-    }
-
-    .homepage__pleaseed__button:hover {
-        text-decoration: none;
-        -webkit-transition: all 20ms ease-in;
-        -webkit-transform: scale(1.2);
-        -ms-transition: all 20ms ease-in;
-        -ms-transform: scale(1.2);   
-        -moz-transition: all 20ms ease-in;
-        -moz-transform: scale(1.2);
-        transition: all 20ms ease-in;
-        transform: scale(1.2);
-    }
-
-    ////
-
-    
-
-    
-
-    
-
-    
-
-    
-    .event__demo-image {
-        width: 100%;
-    }
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    //
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    //
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-$buttonPagination: 2.3rem;
-    
-
-    
-
-    
-
-    
-
-    
-
-    //
-
-     
-
-    
-
-    
-
-    
-
-    .company {
-        width: 8.5rem;
-        height: auto;
-    }
-
-    .sales {
-        width: 5rem;
-        height: auto;
-    }
-
-    .conference {
-        width: 7.8rem;
-        height: auto;
-    }
-
-    .vacation {
-        width: 6rem;
-        height: auto;
-    }
-
-    .vip {
-        width: 6.7rem;
-        height: auto;
-    }
-    
-    .fun {
-        width: 8.3rem;
-        height: auto;
-    }
-
-    .fest {
-        width: 7.5rem;
-        height: auto;
-    }
-
-    .design {
-        width: 7.7rem;
-        height: auto;
-    }
-
-    
-
-}
-
-@media (max-width: 400px) {
-    
-}
-
-@media (max-width: 360px) {
-    
-}
-
-@media (max-width: 320px) {
-    
-    
-}
-

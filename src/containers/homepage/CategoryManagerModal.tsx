@@ -71,8 +71,8 @@ const UpdateButton = styled.button({
     padding: '0.8rem 1.8rem',
     borderRadius: '999px',
     border: 'none',
-    background: '#2e7d32',
-    color: '#fff',
+    background: 'var(--color-accent-alt, #2e7d32)',
+    color: 'var(--color-surface, #fff)',
     fontSize: '1.4rem',
     cursor: 'pointer'
 });

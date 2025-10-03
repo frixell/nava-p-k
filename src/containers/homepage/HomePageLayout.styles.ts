@@ -25,7 +25,7 @@ export const ProjectContainer = styled('div', {
 })<ProjectContainerProps>(({ isMobile, isEnglish, viewportWidth }) => ({
     position: 'absolute',
     zIndex: 5000,
-    background: '#fff',
+    background: 'var(--color-surface, #fff)',
     padding: '30px 20px 20px',
     top: 'var(--toolbar-height)',
     boxSizing: 'border-box',

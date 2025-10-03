@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 
 export const TopStripRoot = styled.section({
   display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'flex-start',
+  flexDirection: 'column',
+  alignItems: 'center',
   gap: '3rem',
   marginTop: '6rem',
   marginBottom: '2rem',
@@ -35,48 +35,13 @@ export const UploadAction = styled.button({
   border: 'none',
   borderRadius: '50%',
   background: 'rgba(0,0,0,0.6)',
-  color: '#fff',
+  color: 'var(--color-surface, #fff)',
   cursor: 'pointer',
   transition: 'background 0.2s ease',
   '&:hover': {
     background: 'rgba(0,0,0,0.8)'
   }
 });
-
-export const SloganWrapper = styled.div<{ dir: 'ltr' | 'rtl' }>(({ dir }) => ({
-  width: '40vw',
-  maxWidth: '520px',
-  minWidth: '260px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem',
-  direction: dir
-}));
-
-export const SloganTextarea = styled.textarea({
-  width: '100%',
-  minHeight: '12rem',
-  padding: '1.2rem',
-  borderRadius: '0.75rem',
-  border: '1px solid rgba(0,0,0,0.08)',
-  fontSize: '1.6rem',
-  lineHeight: 1.6,
-  resize: 'vertical',
-  background: '#fff',
-  color: 'var(--color-text-primary, #3a3a3a)'
-});
-
-export const SloganText = styled.p<{ dir: 'ltr' | 'rtl' }>(({ dir }) => ({
-  margin: 0,
-  padding: '1.2rem',
-  fontSize: '1.6rem',
-  lineHeight: 1.6,
-  direction: dir,
-  color: 'var(--color-text-secondary, #4f5b5f)',
-  background: '#fff',
-  borderRadius: '0.75rem'
-}));
-
 export const Placeholder = styled.div({
   width: '100%',
   height: '100%',

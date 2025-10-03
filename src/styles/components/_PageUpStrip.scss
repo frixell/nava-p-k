@@ -1,14 +1,44 @@
-$pageUpImageMarginLeft: 45.5rem;
+.pageup__image,
+.pageup__image__absolute,
+.pageup__image__absolute__homepage,
+.pageup__image__fixed {
+    width: 3.5rem;
+    height: 3.6rem;
+    background-repeat: no-repeat;
+    background-size: 3.5rem 3.6rem;
+    background-image: url('/images/common/pageup.png');
+}
 
 .pageup__image {
     position: relative;
     left: 57%;
-    margin-left: $pageUpImageMarginLeft;
-    width: 3.5rem;
-    height: 3.6rem;
-    background-image: url('/images/common/pageup.png');
-    background-repeat: no-repeat;
-    background-size: 3.5rem 3.6rem;
+    margin-left: 45.5rem;
+    cursor: pointer;
+}
+
+.pageup__image__absolute {
+    position: absolute;
+    z-index: 58;
+    left: 57%;
+    margin-left: 45.5rem;
+    top: 105vh;
+    cursor: pointer;
+}
+
+.pageup__image__absolute__homepage {
+    position: absolute;
+    z-index: 58;
+    left: 57%;
+    margin-left: 45.5rem;
+    top: 205vh;
+}
+
+.pageup__image__fixed {
+    position: fixed;
+    z-index: 58;
+    left: 57%;
+    margin-left: 45.5rem;
+    top: 90vh;
     cursor: pointer;
 }
 
@@ -19,107 +49,42 @@ $pageUpImageMarginLeft: 45.5rem;
     opacity: 0;
 }
 
-.pageup__image__fake__box {
-    _width: 100vw;
-    background: $offwhite;
+.pageup__image__fake__box,
+.pageup__image__fake,
+.pageup__box {
+    background: var(--color-background, #f5f5f5);
 }
+
 .pageup__image__fake {
     position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    _width: 100vw;
-    background: $offwhite;
+    margin: 0 auto;
     height: 3.6rem;
 }
 
-.pageup__image__absolute {
-    position: absolute;
-    z-index: 58;
-    left: 57%;
-    margin-left: $pageUpImageMarginLeft;
-    top: 105vh;
-    width: 3.5rem;
-    height: 3.6rem;
-    background-image: url('/images/common/pageup.png');
-    background-repeat: no-repeat;
-    background-size: 3.5rem 3.6rem;
-    cursor: pointer;
-}
-
-.pageup__image__absolute__homepage {
-    position: absolute;
-    z-index: 58;
-    left: 57%;
-    margin-left: $pageUpImageMarginLeft;
-    top: 205vh;
-    width: 3.5rem;
-    height: 3.6rem;
-    background-image: url('/images/common/pageup.png');
-    background-repeat: no-repeat;
-    background-size: 3.5rem 3.6rem;
-}
-
-.pageup__image__fixed {
-    position: fixed;
-    z-index: 58;
-    left: 57%;
-    margin-left: $pageUpImageMarginLeft;
-    top: 90vh;
-    width: 3.5rem;
-    height: 3.6rem;
-    background-image: url('/images/common/pageup.png');
-    background-repeat: no-repeat;
-    background-size: 3.5rem 3.6rem;
-    cursor: pointer;
-}
-
-.pageup__image:hover {
-    background-image: url('/images/common/pageup-over.png');
-}
-
-.pageup__image__absolute:hover {
-    background-image: url('/images/common/pageup-over.png');
-}
-
-.pageup__image__absolute__homepage:hover {
-    background-image: url('/images/common/pageup-over.png');
-}
-
+.pageup__image:hover,
+.pageup__image__absolute:hover,
+.pageup__image__absolute__homepage:hover,
 .pageup__image__fixed:hover {
     background-image: url('/images/common/pageup-over.png');
 }
 
-$tabletMarginLeft: 43vw;
-@media (max-width: $tabletMaxWidth) {
-    .pageup__image {
-        margin-left: $tabletMarginLeft;
+@media (max-width: 1024px) {
+    .pageup__image,
+    .pageup__image__absolute,
+    .pageup__image__absolute__homepage,
+    .pageup__image__fixed {
+        margin-left: 43vw;
     }
 
     .pageup__image__fake {
-        left: $tabletMarginLeft;
-    }
-
-    .pageup__image__absolute {
-        margin-left: $tabletMarginLeft;
-    }
-
-    .pageup__image__absolute__homepage {
-        margin-left: $tabletMarginLeft;
-    }
-
-    .pageup__image__fixed {
-        margin-left: $tabletMarginLeft;
+        left: 43vw;
     }
 }
 
-@media (max-width: $mobileMaxWidth) {
+@media (max-width: 768px) {
     .pageup__image {
         left: 30rem;
     }
-}
-
-.pageup__box {
- background: $offwhite;
 }
 
 .keyboard-shorcut {

@@ -7,6 +7,12 @@ html {
     height: 100%;
 }
 
+:root,
+html {
+    background-color: var(--color-background);
+    color: var(--color-text-main);
+}
+
 @media (min-width: 768px) {
     html {
         font-size: 48%;
@@ -92,9 +98,10 @@ html {
 }
 
 body {
-    font-family: $font;
-    font-size: $m-size;
-    background-color: $offwhite;
+    font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
+    font-size: var(--m-size, 1.6rem);
+    background-color: var(--color-background);
+    color: var(--color-text-main);
     margin: 0;
     min-height: 100vh;
 }
@@ -143,7 +150,7 @@ button:disabled {
 .modalHeader {
     justify-content: space-between;
     flex-direction: row;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid var(--color-border, #e9ecef);
 }
 
 .modalHeader .close {
@@ -206,25 +213,25 @@ button:disabled {
 
 
 .Heebo-Regular {
-  font-family: $font;
-  font-weight: $fontRegular;
+  font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
+  font-weight: var(--font-weight-regular, 400);
 }
 
 .Heebo-Medium {
-  font-family: $font;
-  font-weight: $fontMedium;
+  font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
+  font-weight: var(--font-weight-medium, 500);
 }
 
-@media (max-width: $mobileMaxWidth) {
+@media (max-width: 768px) {
     .Heebo-Medium-Mobile {
-        font-family: $font;
-        font-weight: $fontMedium;
+        font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
+        font-weight: var(--font-weight-medium, 500);
     }
 }
 
 .Heebo-Bold {
-  font-family: $font;
-  font-weight: $fontBold;
+  font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
+  font-weight: var(--font-weight-bold, 700);
 }
 
 
