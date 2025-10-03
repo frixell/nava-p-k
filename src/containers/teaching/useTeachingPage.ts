@@ -12,17 +12,10 @@ import {
   startUpdateTeach,
   startUpdateTeachImage,
   startUpdateTeachings,
-  startDeleteTeach,
-  type TeachingPageState
+  startDeleteTeach
 } from '../../store/slices/teachingSlice';
 import type { SeoPayload } from '../../types/seo';
-import type { AppDispatch, RootState } from '../../types/store';
 import { DEFAULT_SEO, EMPTY_TEACH, TeachImage, TeachItem, TeachingSeo } from './types';
-
-/*
- * TODO: tighten Firebase typings so we can remove these temporary unsafe rule suppressions.
- */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
 
 interface CloudinaryWidgetOptions {
   cloud_name: string;
@@ -86,7 +79,22 @@ export interface UseTeachingPageResult {
   logout(): void;
 }
 
-const toTeachArray = (source?: TeachItem[] | Record<string, TeachItem>): TeachItem[] => {
+type TeachRecord = Record<string, Partial<TeachItem> | null | undefined>;
+
+const createTeachFromEntry = (key: string, item: Partial<TeachItem> | null | undefined): TeachItem => {
+  const normalizedItem =
+    typeof item === 'object' && item !== null ? item : {};
+  const teach = {
+    ...normalizedItem,
+    id:
+      typeof normalizedItem.id === 'string' && normalizedItem.id.length > 0
+        ? normalizedItem.id
+        : key
+  } satisfies TeachItem;
+  return teach;
+};
+
+const toTeachArray = (source?: TeachItem[] | TeachRecord): TeachItem[] => {
   if (!source) {
     return [];
   }
@@ -95,10 +103,9 @@ const toTeachArray = (source?: TeachItem[] | Record<string, TeachItem>): TeachIt
     return source.map((teach) => ({ ...teach }));
   }
 
-  return Object.keys(source).map((key) => {
-    const data = source[key] || {};
-    return { ...data, id: data.id ?? key } as TeachItem;
-  });
+  return Object.entries(source)
+    .filter(([, value]) => value !== null && value !== undefined)
+    .map(([key, value]) => createTeachFromEntry(key, value));
 };
 
 const normalizeTeach = (teach: TeachItem): TeachItem => ({
@@ -114,8 +121,18 @@ const sortTeachings = (items: TeachItem[]): TeachItem[] =>
     return orderB - orderA;
   });
 
-const buildTeachings = (source?: TeachItem[] | Record<string, TeachItem>): TeachItem[] =>
+const buildTeachings = (source?: TeachItem[] | TeachRecord): TeachItem[] =>
   sortTeachings(toTeachArray(source).map(normalizeTeach));
+
+const isTeachImage = (image: TeachItem['image']): image is TeachImage => {
+  if (typeof image !== 'object' || image === null) {
+    return false;
+  }
+  if (!('publicId' in image)) {
+    return false;
+  }
+  return typeof image.publicId === 'string';
+};
 
 const stripHtml = (value: unknown): string =>
   typeof value === 'string'
@@ -142,10 +159,10 @@ const validateTeachDraft = (draft: TeachItem): string | null => {
 };
 
 export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeachingPageResult => {
-  const dispatch: AppDispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-  const isAuthenticated = useAppSelector((state: RootState) => Boolean(state.auth?.uid));
-  const teachingStore: TeachingPageState = useAppSelector((state: RootState) => state.teachingpage);
+  const isAuthenticated = useAppSelector((state) => Boolean(state.auth.uid));
+  const teachingStore = useAppSelector((state) => state.teachingpage);
 
   const [teachings, setTeachings] = useState<TeachItem[]>(() =>
     buildTeachings(teachingStore.teachings)
@@ -358,12 +375,9 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
     if (!draftTeach) {
       return;
     }
-    const previousId =
-      typeof draftTeach.image === 'object' &&
-      draftTeach.image !== null &&
-      'publicId' in draftTeach.image
-        ? draftTeach.image.publicId
-        : draftTeach.publicId;
+    const previousId = isTeachImage(draftTeach.image)
+      ? draftTeach.image.publicId
+      : draftTeach.publicId;
     const teachId = draftTeach.id;
 
     const widget = cloudinary.openUploadWidget(

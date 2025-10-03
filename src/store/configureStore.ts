@@ -1,5 +1,5 @@
 import type { AnyAction } from 'redux';
-import type { ThunkAction } from 'redux-thunk';
+import type { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit';
 
 interface MiddlewareOptions {
@@ -37,8 +37,8 @@ export const createAppStore = () =>
   });
 
 export type AppStore = ReturnType<typeof createAppStore>;
-export type AppDispatch = AppStore['dispatch'];
 export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction> & AppStore['dispatch'];
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>;
 
 export default createAppStore;

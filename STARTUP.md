@@ -32,8 +32,8 @@
   - `src/app.tsx`, `src/store/configureStore.ts`, `src/store/slices/*` (typed dispatch/getState clean-up from prior session still pending final lint pass).
 - Tests passing: `yarn test --runTestsByPath src/containers/ContactPage.test.tsx src/containers/teaching/TeachingPage.test.tsx src/store/slices/teachingSlice.test.ts`.
 - `yarn typecheck` (tsc --noEmit) passes locally.
-- `yarn eslint <file>` currently errors until new Airbnb stack dependencies are installed (`yarn install`).
-- `yarn lint` still reports existing project-wide issues; schedule targeted fixes once config dependencies resolved.
+  - Shared Firebase database types added; jest mock updated to implement the typed interface.
+  - Teaching slice and hooks now compile against typed `database.ref` calls; lingering `no-unsafe` suppression in `useTeachingPage.ts` awaits broader slice refactors.
 
 ## Next Steps Checklist
 1. Flesh out teaching validation coverage (hook/UI level) and selectors per plan bullet.

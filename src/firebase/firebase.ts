@@ -2,6 +2,8 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import 'firebase/auth';
 
+import type { Database } from './types';
+
 interface FirebaseConfig {
   apiKey: string;
   authDomain: string;
@@ -32,7 +34,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(config);
-const database = app.database();
+const database = app.database() as unknown as Database;
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
 export { firebase, googleAuthProvider, database as default };

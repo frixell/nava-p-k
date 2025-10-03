@@ -3,20 +3,22 @@ import { signInWithEmail, signUpWithEmail, signOut } from '../../services/authSe
 import type { AppDispatch, AppThunk } from '../configureStore';
 
 export interface AuthState {
-  uid?: string | null;
+  uid: string | null;
 }
 
-const initialState: AuthState = {};
+const initialState: AuthState = {
+  uid: null
+};
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     login: (state: AuthState, action: PayloadAction<string | null>) => {
-      state.uid = action.payload ?? undefined;
+      state.uid = action.payload;
     },
     logout: (state: AuthState) => {
-      state.uid = undefined;
+      state.uid = null;
     }
   }
 });

@@ -105,8 +105,10 @@ export const {
 
 export const startSetTeachingPage =
   (): AppThunk<Promise<TeachItem[]>> => async (dispatch: AppDispatch) => {
-    const snapshot = await database.ref('website/teachingpage').once('value');
-    const value = snapshot.val() as SnapshotValue;
+    const snapshot = await database
+      .ref<SnapshotValue>('website/teachingpage')
+      .once('value');
+    const value = snapshot.val();
     const teachingsArray = normalizeTeachings(value?.teachings ?? null);
     dispatch(setTeachingPage({ teachings: teachingsArray, seo: value?.seo }));
     return teachingsArray;
@@ -115,15 +117,15 @@ export const startSetTeachingPage =
 export const startEditTeachingPageSeo =
   (seo: SeoPayload): AppThunk<Promise<void>> =>
   async (dispatch) => {
-    await database.ref('serverSeo/teaching/seo').update(seo);
-    await database.ref('website/teachingpage/seo').update(seo);
+    await database.ref<SeoPayload>('serverSeo/teaching/seo').update(seo);
+    await database.ref<SeoPayload>('website/teachingpage/seo').update(seo);
     dispatch(setTeachingSeo(seo));
   };
 
 export const startUpdateTeachings =
   (fbTeachings: TeachingsMap, teachings: TeachItem[]): AppThunk<Promise<TeachItem[]>> =>
   async (dispatch: AppDispatch) => {
-    await database.ref('website/teachingpage/teachings').update(fbTeachings);
+    await database.ref<TeachingsMap>('website/teachingpage/teachings').update(fbTeachings);
     dispatch(replaceTeachings(teachings));
     return teachings;
   };
@@ -141,7 +143,9 @@ export const startAddTeach =
       order
     };
 
-    const ref = await database.ref('website/teachingpage/teachings').push(firebaseTeach);
+    const ref = await database
+      .ref<Record<string, TeachItem>>('website/teachingpage/teachings')
+      .push(firebaseTeach);
     const teachId = ref.key ?? '';
     const localTeach = normalizeTeach({ ...firebaseTeach, id: teachId }, teachId);
 
@@ -158,7 +162,7 @@ export const startUpdateTeach =
     const id = teachData.id ?? '';
     const teach = normalizeTeach(teachData, id);
 
-    await database.ref(`website/teachingpage/teachings/${id}`).update(teach);
+    await database.ref<TeachItem>(`website/teachingpage/teachings/${id}`).update(teach);
     dispatch(updateTeach(teach));
     return id;
   };
@@ -173,7 +177,7 @@ export const startUpdateTeachImage =
       await deleteImage(publicid);
     }
 
-    await database.ref(`website/teachingpage/teachings/${id}`).update(teach);
+    await database.ref<TeachItem>(`website/teachingpage/teachings/${id}`).update(teach);
     dispatch(updateTeach(teach));
     return id;
   };
@@ -181,7 +185,7 @@ export const startUpdateTeachImage =
 export const startShowTeach =
   (teach: TeachItem): AppThunk<Promise<void>> =>
   async (dispatch: AppDispatch) => {
-    await database.ref(`website/teachingpage/teachings/${teach.id}`).update(teach);
+    await database.ref<TeachItem>(`website/teachingpage/teachings/${teach.id}`).update(teach);
     dispatch(updateTeach(teach));
   };
 
@@ -200,7 +204,7 @@ export const startDeleteTeach =
       await deleteImage(String(imagePublicId));
     }
 
-    await database.ref(`website/teachingpage/teachings/${id}`).remove();
+    await database.ref<TeachItem>(`website/teachingpage/teachings/${id}`).remove();
     dispatch(removeTeach(id));
     return id;
   };

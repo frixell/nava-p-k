@@ -85,7 +85,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ urlLang }) => {
 
           <AboutTopStrip
             isAuthenticated={isAuthenticated}
-            image={aboutpage.image}
+            image={aboutpage.image ?? undefined}
             onRequestUpload={openUploadWidget}
           />
 

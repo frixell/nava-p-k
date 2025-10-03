@@ -56,7 +56,7 @@
 
 ## Deployment & Config Hygiene
 - Move Firebase keys/endpoints to `.env` with typed config readers; document required environment variables.
-  - Create a central `src/config/firebase.ts` that reads from `process.env` and throws on missing keys in non-test environments.
+  - Create a central `src/config/firebase.ts` that reads from `process.env` and throws on missing keys in non-test environments. *(Typed database facade now lives in `src/firebase/types.ts`; real + mock implementations updated.)*
   - Update onboarding docs with required `.env.example` entries and regenerate secrets for any keys currently checked in.
 - Add CI checks (tsc, lint, tests) before deploy to keep the new TypeScript surface healthy.
   - Wire GitHub Actions (or existing CI) with separate steps for `yarn build:prod`, `yarn lint`, `yarn test`, and `tsc --noEmit`.

@@ -4,35 +4,48 @@ import { useTranslation } from 'react-i18next';
 import isEqual from 'lodash.isequal';
 import { startLogout } from '../store/slices/authSlice';
 import type { SeoPayload } from '../types/seo';
-import type { RootState } from '../types/store';
+import type { ImageAsset } from '../types/content';
 import {
   startSetAboutPage,
   startEditAboutPage,
   startEditAboutPageSeo,
-  startSaveAboutImage
+  startSaveAboutImage,
+  type AboutPageState,
+  type AboutSeo,
+  createEmptyAboutPage
 } from '../store/slices/aboutSlice';
 import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
 import type { SeoFormState } from '../shared/components/backoffice/SeoModal';
 
-declare const cloudinary: any;
+interface CloudinaryWidget {
+  open(): void;
+  close(): void;
+}
 
-type AboutImage = {
-  publicId?: string;
-  src?: string;
-  width?: number;
-  height?: number;
-  alt?: string;
-};
+interface CloudinaryUploadInfo {
+  public_id: string;
+  secure_url: string;
+  width: number;
+  height: number;
+  original_filename?: string;
+}
 
-type AboutPageData = Record<string, unknown> & {
-  slogen?: string;
-  slogenHebrew?: string;
-  about?: unknown;
-  content?: string;
-  contentHebrew?: string;
-  image?: AboutImage;
-  seo?: SeoFormState;
-};
+type CloudinaryUploadResult =
+  | { event: 'success'; info: CloudinaryUploadInfo }
+  | { event: Exclude<string, 'success'>; info?: unknown };
+
+interface CloudinaryGlobal {
+  openUploadWidget(
+    options: Record<string, unknown>,
+    callback: (error: Error | null, result?: CloudinaryUploadResult) => void
+  ): CloudinaryWidget | undefined;
+}
+
+declare const cloudinary: CloudinaryGlobal | undefined;
+
+type AboutImage = ImageAsset;
+
+type AboutPageData = AboutPageState;
 
 const defaultSeo: SeoFormState = {
   title: '',
@@ -40,14 +53,18 @@ const defaultSeo: SeoFormState = {
   keyWords: ''
 };
 
-const defaultAboutPage: AboutPageData = {
-  slogen: '',
-  slogenHebrew: '',
-  about: '',
-  content: '',
-  contentHebrew: '',
-  image: {}
-};
+const toSeoFormState = (seo?: AboutSeo | SeoFormState | null): SeoFormState => ({
+  title: typeof seo?.title === 'string' ? seo.title : '',
+  description: typeof seo?.description === 'string' ? seo.description : '',
+  keyWords: typeof seo?.keyWords === 'string' ? seo.keyWords : ''
+});
+
+const isSuccessUpload = (
+  result?: CloudinaryUploadResult
+): result is Extract<CloudinaryUploadResult, { event: 'success' }> =>
+  Boolean(result && result.event === 'success');
+
+const defaultAboutPage: AboutPageData = createEmptyAboutPage();
 
 interface UseAboutPageStateParams {
   urlLang?: string;
@@ -57,11 +74,8 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
 
-  const isAuthenticated = useAppSelector((state: RootState) => {
-    const authState = state.auth as { uid?: string | null } | undefined;
-    return Boolean(authState?.uid);
-  });
-  const aboutpageFromStore = useAppSelector((state: RootState) => state.aboutpage);
+  const isAuthenticated = useAppSelector((state) => Boolean(state.auth.uid));
+  const aboutpageFromStore = useAppSelector((state) => state.aboutpage);
 
   const [aboutpage, setAboutpage] = useState<AboutPageData>(defaultAboutPage);
   const [aboutpageOrigin, setAboutpageOrigin] = useState<AboutPageData | null>(null);
@@ -70,23 +84,19 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
   const [seo, setSeo] = useState<SeoFormState>(defaultSeo);
 
   useEffect(() => {
-    dispatch(startSetAboutPage() as any).then((payload: AboutPageData) => {
-      if (payload) {
-        setAboutpage(payload);
-        setAboutpageOrigin(payload);
-        setSeo(payload.seo ?? defaultSeo);
-      }
+    dispatch(startSetAboutPage()).then((payload: AboutPageState) => {
+      setAboutpage(payload);
+      setAboutpageOrigin(payload);
+      setSeo(toSeoFormState(payload.seo));
+      return payload;
     });
   }, [dispatch]);
 
   useEffect(() => {
-    if (!aboutpageFromStore || !Object.keys(aboutpageFromStore).length) {
-      return;
-    }
     if (!aboutpageOrigin || !isEqual(aboutpageFromStore, aboutpageOrigin)) {
       setAboutpage(aboutpageFromStore);
       setAboutpageOrigin(aboutpageFromStore);
-      setSeo(aboutpageFromStore.seo ?? defaultSeo);
+      setSeo(toSeoFormState(aboutpageFromStore.seo));
     }
   }, [aboutpageFromStore, aboutpageOrigin]);
 
@@ -149,9 +159,9 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
   }, []);
 
   const saveAboutPage = useCallback(() => {
-    const payload = JSON.parse(JSON.stringify(aboutpage));
-    dispatch(startEditAboutPage(payload, payload) as any);
-    setAboutpageOrigin(payload);
+    const firebasePayload = JSON.parse(JSON.stringify(aboutpage)) as Record<string, unknown>;
+    dispatch(startEditAboutPage(firebasePayload, aboutpage));
+    setAboutpageOrigin(aboutpage);
   }, [aboutpage, dispatch]);
 
   const toggleSeoModal = useCallback(() => {
@@ -166,16 +176,17 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
   }, []);
 
   const submitSeo = useCallback(async () => {
-    await dispatch(startEditAboutPageSeo(seo as unknown as SeoPayload) as any);
+    const payload: SeoPayload = { ...seo };
+    await dispatch(startEditAboutPageSeo(payload));
     toggleSeoModal();
   }, [dispatch, seo, toggleSeoModal]);
 
   const handleLogout = useCallback(() => {
-    dispatch(startLogout() as any);
+    dispatch(startLogout());
   }, [dispatch]);
 
   const openUploadWidget = useCallback(() => {
-    if (typeof cloudinary === 'undefined' || !cloudinary.openUploadWidget) {
+    if (!cloudinary || typeof cloudinary.openUploadWidget !== 'function') {
       return;
     }
     const currentPublicId = (aboutpage?.image as AboutImage | undefined)?.publicId ?? null;
@@ -185,28 +196,31 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
         upload_preset: 'ml_default',
         sources: ['local', 'url', 'image_search', 'facebook', 'dropbox', 'instagram', 'camera']
       },
-      (error: unknown, result: any) => {
+      async (error: Error | null, result?: CloudinaryUploadResult) => {
         if (error) {
           // eslint-disable-next-line no-console
           console.error(error);
           return;
         }
-        if (result?.event === 'success') {
-          const image: AboutImage = {
-            publicId: result.info.public_id,
-            src: result.info.secure_url,
-            width: result.info.width,
-            height: result.info.height,
-            alt: result.info.original_filename
-          };
-          dispatch(startSaveAboutImage(image, currentPublicId || undefined) as any).then(() => {
-            setAboutpage((prev) => ({
-              ...prev,
-              image
-            }));
-          });
-          widget?.close();
+        if (!isSuccessUpload(result)) {
+          return;
         }
+        const uploadInfo = result.info;
+        const image: AboutImage = {
+          publicId: uploadInfo.public_id,
+          src: uploadInfo.secure_url,
+          width: uploadInfo.width,
+          height: uploadInfo.height,
+          alt: uploadInfo.original_filename,
+          order: 0
+        };
+
+        await dispatch(startSaveAboutImage(image, currentPublicId ?? undefined));
+        setAboutpage((prev) => ({
+          ...prev,
+          image
+        }));
+        widget?.close();
       }
     );
     widget?.open();

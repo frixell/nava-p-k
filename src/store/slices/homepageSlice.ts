@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { Dispatch } from 'redux';
 import database from '../../firebase/firebase';
 import { deleteImage } from '../../services/imageService';
-import type { RootState } from '../configureStore';
+import type { AppDispatch, AppThunk, RootState } from '../configureStore';
 
-export interface HomepageSeo extends Record<string, string> {}
+export type HomepageSeo = Record<string, string>;
 
 export interface TellData {
     name: string;
@@ -16,53 +15,67 @@ export interface TellData {
 }
 
 export interface HomepageState {
-    tell?: Record<string, TellData>;
-    seo?: HomepageSeo;
+    tell: Record<string, TellData>;
+    seo: HomepageSeo | null;
     [key: string]: unknown;
 }
 
-type HomepageWrapper = { homepage: HomepageState };
-type HomepagePayload = HomepageState | HomepageWrapper;
+type HomepageWrapper = { homepage: Partial<HomepageState> };
+type HomepagePayload = Partial<HomepageState> | HomepageWrapper;
 
 type HomepageCallback = (error: Error | null, data?: HomepageState) => void;
 
-const initialState: HomepageState = {};
+const initialState: HomepageState = {
+    tell: {},
+    seo: null
+};
 
-const ensureHomepageState = (payload?: HomepageState | null): HomepageState => ({
-    ...(payload ?? {})
-} as HomepageState);
+const ensureHomepageState = (
+    payload?: Partial<HomepageState> | null,
+    fallback: HomepageState = initialState
+): HomepageState => ({
+    ...fallback,
+    ...(payload ?? {}),
+    tell: { ...(payload?.tell ?? fallback.tell) },
+    seo: payload?.seo ?? fallback.seo
+});
 
 const isHomepageWrapper = (payload: HomepagePayload): payload is HomepageWrapper =>
     typeof payload === 'object' && payload !== null && 'homepage' in payload;
 
 const extractHomepage = (payload: HomepagePayload): HomepageState => {
     if (isHomepageWrapper(payload)) {
-        return ensureHomepageState(payload.homepage);
+        return ensureHomepageState(payload.homepage, initialState);
     }
-    return ensureHomepageState(payload);
+    return ensureHomepageState(payload, initialState);
 };
 
 const homepageSlice = createSlice({
     name: 'homepage',
     initialState,
     reducers: {
-        setHomepage: (_state: HomepageState, action: PayloadAction<HomepageState | null | undefined>) =>
-            ensureHomepageState(action.payload ?? undefined),
-        updateHomepage: (state: HomepageState, action: PayloadAction<HomepageState>) => ({
+        setHomepage: (
+            _state: HomepageState,
+            action: PayloadAction<Partial<HomepageState> | null | undefined>
+        ) => ensureHomepageState(action.payload ?? null),
+        updateHomepage: (state: HomepageState, action: PayloadAction<Partial<HomepageState>>) => ({
             ...state,
-            ...ensureHomepageState(action.payload)
+            ...ensureHomepageState(action.payload, state)
         }),
-        updateHomepageSeo: (state: HomepageState, action: PayloadAction<HomepageSeo>) => ({
-            ...state,
-            seo: {
+        updateHomepageSeo: (state: HomepageState, action: PayloadAction<HomepageSeo>) => {
+            const nextSeo: HomepageSeo = {
                 ...(state.seo ?? {}),
                 ...action.payload
-            }
-        }),
+            };
+            return {
+                ...state,
+                seo: nextSeo
+            };
+        },
         addHomepageTell: (state: HomepageState, action: PayloadAction<{ id: string; tell: TellData }>) => ({
             ...state,
             tell: {
-                ...(state.tell ?? {}),
+                ...state.tell,
                 [action.payload.id]: action.payload.tell
             }
         })
@@ -78,16 +91,18 @@ export const {
 
 const writeHomepage = async (payload: HomepagePayload) => {
     if (isHomepageWrapper(payload)) {
-        await database.ref('website').update(payload);
-    } else {
-        await database.ref('website/homepage').update(extractHomepage(payload));
+        await database.ref('website').update({ homepage: extractHomepage(payload) });
+        return;
     }
+    await database.ref('website/homepage').update(extractHomepage(payload));
 };
 
-export const startSetHomePage = (done?: HomepageCallback) => async (dispatch: Dispatch) => {
+export const startSetHomePage = (
+    done?: HomepageCallback
+): AppThunk<Promise<HomepageState>> => async (dispatch: AppDispatch) => {
     try {
         const snapshot = await database.ref('website/homepage').once('value');
-        const value = snapshot.val() as HomepageState | null;
+        const value = snapshot.val() as Partial<HomepageState> | null;
         const homepage = ensureHomepageState(value);
         dispatch(setHomepage(homepage));
         done?.(null, homepage);
@@ -98,14 +113,18 @@ export const startSetHomePage = (done?: HomepageCallback) => async (dispatch: Di
     }
 };
 
-export const startEditHomePage = (payload: HomepagePayload) => async (dispatch: Dispatch) => {
+export const startEditHomePage = (
+    payload: HomepagePayload
+): AppThunk<Promise<HomepageState>> => async (dispatch: AppDispatch) => {
     const homepage = extractHomepage(payload);
     await writeHomepage(payload);
     dispatch(updateHomepage(homepage));
     return homepage;
 };
 
-export const startEditHomePageSeo = (seo: HomepageSeo) => async (dispatch: Dispatch) => {
+export const startEditHomePageSeo = (seo: HomepageSeo): AppThunk<Promise<HomepageSeo>> => async (
+    dispatch: AppDispatch
+) => {
     await database.ref('serverSeo/seo').update(seo);
     await database.ref('website/homepage/seo').update(seo);
     dispatch(updateHomepageSeo(seo));
@@ -113,9 +132,9 @@ export const startEditHomePageSeo = (seo: HomepageSeo) => async (dispatch: Dispa
 };
 
 export const startAddHomePageTell = (
-    _homepage: HomepageState = {},
+    _homepage: Partial<HomepageState> = {},
     tellData: Partial<TellData> = {}
-) => async (dispatch: Dispatch, getState: () => RootState) => {
+): AppThunk<Promise<HomepageState>> => async (dispatch: AppDispatch, getState: () => RootState) => {
     const {
         name = '',
         position = '',
@@ -136,11 +155,11 @@ export const startAddHomePageTell = (
     dispatch(addHomepageTell({ id, tell }));
 
     const state = getState();
-    const currentHomepage = ensureHomepageState(state.homepage as HomepageState);
+    const currentHomepage = state.homepage;
     const mergedHomepage: HomepageState = {
         ...currentHomepage,
         tell: {
-            ...(currentHomepage?.tell ?? {}),
+            ...currentHomepage.tell,
             [id]: tell
         }
     };
@@ -151,7 +170,7 @@ export const startAddHomePageTell = (
 export const startDeleteHomePageImage = (
     payload: HomepagePayload,
     publicid: string
-) => async (dispatch: Dispatch) => {
+): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
     if (publicid) {
         await deleteImage(publicid);
     }

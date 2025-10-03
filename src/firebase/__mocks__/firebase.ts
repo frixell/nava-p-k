@@ -1,5 +1,7 @@
 import { jest } from '@jest/globals';
 
+import type { Database, DatabaseReference, DatabaseSnapshot } from '../types';
+
 type Primitive = string | number | boolean | null | undefined;
 
 type JsonValue = Primitive | JsonObject | JsonArray;
@@ -8,17 +10,13 @@ interface JsonObject {
 }
 type JsonArray = JsonValue[];
 
-type DatabaseSnapshot = {
-  val(): JsonValue;
-};
-
 let dbState: JsonObject = {};
 let keyCounter = 0;
 
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
-const clone = <T extends JsonValue>(value: T): T => {
+const clone = <T>(value: T): T => {
   if (value === undefined) {
     return value;
   }
@@ -61,7 +59,7 @@ const ensureParent = (path: string, create = false): { parent: JsonObject; key: 
   return { parent, key: segments[segments.length - 1] ?? null };
 };
 
-const setValueAtPath = (path: string, value: JsonValue): void => {
+const setValueAtPath = (path: string, value: unknown): void => {
   const { parent, key } = ensureParent(path, true);
   if (key === null) {
     dbState = isObject(value) ? (clone(value) as JsonObject) : {};
@@ -75,7 +73,7 @@ const setValueAtPath = (path: string, value: JsonValue): void => {
   }
 };
 
-const mergeValueAtPath = (path: string, value: JsonValue): void => {
+const mergeValueAtPath = (path: string, value: unknown): void => {
   if (!isObject(value)) {
     setValueAtPath(path, value);
     return;
@@ -102,27 +100,28 @@ const createSnapshot = (path: string): DatabaseSnapshot => ({
   val: () => getValueAtPath(path)
 });
 
-const createRef = (path: string) => ({
-  once: jest.fn(async () => createSnapshot(path)),
-  update: jest.fn(async (value: JsonValue) => {
-    mergeValueAtPath(path, value);
-  }),
-  push: jest.fn(async (value: JsonValue) => {
-    const key = `mock-${++keyCounter}`;
-    mergeValueAtPath(path, { [key]: value } as JsonObject);
-    return { key };
-  }),
-  remove: jest.fn(async () => {
-    setValueAtPath(path, null);
-  }),
-  set: jest.fn(async (value: JsonValue) => {
-    setValueAtPath(path, value);
-  }),
-  child: jest.fn((segment: string) => createRef(`${path}/${segment}`))
-});
+const createRef = <T = JsonValue>(path: string): DatabaseReference<T> =>
+  ({
+    once: jest.fn(async () => createSnapshot(path) as DatabaseSnapshot<T>),
+    update: jest.fn(async (value: unknown) => {
+      mergeValueAtPath(path, value);
+    }),
+    push: jest.fn(async (value: unknown) => {
+      const key = `mock-${++keyCounter}`;
+      mergeValueAtPath(path, { [key]: value });
+      return { key };
+    }),
+    remove: jest.fn(async () => {
+      setValueAtPath(path, null);
+    }),
+    set: jest.fn(async (value: unknown) => {
+      setValueAtPath(path, value);
+    }),
+    child: jest.fn((segment: string) => createRef(`${path}/${segment}`))
+  }) as unknown as DatabaseReference<T>;
 
-const database = {
-  ref: (path: string) => createRef(path)
+const database: Database = {
+  ref: (path) => createRef(path ?? '')
 };
 
 const firebaseInstance = {
@@ -146,11 +145,6 @@ export const __resetMockFirebase = (initial: JsonObject = {}) => {
 };
 
 export const __getMockFirebaseState = (): JsonObject => clone(dbState) as JsonObject;
-
-export type MockFirebaseModule = {
-  __resetMockFirebase: typeof __resetMockFirebase;
-  __getMockFirebaseState: typeof __getMockFirebaseState;
-};
 
 export const firebase = firebaseInstance;
 
