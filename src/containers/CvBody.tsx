@@ -1,12 +1,13 @@
 import React from 'react';
 import CvContentStrip, { type SyntheticSetDataEvent } from '../components/cvpage/CvContentStrip';
 import { CvStructure, CvLeftColumn, HeaderContainer, PageHeading } from './CvBody.styles';
+import type { CvPageState } from '../store/slices/cvSlice';
 
 interface CvBodyProps {
   isAuthenticated: boolean;
   language: string;
-  cvpage: any;
-  cvpageOrigin: any;
+  cvpage: CvPageState;
+  cvpageOrigin: CvPageState | null;
   setData: (event: SyntheticSetDataEvent) => void;
 }
 

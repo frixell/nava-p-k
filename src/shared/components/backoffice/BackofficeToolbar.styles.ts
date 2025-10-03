@@ -18,26 +18,34 @@ export const ToolbarButton = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  gap: '0.25rem'
+  gap: '0.125rem'
 }));
 
 export const ToolbarLabel = styled.span<{ isDirty?: boolean }>(({ isDirty }) => ({
   display: 'block',
   minHeight: '1.8rem',
   minWidth: '5.6rem',
-  fontSize: '0.9rem',
+  fontSize: '12px',
   color: isDirty
     ? 'var(--color-accent-danger, #cc7f6b)'
-    : 'var(--color-accent-secondary, #749260)'
+    : 'var(--color-accent-primary, aqua)'
 }));
 
 export const ToolbarActionButton = styled.button({
   padding: 0,
   border: 'none',
-  background: 'transparent',
-  width: '3rem',
+  background: 'var(--color-accent-primary, aqua)',
+  width: '4rem',
   height: '3rem',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  borderRadius: '0.25rem',
+  transition: 'background 150ms ease-in-out, border 150ms ease-in-out',
+  '&:hover': {
+    border: '1px solid var(--color-text-muted, #666665)'
+  },
+  '&:active': {
+    background: 'var(--color-accent-success, green)'
+  }
 });
 
 export const ToolbarActionIcon = styled.img({

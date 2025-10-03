@@ -5,7 +5,7 @@ import Navigation from '../components/common/Navigation';
 import PageUpStrip from '../components/common/PageUpStrip';
 import Footer from '../components/common/Footer';
 import { useCvPageState } from './useCvPageState';
-import { startSetCvPage, startEditCvPage, startEditCvPageSeo } from '../store/slices/cvSlice';
+import { startSetCvPage, startEditCvPage, startEditCvPageSeo, type CvPageState, type CvSeo } from '../store/slices/cvSlice';
 import { startLogout } from '../store/slices/authSlice';
 import CvToolbar from './CvToolbar';
 import CvSeoModal from './CvSeoModal';
@@ -21,29 +21,29 @@ interface CvPageProps {
 const CvPage: React.FC<CvPageProps> = ({ urlLang }) => {
   const dispatch = useAppDispatch();
   const { t, i18n } = useTranslation();
-  const isAuthenticated = useAppSelector((state: RootState) => {
-    const authState = state.auth as { uid?: string | null } | undefined;
-    return Boolean(authState?.uid);
-  });
-  const cvpageData = useAppSelector((state: RootState) => state.cvpage);
+  const isAuthenticated = useAppSelector((state: RootState) => Boolean(state.auth.uid));
+  const cvpageData = useAppSelector((state: RootState) => state.cvpage as CvPageState | null);
 
-  const loadCvPage: () => void = useCallback(() => {
-    dispatch(startSetCvPage() as any);
+  const loadCvPage = useCallback(() => {
+    dispatch(startSetCvPage());
   }, [dispatch]);
-  const saveCvPageToDb: (fb: any, cv: any) => void = useCallback(
-    (fb: any, cv: any) => {
-      dispatch(startEditCvPage(fb, cv) as any);
+
+  const saveCvPageToDb = useCallback(
+    (fb: Record<string, unknown>, cv: CvPageState) => {
+      dispatch(startEditCvPage(fb, cv));
     },
     [dispatch]
   );
-  const saveSeoToDb: (seo: any) => void = useCallback(
-    (seo: any) => {
-      dispatch(startEditCvPageSeo(seo) as any);
+
+  const saveSeoToDb = useCallback(
+    (seo: CvSeo) => {
+      dispatch(startEditCvPageSeo(seo));
     },
     [dispatch]
   );
-  const logout: () => void = useCallback(() => {
-    dispatch(startLogout() as any);
+
+  const logout = useCallback(() => {
+    dispatch(startLogout());
   }, [dispatch]);
 
   const {

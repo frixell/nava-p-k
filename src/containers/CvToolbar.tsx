@@ -24,35 +24,35 @@ const CvToolbar: React.FC<CvToolbarProps> = ({
     () => [
       {
         id: 'exit',
-        label: translate('exit', 'Exit'),
+        label: translate('exit', isEnglish ? 'Exit' : 'יציאה'),
         iconSrc: '/images/backoffice/exit.svg',
         onClick: onExit,
         leftHe: '10%',
         leftEn: '90%',
-        alt: translate('exit', 'Exit')
+        alt: translate('exit', isEnglish ? 'Exit' : 'יציאה')
       },
       {
         id: 'save-project',
-        label: translate('save', 'Save'),
+        label: translate('save', isEnglish ? 'Save' : 'שמירה'),
         iconSrc: '/images/backoffice/save.svg',
         onClick: onSave,
         leftHe: '15%',
         leftEn: '85%',
         dirty: needSave,
-        alt: translate('save', 'Save')
+        alt: translate('save', isEnglish ? 'Save' : 'שמירה')
       },
       {
         id: 'seo',
-        label: 'SEO',
+        label: translate('seo', isEnglish ? 'SEO' : 'קידום'),
         iconSrc: '/images/backoffice/edit.svg',
         onClick: onSeo,
         leftHe: '20%',
         leftEn: '80%',
         dirty: needSave,
-        alt: 'SEO'
+        alt: translate('seo', isEnglish ? 'SEO' : 'קידום')
       }
     ],
-    [needSave, onExit, onSave, onSeo, translate]
+    [isEnglish, needSave, onExit, onSave, onSeo, translate]
   );
 
   if (!isAuthenticated) {

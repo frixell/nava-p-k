@@ -13,12 +13,7 @@ import {
     EditorShell,
     ReadOnlyContent
 } from './CvContentStrip.styles';
-
-interface CvPageContent {
-    content?: string;
-    contentHebrew?: string;
-    [key: string]: unknown;
-}
+import type { CvPageState } from '../../store/slices/cvSlice';
 
 export interface SyntheticSetDataEvent {
     target: {
@@ -31,8 +26,8 @@ export interface SyntheticSetDataEvent {
 }
 
 interface CvContentStripProps {
-    cvpage?: CvPageContent | null;
-    cvpageOrigin?: CvPageContent | null;
+    cvpage?: CvPageState | null;
+    cvpageOrigin?: CvPageState | null;
     setData: (event: SyntheticSetDataEvent) => void;
     isAuthenticated?: boolean;
 }
@@ -70,13 +65,19 @@ const CvContentStrip: React.FC<CvContentStripProps> = ({
     }, [cvpage?.content, cvpage?.contentHebrew, language]);
 
     const [editorState, setEditorState] = useState(() => createEditorState(editorHtml));
+    const isLocalChangeRef = React.useRef(false);
 
     useEffect(() => {
+        if (isLocalChangeRef.current) {
+            isLocalChangeRef.current = false;
+            return;
+        }
         setEditorState(createEditorState(editorHtml));
     }, [editorHtml, cvpageOrigin]);
 
     const handleEditorStateChange = useCallback((nextState: EditorState) => {
         setEditorState(nextState);
+        isLocalChangeRef.current = true;
         const currentValue = draftToHtml(convertToRaw(nextState.getCurrentContent())) || '';
         const name = language === 'en' ? 'content' : 'contentHebrew';
 
