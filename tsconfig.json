@@ -26,7 +26,8 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["node", "@testing-library/jest-dom"]
   },
   "include": [
     "src/**/*",

@@ -40,19 +40,6 @@
     width: 2rem;
 }
 
-input[type="email"] {
-    text-align: left;
-}
-input[type="email"]:-moz-placeholder {
-    text-align: right;
-}
-input[type="email"]:-ms-input-placeholder {
-    text-align: right;
-}
-input[type="email"]::-webkit-input-placeholder {
-    text-align: right;
-}
-
 .esri-basemap-gallery {
     max-height: 500px !important;
     max-width: 260px !important;

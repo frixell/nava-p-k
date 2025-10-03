@@ -16,6 +16,7 @@ import {
     HeaderContainer,
     HeaderTitle
 } from './teaching/TeachingPage.styles';
+import { PageUpSpacer, FakePageUpStripAnchor } from './PageLayout.styles';
 
 interface TeachingPageProps {
     urlLang?: string;
@@ -26,6 +27,8 @@ const TeachingPage: React.FC<TeachingPageProps> = ({ urlLang }) => {
     const teaching = useTeachingPage({ urlLang, i18n });
     const language = i18n.language;
     const isHebrew = language === 'he';
+
+    const isSpacerHidden = teaching.pageupImageClassName === 'pageup__image';
 
     return (
         <PageWrapper>
@@ -62,9 +65,9 @@ const TeachingPage: React.FC<TeachingPageProps> = ({ urlLang }) => {
                 </ContentInner>
             </ContentSection>
 
-            <div hidden={teaching.pageupImageClassName === 'pageup__image'} className="pageup__image__fake desktop" />
+            <PageUpSpacer isHidden={isSpacerHidden} aria-hidden={isSpacerHidden} />
             <PageUpStrip pageupImageClassName={teaching.pageupImageClassName} />
-            <div id="fake_pageupstrip" />
+            <FakePageUpStripAnchor id="fake_pageupstrip" />
             <Footer position="relative" />
 
             <TeachingSeoModal

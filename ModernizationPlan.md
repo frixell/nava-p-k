@@ -1,9 +1,9 @@
 # Modernization Plan
 
 ## Status Snapshot
-- ✅ Wrapped: TypeScript migration, state/data layer cleanup, legacy dependency removal, routing/entry refresh.
+- ✅ Wrapped: TypeScript migration, state/data layer cleanup, legacy dependency removal, routing/entry refresh, styling consistency.
 - 🧭 In Motion: Testing & Tooling upgrades, Build & Performance audits, Deployment hardening.
-- 🔜 Next Planning Pass: Styling consistency sweeps before implementation tickets.
+- 🔜 Next Planning Pass: Testing coverage expansion before build/perf experiments.
 
 ## ✅ Finish TypeScript Migration
 - Converted remaining JS entry points (`src/app.tsx`, Firebase bootstrap, router modules) to TS/TSX so types flow end-to-end.
@@ -22,12 +22,9 @@
 - Bootstrapped the client from `src/app.tsx` with the typed store, theme, and a single i18n hydration flow bound to the language detector.
 - Language detection now rides on `i18next-browser-languagedetector`, removing the old IP lookup side-effect (`src/i18n/i18n.js`).
 
-## Styling Consistency
-- Consolidate global SCSS into CSS variables + modules or Emotion themes; migrate remaining BEM classes to styled components where practical.
-  - Retire legacy strips still bound to `.scss` BEM classes (e.g. `PageUpStrip`, workshop/pageup assets) in favour of Emotion components.
-  - Replace `src/styles/components/*.scss` imports with theme-driven styled modules as we touch each section.
-- Define shared typography/spacing tokens so new components (Contact, Cv, Teaching) align visually.
-  - Audit components that still hard-code rem values and backfill usage of `theme.app.spacing`/`theme.app.typography` helpers.
+## ✅ Styling Consistency
+- Rebuilt the navigation bar and page-up strip with Emotion/MUI styling hooks, eliminating the remaining BEM-driven SCSS and aligning them with theme tokens.
+- Removed legacy SCSS imports and helpers tied to navigation/pageup partials so new components default to the theme-based system.
 
 ## Testing & Tooling
 - Add React Testing Library smoke tests for critical screens (Contact submit flow, Teaching CRUD) and reducers/sagas once ported to RTK.
