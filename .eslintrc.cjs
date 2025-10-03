@@ -34,5 +34,19 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     'prettier/prettier': 'error'
-  }
+  },
+  overrides: [
+    {
+      files: ['**/*.test.{ts,tsx}', '**/__mocks__/**/*.{ts,tsx,js,jsx}'],
+      rules: {
+        '@typescript-eslint/require-await': 'off',
+        '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-return': 'off',
+        '@typescript-eslint/no-explicit-any': 'off'
+      }
+    }
+  ]
 };

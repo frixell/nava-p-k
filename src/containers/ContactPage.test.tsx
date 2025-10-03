@@ -23,9 +23,13 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('../firebase/firebase');
 
+type MockFirebaseState = {
+  messages?: Record<string, unknown>;
+};
+
 const firebaseModule = jest.requireMock('../firebase/firebase') as {
   __resetMockFirebase: (initial?: Record<string, unknown>) => void;
-  __getMockFirebaseState: () => Record<string, any>;
+  __getMockFirebaseState: () => MockFirebaseState;
 };
 const { __resetMockFirebase, __getMockFirebaseState } = firebaseModule;
 
@@ -66,7 +70,8 @@ describe('ContactPage', () => {
     await waitFor(() => expect(screen.getByText('Thank you!')).toBeTruthy());
 
     expect(sendEmailSpy).toHaveBeenCalledTimes(1);
-    const requestBody = String(sendEmailSpy.mock.calls[0]?.[0] ?? '');
+    const requestArg = sendEmailSpy.mock.calls[0]?.[0];
+    const requestBody = typeof requestArg === 'string' ? requestArg : '';
     const params = new URLSearchParams(requestBody);
     expect(params.get('email')).toBe('john@example.com');
     expect(params.get('name')).toBe('John Doe');

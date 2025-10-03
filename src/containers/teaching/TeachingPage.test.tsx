@@ -104,9 +104,10 @@ describe('TeachingPage smoke flow', () => {
     expect(deleteImageSpy).toHaveBeenCalledTimes(1);
     expect(deleteImageSpy.mock.calls[0]?.[0]).toContain('public-1');
 
-    const state = __getMockFirebaseState();
-    const teachingsState =
-      state.website?.teachingpage?.teachings && Object.keys(state.website.teachingpage.teachings);
+    const state = __getMockFirebaseState() as {
+      website?: { teachingpage?: { teachings?: Record<string, unknown> } };
+    };
+    const teachingsState = Object.keys(state.website?.teachingpage?.teachings ?? {});
     expect(teachingsState).toEqual([]);
   });
 });
