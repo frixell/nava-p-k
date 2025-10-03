@@ -89,7 +89,7 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      <form onSubmit={handleSubmit} dir={dir}>
+      <form data-testid="contact-form" onSubmit={handleSubmit} dir={dir}>
         <FieldStack>
           <InputField
             type="text"

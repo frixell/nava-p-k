@@ -64,7 +64,18 @@ const Navigation: React.FC<NavigationProps> = ({ langLink, langLinkEng }) => {
     });
   };
 
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+  const decodePathname = (value: string) => {
+    try {
+      return decodeURI(value);
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn('Failed to decode pathname', value, error);
+      }
+      return value;
+    }
+  };
+
+  const pathname = typeof window !== 'undefined' ? decodePathname(window.location.pathname) : '';
 
   const navLinks = isHebrew
     ? [

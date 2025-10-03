@@ -80,22 +80,38 @@ const TeachItem: React.FC<TeachItemProps> = ({
         : teach.image ?? null;
 
     return (
-        <Card onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+        <Card
+            data-testid={`teach-card-${teach.id}`}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+        >
             <CardHeader>
                 {isAuthenticated && isHovering && (
                     <Actions>
                         <Tooltip title={isVisible ? 'Hide' : 'Show'}>
-                            <IconButton size="small" onClick={toggleVisibility}>
+                            <IconButton
+                                aria-label={isVisible ? 'Hide teaching item' : 'Show teaching item'}
+                                size="small"
+                                onClick={toggleVisibility}
+                            >
                                 {isVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Edit">
-                            <IconButton size="small" onClick={() => onEdit(teach)}>
+                            <IconButton
+                                aria-label="Edit teaching item"
+                                size="small"
+                                onClick={() => onEdit(teach)}
+                            >
                                 <EditIcon />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Delete">
-                            <IconButton size="small" onClick={() => onDelete(teach.id)}>
+                            <IconButton
+                                aria-label="Delete teaching item"
+                                size="small"
+                                onClick={() => onDelete(teach.id)}
+                            >
                                 <DeleteIcon />
                             </IconButton>
                         </Tooltip>
