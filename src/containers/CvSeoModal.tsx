@@ -12,7 +12,7 @@ interface CvSeoModalProps {
 
 const labels = {
   he: {
-    titlePlaceholder: "כותרת לדף (title)",
+    titlePlaceholder: 'כותרת לדף (title)',
     descriptionPlaceholder: 'תיאור',
     keywordsPlaceholder: 'מילות מפתח',
     submit: 'עדכון',
@@ -27,7 +27,14 @@ const labels = {
   }
 };
 
-const CvSeoModal: React.FC<CvSeoModalProps> = ({ open, language, seo, onChange, onSubmit, onClose }) => {
+const CvSeoModal: React.FC<CvSeoModalProps> = ({
+  open,
+  language,
+  seo,
+  onChange,
+  onSubmit,
+  onClose
+}) => {
   const dir = language === 'he' ? 'rtl' : 'ltr';
   const localizedLabels = language === 'he' ? labels.he : labels.en;
 

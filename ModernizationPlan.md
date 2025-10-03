@@ -22,16 +22,18 @@
 - Bootstrapped the client from `src/app.tsx` with the typed store, theme, and a single i18n hydration flow bound to the language detector.
 - Language detection now rides on `i18next-browser-languagedetector`, removing the old IP lookup side-effect (`src/i18n/i18n.js`).
 
-## ✅ Styling Consistency
-- Rebuilt the navigation bar and page-up strip with Emotion/MUI styling hooks, eliminating the remaining BEM-driven SCSS and aligning them with theme tokens.
-- Removed legacy SCSS imports and helpers tied to navigation/pageup partials so new components default to the theme-based system.
+## Styling Consistency
+- ✅ Converted navigation + page-up strip to Emotion/MUI and dropped their SCSS imports.
+- 🔧 Outstanding: `_Footer.scss`, `_HomePage.scss`, `_Backoffice.scss`, `_GlobalUI.scss`, `_WorkshopPage.scss` remain to be migrated to theme-driven styling.
+- 📋 Align residual layout helpers (e.g., `PageLayout.styles` derivatives) once their host features move off the legacy partials.
 
 ## Testing & Tooling
 - Add React Testing Library smoke tests for critical screens (Contact submit flow, Teaching CRUD) and reducers/sagas once ported to RTK.
-  - Stand up fixtures and MSW handlers so Contact submissions can be asserted without hitting real endpoints.
-  - Cover Teaching list/create/update/delete happy paths and at least one validation error to safeguard the CRUD surface.
-  - Snapshot updated RTK slices by testing selector outputs and thunk success/failure branches; backfill legacy saga coverage before we remove them.
-- Integrate ESLint/Prettier with a TS-aware config to enforce consistent formatting and catch leftover `any`s.
+  - ✅ ContactPage submit path covered using MSW with Firebase/database mocks to assert persisted records and email dispatch.
+  - ✅ TeachingPage hide/delete path covered with MSW-backed image delete handler and in-memory Firebase state.
+  - ✅ Teaching slice thunks now exercised with the Firebase mock (load/add/delete) so reducers are proven against expected RTK behaviour.
+  - Stand up fixtures for the remaining CRUD edges (create/edit validations) and cover RTK selector/thunk behaviour.
+  - Integrate ESLint/Prettier with a TS-aware config to enforce consistent formatting and catch leftover `any`s.
   - Extend `eslint-config-airbnb` (or existing baseline) with `@typescript-eslint` and React Testing Library plugins; add lint scripts to `package.json`.
   - Introduce a shared Prettier config aligned with the 4-space/single-quote house style and wire `lint-staged` for on-commit enforcement.
   - Gate `yarn lint` and `yarn format:check` in CI alongside tests so divergence is caught before merge.

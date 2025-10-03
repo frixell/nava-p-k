@@ -20,8 +20,8 @@ const CvToolbar: React.FC<CvToolbarProps> = ({
   onExit,
   translate
 }) => {
-  const actions = useMemo(() => (
-    [
+  const actions = useMemo(
+    () => [
       {
         id: 'exit',
         label: translate('exit', 'Exit'),
@@ -51,8 +51,9 @@ const CvToolbar: React.FC<CvToolbarProps> = ({
         dirty: needSave,
         alt: 'SEO'
       }
-    ]
-  ), [needSave, onExit, onSave, onSeo, translate]);
+    ],
+    [needSave, onExit, onSave, onSeo, translate]
+  );
 
   if (!isAuthenticated) {
     return null;

@@ -16,9 +16,26 @@ interface AboutPageProps {
 }
 
 const AboutPage: React.FC<AboutPageProps> = ({ urlLang }) => {
-  const { t, i18n, isAuthenticated, aboutpage, aboutpageOrigin, seo, needSave, pageupImageClassName,
-    isSeoModalOpen, langLink, langLinkEng, updateField, saveAboutPage, toggleSeoModal,
-    handleSeoChange, submitSeo, handleLogout, openUploadWidget } = useAboutPageState({ urlLang });
+  const {
+    t,
+    i18n,
+    isAuthenticated,
+    aboutpage,
+    aboutpageOrigin,
+    seo,
+    needSave,
+    pageupImageClassName,
+    isSeoModalOpen,
+    langLink,
+    langLinkEng,
+    updateField,
+    saveAboutPage,
+    toggleSeoModal,
+    handleSeoChange,
+    submitSeo,
+    handleLogout,
+    openUploadWidget
+  } = useAboutPageState({ urlLang });
   const isSpacerHidden = pageupImageClassName === 'pageup__image';
   const isHebrew = i18n.language === 'he';
   const direction: 'ltr' | 'rtl' = isHebrew ? 'rtl' : 'ltr';

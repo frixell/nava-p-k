@@ -2,10 +2,16 @@
  "testEnvironment": "jsdom",
  "setupFilesAfterEnv": ["<rootDir>/src/tests/setupTests.js"],
  "moduleNameMapper": {
+   "^msw/node$": "<rootDir>/node_modules/msw/lib/node/index.js",
+   "^@mswjs/interceptors/WebSocket$": "<rootDir>/node_modules/@mswjs/interceptors/lib/browser/interceptors/WebSocket/index.js",
+   "^@mswjs/interceptors/(.*)$": "<rootDir>/node_modules/@mswjs/interceptors/lib/node/interceptors/$1/index.js",
    "\\.(css|scss|sass)$": "identity-obj-proxy"
  },
- "transform": {
-   "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
- },
- "moduleFileExtensions": ["js", "jsx", "ts", "tsx", "json", "node"]
+"transform": {
+  "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+},
+"transformIgnorePatterns": [
+  "node_modules/(?!(msw|@mswjs/interceptors|until-async|@open-draft|headers-polyfill|web-streams-polyfill)/)"
+],
+"moduleFileExtensions": ["js", "jsx", "ts", "tsx", "json", "node"]
 }

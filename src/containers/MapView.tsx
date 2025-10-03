@@ -50,8 +50,8 @@ const DEFAULT_COLOR: NumericTuple = [226, 119, 40];
 const GOTO_ZOOM = 10;
 
 const ZOOM_RADIUS: number[] = [
-  1258291.2, 629145.6, 314572.8, 157286.4, 78643.2, 39321.6, 19660.8, 9830.4, 4915.2, 2457.6, 1228.8,
-  614.4, 307.2, 153.6, 76.8, 38.4, 19.2, 9.6, 4.8, 2.4, 1.2, 0.6, 0.3, 0.15
+  1258291.2, 629145.6, 314572.8, 157286.4, 78643.2, 39321.6, 19660.8, 9830.4, 4915.2, 2457.6,
+  1228.8, 614.4, 307.2, 153.6, 76.8, 38.4, 19.2, 9.6, 4.8, 2.4, 1.2, 0.6, 0.3, 0.15
 ];
 
 const INDEX_Y: number[] = [10000000, 10000000, 50, 50, 12, 4.1, 3.3, 2.1, 1.5, 1.2, 1.1, 1.05];
@@ -67,8 +67,8 @@ const ZOOM_FACTORS_Y: number[] = [
 ];
 
 const ZOOM_FACTORS_Y_VAL: number[] = [
-  1, 1.5, 2, 3.1, 5, 8, 16, 30, 40, 80, 160, 300, 450, 900, 1800, 3300, 9900, 20000, 50000,
-  100000, 200000, 500000, 1000000, 2000000
+  1, 1.5, 2, 3.1, 5, 8, 16, 30, 40, 80, 160, 300, 450, 900, 1800, 3300, 9900, 20000, 50000, 100000,
+  200000, 500000, 1000000, 2000000
 ];
 
 const NUMBER_OF_EDGES = 240;
@@ -77,7 +77,9 @@ const getViewportWidth = () => {
   if (typeof window === 'undefined') {
     return 1024;
   }
-  return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1024;
+  return (
+    window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1024
+  );
 };
 
 const START_ZOOM = getViewportWidth() < 768 ? 1 : 3;
@@ -101,7 +103,10 @@ const getPointCategories = (categories: MapPoint['categories']): string[] => {
     return categories.filter(Boolean).map(String);
   }
   if (typeof categories === 'string') {
-    return categories.split(',').map((value) => value.trim()).filter(Boolean);
+    return categories
+      .split(',')
+      .map((value) => value.trim())
+      .filter(Boolean);
   }
   return [];
 };
@@ -228,7 +233,8 @@ const MapView: React.FC<MapViewProps> = ({
 
     const zoomFactorX = ZOOM_FACTORS_X[clamp(Math.round(zoomValue), 0, ZOOM_FACTORS_X.length - 1)];
     const zoomFactorY = ZOOM_FACTORS_Y[clamp(Math.round(zoomValue), 0, ZOOM_FACTORS_Y.length - 1)];
-    const zoomFactorYVal = ZOOM_FACTORS_Y_VAL[clamp(Math.round(zoomValue), 0, ZOOM_FACTORS_Y_VAL.length - 1)];
+    const zoomFactorYVal =
+      ZOOM_FACTORS_Y_VAL[clamp(Math.round(zoomValue), 0, ZOOM_FACTORS_Y_VAL.length - 1)];
 
     localPoints.forEach((point) => {
       const x = normaliseCoordinate(point.x);
@@ -325,7 +331,9 @@ const MapView: React.FC<MapViewProps> = ({
         graphicsLayer.add(markerGraphic);
       } else {
         const factorY =
-          y > 0 ? zoomFactorY - y / (zoomFactorYVal * 10) : -zoomFactorY - y / (zoomFactorYVal * 10);
+          y > 0
+            ? zoomFactorY - y / (zoomFactorYVal * 10)
+            : -zoomFactorY - y / (zoomFactorYVal * 10);
         const startX = x;
         const stepX = zoomFactorX;
 
@@ -454,7 +462,8 @@ const MapView: React.FC<MapViewProps> = ({
             z: 500
           };
 
-          latest.addPoint(newPoint)
+          latest
+            .addPoint(newPoint)
             .then((createdPoint) => {
               if (createdPoint) {
                 setLocalPoints((prev) => [...prev, createdPoint]);
@@ -475,9 +484,10 @@ const MapView: React.FC<MapViewProps> = ({
           setSelectedPoint(point);
 
           const popupLanguage = latestStateRef.current.language;
-          const popupTitle = popupLanguage === 'en' ? point.title : point.titleHebrew ?? point.title;
+          const popupTitle =
+            popupLanguage === 'en' ? point.title : (point.titleHebrew ?? point.title);
           const popupContent =
-            popupLanguage === 'en' ? point.content : point.contentHebrew ?? point.content;
+            popupLanguage === 'en' ? point.content : (point.contentHebrew ?? point.content);
 
           view.popup.open({
             project: point,
@@ -558,8 +568,9 @@ const MapView: React.FC<MapViewProps> = ({
 
     const point = selectedPointRef.current;
     if (point) {
-      view.popup.title = language === 'en' ? point.title : point.titleHebrew ?? point.title;
-      view.popup.content = language === 'en' ? point.content : point.contentHebrew ?? point.content;
+      view.popup.title = language === 'en' ? point.title : (point.titleHebrew ?? point.title);
+      view.popup.content =
+        language === 'en' ? point.content : (point.contentHebrew ?? point.content);
     }
   }, [language]);
 
@@ -572,7 +583,14 @@ const MapView: React.FC<MapViewProps> = ({
 
   return (
     <div style={{ height: '100%', color: 'var(--color-text-main, #000)' }}>
-      <div ref={containerRef} id="pointTestViewDiv" style={{ height: getViewportWidth() < 768 ? getViewportWidth() * 0.6 : '100%', width: '100%' }} />
+      <div
+        ref={containerRef}
+        id="pointTestViewDiv"
+        style={{
+          height: getViewportWidth() < 768 ? getViewportWidth() * 0.6 : '100%',
+          width: '100%'
+        }}
+      />
     </div>
   );
 };

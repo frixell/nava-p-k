@@ -5,11 +5,7 @@ import Navigation from '../components/common/Navigation';
 import PageUpStrip from '../components/common/PageUpStrip';
 import Footer from '../components/common/Footer';
 import { useCvPageState } from './useCvPageState';
-import {
-  startSetCvPage,
-  startEditCvPage,
-  startEditCvPageSeo
-} from '../store/slices/cvSlice';
+import { startSetCvPage, startEditCvPage, startEditCvPageSeo } from '../store/slices/cvSlice';
 import { startLogout } from '../store/slices/authSlice';
 import CvToolbar from './CvToolbar';
 import CvSeoModal from './CvSeoModal';
@@ -18,7 +14,9 @@ import { PageContainer, PageUpSpacer, FakePageUpStripAnchor } from './PageLayout
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import type { RootState } from '../types/store';
 
-interface CvPageProps { urlLang?: string }
+interface CvPageProps {
+  urlLang?: string;
+}
 
 const CvPage: React.FC<CvPageProps> = ({ urlLang }) => {
   const dispatch = useAppDispatch();
@@ -38,9 +36,12 @@ const CvPage: React.FC<CvPageProps> = ({ urlLang }) => {
     },
     [dispatch]
   );
-  const saveSeoToDb: (seo: any) => void = useCallback((seo: any) => {
-    dispatch(startEditCvPageSeo(seo) as any);
-  }, [dispatch]);
+  const saveSeoToDb: (seo: any) => void = useCallback(
+    (seo: any) => {
+      dispatch(startEditCvPageSeo(seo) as any);
+    },
+    [dispatch]
+  );
   const logout: () => void = useCallback(() => {
     dispatch(startLogout() as any);
   }, [dispatch]);
@@ -107,7 +108,11 @@ const CvPage: React.FC<CvPageProps> = ({ urlLang }) => {
         setData={setData}
       />
 
-      <PageUpSpacer isHidden={isSpacerHidden} hidden={isSpacerHidden} aria-hidden={isSpacerHidden} />
+      <PageUpSpacer
+        isHidden={isSpacerHidden}
+        hidden={isSpacerHidden}
+        aria-hidden={isSpacerHidden}
+      />
       <PageUpStrip pageupImageClassName={pageupImageClassName} />
       <FakePageUpStripAnchor id="fake_pageupstrip" />
       <Footer position="relative" />

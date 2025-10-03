@@ -20,12 +20,9 @@ const ContactPage: React.FC<ContactPageProps> = ({ urlLang }) => {
     i18n.changeLanguage(urlLang);
   }
 
-  const handleSubmit = useCallback(
-    async (payload: ContactFormInput) => {
-      await submitContactMessage(payload);
-    },
-    []
-  );
+  const handleSubmit = useCallback(async (payload: ContactFormInput) => {
+    await submitContactMessage(payload);
+  }, []);
 
   const langLink = '/צרו_קשר';
   const langLinkEng = '/Contact';
