@@ -5,42 +5,47 @@
 - Progress to date:
   - MSW infrastructure + Firebase mock implemented.
   - Smoke tests for ContactPage & TeachingPage added and passing.
-  - Redux `teachingSlice` thunk tests expanded (load/add/remove/update/order/SEO).
-  - TS/jest configs updated for new tooling.
-  - ESLint overrides added for tests/mocks; tsconfig path aliases in place.
+- Redux `teachingSlice` thunk tests expanded (load/add/remove/update/order/SEO/image/visibility).
+- Reusable teaching fixtures added for slice/feature tests.
+- TS/jest configs updated for new tooling.
+- ESLint overrides added for tests/mocks; tsconfig path aliases in place.
+- Airbnb-based ESLint stack + testing-library/jest-dom plugins wired alongside Prettier (4-space single quote house style).
+- Package scripts extended with `format`, `format:check`, `lint:staged`, `typecheck`, `ci:verify`; lint-staged config drafted.
 
 ## Outstanding Tasks (per plan)
-1. **Add fixtures/tests for remaining Teaching CRUD paths**
-   - Need dedicated tests for create/edit validation flows (e.g., verifying form-level validation logic, selector coverage, thunk error paths).
-   - Consider mocking validation utilities (`validateContactForm`, etc.) or adding tests around UI components (TeachEditor, etc.).
-2. **Integrate ESLint/Prettier with TS-aware configs**
-   - Lint command currently reports thousands of legacy issues (e.g., `src/app.tsx`).
-   - Decision pending: whether to refactor code to satisfy strict rules or relax rules for legacy modules.
-3. **Wire lint-staged + CI scripts**
-   - Add `lint`, `format:check`, `lint-staged` config, update `package.json` scripts, and plan GitHub Actions/other CI steps.
+1. **Teaching create/edit validation coverage**
+   - Slice CRUD paths now covered incl. image + visibility; still need UI-level tests around `TeachEditor` validation + selector behaviours.
+   - Decide whether to add dedicated validation utilities or exercise `useTeachingPage` hooks directly.
+2. **Adopt new lint stack**
+   - `eslint-config-airbnb(-typescript)` and testing-library plugins are declared but require `yarn install` to hydrate `yarn.lock`.
+   - Plan staged cleanup to reduce legacy rule violations (e.g., `react/jsx-props-no-spreading`, import order).
+3. **Hook lint-staged into day-to-day flow**
+   - Add husky/pre-commit or document running `yarn lint:staged` manually until git hooks are in place.
 4. **Lint debt sweep**
    - Identify priority files (e.g., `src/app.tsx`, Redux thunks) and refactor to remove `any` usage and unsafes; schedule staged clean-up.
 
 ## Current Status / Working Tree
 - Modified files (unfinished work):
-  - `.eslintrc.cjs` (test overrides)
-  - `src/app.tsx` (partial lint clean-up; further work needed)
-  - `src/store/configureStore.ts`, `aboutSlice.ts`, `authSlice.ts`, `categoriesSlice.ts`, `cvSlice.ts`, `pointsSlice.ts`, `tableTemplateSlice.ts`, `teachingSlice.ts` (introduced `AppThunk` typing changes, may need to finalize dispatch/getState typing).
+  - `.eslintrc.cjs`, `.prettierrc.json`, `package.json` (new lint/prettier stack + scripts declared; requires dependency install + CI wiring).
+  - `src/tests/fixtures/teaching.ts` (new fixture helpers for teaching flows).
+  - `src/store/slices/teachingSlice.test.ts` (expanded coverage for add/update/delete/image/visibility paths).
+  - `src/app.tsx`, `src/store/configureStore.ts`, `src/store/slices/*` (typed dispatch/getState clean-up from prior session still pending final lint pass).
 - Tests passing: `yarn test --runTestsByPath src/containers/ContactPage.test.tsx src/containers/teaching/TeachingPage.test.tsx src/store/slices/teachingSlice.test.ts`.
-- `yarn tsc --noEmit` currently failing with typing gaps (e.g., `firebase.User` import, missing dispatch typings in slices/tests).
-- `yarn lint` still reports existing project-wide errors; next step is to plan how to reduce them.
+- `yarn typecheck` (tsc --noEmit) passes locally.
+- `yarn eslint <file>` currently errors until new Airbnb stack dependencies are installed (`yarn install`).
+- `yarn lint` still reports existing project-wide issues; schedule targeted fixes once config dependencies resolved.
 
 ## Next Steps Checklist
-1. Resolve TypeScript errors from `yarn tsc --noEmit` (firebase types, thunk typings, test helper typings).
-2. Decide on lint strategy for legacy code: either relax rules or start targeted refactors.
-3. Implement additional Teaching CRUD tests (create/edit validation + selectors).
-4. Update `package.json` with lint/format scripts, configure `lint-staged`, and draft CI commands.
-5. Once tooling is stable, update `ModernizationPlan.md` to mark Testing & Tooling complete and outline remaining Build & Performance tasks.
+1. Flesh out teaching validation coverage (hook/UI level) and selectors per plan bullet.
+2. Install updated lint dependencies (`yarn install`) and run `yarn lint` to inventory remaining violations.
+3. Decide on git hook approach for lint-staged (husky vs. manual) and document workflow.
+4. Begin targeted lint debt sweep (prioritize `src/app.tsx`, `useTeachingPage`, older thunks) once rules confirmed.
+5. Update `ModernizationPlan.md` when validation coverage + lint rollout deemed complete.
 
 ## Quick Commands
 - Run targeted tests: `yarn test --runTestsByPath src/containers/ContactPage.test.tsx src/containers/teaching/TeachingPage.test.tsx src/store/slices/teachingSlice.test.ts`
 - Type check: `yarn tsc --noEmit`
-- Lint (for current file): `yarn eslint <file>`
+- Lint (for current file): `yarn eslint <file>` (requires fresh install for new Airbnb deps)
 - Full lint (noise expected): `yarn lint`
 
 Restart plan from this note after re-launching Codex. EOF

@@ -10,10 +10,13 @@ import {
   startDeleteTeach,
   startEditTeachingPageSeo,
   startSetTeachingPage,
+  startShowTeach,
   startUpdateTeach,
+  startUpdateTeachImage,
   startUpdateTeachings,
   updateTeach
 } from './teachingSlice';
+import { buildTeach, buildSeo, buildTeachingPageState } from '../../tests/fixtures/teaching';
 
 jest.mock('../../firebase/firebase');
 jest.mock('../../services/imageService', () => ({
@@ -52,24 +55,18 @@ describe('teachingSlice thunks', () => {
   });
 
   it('loads teachings and seo from firebase on startSetTeachingPage', async () => {
-    __resetMockFirebase({
-      website: {
-        teachingpage: {
-          teachings: {
-            'teach-1': {
-              id: 'teach-1',
-              details: 'Detail',
-              description: 'Description'
-            }
-          },
-          seo: {
-            title: 'Teaching',
-            description: 'Learning',
-            keyWords: 'teach'
-          }
-        }
-      }
-    });
+    __resetMockFirebase(
+      buildTeachingPageState(
+        {
+          'teach-1': buildTeach({
+            id: 'teach-1',
+            details: 'Detail',
+            description: 'Description'
+          })
+        },
+        buildSeo({ title: 'Teaching', description: 'Learning', keyWords: 'teach' })
+      )
+    );
 
     const dispatch = jest.fn();
 
@@ -114,22 +111,12 @@ describe('teachingSlice thunks', () => {
   });
 
   it('removes a teach and triggers image deletion on startDeleteTeach', async () => {
-    const existingTeach = {
+    const existingTeach = buildTeach({
       id: 'teach-1',
-      details: 'Detail',
-      description: 'Description',
       publicId: 'public-1'
-    };
-
-    __resetMockFirebase({
-      website: {
-        teachingpage: {
-          teachings: {
-            'teach-1': existingTeach
-          }
-        }
-      }
     });
+
+    __resetMockFirebase(buildTeachingPageState({ 'teach-1': existingTeach }));
 
     const dispatch = jest.fn();
 
@@ -148,19 +135,15 @@ describe('teachingSlice thunks', () => {
   });
 
   it('updates an existing teach via startUpdateTeach', async () => {
-    __resetMockFirebase({
-      website: {
-        teachingpage: {
-          teachings: {
-            'teach-1': {
-              id: 'teach-1',
-              details: 'Detail',
-              description: 'Description'
-            }
-          }
-        }
-      }
-    });
+    __resetMockFirebase(
+      buildTeachingPageState({
+        'teach-1': buildTeach({
+          id: 'teach-1',
+          details: 'Detail',
+          description: 'Description'
+        })
+      })
+    );
 
     const dispatch = jest.fn();
 
@@ -182,16 +165,12 @@ describe('teachingSlice thunks', () => {
   });
 
   it('commits teach ordering with startUpdateTeachings', async () => {
-    __resetMockFirebase({
-      website: {
-        teachingpage: {
-          teachings: {
-            'teach-1': { id: 'teach-1', order: 2 },
-            'teach-2': { id: 'teach-2', order: 1 }
-          }
-        }
-      }
-    });
+    __resetMockFirebase(
+      buildTeachingPageState({
+        'teach-1': buildTeach({ id: 'teach-1', order: 2 }),
+        'teach-2': buildTeach({ id: 'teach-2', order: 1 })
+      })
+    );
 
     const dispatch = jest.fn();
 
@@ -223,11 +202,7 @@ describe('teachingSlice thunks', () => {
       serverSeo: {
         teaching: { seo: { title: 'Old' } }
       },
-      website: {
-        teachingpage: {
-          seo: { title: 'Old' }
-        }
-      }
+      ...buildTeachingPageState({}, buildSeo({ title: 'Old' }))
     });
 
     const dispatch = jest.fn();
@@ -249,5 +224,65 @@ describe('teachingSlice thunks', () => {
     expect(state.website?.teachingpage?.seo).toEqual(
       expect.objectContaining({ title: 'New', description: 'Desc', keyWords: 'kw' })
     );
+  });
+
+  it('updates an image and removes the previous public id on startUpdateTeachImage', async () => {
+    const existingTeach = buildTeach({
+      id: 'teach-1',
+      image: { publicId: 'old-public', src: 'old-src', width: 100, height: 100 }
+    });
+
+    __resetMockFirebase(buildTeachingPageState({ 'teach-1': existingTeach }));
+
+    const dispatch = jest.fn();
+
+    await startUpdateTeachImage(
+      { id: 'teach-1', image: { publicId: 'new-public', src: 'new-src', width: 200, height: 200 } },
+      'old-public'
+    )(
+      dispatch as any,
+      jest.fn() as any,
+      undefined as never
+    );
+
+    expect(deleteImage).toHaveBeenCalledWith('old-public');
+    expect(dispatch).toHaveBeenCalledWith(
+      updateTeach(
+        expect.objectContaining({
+          id: 'teach-1',
+          image: expect.objectContaining({ publicId: 'new-public', src: 'new-src' })
+        })
+      )
+    );
+
+    const state = __getMockFirebaseState();
+    const teaches = state.website?.teachingpage?.teachings ?? {};
+    expect(teaches['teach-1']).toEqual(
+      expect.objectContaining({
+        image: expect.objectContaining({ publicId: 'new-public', src: 'new-src', width: 200, height: 200 })
+      })
+    );
+  });
+
+  it('toggles visibility via startShowTeach', async () => {
+    const existingTeach = buildTeach({ id: 'teach-1', visible: false });
+
+    __resetMockFirebase(buildTeachingPageState({ 'teach-1': existingTeach }));
+
+    const dispatch = jest.fn();
+
+    await startShowTeach({ ...existingTeach, visible: true })(
+      dispatch as any,
+      jest.fn() as any,
+      undefined as never
+    );
+
+    expect(dispatch).toHaveBeenCalledWith(
+      updateTeach(expect.objectContaining({ id: 'teach-1', visible: true }))
+    );
+
+    const state = __getMockFirebaseState();
+    const teaches = state.website?.teachingpage?.teachings ?? {};
+    expect(teaches['teach-1']).toEqual(expect.objectContaining({ visible: true }));
   });
 });

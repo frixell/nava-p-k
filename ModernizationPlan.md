@@ -31,13 +31,16 @@
 - Add React Testing Library smoke tests for critical screens (Contact submit flow, Teaching CRUD) and reducers/sagas once ported to RTK.
   - ✅ ContactPage submit path covered using MSW with Firebase/database mocks to assert persisted records and email dispatch.
   - ✅ TeachingPage hide/delete path covered with MSW-backed image delete handler and in-memory Firebase state.
-  - ✅ Teaching slice thunks now exercised with the Firebase mock (load/add/delete) so reducers are proven against expected RTK behaviour.
-  - Stand up fixtures for the remaining CRUD edges (create/edit validations) and cover RTK selector/thunk behaviour.
+  - ✅ Teaching slice thunks now exercised with the Firebase mock (load/add/delete/update/order/SEO/image/visibility).
+  - ✅ Shared fixtures created for teaching CRUD scenarios to simplify future validation/UI tests.
+  - 🔧 Stand up UI-level validation coverage (TeachEditor / useTeachingPage) and selector behaviour.
   - 🔧 Schedule a lint debt sweep: refactor legacy modules (e.g., `src/app.tsx`, `ContactPage.tsx`) to resolve strict `@typescript-eslint` violations instead of broad rule suppression.
-  - Integrate ESLint/Prettier with a TS-aware config to enforce consistent formatting and catch leftover `any`s.
-  - Extend `eslint-config-airbnb` (or existing baseline) with `@typescript-eslint` and React Testing Library plugins; add lint scripts to `package.json`.
-  - Introduce a shared Prettier config aligned with the 4-space/single-quote house style and wire `lint-staged` for on-commit enforcement.
-  - Gate `yarn lint` and `yarn format:check` in CI alongside tests so divergence is caught before merge.
+  - ✅ Integrate ESLint/Prettier with a TS-aware config to enforce consistent formatting and catch leftover `any`s.*
+  - ✅ Extend `eslint-config-airbnb` (or existing baseline) with `@typescript-eslint` and React Testing Library plugins; add lint scripts to `package.json`.*
+  - ✅ Introduce a shared Prettier config aligned with the 4-space/single-quote house style and wire `lint-staged` for on-commit enforcement.*
+  - 🔧 Gate `yarn lint` and `yarn format:check` in CI alongside tests so divergence is caught before merge.
+
+`*` New dependencies declared; run `yarn install` before linting.
 
 ## Build & Performance
 - Enable modern bundling (Vite or Webpack 5) with tree-shaking, dynamic imports for admin-only views, and bundle analyzer targets.
