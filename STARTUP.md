@@ -5,17 +5,17 @@
 - Progress to date:
   - MSW infrastructure + Firebase mock implemented.
   - Smoke tests for ContactPage & TeachingPage added and passing.
-- Redux `teachingSlice` thunk tests expanded (load/add/remove/update/order/SEO/image/visibility).
-- Reusable teaching fixtures added for slice/feature tests.
-- TS/jest configs updated for new tooling.
-- ESLint overrides added for tests/mocks; tsconfig path aliases in place.
-- Airbnb-based ESLint stack + testing-library/jest-dom plugins wired alongside Prettier (4-space single quote house style).
-- Package scripts extended with `format`, `format:check`, `lint:staged`, `typecheck`, `ci:verify`; lint-staged config drafted.
+  - Redux `teachingSlice` thunk tests expanded (load/add/remove/update/order/SEO/image/visibility).
+  - Reusable teaching fixtures added for slice/feature tests.
+  - Teach editor validation prevents empty submissions (hook-level coverage for save flows).
+  - TS/jest configs updated for new tooling.
+  - ESLint overrides added for tests/mocks; tsconfig path aliases in place.
+  - Airbnb-based ESLint stack + testing-library/jest-dom plugins wired alongside Prettier (4-space single quote house style).
+  - Package scripts extended with `format`, `format:check`, `lint:staged`, `typecheck`, `ci:verify`; lint-staged config drafted.
 
 ## Outstanding Tasks (per plan)
-1. **Teaching create/edit validation coverage**
-   - Slice CRUD paths now covered incl. image + visibility; still need UI-level tests around `TeachEditor` validation + selector behaviours.
-   - Decide whether to add dedicated validation utilities or exercise `useTeachingPage` hooks directly.
+1. **Assess remaining teaching edge cases**
+   - Consider Hebrew/dual-language validation scenarios and selector coverage if regressions surface.
 2. **Adopt new lint stack**
    - `eslint-config-airbnb(-typescript)` and testing-library plugins are declared but require `yarn install` to hydrate `yarn.lock`.
    - Plan staged cleanup to reduce legacy rule violations (e.g., `react/jsx-props-no-spreading`, import order).

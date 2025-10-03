@@ -39,6 +39,7 @@ export interface UseTeachingPageResult {
     isAuthenticated: boolean;
     teachings: TeachItem[];
     draftTeach: TeachItem | null;
+    draftError: string | null;
     seo: TeachingSeo;
     seoModalOpen: boolean;
     editModalOpen: boolean;
@@ -90,6 +91,27 @@ const sortTeachings = (items: TeachItem[]): TeachItem[] =>
 const buildTeachings = (source?: TeachItem[] | Record<string, TeachItem>): TeachItem[] =>
     sortTeachings(toTeachArray(source).map(normalizeTeach));
 
+const stripHtml = (value: unknown): string =>
+    typeof value === 'string'
+        ? value
+              .replace(/<[^>]*>/g, ' ')
+              .replace(/&nbsp;/g, ' ')
+              .replace(/\s+/g, ' ')
+              .trim()
+        : '';
+
+const hasRichTextContent = (...values: Array<unknown>): boolean =>
+    values.some((value) => stripHtml(value).length > 0);
+
+const validateTeachDraft = (draft: TeachItem): string | null => {
+    const hasPrimaryContent = hasRichTextContent(draft.details, draft.detailsHebrew);
+    const hasSecondaryContent = hasRichTextContent(draft.description, draft.descriptionHebrew);
+    if (!hasPrimaryContent || !hasSecondaryContent) {
+        return 'Details and description are required in at least one language.';
+    }
+    return null;
+};
+
 export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeachingPageResult => {
     const dispatch = useAppDispatch();
 
@@ -103,6 +125,7 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
 
     const [teachings, setTeachings] = useState<TeachItem[]>(() => buildTeachings(teachingStore.teachings));
     const [draftTeach, setDraftTeach] = useState<TeachItem | null>(null);
+    const [draftError, setDraftError] = useState<string | null>(null);
     const [seo, setSeo] = useState<TeachingSeo>(teachingStore.seo ?? DEFAULT_SEO);
     const [seoModalOpen, setSeoModalOpen] = useState(false);
     const [editModalOpen, setEditModalOpen] = useState(false);
@@ -186,19 +209,29 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
     const openTeachEditor = useCallback((teach?: TeachItem) => {
         setDraftTeach(teach ? { ...teach } : { ...EMPTY_TEACH, id: '' });
         setEditModalOpen(true);
+        setDraftError(null);
     }, []);
 
     const closeTeachEditor = useCallback(() => {
         setEditModalOpen(false);
         setDraftTeach(null);
+        setDraftError(null);
     }, []);
 
     const updateDraftTeach = useCallback((field: keyof TeachItem, value: unknown) => {
         setDraftTeach((prev) => ({ ...(prev ?? { ...EMPTY_TEACH, id: '' }), [field]: value }));
+        setDraftError(null);
     }, []);
 
     const saveDraftTeach = useCallback(async () => {
         if (!draftTeach) {
+            return;
+        }
+
+        const normalizedDraft = normalizeTeach(draftTeach);
+        const validationError = validateTeachDraft(normalizedDraft);
+        if (validationError) {
+            setDraftError(validationError);
             return;
         }
 
@@ -217,6 +250,7 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
 
         setEditModalOpen(false);
         setDraftTeach(null);
+        setDraftError(null);
     }, [dispatch, draftTeach, teachings, applyTeachingsUpdate]);
 
     const deleteTeach = useCallback(async (id: string) => {
@@ -327,6 +361,7 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
         isAuthenticated,
         teachings,
         draftTeach,
+        draftError,
         seo,
         seoModalOpen,
         editModalOpen,
@@ -349,6 +384,7 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
         isAuthenticated,
         teachings,
         draftTeach,
+        draftError,
         seo,
         seoModalOpen,
         editModalOpen,

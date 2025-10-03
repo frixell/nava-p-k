@@ -7,13 +7,23 @@ interface TeachEditorModalProps {
     open: boolean;
     language: string;
     teach: TeachItem | null;
+    errorMessage?: string | null;
     onClose(): void;
     onChange(field: keyof TeachItem, value: unknown): void;
     onSave(): void;
     onUploadImage(): void;
 }
 
-const TeachEditorModal: React.FC<TeachEditorModalProps> = ({ open, language, teach, onClose, onChange, onSave, onUploadImage }) => {
+const TeachEditorModal: React.FC<TeachEditorModalProps> = ({
+    open,
+    language,
+    teach,
+    errorMessage,
+    onClose,
+    onChange,
+    onSave,
+    onUploadImage
+}) => {
     if (!open || !teach) {
         return null;
     }
@@ -23,6 +33,7 @@ const TeachEditorModal: React.FC<TeachEditorModalProps> = ({ open, language, tea
             <TeachEditor
                 language={language}
                 teach={teach}
+                errorMessage={errorMessage}
                 onChange={onChange}
                 onSave={onSave}
                 onUploadImage={onUploadImage}

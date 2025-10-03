@@ -11,6 +11,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 interface TeachEditorProps {
     language: string;
     teach: TeachItem;
+    errorMessage?: string | null;
     onChange(field: keyof TeachItem, value: unknown): void;
     onSave(): void;
     onUploadImage(): void;
@@ -28,7 +29,14 @@ const buildEditorState = (html?: string): EditorState => {
     return EditorState.createWithContent(contentState);
 };
 
-const TeachEditor: React.FC<TeachEditorProps> = ({ language, teach, onChange, onSave, onUploadImage }) => {
+const TeachEditor: React.FC<TeachEditorProps> = ({
+    language,
+    teach,
+    errorMessage,
+    onChange,
+    onSave,
+    onUploadImage
+}) => {
     const detailField = language === 'he' ? 'detailsHebrew' : 'details';
     const descriptionField = language === 'he' ? 'descriptionHebrew' : 'description';
 
@@ -55,6 +63,11 @@ const TeachEditor: React.FC<TeachEditorProps> = ({ language, teach, onChange, on
 
     return (
         <EditorLayout>
+            {errorMessage ? (
+                <p role="alert" className="teach-editor__error">
+                    {errorMessage}
+                </p>
+            ) : null}
             <EditorActions>
                 <Button variant="outlined" onClick={onUploadImage}>
                     {language === 'he' ? 'העלאת תמונה' : 'Upload image'}

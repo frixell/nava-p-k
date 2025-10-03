@@ -83,6 +83,7 @@ const TeachingPage: React.FC<TeachingPageProps> = ({ urlLang }) => {
                 open={teaching.editModalOpen}
                 language={language}
                 teach={teaching.draftTeach}
+                errorMessage={teaching.draftError}
                 onClose={teaching.closeTeachEditor}
                 onChange={teaching.updateDraftTeach}
                 onSave={teaching.saveDraftTeach}

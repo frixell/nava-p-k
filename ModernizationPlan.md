@@ -33,7 +33,8 @@
   - ✅ TeachingPage hide/delete path covered with MSW-backed image delete handler and in-memory Firebase state.
   - ✅ Teaching slice thunks now exercised with the Firebase mock (load/add/delete/update/order/SEO/image/visibility).
   - ✅ Shared fixtures created for teaching CRUD scenarios to simplify future validation/UI tests.
-  - 🔧 Stand up UI-level validation coverage (TeachEditor / useTeachingPage) and selector behaviour.
+  - ✅ Stand up UI-level validation coverage (TeachEditor / useTeachingPage) with empty-save guardrails.
+  - ✅ Added bilingual teach validation tests to accept Hebrew-only drafts and reject whitespace-only rich text.
   - 🔧 Schedule a lint debt sweep: refactor legacy modules (e.g., `src/app.tsx`, `ContactPage.tsx`) to resolve strict `@typescript-eslint` violations instead of broad rule suppression.
   - ✅ Integrate ESLint/Prettier with a TS-aware config to enforce consistent formatting and catch leftover `any`s.*
   - ✅ Extend `eslint-config-airbnb` (or existing baseline) with `@typescript-eslint` and React Testing Library plugins; add lint scripts to `package.json`.*
