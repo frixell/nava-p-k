@@ -77,7 +77,7 @@ describe('teachingSlice thunks', () => {
 
     const dispatch = jest.fn();
 
-    await startSetTeachingPage()(dispatch as ThunkDispatch, jest.fn() as any, undefined as never);
+    await startSetTeachingPage()(dispatch as any, jest.fn() as any, undefined as never);
 
     expect(dispatch).toHaveBeenCalledWith(
       setTeachingPage({
