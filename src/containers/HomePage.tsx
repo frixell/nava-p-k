@@ -112,7 +112,6 @@ const HomePage: React.FC<HomePageProps> = (props) => {
         setOpenCategories={setOpenCategories}
         handleSideBarClick={handleSideBarClick}
         selectedProject={state.selectedProject}
-        table={state.table}
         tableTemplate={props.tableTemplate}
         hideProject={hideProject}
         onProjectChange={setData}

@@ -7,6 +7,10 @@ import Button from '@mui/material/Button';
 import { EditorLayout, EditorActions, EditorBlock, FieldLabel } from './TeachEditor.styles';
 import type { TeachItem } from './types';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import {
+  RichTextEditorStyles,
+  useRichTextEditorClassNames
+} from '../../components/common/RichTextEditorStyles';
 
 interface TeachEditorProps {
   language: string;
@@ -73,57 +77,66 @@ const TeachEditor: React.FC<TeachEditorProps> = ({
     () => (language === 'he' ? 'פרטים נוספים' : 'Additional details'),
     [language]
   );
+  const { toolbar, editor, blockType, fontSize } = useRichTextEditorClassNames();
 
   return (
-    <EditorLayout>
-      {errorMessage ? (
-        <p role="alert" className="teach-editor__error">
-          {errorMessage}
-        </p>
-      ) : null}
-      <EditorActions>
-        <Button variant="outlined" onClick={onUploadImage}>
-          {language === 'he' ? 'העלאת תמונה' : 'Upload image'}
-        </Button>
-        <Button variant="contained" onClick={onSave}>
-          {language === 'he' ? 'שמירה' : 'Save'}
-        </Button>
-      </EditorActions>
+    <RichTextEditorStyles>
+      <EditorLayout>
+        {errorMessage ? (
+          <p role="alert" className="teach-editor__error">
+            {errorMessage}
+          </p>
+        ) : null}
+        <EditorActions>
+          <Button variant="outlined" onClick={onUploadImage}>
+            {language === 'he' ? 'העלאת תמונה' : 'Upload image'}
+          </Button>
+          <Button variant="contained" onClick={onSave}>
+            {language === 'he' ? 'שמירה' : 'Save'}
+          </Button>
+        </EditorActions>
 
-      <EditorBlock>
-        <FieldLabel>{primaryLabel}</FieldLabel>
-        <Editor
-          editorState={detailsState}
-          toolbarClassName="toolbarClassName"
-          wrapperClassName="wrapperClassName"
-          editorClassName="editorClassName"
-          onEditorStateChange={handleDetailsChange}
-          toolbar={{
-            options: ['inline', 'blockType', 'fontSize', 'colorPicker', 'link'],
-            inline: { inDropdown: true },
-            blockType: { inDropdown: true },
-            fontSize: { options: ['12', '14', '16', '18', '24', '32', '48'] }
-          }}
-        />
-      </EditorBlock>
+        <EditorBlock>
+          <FieldLabel>{primaryLabel}</FieldLabel>
+          <Editor
+            editorState={detailsState}
+            toolbarClassName={toolbar}
+            wrapperClassName="wrapperClassName"
+            editorClassName={editor}
+            onEditorStateChange={handleDetailsChange}
+            toolbar={{
+              options: ['inline', 'blockType', 'fontSize', 'colorPicker', 'link'],
+              inline: { inDropdown: true },
+              blockType: { inDropdown: true, className: blockType },
+              fontSize: {
+                options: ['12', '14', '16', '18', '24', '32', '48'],
+                className: fontSize
+              }
+            }}
+          />
+        </EditorBlock>
 
-      <EditorBlock>
-        <FieldLabel>{secondaryLabel}</FieldLabel>
-        <Editor
-          editorState={descriptionState}
-          toolbarClassName="toolbarClassName"
-          wrapperClassName="wrapperClassName"
-          editorClassName="editorClassName"
-          onEditorStateChange={handleDescriptionChange}
-          toolbar={{
-            options: ['inline', 'blockType', 'fontSize', 'colorPicker', 'link'],
-            inline: { inDropdown: true },
-            blockType: { inDropdown: true },
-            fontSize: { options: ['12', '14', '16', '18', '24', '32', '48'] }
-          }}
-        />
-      </EditorBlock>
-    </EditorLayout>
+        <EditorBlock>
+          <FieldLabel>{secondaryLabel}</FieldLabel>
+          <Editor
+            editorState={descriptionState}
+            toolbarClassName={toolbar}
+            wrapperClassName="wrapperClassName"
+            editorClassName={editor}
+            onEditorStateChange={handleDescriptionChange}
+            toolbar={{
+              options: ['inline', 'blockType', 'fontSize', 'colorPicker', 'link'],
+              inline: { inDropdown: true },
+              blockType: { inDropdown: true, className: blockType },
+              fontSize: {
+                options: ['12', '14', '16', '18', '24', '32', '48'],
+                className: fontSize
+              }
+            }}
+          />
+        </EditorBlock>
+      </EditorLayout>
+    </RichTextEditorStyles>
   );
 };
 

@@ -14,7 +14,6 @@ export interface HomePageLayoutProps {
     openCategories: string[];
     handleSideBarClick: (event: React.MouseEvent<HTMLDivElement>) => void;
     selectedProject: any;
-    table: any[];
     tableTemplate: any;
     hideProject: () => void;
     onProjectChange: (event: any) => void;
