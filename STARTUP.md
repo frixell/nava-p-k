@@ -29,7 +29,7 @@
   - `.eslintrc.cjs`, `.prettierrc.json`, `package.json` (new lint/prettier stack + scripts declared; requires dependency install + CI wiring).
   - `src/tests/fixtures/teaching.ts` (new fixture helpers for teaching flows).
   - `src/store/slices/teachingSlice.test.ts` (expanded coverage for add/update/delete/image/visibility paths).
-  - `src/app.tsx`, `src/store/configureStore.ts`, `src/store/slices/*` (typed dispatch/getState clean-up from prior session still pending final lint pass).
+  - `src/app.tsx`, `src/store/slices/*` (typed dispatch/getState clean-up largely complete; teaching hook now lint-clean).
 - Tests passing: `yarn test --runTestsByPath src/containers/ContactPage.test.tsx src/containers/teaching/TeachingPage.test.tsx src/store/slices/teachingSlice.test.ts`.
 - `yarn typecheck` (tsc --noEmit) passes locally.
   - Shared Firebase database types added; jest mock updated to implement the typed interface.
@@ -37,9 +37,9 @@
 
 ## Next Steps Checklist
 1. Flesh out teaching validation coverage (hook/UI level) and selectors per plan bullet.
-2. Install updated lint dependencies (`yarn install`) and run `yarn lint` to inventory remaining violations.
-3. Decide on git hook approach for lint-staged (husky vs. manual) and document workflow.
-4. Begin targeted lint debt sweep (prioritize `src/app.tsx`, `useTeachingPage`, older thunks) once rules confirmed.
+2. Install updated lint dependencies (`yarn install`) and run `yarn lint` to inventory remaining violations (current teaching hook lint debt cleared).
+3. Husky pre-commit now runs `yarn lint:staged`; share rollout notes with the team.
+4. Continue targeted lint debt sweep (prioritize `src/app.tsx`, older thunks) once rules confirmed.
 5. Update `ModernizationPlan.md` when validation coverage + lint rollout deemed complete.
 
 ## Quick Commands

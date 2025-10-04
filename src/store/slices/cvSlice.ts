@@ -57,32 +57,37 @@ type CvImagesInput =
   | null
   | undefined;
 
+const mergeEntries = (entries: Array<[string, CvImage]>, seed: CvImagesMap): CvImagesMap =>
+  entries.reduce<CvImagesMap>((accumulator, [key, image]) => ({
+    ...accumulator,
+    [key]: image
+  }), seed);
+
 const toCvImagesMap = (source: CvImagesInput, fallback: CvImagesMap = {}): CvImagesMap => {
+  const seed = { ...fallback };
   if (!source) {
-    return { ...fallback };
+    return seed;
   }
 
   if (Array.isArray(source)) {
-    return source.reduce<CvImagesMap>(
-      (accumulator, entry, index) => {
-        if (!entry) {
-          return accumulator;
-        }
-        const key = typeof entry.id === 'string' && entry.id.length > 0 ? entry.id : String(index);
-        accumulator[key] = toCvImage(key, entry);
+    const entries = source.reduce<Array<[string, CvImage]>>((accumulator, entry, index) => {
+      if (!entry) {
         return accumulator;
-      },
-      { ...fallback }
-    );
+      }
+      const key = typeof entry.id === 'string' && entry.id.length > 0 ? entry.id : String(index);
+      accumulator.push([key, toCvImage(key, entry)]);
+      return accumulator;
+    }, []);
+
+    return mergeEntries(entries, seed);
   }
 
-  return Object.entries(source).reduce<CvImagesMap>(
-    (accumulator, [key, entry]) => {
-      accumulator[key] = toCvImage(key, entry ?? {});
-      return accumulator;
-    },
-    { ...fallback }
-  );
+  const entries = Object.entries(source).map<[string, CvImage]>(([key, entry]) => [
+    key,
+    toCvImage(key, entry ?? {})
+  ]);
+
+  return mergeEntries(entries, seed);
 };
 
 const ensureCvPageState = (

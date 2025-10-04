@@ -12,9 +12,11 @@ import {
   startUpdateTeach,
   startUpdateTeachImage,
   startUpdateTeachings,
-  startDeleteTeach
+  startDeleteTeach,
+  type TeachingPageState
 } from '../../store/slices/teachingSlice';
 import type { SeoPayload } from '../../types/seo';
+import type { RootState } from '../../store/configureStore';
 import { DEFAULT_SEO, EMPTY_TEACH, TeachImage, TeachItem, TeachingSeo } from './types';
 
 interface CloudinaryWidgetOptions {
@@ -81,9 +83,11 @@ export interface UseTeachingPageResult {
 
 type TeachRecord = Record<string, Partial<TeachItem> | null | undefined>;
 
-const createTeachFromEntry = (key: string, item: Partial<TeachItem> | null | undefined): TeachItem => {
-  const normalizedItem =
-    typeof item === 'object' && item !== null ? item : {};
+const createTeachFromEntry = (
+  key: string,
+  item: Partial<TeachItem> | null | undefined
+): TeachItem => {
+  const normalizedItem = typeof item === 'object' && item !== null ? item : {};
   const teach = {
     ...normalizedItem,
     id:
@@ -158,11 +162,14 @@ const validateTeachDraft = (draft: TeachItem): string | null => {
   return null;
 };
 
+const selectIsAuthenticated = (state: RootState) => Boolean(state.auth.uid);
+const selectTeachingStore = (state: RootState): TeachingPageState => state.teachingpage;
+
 export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeachingPageResult => {
   const dispatch = useAppDispatch();
 
-  const isAuthenticated = useAppSelector((state) => Boolean(state.auth.uid));
-  const teachingStore = useAppSelector((state) => state.teachingpage);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const teachingStore = useAppSelector(selectTeachingStore);
 
   const [teachings, setTeachings] = useState<TeachItem[]>(() =>
     buildTeachings(teachingStore.teachings)
@@ -420,8 +427,8 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
     widget.open();
   }, [draftTeach, saveTeachImage]);
 
-  const logout = useCallback(() => {
-    dispatch(startLogout());
+  const logout = useCallback(async () => {
+    await dispatch(startLogout());
   }, [dispatch]);
 
   return useMemo(

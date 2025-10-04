@@ -36,10 +36,11 @@
   - ✅ Stand up UI-level validation coverage (TeachEditor / useTeachingPage) with empty-save guardrails.
   - ✅ Added bilingual teach validation tests to accept Hebrew-only drafts and reject whitespace-only rich text.
   - ✅ Scoped ESLint to the teaching feature with `tsconfig.eslint.json`, new lint script, and temporary TODOs for remaining Firebase typing gaps.
-  - 🔧 Schedule a lint debt sweep: refactor legacy modules (e.g., `src/app.tsx`, `ContactPage.tsx`) to resolve strict `@typescript-eslint` violations instead of broad rule suppression.
+  - 🔧 Schedule a lint debt sweep: refactor legacy modules (e.g., `src/app.tsx`, `ContactPage.tsx`) to resolve strict `@typescript-eslint` violations instead of broad rule suppression. (Teaching hook dispatch/selectors now compliant.)
   - ✅ Integrate ESLint/Prettier with a TS-aware config to enforce consistent formatting and catch leftover `any`s.*
   - ✅ Extend `eslint-config-airbnb` (or existing baseline) with `@typescript-eslint` and React Testing Library plugins; add lint scripts to `package.json`.*
   - ✅ Introduce a shared Prettier config aligned with the 4-space/single-quote house style and wire `lint-staged` for on-commit enforcement.*
+  - ✅ Add Husky pre-commit hook to run `yarn lint:staged` automatically.
   - 🔧 Gate `yarn lint` and `yarn format:check` in CI alongside tests so divergence is caught before merge.
 
 `*` New dependencies declared; run `yarn install` before linting.
