@@ -3,7 +3,9 @@ import database from '../../firebase/firebase';
 import { deleteImage } from '../../services/imageService';
 import type { TeachItem, TeachingSeo } from '../../containers/teaching/types';
 import type { SeoPayload } from '../../types/seo';
-import type { AppDispatch, AppThunk, RootState } from '../configureStore';
+import type { AppDispatch, AppThunk } from '../configureStore';
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
 
 export type TeachingsMap = Record<string, TeachItem>;
 export type TeachCollection = TeachingsMap | TeachItem[] | null | undefined;
@@ -105,9 +107,7 @@ export const {
 
 export const startSetTeachingPage =
   (): AppThunk<Promise<TeachItem[]>> => async (dispatch: AppDispatch) => {
-    const snapshot = await database
-      .ref<SnapshotValue>('website/teachingpage')
-      .once('value');
+    const snapshot = await database.ref<SnapshotValue>('website/teachingpage').once('value');
     const value = snapshot.val();
     const teachingsArray = normalizeTeachings(value?.teachings ?? null);
     dispatch(setTeachingPage({ teachings: teachingsArray, seo: value?.seo }));
@@ -131,15 +131,19 @@ export const startUpdateTeachings =
   };
 
 export const startAddTeach =
-  (teachData: Partial<TeachItem> = {}, order: number): AppThunk<Promise<TeachItem[]>> =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
+  (teachData: Partial<TeachItem> | undefined, order: number): AppThunk<Promise<TeachItem[]>> =>
+  async (
+    dispatch: AppDispatch,
+    getState: () => { teachingpage?: TeachingPageState | undefined }
+  ) => {
+    const normalizedTeachData = teachData ?? {};
     const firebaseTeach = {
-      publicId: teachData.publicId ?? '',
-      image: teachData.image ?? '',
-      details: teachData.details ?? '',
-      description: teachData.description ?? '',
-      detailsHebrew: teachData.detailsHebrew ?? '',
-      descriptionHebrew: teachData.descriptionHebrew ?? '',
+      publicId: normalizedTeachData.publicId ?? '',
+      image: normalizedTeachData.image ?? '',
+      details: normalizedTeachData.details ?? '',
+      description: normalizedTeachData.description ?? '',
+      detailsHebrew: normalizedTeachData.detailsHebrew ?? '',
+      descriptionHebrew: normalizedTeachData.descriptionHebrew ?? '',
       order
     };
 

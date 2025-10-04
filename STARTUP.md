@@ -29,7 +29,10 @@
   - `.eslintrc.cjs`, `.prettierrc.json`, `package.json` (new lint/prettier stack + scripts declared; requires dependency install + CI wiring).
   - `src/tests/fixtures/teaching.ts` (new fixture helpers for teaching flows).
   - `src/store/slices/teachingSlice.test.ts` (expanded coverage for add/update/delete/image/visibility paths).
-  - `src/app.tsx`, `src/store/slices/*` (typed dispatch/getState clean-up largely complete; teaching hook now lint-clean).
+- `src/app.tsx`, `src/store/slices/*` (typed dispatch/getState tightened; teaching hook lint suppression scoped at top of file; legacy thunks still planned for cleanup).
+- `src/store/configureStore.ts`, `src/store/hooks.ts` (store factory rebuilt with typed `rootReducer`, `PreloadedState` support, and direct `AppDispatch`; hooks return typed dispatch/selectors without casts).
+- `src/components/contactpage/ContactFormCard.test.tsx`, `src/containers/teaching/TeachList.test.tsx` (tests run under theme/stated wrapper; order interactions and validation assertions stable).
+- `src/components/contactpage/ContactFormCard.test.tsx`, `src/containers/teaching/TeachList.test.tsx` (tests updated to run under theme context and assert controlled ordering behaviour).
 - Tests passing: `yarn test --runTestsByPath src/containers/ContactPage.test.tsx src/containers/teaching/TeachingPage.test.tsx src/store/slices/teachingSlice.test.ts`.
 - `yarn typecheck` (tsc --noEmit) passes locally.
   - Shared Firebase database types added; jest mock updated to implement the typed interface.
@@ -37,10 +40,11 @@
 
 ## Next Steps Checklist
 1. Flesh out teaching validation coverage (hook/UI level) and selectors per plan bullet.
-2. Install updated lint dependencies (`yarn install`) and run `yarn lint` to inventory remaining violations (current teaching hook lint debt cleared).
+2. Install updated lint dependencies (`yarn install`) and run `yarn lint` to inventory remaining violations (legacy thunk cleanup pending).
 3. Husky pre-commit now runs `yarn lint:staged`; share rollout notes with the team.
-4. Continue targeted lint debt sweep (prioritize `src/app.tsx`, older thunks) once rules confirmed.
-5. Update `ModernizationPlan.md` when validation coverage + lint rollout deemed complete.
+4. Continue targeted lint debt sweep (prioritize older thunks/selectors once store typing rollout lands).
+5. Decide whether to opt into React Router v7 future flags in test setup to silence console warnings.
+6. Update `ModernizationPlan.md` when validation coverage + lint rollout deemed complete.
 
 ## Quick Commands
 - Run targeted tests: `yarn test --runTestsByPath src/containers/ContactPage.test.tsx src/containers/teaching/TeachingPage.test.tsx src/store/slices/teachingSlice.test.ts`

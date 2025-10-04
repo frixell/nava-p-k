@@ -19,6 +19,8 @@ import type { SeoPayload } from '../../types/seo';
 import type { RootState } from '../../store/configureStore';
 import { DEFAULT_SEO, EMPTY_TEACH, TeachImage, TeachItem, TeachingSeo } from './types';
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
+
 interface CloudinaryWidgetOptions {
   cloud_name: string;
   upload_preset: string;

@@ -17,6 +17,7 @@ import {
   updateTeach
 } from './teachingSlice';
 import { buildTeach, buildSeo, buildTeachingPageState } from '../../tests/fixtures/teaching';
+import type { TeachItem, TeachingSeo } from '../../containers/teaching/types';
 
 jest.mock('../../firebase/firebase');
 jest.mock('../../services/imageService', () => ({
@@ -48,6 +49,12 @@ const { deleteImage } = jest.requireMock('../../services/imageService') as {
   deleteImage: jest.Mock;
 };
 
+const expectTeach = (partial: Partial<TeachItem>) =>
+  expect.objectContaining(partial) as unknown as TeachItem;
+
+const expectTeachSeo = (partial: Partial<TeachingSeo>) =>
+  expect.objectContaining(partial) as unknown as TeachingSeo;
+
 describe('teachingSlice thunks', () => {
   beforeEach(() => {
     __resetMockFirebase();
@@ -70,14 +77,12 @@ describe('teachingSlice thunks', () => {
 
     const dispatch = jest.fn();
 
-    await startSetTeachingPage()(dispatch as any, jest.fn() as any, undefined as never);
+    await startSetTeachingPage()(dispatch as ThunkDispatch, jest.fn() as any, undefined as never);
 
     expect(dispatch).toHaveBeenCalledWith(
       setTeachingPage({
-        teachings: [
-          expect.objectContaining({ id: 'teach-1', details: 'Detail', description: 'Description' })
-        ],
-        seo: expect.objectContaining({ title: 'Teaching', description: 'Learning', keyWords: 'teach' })
+        teachings: [expectTeach({ id: 'teach-1', details: 'Detail', description: 'Description' })],
+        seo: expectTeachSeo({ title: 'Teaching', description: 'Learning', keyWords: 'teach' })
       })
     );
   });
@@ -94,7 +99,7 @@ describe('teachingSlice thunks', () => {
 
     expect(dispatch).toHaveBeenCalledWith(
       addTeach(
-        expect.objectContaining({
+        expectTeach({
           details: 'New detail',
           description: 'New description',
           order: 5
@@ -154,7 +159,7 @@ describe('teachingSlice thunks', () => {
     );
 
     expect(dispatch).toHaveBeenCalledWith(
-      updateTeach(expect.objectContaining({ id: 'teach-1', details: 'Updated detail' }))
+      updateTeach(expectTeach({ id: 'teach-1', details: 'Updated detail' }))
     );
 
     const state = __getMockFirebaseState();
@@ -214,7 +219,7 @@ describe('teachingSlice thunks', () => {
     );
 
     expect(dispatch).toHaveBeenCalledWith(
-      setTeachingSeo(expect.objectContaining({ title: 'New', description: 'Desc', keyWords: 'kw' }))
+      setTeachingSeo(expectTeachSeo({ title: 'New', description: 'Desc', keyWords: 'kw' }))
     );
 
     const state = __getMockFirebaseState();
@@ -239,18 +244,17 @@ describe('teachingSlice thunks', () => {
     await startUpdateTeachImage(
       { id: 'teach-1', image: { publicId: 'new-public', src: 'new-src', width: 200, height: 200 } },
       'old-public'
-    )(
-      dispatch as any,
-      jest.fn() as any,
-      undefined as never
-    );
+    )(dispatch as any, jest.fn() as any, undefined as never);
 
     expect(deleteImage).toHaveBeenCalledWith('old-public');
     expect(dispatch).toHaveBeenCalledWith(
       updateTeach(
-        expect.objectContaining({
+        expectTeach({
           id: 'teach-1',
-          image: expect.objectContaining({ publicId: 'new-public', src: 'new-src' })
+          image: expect.objectContaining({
+            publicId: 'new-public',
+            src: 'new-src'
+          }) as unknown as TeachItem['image']
         })
       )
     );
@@ -259,7 +263,12 @@ describe('teachingSlice thunks', () => {
     const teaches = state.website?.teachingpage?.teachings ?? {};
     expect(teaches['teach-1']).toEqual(
       expect.objectContaining({
-        image: expect.objectContaining({ publicId: 'new-public', src: 'new-src', width: 200, height: 200 })
+        image: expect.objectContaining({
+          publicId: 'new-public',
+          src: 'new-src',
+          width: 200,
+          height: 200
+        })
       })
     );
   });
@@ -278,7 +287,7 @@ describe('teachingSlice thunks', () => {
     );
 
     expect(dispatch).toHaveBeenCalledWith(
-      updateTeach(expect.objectContaining({ id: 'teach-1', visible: true }))
+      updateTeach(expectTeach({ id: 'teach-1', visible: true }))
     );
 
     const state = __getMockFirebaseState();

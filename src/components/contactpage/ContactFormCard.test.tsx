@@ -1,9 +1,10 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ThemeProvider } from '@mui/material/styles';
 import type { ReactNode } from 'react';
-import type { ContactFormInput } from '../../utils/dataTransformers';
 import ContactFormCard from './ContactFormCard';
+import appTheme from '../../styles/theme';
 
 jest.mock('react-responsive-modal', () => ({
   __esModule: true,
@@ -13,7 +14,20 @@ jest.mock('react-responsive-modal', () => ({
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (_key: string, options?: { defaultValue?: string }) => options?.defaultValue ?? '',
+    t: (_key: string, defaultValueOrOptions?: unknown) => {
+      if (typeof defaultValueOrOptions === 'string') {
+        return defaultValueOrOptions;
+      }
+      if (
+        defaultValueOrOptions &&
+        typeof defaultValueOrOptions === 'object' &&
+        'defaultValue' in defaultValueOrOptions &&
+        typeof (defaultValueOrOptions as { defaultValue?: unknown }).defaultValue === 'string'
+      ) {
+        return (defaultValueOrOptions as { defaultValue?: string }).defaultValue ?? '';
+      }
+      return '';
+    },
     i18n: { language: 'en', changeLanguage: jest.fn(async () => undefined) }
   })
 }));
@@ -26,12 +40,15 @@ const fillField = async (user: UserEventInstance, placeholder: string, value: st
   await user.type(input, value);
 };
 
+const renderWithTheme = (ui: ReactNode) =>
+  render(<ThemeProvider theme={appTheme}>{ui}</ThemeProvider>);
+
 describe('ContactFormCard', () => {
   it('submits valid form and shows success feedback', async () => {
     const user = userEvent.setup();
-    const onSubmit = jest.fn(async (_input: ContactFormInput) => undefined);
+    const onSubmit = jest.fn(async () => undefined);
 
-    render(<ContactFormCard onSubmit={onSubmit} language="en" />);
+    renderWithTheme(<ContactFormCard onSubmit={onSubmit} language="en" />);
 
     await fillField(user, 'Full name *', 'John Doe');
     await fillField(user, 'Phone *', '555-1234');
@@ -56,9 +73,9 @@ describe('ContactFormCard', () => {
 
   it('shows validation message when required fields missing', async () => {
     const user = userEvent.setup();
-    const onSubmit = jest.fn(async (_input: ContactFormInput) => undefined);
+    const onSubmit = jest.fn(async () => undefined);
 
-    render(<ContactFormCard onSubmit={onSubmit} language="en" />);
+    renderWithTheme(<ContactFormCard onSubmit={onSubmit} language="en" />);
 
     const form = screen.getByTestId('contact-form');
     fireEvent.submit(form);
