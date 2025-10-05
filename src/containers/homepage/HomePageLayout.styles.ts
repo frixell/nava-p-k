@@ -1,5 +1,10 @@
 import styled from '@emotion/styled';
 
+const TOOLBAR_HEIGHT = 58;
+const SIDEBAR_GUTTER = 170;
+const MIN_PROJECT_WIDTH = 240;
+const MIN_MAP_WIDTH = 320;
+
 interface LayoutContainerProps {
     isMobile: boolean;
     isEnglish: boolean;
@@ -7,11 +12,12 @@ interface LayoutContainerProps {
 
 export const LayoutContainer = styled('div', {
     shouldForwardProp: (prop) => !['isMobile', 'isEnglish'].includes(prop as string)
-})<LayoutContainerProps>(({ isMobile, isEnglish }) => ({
+})<LayoutContainerProps>(({ theme, isMobile, isEnglish }) => ({
     display: 'flex',
     flexDirection: isMobile ? 'column-reverse' : isEnglish ? 'row' : 'row-reverse',
     alignItems: 'stretch',
-    ...(isMobile ? {} : { height: 'calc(100vh - var(--toolbar-height))' })
+    backgroundColor: theme.app.colors.background,
+    ...(isMobile ? {} : { height: `calc(100vh - ${TOOLBAR_HEIGHT}px)` })
 }));
 
 interface ProjectContainerProps {
@@ -22,12 +28,12 @@ interface ProjectContainerProps {
 
 export const ProjectContainer = styled('div', {
     shouldForwardProp: (prop) => !['isMobile', 'isEnglish', 'viewportWidth'].includes(prop as string)
-})<ProjectContainerProps>(({ isMobile, isEnglish, viewportWidth }) => ({
+})<ProjectContainerProps>(({ theme, isMobile, isEnglish, viewportWidth }) => ({
     position: 'absolute',
     zIndex: 5000,
-    background: 'var(--color-surface, #fff)',
-    padding: '30px 20px 20px',
-    top: 'var(--toolbar-height)',
+    background: theme.app.colors.surface,
+    padding: theme.spacing(4, 3, 3),
+    top: `${TOOLBAR_HEIGHT}px`,
     boxSizing: 'border-box',
     overflowY: 'auto',
     ...(isMobile
@@ -36,8 +42,8 @@ export const ProjectContainer = styled('div', {
               width: '100%'
           }
         : {
-              height: 'calc(100vh - var(--toolbar-height))',
-              width: `${Math.max(viewportWidth - 170, 240)}px`,
+              height: `calc(100vh - ${TOOLBAR_HEIGHT}px)`,
+              width: `${Math.max(viewportWidth - SIDEBAR_GUTTER, MIN_PROJECT_WIDTH)}px`,
               [isEnglish ? 'right' : 'left']: 0
           })
 }));
@@ -59,8 +65,8 @@ export const MapContainer = styled('div', {
           }
         : {
               display: 'inline-block',
-              height: 'calc(100vh - var(--toolbar-height))',
-              width: `${Math.max(viewportWidth - 170, 320)}px`,
+              height: `calc(100vh - ${TOOLBAR_HEIGHT}px)`,
+              width: `${Math.max(viewportWidth - SIDEBAR_GUTTER, MIN_MAP_WIDTH)}px`,
               float: isEnglish ? 'right' : 'left'
           })
 }));

@@ -35,7 +35,7 @@
 - ✅ `_Backoffice.scss`: Replaced legacy toolbar/modals with BackofficeTheme + component-level Emotion styling; partial removed after verifying no consumers relied on the old selectors.
 - ✅ `_GlobalUI.scss`: replaced with `ThemeOverrides` CSS variable bridge + `GlobalStyles` loading UI helpers; legacy partial removed.
 - ✅ `_WorkshopPage.scss`: legacy styles retired; existing workshop schedule tooling now lives in typed components, so the unused partial was removed after verifying no runtime consumers.
-- 📋 Align residual layout helpers (e.g., `PageLayout.styles` derivatives) once their host features move off the legacy partials.
+- ✅ `PageLayout.styles` + derivatives now lean on theme spacing/breakpoints and shared typography tokens; residual layout helper imports audited and updated after SCSS removal.
 
 ## Testing & Tooling
 
