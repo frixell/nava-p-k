@@ -22,7 +22,11 @@ const AboutTopStrip: React.FC<AboutTopStripProps> = ({
   return (
     <TopStripRoot>
       <ImageWrapper>
-        {image?.src ? <HeroImage src={image.src} alt={image.alt ?? 'About cover'} /> : <Placeholder>No image uploaded</Placeholder>}
+        {image?.src ? (
+          <HeroImage src={image.src} alt={image.alt ?? 'About cover'} />
+        ) : (
+          <Placeholder>No image uploaded</Placeholder>
+        )}
         {isAuthenticated && (
           <UploadAction type="button" onClick={onRequestUpload} aria-label="Upload about image">
             ↑

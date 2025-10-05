@@ -70,9 +70,9 @@ const HomePageLayout: React.FC<HomePageLayoutProps> = ({
         allowAddPoint={allowAddPoint}
         selectedProject={selectedProject}
         setSelectedProject={setSelectedProject}
-        handleExpandProject={handleExpandProject}
-        categoryColors={categoryColors}
-        openCategories={openCategories}
+          handleExpandProject={handleExpandProject}
+          categoryColors={categoryColors}
+          openCategories={openCategories}
       />
     </LayoutContainer>
   );

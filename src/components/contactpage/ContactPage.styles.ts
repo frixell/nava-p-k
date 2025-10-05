@@ -25,24 +25,24 @@ export const Card = styled.article(({ theme }) => ({
 }));
 
 export const CardHeading = styled('h2', {
-    shouldForwardProp: (prop) => prop !== 'direction'
+  shouldForwardProp: (prop) => prop !== 'direction'
 })<{ direction: 'ltr' | 'rtl' }>(({ theme, direction }) => ({
-    margin: 0,
-    fontSize: '2rem',
-    fontWeight: theme.app.typography.weights.bold,
-    color: `var(--color-text-main, ${theme.app.colors.text.primary})`,
-    textAlign: direction === 'rtl' ? 'right' : 'left',
-    direction
+  margin: 0,
+  fontSize: '2rem',
+  fontWeight: theme.app.typography.weights.bold,
+  color: `var(--color-text-main, ${theme.app.colors.text.primary})`,
+  textAlign: direction === 'rtl' ? 'right' : 'left',
+  direction
 }));
 
 export const CardSubheading = styled('p', {
-    shouldForwardProp: (prop) => prop !== 'direction'
+  shouldForwardProp: (prop) => prop !== 'direction'
 })<{ direction: 'ltr' | 'rtl' }>(({ theme, direction }) => ({
-    margin: 0,
-    fontSize: '1.4rem',
-    color: `var(--color-text-muted, ${theme.app.colors.text.muted})`,
-    textAlign: direction === 'rtl' ? 'right' : 'left',
-    direction
+  margin: 0,
+  fontSize: '1.4rem',
+  color: `var(--color-text-muted, ${theme.app.colors.text.muted})`,
+  textAlign: direction === 'rtl' ? 'right' : 'left',
+  direction
 }));
 
 export const FieldStack = styled.div(({ theme }) => ({

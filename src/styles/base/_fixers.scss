@@ -1,92 +1,87 @@
 .hidden {
-    display: none;
+  display: none;
 }
 
 .desktop {
-    display: block;
+  display: block;
 }
 
 .desktop_inline {
-    display: inline-block;
+  display: inline-block;
 }
 
 .desktop_flex {
-    display: flex;
+  display: flex;
 }
 
 .mobile {
-    display: none;
+  display: none;
 }
 
 .mobile_inline {
-    display: none;
+  display: none;
 }
 
 .mobile_flex {
-    display: none;
+  display: none;
 }
-
-
 
 @media (max-width: 768px) {
-    .desktop {
-        display: none;
-    }
+  .desktop {
+    display: none;
+  }
 
-    .desktop_inline {
-        display: none;
-    }
+  .desktop_inline {
+    display: none;
+  }
 
-    .desktop_flex {
-        display: none;
-    }
+  .desktop_flex {
+    display: none;
+  }
 
-    .mobile{
-        display: block;
-    }
+  .mobile {
+    display: block;
+  }
 
-    .mobile_inline {
-        display: inline-block;
-    }
+  .mobile_inline {
+    display: inline-block;
+  }
 
-    .mobile_flex {
-        display: flex;
-    }
+  .mobile_flex {
+    display: flex;
+  }
 }
 
-
-.btn_accessibility{
-    display: none !important;
+.btn_accessibility {
+  display: none !important;
 }
 
 .backoffice__gray__text {
-    color: var(--color-text-muted, #666665);
+  color: var(--color-text-muted, #666665);
 }
 
 .cursor__hand {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .eng__text textarea {
-    text-align: left;
-    margin-left: -1rem;
+  text-align: left;
+  margin-left: -1rem;
 }
 
-
-
 .react-parallax-bgimage {
-    width: 100% !important;
-    height: auto !important;
+  width: 100% !important;
+  height: auto !important;
 }
 
 @media (max-width: 768px) {
-    .react-parallax-bgimage {
-        width: 100% !important;
-        height: auto !important;
-        top: 22% !important;
-    }
+  .react-parallax-bgimage {
+    width: 100% !important;
+    height: auto !important;
+    top: 22% !important;
+  }
 }
 
 .enable-toolbar-content button {
-    right: 0;
+  right: 0;
 }

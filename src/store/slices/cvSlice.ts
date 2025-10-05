@@ -58,10 +58,13 @@ type CvImagesInput =
   | undefined;
 
 const mergeEntries = (entries: Array<[string, CvImage]>, seed: CvImagesMap): CvImagesMap =>
-  entries.reduce<CvImagesMap>((accumulator, [key, image]) => ({
-    ...accumulator,
-    [key]: image
-  }), seed);
+  entries.reduce<CvImagesMap>(
+    (accumulator, [key, image]) => ({
+      ...accumulator,
+      [key]: image
+    }),
+    seed
+  );
 
 const toCvImagesMap = (source: CvImagesInput, fallback: CvImagesMap = {}): CvImagesMap => {
   const seed = { ...fallback };

@@ -11,7 +11,13 @@ interface CvBodyProps {
   setData: (event: SyntheticSetDataEvent) => void;
 }
 
-const CvBody: React.FC<CvBodyProps> = ({ isAuthenticated, language, cvpage, cvpageOrigin, setData }) => (
+const CvBody: React.FC<CvBodyProps> = ({
+  isAuthenticated,
+  language,
+  cvpage,
+  cvpageOrigin,
+  setData
+}) => (
   <CvStructure>
     <CvLeftColumn>
       <HeaderContainer>

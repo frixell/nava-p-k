@@ -74,11 +74,7 @@ const AppRouter: React.FC = () => (
       <Routes>
         {localizedRoutes.flatMap(({ paths, component: Component, props }) =>
           paths.map((path) => (
-            <Route
-              key={path}
-              path={path}
-              element={<Component {...(props ?? {})} />}
-            />
+            <Route key={path} path={path} element={<Component {...(props ?? {})} />} />
           ))
         )}
         <Route path="/signin" element={<SigninPage />} />

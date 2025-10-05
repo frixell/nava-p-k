@@ -46,11 +46,11 @@ const SeoModal: React.FC<SeoModalProps> = ({
 }) => {
   const mergedLabels = { ...defaultLabels, ...labels };
 
-  const handleInputChange = (field: keyof SeoFormState) => (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    onChange(field, event.target.value);
-  };
+  const handleInputChange =
+    (field: keyof SeoFormState) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      onChange(field, event.target.value);
+    };
 
   return (
     <Modal open={open} onClose={onClose} center>

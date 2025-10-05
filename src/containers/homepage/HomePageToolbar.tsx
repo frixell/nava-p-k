@@ -18,6 +18,7 @@ interface HomePageToolbarProps {
   onToggleAddPoint: () => void;
   onToggleNewCategory: () => void;
   onStartEditCategory: () => void;
+  onOpenHeroSettings: () => void;
 }
 
 const HomePageToolbar: React.FC<HomePageToolbarProps> = ({
@@ -30,7 +31,8 @@ const HomePageToolbar: React.FC<HomePageToolbarProps> = ({
   onSave,
   onToggleAddPoint,
   onToggleNewCategory,
-  onStartEditCategory
+  onStartEditCategory,
+  onOpenHeroSettings
 }) => {
   if (!isAuthenticated) {
     return null;
@@ -96,6 +98,18 @@ const HomePageToolbar: React.FC<HomePageToolbarProps> = ({
             <IconImage variant="accent" src="/images/backoffice/edit.svg" alt="" />
           </IconButton>
         </DualButtonContainer>
+      </ToolbarCluster>
+
+      <ToolbarCluster isEnglish={isEnglish} alignEnglish={69} alignHebrew={31} zIndexLevel={15010}>
+        <ToolbarLabel width="8rem" align="center">
+          {isEnglish ? 'Hero content' : 'תוכן ראשי'}
+        </ToolbarLabel>
+        <IconButton
+          onClick={onOpenHeroSettings}
+          aria-label={isEnglish ? 'Edit hero content' : 'עריכת תוכן ראשי'}
+        >
+          <IconImage variant="accent" src="/images/backoffice/edit.svg" alt="" />
+        </IconButton>
       </ToolbarCluster>
     </>
   );

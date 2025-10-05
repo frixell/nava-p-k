@@ -38,9 +38,7 @@ const defaultExtendedContent: ExtendedContent = {
 
 const initialState: PointsState = [];
 
-const normalizeExtendedContent = (
-  payload?: Partial<ExtendedContent> | null
-): ExtendedContent => {
+const normalizeExtendedContent = (payload?: Partial<ExtendedContent> | null): ExtendedContent => {
   const { content, image, tableOptions, title, ...rest } = payload ?? {};
   return {
     content: typeof content === 'string' ? content : '',
@@ -100,50 +98,50 @@ export const startGetPoints = (): AppThunk<Promise<void>> => async (dispatch: Ap
   dispatch(setPoints(points));
 };
 
-export const startEditProject = (
-  payload: { project: Point }
-): AppThunk<Promise<void>> => async (dispatch: AppDispatch) => {
-  const { id, ...rest } = payload.project;
-  if (!id) {
-    return;
-  }
+export const startEditProject =
+  (payload: { project: Point }): AppThunk<Promise<void>> =>
+  async (dispatch: AppDispatch) => {
+    const { id, ...rest } = payload.project;
+    if (!id) {
+      return;
+    }
 
-  await firebase.database().ref(`points/${id}`).update(rest);
-  dispatch(editProject(payload.project));
-};
-
-export const startAddPoint = (
-  pointData: Partial<Point> = {}
-): AppThunk<Promise<Point | undefined>> => async (dispatch: AppDispatch) => {
-  const {
-    title = 'title',
-    content = 'content',
-    extendedContent = defaultExtendedContent,
-    type = 'point',
-    x = '0',
-    y = '0',
-    z = '0'
-  } = pointData;
-
-  const pointPayload: Partial<Point> = {
-    title,
-    content,
-    extendedContent,
-    type,
-    x,
-    y,
-    z
+    await firebase.database().ref(`points/${id}`).update(rest);
+    dispatch(editProject(payload.project));
   };
 
-  const ref = await firebase.database().ref('points').push(pointPayload);
+export const startAddPoint =
+  (pointData: Partial<Point> = {}): AppThunk<Promise<Point | undefined>> =>
+  async (dispatch: AppDispatch) => {
+    const {
+      title = 'title',
+      content = 'content',
+      extendedContent = defaultExtendedContent,
+      type = 'point',
+      x = '0',
+      y = '0',
+      z = '0'
+    } = pointData;
 
-  if (ref?.key) {
-    const localPoint = normalizePoint(ref.key, pointPayload);
-    dispatch(addPoint(localPoint));
-    return localPoint;
-  }
+    const pointPayload: Partial<Point> = {
+      title,
+      content,
+      extendedContent,
+      type,
+      x,
+      y,
+      z
+    };
 
-  return undefined;
-};
+    const ref = await firebase.database().ref('points').push(pointPayload);
+
+    if (ref?.key) {
+      const localPoint = normalizePoint(ref.key, pointPayload);
+      dispatch(addPoint(localPoint));
+      return localPoint;
+    }
+
+    return undefined;
+  };
 
 export default pointsSlice.reducer;

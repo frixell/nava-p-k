@@ -40,14 +40,21 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
 
   const validationMessages = useMemo(
     () => ({
-      missingRequired: t('contact.errors.missingRequired', 'Please fill in all required fields (*)'),
+      missingRequired: t(
+        'contact.errors.missingRequired',
+        'Please fill in all required fields (*)'
+      ),
       invalidEmail: t('contact.errors.invalidEmail', 'Please enter a valid email address.'),
-      invalidMessage: t('contact.errors.invalidMessage', 'Please share a short message so I know how to help.')
+      invalidMessage: t(
+        'contact.errors.invalidMessage',
+        'Please share a short message so I know how to help.'
+      )
     }),
     [t]
   );
 
-  const handleChange = (field: keyof ContactFormInput) =>
+  const handleChange =
+    (field: keyof ContactFormInput) =>
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { value } = event.target;
       setForm((prev) => ({ ...prev, [field]: value }));
@@ -76,7 +83,12 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
       if (process.env.NODE_ENV !== 'production') {
         console.error('Failed to submit contact message', err);
       }
-      setError(t('contact.errors.submitFailed', 'Something went wrong while sending your message. Please try again later.'));
+      setError(
+        t(
+          'contact.errors.submitFailed',
+          'Something went wrong while sending your message. Please try again later.'
+        )
+      );
     } finally {
       setSubmitting(false);
     }
@@ -85,7 +97,9 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
   return (
     <Card>
       <CardHeading direction={dir}>{t('contact.form.title', 'Let’s talk')}</CardHeading>
-      <CardSubheading direction={dir}>{t('contact.form.subtitle', 'Leave your details and I’ll get back to you soon.')}</CardSubheading>
+      <CardSubheading direction={dir}>
+        {t('contact.form.subtitle', 'Leave your details and I’ll get back to you soon.')}
+      </CardSubheading>
 
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
@@ -123,7 +137,12 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
             direction={dir}
           />
         </FieldStack>
-        <PrimaryButton type="submit" disabled={isSubmitting} style={{ marginTop: '1.6rem' }} direction={dir}>
+        <PrimaryButton
+          type="submit"
+          disabled={isSubmitting}
+          style={{ marginTop: '1.6rem' }}
+          direction={dir}
+        >
           {isSubmitting ? t('contact.form.sending', 'Sending…') : t('sendMessage', 'Send message')}
         </PrimaryButton>
       </form>
@@ -131,7 +150,9 @@ const ContactFormCard: React.FC<ContactFormCardProps> = ({ onSubmit, language })
       <Modal open={isSuccessOpen} onClose={() => setSuccessOpen(false)} center>
         <SuccessContent>
           <SuccessTitle>{t('contact.form.successTitle', 'Thank you!')}</SuccessTitle>
-          <SuccessBody>{t('contact.form.successBody', 'I will reach out as soon as possible.')}</SuccessBody>
+          <SuccessBody>
+            {t('contact.form.successBody', 'I will reach out as soon as possible.')}
+          </SuccessBody>
           <PrimaryButton type="button" onClick={() => setSuccessOpen(false)} direction={dir}>
             {t('contact.form.successButton', 'Close')}
           </PrimaryButton>

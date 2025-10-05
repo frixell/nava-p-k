@@ -80,7 +80,9 @@ describe('ContactFormCard', () => {
     const form = screen.getByTestId('contact-form');
     fireEvent.submit(form);
 
-    await waitFor(() => expect(screen.getByText('Please fill in all required fields (*)')).toBeTruthy());
+    await waitFor(() =>
+      expect(screen.getByText('Please fill in all required fields (*)')).toBeTruthy()
+    );
     expect(onSubmit).not.toHaveBeenCalled();
 
     await fillField(user, 'Full name *', 'Jane Doe');

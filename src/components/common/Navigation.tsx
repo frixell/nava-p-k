@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Button, Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import styled from '@emotion/styled';
 
 import type { AppTheme } from '../../styles/theme';
 
@@ -17,105 +16,223 @@ type NavLinkDefinition = {
   aliases?: string[];
 };
 
-const NavigationContainer = styled('div')({
-  margin: 0,
-  padding: 0,
-  width: '100%'
-});
-
-const ToolbarSpacer = styled('div')({
-  height: 'var(--toolbar-height)',
-  width: '100%'
-});
-
-const DesktopAppBar = styled(AppBar)({
-  backgroundColor: 'var(--color-background-dark, #1f1f1f)',
-  boxShadow: 'none',
-  display: 'none',
-  '@media (min-width: 769px)': {
-    display: 'block'
+const Header = styled('header', {
+  shouldForwardProp: (prop) => prop !== 'scrolled'
+})<{ scrolled: boolean }>(({ theme, scrolled }) => ({
+  position: 'sticky',
+  top: 0,
+  zIndex: theme.zIndex.appBar,
+  width: '100%',
+  backgroundColor: theme.app.colors.background,
+  borderBottom: `1px solid ${theme.app.colors.border}`,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingInline: theme.app.spacing.xxl,
+  paddingBlock: theme.app.spacing.md,
+  transition: 'box-shadow 0.2s ease, background-color 0.2s ease',
+  boxShadow: scrolled ? '0 10px 24px rgba(10, 31, 51, 0.12)' : 'none',
+  '@media (max-width: 900px)': {
+    paddingInline: theme.app.spacing.lg
   }
+}));
+
+const HeaderInner = styled('div')(({ theme }) => ({
+  width: 'min(1120px, 100%)',
+  marginInline: 'auto',
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.app.spacing.xl,
+  flexDirection: 'row',
+  justifyContent: 'space-between'
+}));
+
+const HeaderLeft = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'isHebrew'
+})<{ isHebrew: boolean }>(({ theme, isHebrew }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.app.spacing.lg,
+  minWidth: 0,
+  flex: 1,
+  flexDirection: isHebrew ? 'row-reverse' : 'row',
+  justifyContent: isHebrew ? 'flex-end' : 'flex-start',
+  order: isHebrew ? 2 : 1
+}));
+
+const HeaderRight = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'isHebrew'
+})<{ isHebrew: boolean }>(({ theme, isHebrew }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.app.spacing.md,
+  flexDirection: isHebrew ? 'row-reverse' : 'row',
+  justifyContent: isHebrew ? 'flex-start' : 'flex-end',
+  order: isHebrew ? 1 : 2
+}));
+
+const Brand = styled(NavLink)(({ theme }) => ({
+  fontFamily: theme.app.typography.fontFamilyHeading,
+  fontWeight: theme.app.typography.variants.displayMd.fontWeight,
+  fontSize: '1.25rem',
+  color: theme.app.colors.text.primary,
+  textDecoration: 'none',
+  letterSpacing: '-0.01em',
+  '&:hover': {
+    textDecoration: 'underline'
+  }
+}));
+
+const DesktopNav = styled('nav', {
+  shouldForwardProp: (prop) => prop !== 'isHebrew'
+})<{ isHebrew: boolean }>(({ theme, isHebrew }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.app.spacing.lg,
+  flexDirection: isHebrew ? 'row-reverse' : 'row',
+  '@media (max-width: 768px)': {
+    display: 'none'
+  }
+}));
+
+const MobileMenuButton = styled('button')(({ theme }) => ({
+  display: 'none',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: '2.75rem',
+  height: '2.75rem',
+  borderRadius: '50%',
+  border: `1px solid ${theme.app.colors.border}`,
+  background: theme.app.colors.surface,
+  cursor: 'pointer',
+  '@media (max-width: 768px)': {
+    display: 'inline-flex'
+  }
+}));
+
+const MenuIcon = styled('span')(({ theme }) => ({
+  position: 'relative',
+  width: '1.4rem',
+  height: '0.1rem',
+  backgroundColor: theme.app.colors.text.primary,
+  '&::before, &::after': {
+    content: '""',
+    position: 'absolute',
+    left: 0,
+    width: '100%',
+    height: '0.1rem',
+    backgroundColor: theme.app.colors.text.primary,
+    transition: 'transform 0.2s ease, top 0.2s ease'
+  },
+  '&::before': {
+    top: '-0.4rem'
+  },
+  '&::after': {
+    top: '0.4rem'
+  }
+}));
+
+const LinksList = styled('ul')(({ theme }) => ({
+  listStyle: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.app.spacing.lg,
+  margin: 0,
+  padding: 0
+}));
+
+const LinkItem = styled('li')({
+  display: 'flex'
 });
 
-const MobileAppBar = styled(AppBar)({
-  backgroundColor: 'var(--color-background-dark, #1f1f1f)',
-  boxShadow: 'none',
-  display: 'block',
+const StyledNavLink = styled(NavLink)(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  paddingInline: (theme as AppTheme).app.spacing.sm,
+  paddingBlock: (theme as AppTheme).app.spacing['2xs'],
+  borderRadius: '999px',
+  textDecoration: 'none',
+  fontFamily: (theme as AppTheme).app.typography.fontFamilyBase,
+  fontWeight: (theme as AppTheme).app.typography.weights.regular,
+  fontSize: (theme as AppTheme).app.typography.variants.body.fontSize,
+  lineHeight: (theme as AppTheme).app.typography.variants.body.lineHeight,
+  color: (theme as AppTheme).app.colors.text.primary,
+  border: '1px solid transparent',
+  transition: 'color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease',
+  textTransform: 'none',
+  letterSpacing: '0.01em',
+  '&:hover': {
+    color: (theme as AppTheme).app.colors.accent.secondary,
+    backgroundColor: (theme as AppTheme).app.colors.surfaceMuted
+  },
+  '&:focus-visible': {
+    outline: `2px solid ${(theme as AppTheme).app.colors.accent.tertiary}`,
+    outlineOffset: '2px'
+  },
+  "&[data-active='true']": {
+    color: (theme as AppTheme).app.colors.accent.primary,
+    borderColor: (theme as AppTheme).app.colors.accent.primary,
+    fontWeight: (theme as AppTheme).app.typography.weights.medium
+  },
+  "&[data-hebrew='true']": {
+    letterSpacing: 0
+  }
+}));
+
+const LanguageButton = styled('button')(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingInline: theme.app.spacing.sm,
+  paddingBlock: theme.app.spacing['2xs'],
+  borderRadius: '999px',
+  border: `1px solid ${theme.app.colors.border}`,
+  background: theme.app.colors.surface,
+  color: theme.app.colors.text.primary,
+  minWidth: '6.5rem',
+  cursor: 'pointer',
+  fontFamily: theme.app.typography.fontFamilyBase,
+  fontWeight: theme.app.typography.weights.medium,
+  '&:hover': {
+    backgroundColor: theme.app.colors.surfaceMuted
+  },
+  '&:focus-visible': {
+    outline: `2px solid ${theme.app.colors.accent.tertiary}`,
+    outlineOffset: '2px'
+  }
+}));
+
+const MobilePanel = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  top: '100%',
+  right: 0,
+  left: 0,
+  backgroundColor: theme.app.colors.background,
+  borderBottom: `1px solid ${theme.app.colors.border}`,
+  padding: theme.app.spacing.lg,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.app.spacing.md,
   '@media (min-width: 769px)': {
     display: 'none'
   }
-});
+}));
 
-const DesktopToolbar = styled(Toolbar)({
-  justifyContent: 'space-between',
-  alignItems: 'flex-end',
-  minHeight: 'auto'
-});
-
-const MobileToolbar = styled(Toolbar)({
-  minHeight: 'auto',
-  paddingTop: '12px',
-  paddingBottom: '12px',
-  paddingLeft: '12px',
-  paddingRight: '12px'
-});
-
-const navButtonStyles = (theme: AppTheme, isActive: boolean) => ({
-  border: isActive
-    ? `0.2rem dotted var(--color-surface, ${theme.app.colors.text.inverse})`
-    : '0.2rem solid rgba(0, 0, 0, 0)',
-  marginLeft: '0.4rem',
-  marginRight: '0.4rem',
-  marginBottom: '0.625rem',
-  color: `var(--color-surface, ${theme.app.colors.text.inverse})`,
-  fontFamily: theme.app.typography.fontFamilyBase,
-  fontWeight: theme.app.typography.weights.regular,
-  fontSize: '1.5rem',
-  letterSpacing: '0.1px',
-  minHeight: '2.2rem',
-  lineHeight: '2.2rem',
-  paddingTop: 0,
-  paddingBottom: 0,
-  paddingLeft: '1rem',
-  paddingRight: '1rem',
-  textTransform: 'capitalize',
-  transition: 'border-color 0.2s ease',
-  '&:hover': {
-    border: `0.2rem dotted var(--color-surface, ${theme.app.colors.text.inverse})`,
-    textDecoration: 'none'
-  }
-});
-
-const languageButtonStyles = (theme: AppTheme) => ({
-  ...navButtonStyles(theme, false),
-  marginBottom: '0.625rem',
-  textTransform: 'none'
-});
-
-const brandButtonStyles = (theme: AppTheme, isHebrew: boolean) => ({
-  color: `var(--color-surface, ${theme.app.colors.text.inverse})`,
-  fontFamily: theme.app.typography.fontFamilyHeading,
-  fontWeight: theme.app.typography.weights.regular,
-  fontSize: '1.6rem',
-  letterSpacing: '0.1px',
-  textTransform: 'none',
-  border: '0.2rem solid rgba(0, 0, 0, 0)',
-  marginBottom: '0.7rem',
-  paddingTop: '1vw',
-  paddingBottom: 0,
-  paddingLeft: isHebrew ? 0 : '1rem',
-  paddingRight: isHebrew ? 0 : '1rem',
-  alignSelf: 'flex-end',
-  '&:hover': {
-    color: `var(--color-surface, ${theme.app.colors.text.inverse})`
-  }
-});
+const MobileLinks = styled('ul')(({ theme }) => ({
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.app.spacing.sm
+}));
 
 const decodePathname = (value: string) => {
   try {
     return decodeURI(value);
   } catch (error) {
     if (process.env.NODE_ENV !== 'production') {
+      // eslint-disable-next-line no-console
       console.warn('Failed to decode pathname', value, error);
     }
     return value;
@@ -125,164 +242,155 @@ const decodePathname = (value: string) => {
 const Navigation: React.FC<NavigationProps> = ({ langLink, langLinkEng }) => {
   const { i18n } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const headerRef = useRef<HTMLElement | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const desktopToolbarRef = useRef<HTMLDivElement | null>(null);
-  const mobileToolbarRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const trigger = document.getElementById('enable-toolbar-trigger');
-    const buttons = document.getElementById('enable-toolbar-buttons');
-    if (trigger && buttons) {
-      buttons.style.textAlign = 'right';
-    }
-  }, []);
-
-  const updateToolbarHeight = useCallback(() => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
-      return;
-    }
-
-    const toolbars = [desktopToolbarRef.current, mobileToolbarRef.current].filter(
-      (toolbar): toolbar is HTMLDivElement => Boolean(toolbar)
-    );
-
-    if (!toolbars.length) {
-      return;
-    }
-
-    const visibleToolbar =
-      toolbars.find((toolbar) => {
-        const parent = toolbar.parentElement;
-        if (!parent) {
-          return false;
-        }
-        const style = window.getComputedStyle(parent);
-        return style.display !== 'none' && style.visibility !== 'hidden';
-      }) ?? toolbars[0];
-
-    const height = visibleToolbar.offsetHeight;
-    if (height > 0) {
-      document.documentElement.style.setProperty('--toolbar-height', `${height}px`);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return () => undefined;
-    }
-
-    updateToolbarHeight();
-    window.addEventListener('resize', updateToolbarHeight);
-    return () => window.removeEventListener('resize', updateToolbarHeight);
-  }, [updateToolbarHeight]);
-
+  const pathname = decodePathname(location.pathname);
   const isHebrew = i18n.language === 'he';
-
-  useEffect(() => {
-    updateToolbarHeight();
-  }, [updateToolbarHeight, isHebrew, i18n.language]);
-
-  const setLang = () => {
-    const nextLang = isHebrew ? 'en' : 'he';
-    i18n.changeLanguage(nextLang).then(() => {
-      navigate(nextLang === 'he' ? langLink : langLinkEng);
-    });
-  };
-
-  const pathname = typeof window !== 'undefined' ? decodePathname(window.location.pathname) : '';
 
   const navLinks: NavLinkDefinition[] = isHebrew
     ? [
         { to: '/עב', label: 'ראשי', aliases: ['/'] },
         { to: '/מחקר', label: 'מחקר' },
         { to: '/הוראה', label: 'הוראה' },
-        { to: '/הרצאות', label: 'הרצאות' },
         { to: '/פרסומים', label: 'פרסומים' },
-        { to: '/קורות_חיים', label: 'קו״ח' },
-        { to: '/אודות', label: 'אודות' },
-        { to: '/צרו_קשר', label: 'צרו קשר' }
+        { to: '/צור-קשר', label: 'צור קשר', aliases: ['/צור קשר'] }
       ]
     : [
         { to: '/en', label: 'Home', aliases: ['/'] },
         { to: '/research', label: 'Research' },
-        { to: '/Teaching', label: 'Teaching' },
-        { to: '/Lectures', label: 'Lectures' },
-        { to: '/Publication', label: 'Publication' },
-        { to: '/CV', label: 'CV' },
-        { to: '/About', label: 'About' },
-        { to: '/Contact', label: 'Contact' }
+        { to: '/teaching', label: 'Teaching' },
+        { to: '/publications', label: 'Publications' },
+        { to: '/contact', label: 'Contact' }
       ];
 
-  const renderBrandButton = () => (
-    <Button
-      component="a"
-      href={isHebrew ? '/עב' : '/'}
-      color="inherit"
-      sx={(theme) => brandButtonStyles(theme as AppTheme, isHebrew)}
-    >
-      <div
-        style={{
-          marginBottom: isHebrew ? '2px' : '1px',
-          textAlign: isHebrew ? 'right' : 'left',
-          lineHeight: isHebrew ? '1.2' : '140%'
-        }}
-      >
-        {isHebrew ? 'נאוה קיינר-פרסוב' : 'Nava Kainer-Persov, PhD'}
-        <br />
-        {isHebrew ? 'אדריכלית ומתכננת ערים' : 'Architect & Urban Planner'}
-      </div>
-    </Button>
+  const isActive = useCallback(
+    (link: NavLinkDefinition) =>
+      link.to === pathname || (link.aliases ?? []).some((alias) => alias === pathname),
+    [pathname]
+  );
+
+  const setToolbarHeight = useCallback(() => {
+    if (!headerRef.current) {
+      return;
+    }
+    const height = headerRef.current.offsetHeight;
+    if (height > 0) {
+      document.documentElement.style.setProperty('--toolbar-height', `${height}px`);
+    }
+  }, []);
+
+  useEffect(() => {
+    setToolbarHeight();
+    window.addEventListener('resize', setToolbarHeight);
+    return () => window.removeEventListener('resize', setToolbarHeight);
+  }, [setToolbarHeight]);
+
+  useEffect(() => {
+    setToolbarHeight();
+  }, [setToolbarHeight, isHebrew]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const offset = window.scrollY || window.pageYOffset;
+      setScrolled(offset > 24);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (menuOpen) {
+      const handleKey = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          setMenuOpen(false);
+        }
+      };
+      window.addEventListener('keydown', handleKey);
+      return () => window.removeEventListener('keydown', handleKey);
+    }
+    return undefined;
+  }, [menuOpen]);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  const handleToggleMenu = () => setMenuOpen((prev) => !prev);
+
+  const handleChangeLanguage = () => {
+    const nextLang = isHebrew ? 'en' : 'he';
+    i18n.changeLanguage(nextLang).then(() => {
+      navigate(nextLang === 'he' ? langLink : langLinkEng);
+    });
+  };
+
+  const languageLabel = isHebrew ? 'English' : 'עברית';
+
+  const desktopLinks = useMemo(
+    () => (
+      <LinksList>
+        {navLinks.map((link) => (
+          <LinkItem key={link.to}>
+            <StyledNavLink to={link.to} data-active={isActive(link)} data-hebrew={isHebrew}>
+              {link.label}
+            </StyledNavLink>
+          </LinkItem>
+        ))}
+      </LinksList>
+    ),
+    [navLinks, isActive, isHebrew]
   );
 
   return (
-    <NavigationContainer>
-      <ToolbarSpacer id="fakeNav" />
-
-      <DesktopAppBar position="fixed" color="transparent">
-        <DesktopToolbar ref={desktopToolbarRef} dir={isHebrew ? 'rtl' : 'ltr'}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: '1rem', flexWrap: 'wrap' }}>
-            {renderBrandButton()}
-            <Box
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '0.75rem',
-                justifyContent: isHebrew ? 'flex-end' : 'flex-start'
-              }}
+    <>
+      <Header ref={headerRef} role="banner" scrolled={scrolled}>
+        <HeaderInner>
+          <HeaderLeft isHebrew={isHebrew}>
+            <Brand to={isHebrew ? '/עב' : '/en'}>Dr. Nava Kainer-Persov</Brand>
+            <DesktopNav isHebrew={isHebrew} aria-label={isHebrew ? 'תפריט ראשי' : 'Main navigation'}>
+              {desktopLinks}
+            </DesktopNav>
+          </HeaderLeft>
+          <HeaderRight isHebrew={isHebrew}>
+            <LanguageButton
+              type="button"
+              onClick={handleChangeLanguage}
+              aria-label={isHebrew ? 'Change language to English' : 'החלף שפה לעברית'}
             >
-              {navLinks.map(({ to, label, aliases }) => {
-                const matchTargets = [to, ...(aliases ?? [])];
-                const isActive = matchTargets.includes(pathname);
-                return (
-                  <Button
-                    key={to}
-                    color="inherit"
-                    component={NavLink}
-                    to={to}
-                    sx={(theme) => navButtonStyles(theme as AppTheme, isActive)}
-                  >
-                    {label}
-                  </Button>
-                );
-              })}
-            </Box>
-          </Box>
-          <Button color="inherit" onClick={setLang} sx={(theme) => languageButtonStyles(theme as AppTheme)}>
-            {isHebrew ? 'EN' : 'עב'}
-          </Button>
-        </DesktopToolbar>
-      </DesktopAppBar>
-
-      <MobileAppBar position="fixed" color="transparent">
-        <MobileToolbar ref={mobileToolbarRef} dir={isHebrew ? 'rtl' : 'ltr'}>
-          {renderBrandButton()}
-          <Box sx={{ flexGrow: 1 }} />
-          <Button color="inherit" onClick={setLang} sx={(theme) => languageButtonStyles(theme as AppTheme)}>
-            {isHebrew ? 'EN' : 'עב'}
-          </Button>
-        </MobileToolbar>
-      </MobileAppBar>
-    </NavigationContainer>
+              {languageLabel}
+            </LanguageButton>
+            <MobileMenuButton
+              type="button"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
+              onClick={handleToggleMenu}
+            >
+              <MenuIcon />
+            </MobileMenuButton>
+          </HeaderRight>
+        </HeaderInner>
+      </Header>
+      {menuOpen ? (
+        <MobilePanel id="mobile-navigation">
+          <LanguageButton type="button" onClick={handleChangeLanguage}>
+            {languageLabel}
+          </LanguageButton>
+          <MobileLinks>
+            {navLinks.map((link) => (
+              <li key={link.to}>
+                <StyledNavLink to={link.to} data-active={isActive(link)} data-hebrew={isHebrew}>
+                  {link.label}
+                </StyledNavLink>
+              </li>
+            ))}
+          </MobileLinks>
+        </MobilePanel>
+      ) : null}
+    </>
   );
 };
 

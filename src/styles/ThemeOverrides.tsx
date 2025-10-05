@@ -17,6 +17,7 @@ const ThemeOverrides = (): ReactElement => {
           '--color-surface-subtle': colors.surfaceSubtle,
           '--color-text-main': colors.text.primary,
           '--color-text-muted': colors.text.muted,
+          '--color-text-secondary': colors.text.secondary,
           '--color-text-inverse': colors.text.inverse,
           '--color-accent': colors.accent.primary,
           '--color-accent-alt': colors.accent.secondary,
@@ -34,6 +35,8 @@ const ThemeOverrides = (): ReactElement => {
           '--space-lg': spacing.lg,
           '--space-xl': spacing.xl,
           '--space-2xl': spacing['2xl'],
+          '--space-xxl': spacing.xxl,
+          '--space-3xl': spacing['3xl'],
           '--font-size-sm': '0.875rem',
           '--font-size-base': '1rem',
           '--font-size-lg': '1.25rem',
@@ -43,7 +46,19 @@ const ThemeOverrides = (): ReactElement => {
           '--font-weight-regular': typography.weights.regular,
           '--font-weight-medium': typography.weights.medium,
           '--font-weight-bold': typography.weights.bold,
-          '--m-size': typography.fontSizeBase
+          '--m-size': typography.fontSizeBase,
+          '--font-display-lg-size': typography.variants.displayLg.fontSize,
+          '--font-display-lg-line-height': typography.variants.displayLg.lineHeight,
+          '--font-display-lg-weight': String(typography.variants.displayLg.fontWeight),
+          '--font-display-md-size': typography.variants.displayMd.fontSize,
+          '--font-display-md-line-height': typography.variants.displayMd.lineHeight,
+          '--font-display-md-weight': String(typography.variants.displayMd.fontWeight),
+          '--font-stat-number-size': typography.variants.statNumber.fontSize,
+          '--font-stat-number-line-height': typography.variants.statNumber.lineHeight,
+          '--font-stat-number-weight': String(typography.variants.statNumber.fontWeight),
+          '--font-body-size': typography.variants.body.fontSize,
+          '--font-body-line-height': typography.variants.body.lineHeight,
+          '--font-body-weight': String(typography.variants.body.fontWeight)
         },
         "[data-theme='dark']": {
           '--color-background': '#121212',
@@ -64,7 +79,7 @@ const ThemeOverrides = (): ReactElement => {
         'button, input, textarea, select': {
           fontFamily: typography.fontFamilyBase
         },
-        'button': {
+        button: {
           fontWeight: typography.weights.medium
         }
       })}

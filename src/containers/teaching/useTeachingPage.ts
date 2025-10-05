@@ -18,6 +18,7 @@ import {
 import type { SeoPayload } from '../../types/seo';
 import type { RootState } from '../../store/configureStore';
 import { DEFAULT_SEO, EMPTY_TEACH, TeachImage, TeachItem, TeachingSeo } from './types';
+import { cloudinaryEnv, isCloudinaryConfigured, logMissingCloudinaryConfig } from '../../constants/cloudinary';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
 
@@ -52,6 +53,8 @@ interface CloudinaryGlobal {
 }
 
 declare const cloudinary: CloudinaryGlobal;
+
+logMissingCloudinaryConfig();
 
 interface UseTeachingPageArgs {
   urlLang?: string;
@@ -384,6 +387,10 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
     if (!draftTeach) {
       return;
     }
+    if (!isCloudinaryConfigured()) {
+      logMissingCloudinaryConfig();
+      return;
+    }
     const previousId = isTeachImage(draftTeach.image)
       ? draftTeach.image.publicId
       : draftTeach.publicId;
@@ -391,8 +398,8 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
 
     const widget = cloudinary.openUploadWidget(
       {
-        cloud_name: 'dewafmxth',
-        upload_preset: 'ml_default',
+        cloud_name: cloudinaryEnv.cloudName,
+        upload_preset: cloudinaryEnv.uploadPreset,
         sources: ['local', 'url', 'image_search', 'facebook', 'dropbox', 'instagram', 'camera']
       },
       async (error: Error | null, result?: CloudinaryUploadResult) => {
@@ -427,7 +434,14 @@ export const useTeachingPage = ({ urlLang, i18n }: UseTeachingPageArgs): UseTeac
     );
 
     widget.open();
-  }, [draftTeach, saveTeachImage]);
+  }, [
+    draftTeach,
+    saveTeachImage,
+    isCloudinaryConfigured,
+    logMissingCloudinaryConfig,
+    cloudinaryEnv.cloudName,
+    cloudinaryEnv.uploadPreset
+  ]);
 
   const logout = useCallback(async () => {
     await dispatch(startLogout());

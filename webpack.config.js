@@ -6,6 +6,8 @@ const sass = require('sass');
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+require('dotenv').config();
+
 if (process.env.NODE_ENV === 'test') {
     require('dotenv').config({ path: '.env.test' });
 } else if (process.env.NODE_ENV === 'development') {
@@ -109,7 +111,9 @@ module.exports = (env) => {
                 'process.env.FIREBASE_PROJECT_ID': JSON.stringify(process.env.FIREBASE_PROJECT_ID),
                 'process.env.FIREBASE_STORAGE_BUCKET': JSON.stringify(process.env.FIREBASE_STORAGE_BUCKET),
                 'process.env.FIREBASE_MESSAGING_SENDER_ID': JSON.stringify(process.env.FIREBASE_MESSAGING_SENDER_ID),
-                'process.env.GOOGLE_MAPS_API_KEY': JSON.stringify(process.env.GOOGLE_MAPS_API_KEY)
+                'process.env.GOOGLE_MAPS_API_KEY': JSON.stringify(process.env.GOOGLE_MAPS_API_KEY),
+                'process.env.CLOUDINARY_CLOUD_NAME': JSON.stringify(process.env.CLOUDINARY_CLOUD_NAME),
+                'process.env.CLOUDINARY_UPLOAD_PRESET': JSON.stringify(process.env.CLOUDINARY_UPLOAD_PRESET)
             })
         ],
         devtool: isProduction ? 'source-map' : 'inline-source-map',

@@ -1,6 +1,7 @@
 # Startup Notes – Testing & Tooling Completion
 
 ## Context
+
 - Objective: finish outstanding items under **Testing & Tooling** in `ModernizationPlan.md`.
 - Progress to date:
   - MSW infrastructure + Firebase mock implemented.
@@ -14,6 +15,7 @@
   - Package scripts extended with `format`, `format:check`, `lint:staged`, `typecheck`, `ci:verify`; lint-staged config drafted.
 
 ## Outstanding Tasks (per plan)
+
 1. **Assess remaining teaching edge cases**
    - Consider Hebrew/dual-language validation scenarios and selector coverage if regressions surface.
 2. **Adopt new lint stack**
@@ -25,6 +27,7 @@
    - Identify priority files (e.g., `src/app.tsx`, Redux thunks) and refactor to remove `any` usage and unsafes; schedule staged clean-up.
 
 ## Current Status / Working Tree
+
 - Modified files (unfinished work):
   - `.eslintrc.cjs`, `.prettierrc.json`, `package.json` (new lint/prettier stack + scripts declared; requires dependency install + CI wiring).
   - `src/tests/fixtures/teaching.ts` (new fixture helpers for teaching flows).
@@ -39,6 +42,7 @@
   - Teaching slice and hooks now compile against typed `database.ref` calls; lingering `no-unsafe` suppression in `useTeachingPage.ts` awaits broader slice refactors.
 
 ## Next Steps Checklist
+
 1. Flesh out teaching validation coverage (hook/UI level) and selectors per plan bullet.
 2. Install updated lint dependencies (`yarn install`) and run `yarn lint` to inventory remaining violations (legacy thunk cleanup pending).
 3. Husky pre-commit now runs `yarn lint:staged`; share rollout notes with the team.
@@ -47,6 +51,7 @@
 6. Update `ModernizationPlan.md` when validation coverage + lint rollout deemed complete.
 
 ## Quick Commands
+
 - Run targeted tests: `yarn test --runTestsByPath src/containers/ContactPage.test.tsx src/containers/teaching/TeachingPage.test.tsx src/store/slices/teachingSlice.test.ts`
 - Type check: `yarn tsc --noEmit`
 - Lint (for current file): `yarn eslint <file>` (requires fresh install for new Airbnb deps)

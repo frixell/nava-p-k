@@ -9,6 +9,7 @@ import { store } from './store/configureStore';
 import { startGetCategories } from './store/slices/categoriesSlice';
 import { startGetPoints } from './store/slices/pointsSlice';
 import { startGetTableTemplate } from './store/slices/tableTemplateSlice';
+import { startSetHomePage } from './store/slices/homepageSlice';
 import { login, logout } from './store/slices/authSlice';
 import i18n from './i18n/i18n';
 import appTheme from './styles/theme';
@@ -66,7 +67,8 @@ const bootstrap = async () => {
     await Promise.all([
       store.dispatch(startGetTableTemplate()),
       store.dispatch(startGetCategories()),
-      store.dispatch(startGetPoints())
+      store.dispatch(startGetPoints()),
+      store.dispatch(startSetHomePage())
     ]);
   } finally {
     renderApp();

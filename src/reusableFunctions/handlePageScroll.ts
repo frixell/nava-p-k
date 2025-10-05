@@ -7,7 +7,9 @@ const PAGE_UP_ANCHOR_ID = 'fake_pageupstrip';
 const FOOTER_OFFSET = 12;
 const HEIGHT_PADDING = 10;
 
-const toPageScrollResult = (pageupImageClassName: PageScrollResult['pageupImageClassName']): PageScrollResult => ({
+const toPageScrollResult = (
+  pageupImageClassName: PageScrollResult['pageupImageClassName']
+): PageScrollResult => ({
   pageupImageClassName
 });
 

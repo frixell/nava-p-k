@@ -26,9 +26,7 @@ export const ToolbarLabel = styled.span<{ isDirty?: boolean }>(({ isDirty }) => 
   minHeight: '1.8rem',
   minWidth: '5.6rem',
   fontSize: '12px',
-  color: isDirty
-    ? 'var(--color-accent-danger, #cc7f6b)'
-    : 'var(--color-accent-primary, aqua)'
+  color: isDirty ? 'var(--color-accent-danger, #cc7f6b)' : 'var(--color-accent-primary, aqua)'
 }));
 
 export const ToolbarActionButton = styled.button({

@@ -36,7 +36,9 @@ const ContactDetailsCard: React.FC<ContactDetailsCardProps> = ({ language }) => 
   return (
     <Card style={{ direction: dir }}>
       <CardHeading direction={dir}>{t('contact.details.title', 'Let’s stay in touch')}</CardHeading>
-      <CardSubheading direction={dir}>{t('contact.details.subtitle', 'Call, write or follow on social media.')}</CardSubheading>
+      <CardSubheading direction={dir}>
+        {t('contact.details.subtitle', 'Call, write or follow on social media.')}
+      </CardSubheading>
 
       <LinkList>
         <LinkItem>
@@ -64,7 +66,11 @@ const ContactDetailsCard: React.FC<ContactDetailsCardProps> = ({ language }) => 
           </LinkAnchor>
         </LinkItem>
         <LinkItem>
-          <LinkAnchor href="https://maps.app.goo.gl/eTu9nzfkESJCqCwF6" target="_blank" rel="noreferrer">
+          <LinkAnchor
+            href="https://maps.app.goo.gl/eTu9nzfkESJCqCwF6"
+            target="_blank"
+            rel="noreferrer"
+          >
             <PlaceIcon fontSize="small" />
             <span>{CONTACTS.address[language === 'he' ? 'he' : 'en']}</span>
           </LinkAnchor>

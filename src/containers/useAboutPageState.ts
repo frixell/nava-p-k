@@ -16,6 +16,7 @@ import {
 } from '../store/slices/aboutSlice';
 import { handlePageScroll } from '../reusableFunctions/handlePageScroll';
 import type { SeoFormState } from '../shared/components/backoffice/SeoModal';
+import { cloudinaryEnv, isCloudinaryConfigured, logMissingCloudinaryConfig } from '../constants/cloudinary';
 
 interface CloudinaryWidget {
   open(): void;
@@ -42,6 +43,8 @@ interface CloudinaryGlobal {
 }
 
 declare const cloudinary: CloudinaryGlobal | undefined;
+
+logMissingCloudinaryConfig();
 
 type AboutImage = ImageAsset;
 
@@ -145,18 +148,21 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
     return () => undefined;
   }, [needSave]);
 
-  const updateField = useCallback((action: 'setString' | 'setNumber', name: string, value: string | number) => {
-    setAboutpage((prev) => {
-      if (!prev) {
-        return prev;
-      }
-      const nextValue = action === 'setNumber' ? Number(value) : value;
-      return {
-        ...prev,
-        [name]: nextValue
-      };
-    });
-  }, []);
+  const updateField = useCallback(
+    (action: 'setString' | 'setNumber', name: string, value: string | number) => {
+      setAboutpage((prev) => {
+        if (!prev) {
+          return prev;
+        }
+        const nextValue = action === 'setNumber' ? Number(value) : value;
+        return {
+          ...prev,
+          [name]: nextValue
+        };
+      });
+    },
+    []
+  );
 
   const saveAboutPage = useCallback(() => {
     const firebasePayload = JSON.parse(JSON.stringify(aboutpage)) as Record<string, unknown>;
@@ -189,11 +195,15 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
     if (!cloudinary || typeof cloudinary.openUploadWidget !== 'function') {
       return;
     }
+    if (!isCloudinaryConfigured()) {
+      logMissingCloudinaryConfig();
+      return;
+    }
     const currentPublicId = (aboutpage?.image as AboutImage | undefined)?.publicId ?? null;
     const widget = cloudinary.openUploadWidget(
       {
-        cloud_name: 'dewafmxth',
-        upload_preset: 'ml_default',
+        cloud_name: cloudinaryEnv.cloudName,
+        upload_preset: cloudinaryEnv.uploadPreset,
         sources: ['local', 'url', 'image_search', 'facebook', 'dropbox', 'instagram', 'camera']
       },
       async (error: Error | null, result?: CloudinaryUploadResult) => {
@@ -224,7 +234,14 @@ export const useAboutPageState = ({ urlLang }: UseAboutPageStateParams) => {
       }
     );
     widget?.open();
-  }, [aboutpage, dispatch]);
+  }, [
+    aboutpage,
+    dispatch,
+    isCloudinaryConfigured,
+    logMissingCloudinaryConfig,
+    cloudinaryEnv.cloudName,
+    cloudinaryEnv.uploadPreset
+  ]);
 
   return {
     t,

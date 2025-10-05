@@ -3,37 +3,37 @@ import MapView from '../MapView';
 import { MapContainer } from './HomePageLayout.styles';
 
 interface HomeMapPanelProps {
-    isEnglish: boolean;
-    isMobileViewport: boolean;
-    viewportWidth: number;
-    language: string;
-    categories: any[];
-    sidebarClickedItemId: string | null;
-    points: any[];
-    addPoint: (point: any) => Promise<any>;
-    allowAddPoint: boolean;
-    selectedProject: any;
-    setSelectedProject: (project: any) => void;
-    handleExpandProject: (project: any) => void;
-    categoryColors: any[];
-    openCategories: any[];
+  isEnglish: boolean;
+  isMobileViewport: boolean;
+  viewportWidth: number;
+  language: string;
+  categories: any[];
+  sidebarClickedItemId: string | null;
+  points: any[];
+  addPoint: (point: any) => Promise<any>;
+  allowAddPoint: boolean;
+  selectedProject: any;
+  setSelectedProject: (project: any) => void;
+  handleExpandProject: (project: any) => void;
+  categoryColors: any[];
+  openCategories: any[];
 }
 
 const HomeMapPanel: React.FC<HomeMapPanelProps> = ({
-    isEnglish,
-    isMobileViewport,
-    viewportWidth,
-    language,
-    categories,
-    sidebarClickedItemId,
-    points,
-    addPoint,
-    allowAddPoint,
-    selectedProject,
-    setSelectedProject,
-    handleExpandProject,
-    categoryColors,
-    openCategories
+  isEnglish,
+  isMobileViewport,
+  viewportWidth,
+  language,
+  categories,
+  sidebarClickedItemId,
+  points,
+  addPoint,
+  allowAddPoint,
+  selectedProject,
+  setSelectedProject,
+  handleExpandProject,
+  categoryColors,
+  openCategories
 }) => {
     return (
         <MapContainer

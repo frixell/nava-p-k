@@ -1,216 +1,213 @@
 :root {
-    --toolbar-height: 58px;
+  --toolbar-height: 58px;
 }
 
 html {
-    font-size: 50%;
-    height: 100%;
+  font-size: 50%;
+  height: 100%;
 }
 
 :root,
 html {
-    background-color: var(--color-background);
-    color: var(--color-text-main);
+  background-color: var(--color-background);
+  color: var(--color-text-main);
 }
 
 @media (min-width: 768px) {
-    html {
-        font-size: 48%;
-    }
+  html {
+    font-size: 48%;
+  }
 }
 
 @media (min-width: 800px) {
-    html {
-        font-size: 52%;
-    }
+  html {
+    font-size: 52%;
+  }
 }
 
 @media (min-width: 850px) {
-    html {
-        font-size: 52%;
-    }
+  html {
+    font-size: 52%;
+  }
 }
 
 @media (min-width: 950px) {
-    html {
-        font-size: 57%;
-    }
+  html {
+    font-size: 57%;
+  }
 }
 
 @media (min-width: 1100px) {
-    html {
-        font-size: 62%;
-    }
+  html {
+    font-size: 62%;
+  }
 }
 
 @media (min-width: 1440px) {
-    html {
-        font-size: 67%;
-    }
+  html {
+    font-size: 67%;
+  }
 }
 
 @media (min-width: 1650px) {
-    html {
-        font-size: 72%;
-    }
+  html {
+    font-size: 72%;
+  }
 }
 
 @media (min-width: 1750px) {
-    html {
-        font-size: 75%;
-    }
+  html {
+    font-size: 75%;
+  }
 }
 
 @media (min-width: 1850px) {
-    html {
-        font-size: 80%;
-    }
+  html {
+    font-size: 80%;
+  }
 }
 
 @media (min-width: 1950px) {
-    html {
-        font-size: 83%;
-    }
+  html {
+    font-size: 83%;
+  }
 }
 
 @media (min-width: 2050px) {
-    html {
-        font-size: 87%;
-    }
+  html {
+    font-size: 87%;
+  }
 }
 
 @media (min-width: 2200px) {
-    html {
-        font-size: 92%;
-    }
+  html {
+    font-size: 92%;
+  }
 }
 
 @media (min-width: 2300px) {
-    html {
-        font-size: 100%;
-    }
+  html {
+    font-size: 100%;
+  }
 }
 
 @media (min-width: 2400px) {
-    html {
-        font-size: 105%;
-    }
+  html {
+    font-size: 105%;
+  }
 }
 
 body {
-    font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
-    font-size: var(--m-size, 1.6rem);
-    background-color: var(--color-background);
-    color: var(--color-text-main);
-    margin: 0;
-    min-height: 100vh;
+  font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
+  font-size: var(--m-size, 1.6rem);
+  background-color: var(--color-background);
+  color: var(--color-text-main);
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h3 {
-    padding: 0;
-    margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 button:focus {
-    outline: 0;
+  outline: 0;
 }
 
 textarea {
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 textarea:focus {
-    outline:0;
+  outline: 0;
 }
 
 button:disabled {
-    cursor: default;
+  cursor: default;
 }
 
 .newSubcategoryModal {
-    _text-align: right;
+  _text-align: right;
 }
 
 .fade:not(.show) {
-    opacity: 100;
+  opacity: 100;
 }
 
 .modal-content {
-    top: 22rem;
+  top: 22rem;
 }
 
 .modal-backdrop {
-    background-color:rgba(86,87,89,0.79);
+  background-color: rgba(86, 87, 89, 0.79);
 }
 
 .modalHeader {
-    justify-content: space-between;
-    flex-direction: row;
-    border-bottom: 1px solid var(--color-border, #e9ecef);
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 1px solid var(--color-border, #e9ecef);
 }
 
 .modalHeader .close {
-    padding: 1rem;
-    float: left;
+  padding: 1rem;
+  float: left;
 }
 
 .modalTitle {
-    text-align: right;
-    padding: 1rem;
+  text-align: right;
+  padding: 1rem;
 }
 
 .modalBody {
-    text-align: right;
-    padding: 1rem;
+  text-align: right;
+  padding: 1rem;
 }
 
-
 .container-fluid {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .first-top-margin {
-    margin-top: 3.5rem;
+  margin-top: 3.5rem;
 }
 
 .demo__image {
-    width: 100%;
+  width: 100%;
 }
 
 .border {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
 .align-text-center {
-    text-align: center;
+  text-align: center;
 }
 
 .inline-block {
-    display: inline-block;
+  display: inline-block;
 }
 
-
-
 .edit__panel {
-    position: fixed;
-    z-index: 505;
-    left: 5rem;
-    top: 20rem;
+  position: fixed;
+  z-index: 505;
+  left: 5rem;
+  top: 20rem;
 }
 
 .edit__changed__bg {
-    background: rgba(128,0,32,0.2);
+  background: rgba(128, 0, 32, 0.2);
 }
 
 .edit__bg {
-    background: none;
+  background: none;
 }
-
 
 .Heebo-Regular {
   font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
@@ -223,10 +220,10 @@ button:disabled {
 }
 
 @media (max-width: 768px) {
-    .Heebo-Medium-Mobile {
-        font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
-        font-weight: var(--font-weight-medium, 500);
-    }
+  .Heebo-Medium-Mobile {
+    font-family: var(--font-family-base, 'Heebo', 'Helvetica Neue', Arial, sans-serif);
+    font-weight: var(--font-weight-medium, 500);
+  }
 }
 
 .Heebo-Bold {
@@ -234,18 +231,15 @@ button:disabled {
   font-weight: var(--font-weight-bold, 700);
 }
 
-
-
-
 .page__header__container {
-    margin-top: 3rem;
-    width: 100%;
+  margin-top: 3rem;
+  width: 100%;
 }
 
 .page__header {
-    font-size: 3rem;
-    text-align: center;
+  font-size: 3rem;
+  text-align: center;
 }
 #app {
-    min-height: 100vh;
+  min-height: 100vh;
 }

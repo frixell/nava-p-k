@@ -50,15 +50,16 @@ export function computeSizes({ photos, columns, width, margin }: ComputeSizesPar
 
     // assign height, but let height of a single photo in the last
     // row not expand across columns so divide by columns
-    const height = (rowIndex !== lastRowIndex || row.length > 1)
-        ? rowWidth / totalRatio
-        : rowWidth / totalRatio;
+    const height =
+      rowIndex !== lastRowIndex || row.length > 1 ? rowWidth / totalRatio : rowWidth / totalRatio;
 
-    return row.map((photo: Photo): SizedPhoto => ({
-      ...photo,
-      height: round(height, 1),
-      width: round(height * ratio(photo), 1),
-    }));
+    return row.map(
+      (photo: Photo): SizedPhoto => ({
+        ...photo,
+        height: round(height, 1),
+        width: round(height * ratio(photo), 1)
+      })
+    );
   });
   return rowsWithSizes.reduce((acc: SizedPhoto[], row: SizedPhoto[]) => [...acc, ...row], []);
 }

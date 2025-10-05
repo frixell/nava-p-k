@@ -34,6 +34,15 @@ export interface SpacingScale {
   lg: string;
   xl: string;
   '2xl': string;
+  xxl: string;
+  '3xl': string;
+}
+
+export interface TypographyVariant {
+  fontSize: string;
+  lineHeight: string;
+  fontWeight: number;
+  letterSpacing?: string;
 }
 
 export interface TypographyScale {
@@ -46,6 +55,12 @@ export interface TypographyScale {
     regular: number;
     medium: number;
     bold: number;
+  };
+  variants: {
+    displayLg: TypographyVariant;
+    displayMd: TypographyVariant;
+    statNumber: TypographyVariant;
+    body: TypographyVariant;
   };
 }
 
@@ -71,22 +86,22 @@ export interface AppTokens {
 
 const tokens: AppTokens = {
   colors: {
-    background: '#f5f5f5',
-    backgroundDark: '#1f1f1f',
-    surface: '#ffffff',
-    surfaceMuted: '#f0f0f0',
-    surfaceSubtle: '#f6f7fb',
-    border: 'rgba(0, 0, 0, 0.1)',
+    background: '#F5F7FA',
+    backgroundDark: '#0B2744',
+    surface: '#FFFFFF',
+    surfaceMuted: '#E7EDF3',
+    surfaceSubtle: '#F1F4F8',
+    border: '#D8DEE6',
     text: {
-      primary: '#222222',
-      secondary: '#4f5b5f',
-      muted: '#666665',
-      inverse: '#ffffff'
+      primary: '#0A1F33',
+      secondary: '#2F3B4A',
+      muted: '#4F5B66',
+      inverse: '#FFFFFF'
     },
     accent: {
-      primary: '#c1617e',
-      secondary: '#5eae88',
-      tertiary: '#3f67a7'
+      primary: '#0B2744',
+      secondary: '#145C9E',
+      tertiary: '#1872C0'
     },
     error: {
       main: '#d14343',
@@ -102,7 +117,9 @@ const tokens: AppTokens = {
     md: '1rem',
     lg: '1.5rem',
     xl: '2rem',
-    '2xl': '3rem'
+    '2xl': '3rem',
+    xxl: '4rem',
+    '3xl': '6rem'
   },
   typography: {
     fontFamilyBase: "'Heebo', 'Helvetica Neue', Arial, sans-serif",
@@ -115,6 +132,31 @@ const tokens: AppTokens = {
       regular: 400,
       medium: 500,
       bold: 700
+    },
+    variants: {
+      displayLg: {
+        fontSize: '3.5rem',
+        lineHeight: '1.1',
+        fontWeight: 500,
+        letterSpacing: '-0.02em'
+      },
+      displayMd: {
+        fontSize: '2.5rem',
+        lineHeight: '1.2',
+        fontWeight: 500,
+        letterSpacing: '-0.01em'
+      },
+      statNumber: {
+        fontSize: '2.5rem',
+        lineHeight: '1.1',
+        fontWeight: 600,
+        letterSpacing: '-0.015em'
+      },
+      body: {
+        fontSize: '1rem',
+        lineHeight: '1.5',
+        fontWeight: 400
+      }
     }
   },
   gradients: {
@@ -162,6 +204,36 @@ const muiTheme = createTheme({
 
 const theme = muiTheme as typeof muiTheme & { app: AppTokens };
 theme.app = tokens;
+
+theme.typography.h1 = {
+  fontFamily: tokens.typography.fontFamilyHeading,
+  fontWeight: tokens.typography.variants.displayLg.fontWeight,
+  fontSize: tokens.typography.variants.displayLg.fontSize,
+  lineHeight: tokens.typography.variants.displayLg.lineHeight,
+  letterSpacing: tokens.typography.variants.displayLg.letterSpacing
+};
+
+theme.typography.h2 = {
+  fontFamily: tokens.typography.fontFamilyHeading,
+  fontWeight: tokens.typography.variants.displayMd.fontWeight,
+  fontSize: tokens.typography.variants.displayMd.fontSize,
+  lineHeight: tokens.typography.variants.displayMd.lineHeight,
+  letterSpacing: tokens.typography.variants.displayMd.letterSpacing
+};
+
+theme.typography.subtitle1 = {
+  fontFamily: tokens.typography.fontFamilyBase,
+  fontWeight: tokens.typography.weights.medium,
+  fontSize: tokens.typography.variants.body.fontSize,
+  lineHeight: tokens.typography.variants.body.lineHeight
+};
+
+theme.typography.body1 = {
+  fontFamily: tokens.typography.fontFamilyBase,
+  fontWeight: tokens.typography.variants.body.fontWeight,
+  fontSize: tokens.typography.variants.body.fontSize,
+  lineHeight: tokens.typography.variants.body.lineHeight
+};
 
 export type AppTheme = typeof theme;
 
