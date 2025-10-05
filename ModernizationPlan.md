@@ -33,7 +33,7 @@
 - ✅ `_Footer.scss`: migrated to `Footer.styles.ts` using theme palette, spacing, and typography tokens.
 - ✅ `_HomePage.scss`: replaced with Emotion/MUI layout + shared rich-text styling; SCSS partial removed after parity check.
 - ✅ `_Backoffice.scss`: Replaced legacy toolbar/modals with BackofficeTheme + component-level Emotion styling; partial removed after verifying no consumers relied on the old selectors.
-- 🔧 `_GlobalUI.scss`: split global helpers into `GlobalStyles` + `ThemeOverrides`, mirroring existing button/input tokens before removing the catch-all partial.
+- ✅ `_GlobalUI.scss`: replaced with `ThemeOverrides` CSS variable bridge + `GlobalStyles` loading UI helpers; legacy partial removed.
 - 🔧 `_WorkshopPage.scss`: port schedule cards to styled components, swapping hard-coded breakpoints for the theme's breakpoint helpers and documenting any bespoke print rules.
 - 📋 Align residual layout helpers (e.g., `PageLayout.styles` derivatives) once their host features move off the legacy partials.
 

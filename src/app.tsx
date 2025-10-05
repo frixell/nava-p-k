@@ -15,6 +15,8 @@ import appTheme from './styles/theme';
 import LoadingScreen from './components/common/LoadingScreen';
 import { firebase } from './firebase/firebase';
 import './styles/styles.scss';
+import ThemeOverrides from './styles/ThemeOverrides';
+import GlobalStyles from './styles/GlobalStyles';
 
 const container = typeof document !== 'undefined' ? document.getElementById('app') : null;
 const root: Root | null = container ? createRoot(container) : null;
@@ -27,6 +29,8 @@ const renderApp = () => {
 
   const jsx = (
     <ThemeProvider theme={appTheme}>
+      <ThemeOverrides />
+      <GlobalStyles />
       <Provider store={store}>
         <I18nextProvider i18n={i18n}>
           <HelmetProvider>
@@ -48,6 +52,8 @@ const renderLoading = () => {
 
   root.render(
     <ThemeProvider theme={appTheme}>
+      <ThemeOverrides />
+      <GlobalStyles />
       <LoadingScreen />
     </ThemeProvider>
   );
