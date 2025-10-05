@@ -32,7 +32,7 @@
 - ✅ Converted navigation + page-up strip to Emotion/MUI and dropped their SCSS imports.
 - ✅ `_Footer.scss`: migrated to `Footer.styles.ts` using theme palette, spacing, and typography tokens.
 - ✅ `_HomePage.scss`: replaced with Emotion/MUI layout + shared rich-text styling; SCSS partial removed after parity check.
-- 🔧 `_Backoffice.scss`: fold form/table styling into the dashboard theme module, ensuring dark-mode palette tokens are respected by the new components.
+- ✅ `_Backoffice.scss`: Replaced legacy toolbar/modals with BackofficeTheme + component-level Emotion styling; partial removed after verifying no consumers relied on the old selectors.
 - 🔧 `_GlobalUI.scss`: split global helpers into `GlobalStyles` + `ThemeOverrides`, mirroring existing button/input tokens before removing the catch-all partial.
 - 🔧 `_WorkshopPage.scss`: port schedule cards to styled components, swapping hard-coded breakpoints for the theme's breakpoint helpers and documenting any bespoke print rules.
 - 📋 Align residual layout helpers (e.g., `PageLayout.styles` derivatives) once their host features move off the legacy partials.

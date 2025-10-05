@@ -21,6 +21,10 @@ import {
   Container,
   EditorWrapper,
   Heading,
+  ImageActionButton,
+  ImageActionIcon,
+  ImageActionLabel,
+  ImageActionPanel,
   ImagePreview,
   ImageWrapper,
   OptionList,
@@ -291,24 +295,16 @@ const ProjectDetailsPage: React.FC<ProjectDetailsPageProps> = ({
 
           <ImageWrapper>
             {isAuthenticated && (
-              <div
-                className={`backoffice__about__images__buttons${isEnglish ? ' backoffice__about__images__buttons--en' : ' backoffice__about__images__buttons--he'}`}
-              >
-                <div className="backoffice__toolbar__label--black">
-                  {isEnglish ? 'Image' : 'ניהול תמונה'}
-                </div>
-                <button
-                  className="backoffice__events__events__add__button"
+              <ImageActionPanel isEnglish={isEnglish}>
+                <ImageActionLabel>{isEnglish ? 'Image' : 'ניהול תמונה'}</ImageActionLabel>
+                <ImageActionButton
                   onClick={uploadWidget}
                   type="button"
+                  aria-label={isEnglish ? 'Add image' : 'הוספת תמונה'}
                 >
-                  <img
-                    className="backoffice__events__events__add__icon"
-                    src="/images/eventspage/add-eventSubcategory-icon.svg"
-                    alt={isEnglish ? 'Add image' : 'הוספת תמונה'}
-                  />
-                </button>
-              </div>
+                  <ImageActionIcon src="/images/eventspage/add-eventSubcategory-icon.svg" alt="" />
+                </ImageActionButton>
+              </ImageActionPanel>
             )}
             {extendedContent.image && (
               <ImagePreview

@@ -1,8 +1,10 @@
 // @ts-nocheck
-import React from 'react';
+import React, { useMemo } from 'react';
 import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
+import type { AppTheme } from '../../styles/theme';
 
 const ModalWrapper = styled.div({
     textAlign: 'center',
@@ -69,16 +71,40 @@ const NewCategoryModal: React.FC<NewCategoryModalProps> = ({
     onChange,
     onSubmit
 }) => {
+    const theme = useTheme() as AppTheme;
+
+    const modalStyles = useMemo(
+        () => ({
+            overlay: {
+                backgroundColor: `var(--color-accent-secondary, ${theme.app.colors.accent.secondary})`
+            },
+            modal: {
+                background: `var(--color-surface, ${theme.app.colors.surface})`,
+                maxWidth: '90vw',
+                maxHeight: '80vh',
+                width: '90vw',
+                height: '80vh',
+                textAlign: 'right'
+            },
+            closeButton: {
+                position: 'absolute',
+                top: theme.app.spacing.sm,
+                left: theme.app.spacing.sm,
+                border: 'none',
+                padding: 0,
+                backgroundColor: 'transparent',
+                display: 'flex'
+            }
+        }),
+        [theme]
+    );
+
     return (
         <Modal
             open={isOpen}
             onClose={onClose}
             center
-            classNames={{
-                overlay: 'custom-overlay',
-                modal: 'custom-modal',
-                closeButton: 'custom-close-button'
-            }}
+            styles={modalStyles}
         >
             <ModalWrapper>
                 <Heading className="Heebo-Medium">הוספת קטגוריה חדשה</Heading>

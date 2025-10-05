@@ -1,99 +1,104 @@
 import React from 'react';
+import {
+  ToolbarCluster,
+  ToolbarLabel,
+  IconButton,
+  IconImage,
+  DualButtonContainer
+} from './HomePageToolbar.styles';
 
 interface HomePageToolbarProps {
-    isAuthenticated: boolean;
-    isEnglish: boolean;
-    allowAddPoint: boolean;
-    needSave: boolean;
-    hasSelectedProject: boolean;
-    onLogout: () => void;
-    onSave: () => void;
-    onToggleAddPoint: () => void;
-    onToggleNewCategory: () => void;
-    onStartEditCategory: () => void;
+  isAuthenticated: boolean;
+  isEnglish: boolean;
+  allowAddPoint: boolean;
+  needSave: boolean;
+  hasSelectedProject: boolean;
+  onLogout: () => void;
+  onSave: () => void;
+  onToggleAddPoint: () => void;
+  onToggleNewCategory: () => void;
+  onStartEditCategory: () => void;
 }
 
 const HomePageToolbar: React.FC<HomePageToolbarProps> = ({
-    isAuthenticated,
-    isEnglish,
-    allowAddPoint,
-    needSave,
-    hasSelectedProject,
-    onLogout,
-    onSave,
-    onToggleAddPoint,
-    onToggleNewCategory,
-    onStartEditCategory
+  isAuthenticated,
+  isEnglish,
+  allowAddPoint,
+  needSave,
+  hasSelectedProject,
+  onLogout,
+  onSave,
+  onToggleAddPoint,
+  onToggleNewCategory,
+  onStartEditCategory
 }) => {
-    if (!isAuthenticated) {
-        return null;
-    }
+  if (!isAuthenticated) {
+    return null;
+  }
 
-    return (
-        <>
-            <div
-                className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--exit"
-                style={isEnglish ? { textAlign: 'center', left: '90%' } : { textAlign: 'center', left: '10%' }}
+  return (
+    <>
+      <ToolbarCluster isEnglish={isEnglish} alignEnglish={90} alignHebrew={10} zIndexLevel={15007}>
+        <ToolbarLabel>{isEnglish ? 'Exit' : 'יציאה'}</ToolbarLabel>
+        <IconButton onClick={onLogout} aria-label={isEnglish ? 'Exit' : 'יציאה'}>
+          <IconImage src="/images/backoffice/exit.svg" alt="" />
+        </IconButton>
+      </ToolbarCluster>
+
+      <ToolbarCluster isEnglish={isEnglish} alignEnglish={83} alignHebrew={17} zIndexLevel={15008}>
+        {hasSelectedProject ? (
+          <>
+            <ToolbarLabel tone={needSave ? 'alert' : 'default'}>
+              {isEnglish ? 'Save' : 'שמירה'}
+            </ToolbarLabel>
+            <IconButton onClick={onSave} aria-label={isEnglish ? 'Save project' : 'שמירה'}>
+              <IconImage src="/images/backoffice/save.svg" alt="" />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <ToolbarLabel tone={allowAddPoint ? 'alert' : 'default'} width="7rem">
+              {isEnglish ? 'Add project' : 'הוספת פרוייקט'}
+            </ToolbarLabel>
+            <IconButton
+              onClick={onToggleAddPoint}
+              aria-label={isEnglish ? 'Add project' : 'הוספת פרוייקט'}
             >
-                <div className="backoffice__toolbar__label">
-                    {isEnglish ? 'Exit' : 'יציאה'}
-                </div>
-                <button className="backoffice_button" onClick={onLogout}>
-                    <img className="backoffice_icon" src="/images/backoffice/exit.svg" alt="יציאה" />
-                </button>
-            </div>
+              <IconImage
+                variant="accent"
+                src="/images/eventspage/add-eventSubcategory-icon.svg"
+                alt=""
+              />
+            </IconButton>
+          </>
+        )}
+      </ToolbarCluster>
 
-            {hasSelectedProject ? (
-                <div
-                    className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--save-project"
-                    style={isEnglish ? { textAlign: 'center', left: '83%' } : { textAlign: 'center', left: '17%' }}
-                >
-                    <div className="backoffice__toolbar__label" style={{ textAlign: 'center', color: needSave ? 'red' : 'aqua' }}>
-                        {isEnglish ? 'Save' : 'שמירה'}
-                    </div>
-                    <button className="backoffice_button" onClick={onSave}>
-                        <img className="backoffice_icon" src="/images/backoffice/save.svg" alt="שמירה" />
-                    </button>
-                </div>
-            ) : (
-                <div
-                    className="backoffice__nav__toolbar__buttons backoffice__nav__toolbar__buttons--add-project"
-                    style={isEnglish ? { textAlign: 'center', left: '83%' } : { textAlign: 'center', left: '17%' }}
-                >
-                    <div className="backoffice__toolbar__label" style={{ width: '7rem', textAlign: 'center', color: allowAddPoint ? 'red' : 'aqua' }}>
-                        {isEnglish ? 'Add project' : 'הוספת פרוייקט'}
-                    </div>
-                    <button className="backoffice_button" onClick={onToggleAddPoint}>
-                        <img className="backoffice_icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת פרוייקט" />
-                    </button>
-                </div>
-            )}
-
-            <div
-                className="backoffice__nav__toolbar__buttons"
-                style={isEnglish ? { textAlign: 'center', left: '76%' } : { textAlign: 'center', left: '24%' }}
-            >
-                <div className="backoffice__toolbar__label" style={isEnglish ? { paddingLeft: '6px', textAlign: 'center' } : { textAlign: 'center' }}>
-                    {isEnglish ? 'Manage categories' : 'ניהול קטגוריות'}
-                </div>
-                <div
-                    style={{
-                        position: 'relative',
-                        width: '7rem',
-                        height: '3rem',
-                        display: 'inline-block'
-                    }}
-                >
-                    <button className="backoffice__add__button" onClick={onToggleNewCategory}>
-                        <img className="backoffice__add__icon" src="/images/eventspage/add-eventSubcategory-icon.svg" alt="הוספת קטגוריה" />
-                    </button>
-                    <button className="backoffice__edit__button" onClick={onStartEditCategory}>
-                        <img className="backoffice__edit__icon" src="/images/backoffice/edit.svg" alt="עריכה" />
-                    </button>
-                </div>
-            </div>
-        </>
-    );
+      <ToolbarCluster isEnglish={isEnglish} alignEnglish={76} alignHebrew={24} zIndexLevel={15009}>
+        <ToolbarLabel width="9rem" align="center" paddingLeft={isEnglish ? '0.6rem' : undefined}>
+          {isEnglish ? 'Manage categories' : 'ניהול קטגוריות'}
+        </ToolbarLabel>
+        <DualButtonContainer>
+          <IconButton
+            onClick={onToggleNewCategory}
+            aria-label={isEnglish ? 'Add category' : 'הוספת קטגוריה'}
+          >
+            <IconImage
+              variant="accent"
+              src="/images/eventspage/add-eventSubcategory-icon.svg"
+              alt=""
+            />
+          </IconButton>
+          <IconButton
+            onClick={onStartEditCategory}
+            aria-label={isEnglish ? 'Edit categories' : 'עריכת קטגוריות'}
+          >
+            <IconImage variant="accent" src="/images/backoffice/edit.svg" alt="" />
+          </IconButton>
+        </DualButtonContainer>
+      </ToolbarCluster>
+    </>
+  );
 };
 
 export default HomePageToolbar;
