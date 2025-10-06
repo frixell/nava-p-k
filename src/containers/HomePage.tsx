@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React from 'react';
+import styled from '@emotion/styled';
 import { Helmet } from 'react-helmet-async';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
@@ -24,17 +25,38 @@ import NewCategoryModal from './homepage/NewCategoryModal';
 import HomePageToolbar from './homepage/HomePageToolbar';
 import HomePageLayout from './homepage/HomePageLayout';
 import HomeHero from './homepage/HomeHero';
+import StaticMap from './homepage/StaticMap';
+import ArcgisMap from './homepage/ArcgisMap';
 import HomeHeroModal from './homepage/HomeHeroModal';
-import HomeProjectsSection from './homepage/HomeProjectsSection';
+// import HomeProjectsSection from './homepage/HomeProjectsSection';
 import HomeProjectDetails from './homepage/HomeProjectDetails';
-import type { HeroArcgisMarker } from './homepage/HeroArcgisMap';
+import type { HeroArcgisMarker } from './homepage/ArcgisMap';
 import type { RootState, AppDispatch } from '../types/store';
 import BackofficeTheme from '../components/backoffice/BackofficeTheme';
-import type { ImpactItem } from '../components/newDesign';
+import { ImpactBand, type ImpactItem, FilterPill } from '../components/newDesign';
 import type { HomepageHeroMetric, HomepageState } from '../store/slices/homepageSlice';
 import { HERO_METRIC_DEFINITIONS } from '../constants/homeHeroMetrics';
 import { appTokens } from '../styles/theme';
 import { startEditHomePage, startDeleteHomePageImage } from '../store/slices/homepageSlice';
+
+const FilterRow = styled('div')<{ isHebrew: boolean }>(({ theme, isHebrew }) => ({
+  position: 'absolute',
+  zIndex: 4,
+  top: '100px',
+  left: isHebrew ? 50 : 'none',
+  right: isHebrew ? 'none' : 50,
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: theme.app.spacing.sm,
+  marginTop: theme.app.spacing.lg
+}));
+
+const PillOverflow = styled('div')(({ theme }) => ({
+  display: 'flex',
+  gap: theme.app.spacing.sm,
+  flexWrap: 'wrap',
+  alignItems: 'center'
+}));
 
 type HeroPoint = {
   id?: string | number;
@@ -335,42 +357,42 @@ const HomePage: React.FC<HomePageProps> = (props) => {
     }
   };
 
-  const projectCards = mapMarkers.map((marker) => {
-    const { point } = marker;
-    const primaryCategory = (() => {
-      if (Array.isArray(point.categories)) {
-        return point.categories[0] ?? null;
-      }
-      if (typeof point.categories === 'string') {
-        const [firstCategory] = point.categories
-          .split(',')
-          .map((item: string) => item.trim())
-          .filter(Boolean);
-        return firstCategory ?? null;
-      }
-      return null;
-    })();
+  // const projectCards = mapMarkers.map((marker) => {
+  //   const { point } = marker;
+  //   const primaryCategory = (() => {
+  //     if (Array.isArray(point.categories)) {
+  //       return point.categories[0] ?? null;
+  //     }
+  //     if (typeof point.categories === 'string') {
+  //       const [firstCategory] = point.categories
+  //         .split(',')
+  //         .map((item: string) => item.trim())
+  //         .filter(Boolean);
+  //       return firstCategory ?? null;
+  //     }
+  //     return null;
+  //   })();
 
-    const description = getDescription(point);
-    const truncatedDescription =
-      description.length > 180 ? `${description.slice(0, 177)}…` : description;
-    const image =
-      typeof point.extendedContent?.image === 'string' ? point.extendedContent.image : undefined;
-    let title = marker.label;
-    if (!title.length) {
-      title = isHebrew
-        ? t('homepage.projects.untitled', 'ללא כותרת')
-        : t('homepage.projects.untitled', 'Untitled project');
-    }
+  //   const description = getDescription(point);
+  //   const truncatedDescription =
+  //     description.length > 180 ? `${description.slice(0, 177)}…` : description;
+  //   const image =
+  //     typeof point.extendedContent?.image === 'string' ? point.extendedContent.image : undefined;
+  //   let title = marker.label;
+  //   if (!title.length) {
+  //     title = isHebrew
+  //       ? t('homepage.projects.untitled', 'ללא כותרת')
+  //       : t('homepage.projects.untitled', 'Untitled project');
+  //   }
 
-    return {
-      id: marker.id,
-      title,
-      subtitle: categoryLabel(primaryCategory),
-      description: truncatedDescription,
-      image
-    };
-  });
+  //   return {
+  //     id: marker.id,
+  //     title,
+  //     subtitle: categoryLabel(primaryCategory),
+  //     description: truncatedDescription,
+  //     image
+  //   };
+  // });
 
   const selectedMarker = selectedProjectId
     ? mapMarkers.find((marker) => marker.id === selectedProjectId)
@@ -456,22 +478,48 @@ const HomePage: React.FC<HomePageProps> = (props) => {
             'Urban Regeneration Through Comparative Global Case Studies'
           )}
           subheading={t('homepage.hero.subheading', 'A digital atlas of urban transformation.')}
-          allLabel={t('homepage.hero.filter.all', 'All')}
-          dropdownLabel={t('homepage.hero.filter.dropdown', 'Browse categories')}
-          categories={categoryOptions}
-          dropdownOptions={categoryOptions}
-          activeCategoryId={activeCategoryId}
-          onSelectCategory={handleCategorySelect}
-          metrics={heroMetrics}
-          markers={heroMarkers}
-          arcgisMarkers={heroArcgisMarkers}
-          arcgisCategories={state.categories}
-          arcgisCategoryColors={state.categoryColors}
-          selectedMarkerId={selectedProjectId}
-          onMarkerSelect={selectProjectById}
           onEditHero={isAuthenticated ? openHeroModal : undefined}
         />
-        <HomeProjectsSection
+        <FilterRow isHebrew={isHebrew}>
+          <PillOverflow>
+            <FilterPill
+              type="button"
+              active={!activeCategoryId}
+              onClick={() => handleCategorySelect(null)}
+            >
+              {t('homepage.hero.filter.all', 'All')}
+            </FilterPill>
+            {categoryOptions.map((category) => (
+              <FilterPill
+                key={category.id}
+                type="button"
+                active={activeCategoryId === category.id}
+                onClick={() => handleCategorySelect(category.id)}
+              >
+                {category.label}
+              </FilterPill>
+            ))}
+          </PillOverflow>
+        </FilterRow>
+        {heroArcgisMarkers.length > 0 ? (
+          <ArcgisMap
+            markers={heroArcgisMarkers}
+            categories={state.categories}
+            categoryColors={state.categoryColors}
+            selectedId={selectedProjectId ?? undefined}
+            onSelect={selectProjectById}
+            isHebrew={isHebrew}
+          />
+        ) : (
+          <StaticMap
+            markers={heroMarkers}
+            selectedId={selectedProjectId ?? undefined}
+            onMarkerClick={selectProjectById}
+            isHebrew={isHebrew}
+          />
+        )}
+        <ImpactBand items={heroMetrics} />
+        {/* <HomeProjectsSection
           projects={projectCards}
           selectedId={selectedProjectId ?? undefined}
           isHebrew={isHebrew}
@@ -479,7 +527,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
           onOpenDetails={selectProjectById}
           viewLabel={t('homepage.projects.view', 'View details')}
           heading={t('homepage.projects.heading', 'Featured Projects')}
-        />
+        /> */}
         {!isAuthenticated && selectedProjectSummary ? (
           <HomeProjectDetails
             isHebrew={isHebrew}

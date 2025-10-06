@@ -42,7 +42,7 @@ const Initials = styled('span')(({ theme }) => ({
 const AvatarFrame: React.FC<AvatarFrameProps> = ({
   src,
   alt,
-  size = 120,
+  size = 80,
   className,
   fallback,
   isHebrew

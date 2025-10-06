@@ -1,24 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import React, { useMemo } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
-import {
-  AvatarFrame,
-  FilterPill,
-  FilterDropdown,
-  ImpactBand,
-  type ImpactItem
-} from '../../components/newDesign';
-import type { FilterDropdownOption } from '../../components/newDesign/FilterDropdown';
-import StaticMap from './StaticMap';
-import HeroArcgisMap, { HeroArcgisMarker } from './HeroArcgisMap';
-import type { Category } from '../../store/slices/categoriesSlice';
-
-interface HeroCategory {
-  id: string;
-  label: string;
-}
+import { AvatarFrame } from '../../components/newDesign';
 
 interface HomeHeroProps {
   isHebrew: boolean;
@@ -26,33 +11,18 @@ interface HomeHeroProps {
   portraitAlt: string;
   headline: string;
   subheading: string;
-  allLabel: string;
-  dropdownLabel: string;
-  categories: HeroCategory[];
-  dropdownOptions: FilterDropdownOption[];
-  activeCategoryId?: string | null;
-  onSelectCategory: (categoryId: string | null) => void;
-  metrics: ImpactItem[];
-  markers: Array<{
-    id: string;
-    left: number;
-    top: number;
-    color: string;
-    label?: string;
-  }>;
-  arcgisMarkers?: HeroArcgisMarker[];
-  arcgisCategories?: Category[];
-  arcgisCategoryColors?: Array<{ id: string; color?: number[]; colorHex?: string }>;
-  selectedMarkerId?: string | null;
-  onMarkerSelect?: (markerId: string) => void;
   onEditHero?: () => void;
 }
 
 const HeroSection = styled('section')(({ theme }) => ({
-  backgroundColor: theme.app.colors.background,
+  position: 'absolute',
+  top: 50,
+  zIndex: 3,
+  width: '100%',
+  backgroundColor: 'rgba(255, 255, 255, 0.2)',
   paddingInline: theme.app.spacing.xxl,
-  paddingTop: theme.app.spacing.xl,
-  paddingBottom: theme.app.spacing.xxl,
+  paddingTop: theme.app.spacing.sm,
+  paddingBottom: theme.app.spacing.sm,
   display: 'flex',
   flexDirection: 'column',
   gap: theme.app.spacing.xxl,
@@ -123,107 +93,29 @@ const Subheading = styled('p')(({ theme }) => ({
   }
 }));
 
-const FilterRow = styled('div')(({ theme }) => ({
-  display: 'flex',
-  flexWrap: 'wrap',
-  gap: theme.app.spacing.sm,
-  marginTop: theme.app.spacing.lg
-}));
-
-const PillOverflow = styled('div')(({ theme }) => ({
-  display: 'flex',
-  gap: theme.app.spacing.sm,
-  flexWrap: 'wrap',
-  alignItems: 'center'
-}));
-
 const HomeHero: React.FC<HomeHeroProps> = ({
   isHebrew,
   portraitSrc,
   portraitAlt,
   headline,
   subheading,
-  allLabel,
-  dropdownLabel,
-  categories,
-  dropdownOptions,
-  activeCategoryId,
-  onSelectCategory,
-  metrics,
-  markers,
-  arcgisMarkers = [],
-  arcgisCategories = [],
-  arcgisCategoryColors = [],
-  selectedMarkerId,
-  onMarkerSelect,
   onEditHero
 }) => {
-  const primaryCategories = useMemo(() => categories.slice(0, 5), [categories]);
-
   return (
-    <>
-      <HeroSection dir={isHebrew ? 'rtl' : 'ltr'}>
-        {onEditHero ? (
-          <EditHeroButton type="button" onClick={onEditHero}>
-            {isHebrew ? 'עריכת תוכן ראשי' : 'Edit hero'}
-          </EditHeroButton>
-        ) : null}
-        <HeroContent>
-          <AvatarFrame src={portraitSrc} alt={portraitAlt} isHebrew={isHebrew} />
-          <TextBlock>
-            <Headline>{headline}</Headline>
-            <Subheading>{subheading}</Subheading>
-            <FilterRow>
-              <PillOverflow>
-                <FilterPill
-                  type="button"
-                  active={!activeCategoryId}
-                  onClick={() => onSelectCategory(null)}
-                >
-                  {allLabel}
-                </FilterPill>
-                {primaryCategories.map((category) => (
-                  <FilterPill
-                    key={category.id}
-                    type="button"
-                    active={activeCategoryId === category.id}
-                    onClick={() => onSelectCategory(category.id)}
-                  >
-                    {category.label}
-                  </FilterPill>
-                ))}
-              </PillOverflow>
-              {dropdownOptions.length > primaryCategories.length ? (
-                <FilterDropdown
-                  label={dropdownLabel}
-                  options={dropdownOptions}
-                  selectedId={activeCategoryId ?? undefined}
-                  onSelect={(optionId) => onSelectCategory(optionId)}
-                />
-              ) : null}
-            </FilterRow>
-          </TextBlock>
-        </HeroContent>
-        {arcgisMarkers.length > 0 ? (
-          <HeroArcgisMap
-            markers={arcgisMarkers}
-            categories={arcgisCategories}
-            categoryColors={arcgisCategoryColors}
-            selectedId={selectedMarkerId ?? undefined}
-            onSelect={onMarkerSelect}
-            isHebrew={isHebrew}
-          />
-        ) : (
-          <StaticMap
-            markers={markers}
-            selectedId={selectedMarkerId ?? undefined}
-            onMarkerClick={onMarkerSelect}
-            isHebrew={isHebrew}
-          />
-        )}
-      </HeroSection>
-      <ImpactBand items={metrics} />
-    </>
+    <HeroSection dir={isHebrew ? 'rtl' : 'ltr'}>
+      {onEditHero ? (
+        <EditHeroButton type="button" onClick={onEditHero}>
+          {isHebrew ? 'עריכת תוכן ראשי' : 'Edit hero'}
+        </EditHeroButton>
+      ) : null}
+      <HeroContent>
+        <AvatarFrame src={portraitSrc} alt={portraitAlt} isHebrew={isHebrew} />
+        <TextBlock>
+          <Headline>{headline}</Headline>
+          <Subheading>{subheading}</Subheading>
+        </TextBlock>
+      </HeroContent>
+    </HeroSection>
   );
 };
 

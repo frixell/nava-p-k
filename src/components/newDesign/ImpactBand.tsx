@@ -12,10 +12,12 @@ export interface ImpactBandProps {
 }
 
 const Band = styled('section')(({ theme }) => ({
+  position: 'absolute',
+  bottom: '0',
   width: '100%',
   backgroundColor: theme.app.colors.accent.primary,
   color: theme.app.colors.text.inverse,
-  padding: `${theme.app.spacing['2xl']} ${theme.app.spacing.md}`,
+  padding: `${theme.app.spacing.sm} ${theme.app.spacing.md}`,
   display: 'flex',
   justifyContent: 'center'
 }));

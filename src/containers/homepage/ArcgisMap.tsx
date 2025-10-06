@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import { loadModules } from 'esri-loader';
@@ -42,7 +48,7 @@ interface HeroArcgisMapProps {
 const MapSurface = styled('div')(({ theme }) => ({
   position: 'relative',
   width: '100%',
-  minHeight: '320px',
+  minHeight: '640px',
   borderRadius: '24px',
   overflow: 'hidden',
   border: `1px solid ${theme.app.colors.border}`,
@@ -59,9 +65,7 @@ const ZOOM_RADIUS: number[] = [
   1228.8, 614.4, 307.2, 153.6, 76.8, 38.4, 19.2, 9.6, 4.8, 2.4, 1.2, 0.6, 0.3, 0.15
 ];
 
-const INDEX_Y: number[] = [
-  10000000, 10000000, 50, 50, 12, 4.1, 3.3, 2.1, 1.5, 1.2, 1.1, 1.05
-];
+const INDEX_Y: number[] = [10000000, 10000000, 50, 50, 12, 4.1, 3.3, 2.1, 1.5, 1.2, 1.1, 1.05];
 
 const ZOOM_FACTORS_X: number[] = [
   8, 6, 4, 3, 1.5, 0.8, 0.5, 0.3, 0.2, 0.1, 0.05, 0.03, 0.02, 0.01, 0.005, 0.003, 0.001, 0.0005,
@@ -95,7 +99,10 @@ const normaliseCoordinate = (value: number | string | undefined): number | null 
 
 const getPointCategories = (categories: HeroArcgisPoint['categories']): string[] => {
   if (Array.isArray(categories)) {
-    return categories.filter(Boolean).map((category) => String(category).trim()).filter(Boolean);
+    return categories
+      .filter(Boolean)
+      .map((category) => String(category).trim())
+      .filter(Boolean);
   }
   if (typeof categories === 'string') {
     return categories
@@ -108,12 +115,13 @@ const getPointCategories = (categories: HeroArcgisPoint['categories']): string[]
 
 const hexToRgb = (value: string): NumericTuple | null => {
   const trimmed = value.startsWith('#') ? value.slice(1) : value;
-  const normalized = trimmed.length === 3
-    ? trimmed
-        .split('')
-        .map((char) => char + char)
-        .join('')
-    : trimmed.padEnd(6, '0');
+  const normalized =
+    trimmed.length === 3
+      ? trimmed
+          .split('')
+          .map((char) => char + char)
+          .join('')
+      : trimmed.padEnd(6, '0');
   const r = parseInt(normalized.slice(0, 2), 16);
   const g = parseInt(normalized.slice(2, 4), 16);
   const b = parseInt(normalized.slice(4, 6), 16);
@@ -130,7 +138,8 @@ const resolvePointColor = (
 ): NumericTuple => {
   const categoryIndex = categories.findIndex((category) => String(category.id) === categoryId);
   if (categoryIndex >= 0) {
-    const paletteEntry = categoryColors[categoryIndex] ?? categoryColors.find((entry) => entry.id === categoryId);
+    const paletteEntry =
+      categoryColors[categoryIndex] ?? categoryColors.find((entry) => entry.id === categoryId);
     if (paletteEntry) {
       if (Array.isArray(paletteEntry.color) && paletteEntry.color.length >= 3) {
         const [r, g, b] = paletteEntry.color;
@@ -167,7 +176,7 @@ const getViewportWidth = () => {
   );
 };
 
-const HeroArcgisMap: React.FC<HeroArcgisMapProps> = ({
+const ArcgisMap: React.FC<HeroArcgisMapProps> = ({
   markers,
   categories,
   categoryColors,
@@ -355,12 +364,9 @@ const HeroArcgisMap: React.FC<HeroArcgisMapProps> = ({
       return () => undefined;
     }
 
-    loadModules([
-      'esri/Map',
-      'esri/views/MapView',
-      'esri/layers/GraphicsLayer',
-      'esri/Graphic'
-    ], { css: true })
+    loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/GraphicsLayer', 'esri/Graphic'], {
+      css: true
+    })
       .then(([ArcGISMap, MapView, GraphicsLayer, Graphic]) => {
         if (cancelled || !container) {
           return;
@@ -403,7 +409,9 @@ const HeroArcgisMap: React.FC<HeroArcgisMapProps> = ({
           }
 
           view.hitTest(event).then((response: any) => {
-            const graphic = response?.results?.find((result: any) => result?.graphic?.attributes?.id);
+            const graphic = response?.results?.find(
+              (result: any) => result?.graphic?.attributes?.id
+            );
             const markerId: string | undefined = graphic?.graphic?.attributes?.id;
             if (markerId) {
               onSelect(markerId);
@@ -459,14 +467,17 @@ const HeroArcgisMap: React.FC<HeroArcgisMapProps> = ({
     }
 
     viewRef.current
-      .goTo({
-        center: [target.longitude, target.latitude],
-        zoom: Math.max(viewRef.current.zoom ?? DEFAULT_ZOOM, 5)
-      }, { animate: true })
+      .goTo(
+        {
+          center: [target.longitude, target.latitude],
+          zoom: Math.max(viewRef.current.zoom ?? DEFAULT_ZOOM, 5)
+        },
+        { animate: true }
+      )
       .catch(() => undefined);
   }, [selectedId, markers]);
 
   return <MapSurface className={className} ref={containerRef} dir={isHebrew ? 'rtl' : 'ltr'} />;
 };
 
-export default HeroArcgisMap;
+export default ArcgisMap;

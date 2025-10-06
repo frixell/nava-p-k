@@ -15,7 +15,7 @@ export const FooterContainer = styled('footer', {
 
   if (position === 'absolute' || position === 'fixed') {
     basePositionStyles.position = position;
-    basePositionStyles.bottom = 0;
+    basePositionStyles.bottom = 65;
     basePositionStyles.left = 0;
   } else if (position === 'relative') {
     basePositionStyles.position = 'relative';
