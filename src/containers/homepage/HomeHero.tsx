@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import React, { useMemo } from 'react';
 import styled from '@emotion/styled';
 import {
@@ -9,6 +12,8 @@ import {
 } from '../../components/newDesign';
 import type { FilterDropdownOption } from '../../components/newDesign/FilterDropdown';
 import StaticMap from './StaticMap';
+import HeroArcgisMap, { HeroArcgisMarker } from './HeroArcgisMap';
+import type { Category } from '../../store/slices/categoriesSlice';
 
 interface HeroCategory {
   id: string;
@@ -35,6 +40,9 @@ interface HomeHeroProps {
     color: string;
     label?: string;
   }>;
+  arcgisMarkers?: HeroArcgisMarker[];
+  arcgisCategories?: Category[];
+  arcgisCategoryColors?: Array<{ id: string; color?: number[]; colorHex?: string }>;
   selectedMarkerId?: string | null;
   onMarkerSelect?: (markerId: string) => void;
   onEditHero?: () => void;
@@ -78,7 +86,7 @@ const EditHeroButton = styled('button')(({ theme }) => ({
 
 const HeroContent = styled('div')(({ theme }) => ({
   display: 'grid',
-  gridTemplateColumns: 'minmax(220px, 280px) 1fr',
+  gridTemplateColumns: 'minmax(120px, 160px) 1fr',
   gap: theme.app.spacing['2xl'],
   alignItems: 'center',
   '@media (max-width: 900px)': {
@@ -97,7 +105,7 @@ const Headline = styled('h1')(({ theme }) => ({
   margin: 0,
   fontFamily: theme.app.typography.fontFamilyHeading,
   fontWeight: theme.app.typography.variants.displayLg.fontWeight,
-  fontSize: theme.app.typography.variants.displayLg.fontSize,
+  fontSize: `calc(${theme.app.typography.variants.displayLg.fontSize} * 0.75)`,
   lineHeight: theme.app.typography.variants.displayLg.lineHeight,
   letterSpacing: theme.app.typography.variants.displayLg.letterSpacing,
   color: theme.app.colors.text.primary
@@ -106,7 +114,7 @@ const Headline = styled('h1')(({ theme }) => ({
 const Subheading = styled('p')(({ theme }) => ({
   margin: 0,
   fontFamily: theme.app.typography.fontFamilyBase,
-  fontSize: theme.app.typography.variants.displayMd.fontSize,
+  fontSize: `calc(${theme.app.typography.variants.displayMd.fontSize} * 0.75)`,
   lineHeight: theme.app.typography.variants.displayMd.lineHeight,
   color: theme.app.colors.text.secondary,
   maxWidth: '42ch',
@@ -143,6 +151,9 @@ const HomeHero: React.FC<HomeHeroProps> = ({
   onSelectCategory,
   metrics,
   markers,
+  arcgisMarkers = [],
+  arcgisCategories = [],
+  arcgisCategoryColors = [],
   selectedMarkerId,
   onMarkerSelect,
   onEditHero
@@ -158,7 +169,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
           </EditHeroButton>
         ) : null}
         <HeroContent>
-          <AvatarFrame src={portraitSrc} alt={portraitAlt} />
+          <AvatarFrame src={portraitSrc} alt={portraitAlt} isHebrew={isHebrew} />
           <TextBlock>
             <Headline>{headline}</Headline>
             <Subheading>{subheading}</Subheading>
@@ -193,12 +204,23 @@ const HomeHero: React.FC<HomeHeroProps> = ({
             </FilterRow>
           </TextBlock>
         </HeroContent>
-        <StaticMap
-          markers={markers}
-          selectedId={selectedMarkerId ?? undefined}
-          onMarkerClick={onMarkerSelect}
-          isHebrew={isHebrew}
-        />
+        {arcgisMarkers.length > 0 ? (
+          <HeroArcgisMap
+            markers={arcgisMarkers}
+            categories={arcgisCategories}
+            categoryColors={arcgisCategoryColors}
+            selectedId={selectedMarkerId ?? undefined}
+            onSelect={onMarkerSelect}
+            isHebrew={isHebrew}
+          />
+        ) : (
+          <StaticMap
+            markers={markers}
+            selectedId={selectedMarkerId ?? undefined}
+            onMarkerClick={onMarkerSelect}
+            isHebrew={isHebrew}
+          />
+        )}
       </HeroSection>
       <ImpactBand items={metrics} />
     </>

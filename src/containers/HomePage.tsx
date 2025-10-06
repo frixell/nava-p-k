@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { connect } from 'react-redux';
 import { withTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import Footer from '../components/common/Footer';
 import Navigation from '../components/common/Navigation';
 import { startLogout } from '../store/slices/authSlice';
@@ -21,11 +27,11 @@ import HomeHero from './homepage/HomeHero';
 import HomeHeroModal from './homepage/HomeHeroModal';
 import HomeProjectsSection from './homepage/HomeProjectsSection';
 import HomeProjectDetails from './homepage/HomeProjectDetails';
+import type { HeroArcgisMarker } from './homepage/HeroArcgisMap';
 import type { RootState, AppDispatch } from '../types/store';
 import BackofficeTheme from '../components/backoffice/BackofficeTheme';
 import type { ImpactItem } from '../components/newDesign';
 import type { HomepageHeroMetric, HomepageState } from '../store/slices/homepageSlice';
-import type { TFunction } from 'i18next';
 import { HERO_METRIC_DEFINITIONS } from '../constants/homeHeroMetrics';
 import { appTokens } from '../styles/theme';
 import { startEditHomePage, startDeleteHomePageImage } from '../store/slices/homepageSlice';
@@ -53,12 +59,13 @@ interface MapMarker {
   color: string;
   label: string;
   point: HeroPoint;
+  longitude?: number;
+  latitude?: number;
 }
 
 type HomePageProps = HomePageControllerProps;
 
 const HomePage: React.FC<HomePageProps> = (props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {
     i18n,
     isAuthenticated,
@@ -70,7 +77,6 @@ const HomePage: React.FC<HomePageProps> = (props) => {
   } = props as HomePageProps & { t: TFunction; homepage?: HomepageState };
 
   // useHomePageController is a legacy hook that has not been fully typed yet.
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const {
     state,
     viewportWidth,
@@ -115,18 +121,16 @@ const HomePage: React.FC<HomePageProps> = (props) => {
   );
 
   const categoryOptions = visibleCategories.map((category) => ({
-    id: String(category.id),
-    label: isEnglish ? category.name : category.nameHebrew || category.name
+    id: String(category.id ?? ''),
+    label: isEnglish
+      ? String(category.name ?? category.nameHebrew ?? '')
+      : String(category.nameHebrew ?? category.name ?? '')
   }));
 
   const activeCategoryId = state.openCategories.length > 0 ? state.openCategories[0] : null;
 
   const handleCategorySelect = (categoryId: string | null) => {
-    if (categoryId) {
-      setOpenCategories([categoryId]);
-    } else {
-      setOpenCategories([]);
-    }
+    setOpenCategories(categoryId ? [categoryId] : []);
   };
 
   const parseCoordinate = (value: unknown): number | null => {
@@ -172,19 +176,17 @@ const HomePage: React.FC<HomePageProps> = (props) => {
     pointMatchesCategory(point, activeCategoryId)
   );
 
-  const categoryLabel = (categoryId: string | null): string => {
+  const categoryLabel = (categoryId: string | null | undefined): string => {
     if (!categoryId) {
       return '';
     }
-    const category = state.categories.find(
-      (item: { id: string; name: string; nameHebrew?: string }) => item.id === categoryId
-    );
+    const category = state.categories.find((item) => String(item.id) === String(categoryId));
     if (!category) {
       return '';
     }
-    return isHebrew
-      ? (category.nameHebrew ?? category.name ?? '')
-      : (category.name ?? category.nameHebrew ?? '');
+    const englishLabel = String(category.name ?? category.nameHebrew ?? '');
+    const hebrewLabel = String(category.nameHebrew ?? category.name ?? '');
+    return isHebrew ? hebrewLabel : englishLabel;
   };
 
   const stripHtml = (value?: string): string => {
@@ -218,30 +220,50 @@ const HomePage: React.FC<HomePageProps> = (props) => {
         return null;
       }
 
-      const rawCategories = Array.isArray(point.categories)
-        ? point.categories
-        : typeof point.categories === 'string'
-          ? point.categories
-              .split(',')
-              .map((item: string) => item.trim())
-              .filter(Boolean)
-          : [];
+      const rawCategories = (() => {
+        if (Array.isArray(point.categories)) {
+          return point.categories;
+        }
+        if (typeof point.categories === 'string') {
+          return point.categories
+            .split(',')
+            .map((item: string) => item.trim())
+            .filter(Boolean);
+        }
+        return [] as string[];
+      })();
 
       const primaryCategory = rawCategories[0] ?? null;
-      const label = isHebrew
-        ? (typeof point.titleHebrew === 'string' && point.titleHebrew) || point.title || ''
-        : (typeof point.title === 'string' && point.title) || point.titleHebrew || '';
+      const englishTitle =
+        typeof point.title === 'string' && point.title.length > 0 ? point.title : undefined;
+      const hebrewTitle =
+        typeof point.titleHebrew === 'string' && point.titleHebrew.length > 0
+          ? point.titleHebrew
+          : englishTitle;
+      const label = (() => {
+        if (isHebrew) {
+          return hebrewTitle ?? '';
+        }
+        if (englishTitle) {
+          return englishTitle;
+        }
+        return hebrewTitle ?? '';
+      })();
 
-      return {
+      const marker: MapMarker = {
         id: String(point.id ?? `${lon}-${lat}`),
         left: clampPercent(((lon + 180) / 360) * 100),
         top: clampPercent(((90 - lat) / 180) * 100),
         color: resolveMarkerColor(primaryCategory),
         label,
-        point
+        point,
+        longitude: lon,
+        latitude: lat
       };
+
+      return marker;
     })
-    .filter((marker): marker is MapMarker => Boolean(marker));
+    .filter((marker): marker is MapMarker => marker !== null);
 
   const heroMarkers = mapMarkers.map((marker) => ({
     id: marker.id,
@@ -251,6 +273,16 @@ const HomePage: React.FC<HomePageProps> = (props) => {
     label: marker.label
   }));
 
+  const heroArcgisMarkers: HeroArcgisMarker[] = mapMarkers
+    .map((marker) => {
+      if (typeof marker.longitude !== 'number' || typeof marker.latitude !== 'number') {
+        return null;
+      }
+      const { id, point, longitude, latitude } = marker;
+      return { id, longitude, latitude, point } satisfies HeroArcgisMarker;
+    })
+    .filter((marker): marker is HeroArcgisMarker => marker !== null);
+
   const translateMetricText = (lng: 'en' | 'he', key: string, fallback: string) => {
     if (typeof i18n.getFixedT === 'function') {
       return i18n.getFixedT(lng)(key, fallback);
@@ -259,7 +291,7 @@ const HomePage: React.FC<HomePageProps> = (props) => {
   };
 
   const metricsFromStore: HomepageHeroMetric[] = Array.isArray(homepage?.hero?.metrics)
-    ? (homepage?.hero?.metrics as HomepageHeroMetric[])
+    ? homepage?.hero?.metrics
     : [];
 
   const heroMetrics: ImpactItem[] = HERO_METRIC_DEFINITIONS.map((definition) => {
@@ -304,23 +336,32 @@ const HomePage: React.FC<HomePageProps> = (props) => {
   };
 
   const projectCards = mapMarkers.map((marker) => {
-    const point = marker.point;
-    const primaryCategory = Array.isArray(point.categories)
-      ? (point.categories[0] ?? null)
-      : typeof point.categories === 'string'
-        ? (point.categories.split(',').map((item: string) => item.trim())[0] ?? null)
-        : null;
+    const { point } = marker;
+    const primaryCategory = (() => {
+      if (Array.isArray(point.categories)) {
+        return point.categories[0] ?? null;
+      }
+      if (typeof point.categories === 'string') {
+        const [firstCategory] = point.categories
+          .split(',')
+          .map((item: string) => item.trim())
+          .filter(Boolean);
+        return firstCategory ?? null;
+      }
+      return null;
+    })();
 
     const description = getDescription(point);
     const truncatedDescription =
       description.length > 180 ? `${description.slice(0, 177)}…` : description;
     const image =
       typeof point.extendedContent?.image === 'string' ? point.extendedContent.image : undefined;
-    const title =
-      marker.label ||
-      (isHebrew
+    let title = marker.label;
+    if (!title.length) {
+      title = isHebrew
         ? t('homepage.projects.untitled', 'ללא כותרת')
-        : t('homepage.projects.untitled', 'Untitled project'));
+        : t('homepage.projects.untitled', 'Untitled project');
+    }
 
     return {
       id: marker.id,
@@ -336,19 +377,28 @@ const HomePage: React.FC<HomePageProps> = (props) => {
     : null;
   const selectedProjectSummary = selectedMarker
     ? {
-        title:
-          selectedMarker.label ||
-          (isHebrew
+        title: (() => {
+          if (selectedMarker.label.length) {
+            return selectedMarker.label;
+          }
+          return isHebrew
             ? t('homepage.projects.untitled', 'ללא כותרת')
-            : t('homepage.projects.untitled', 'Untitled project')),
-        category: categoryLabel(
-          Array.isArray(selectedMarker.point.categories)
-            ? (selectedMarker.point.categories[0] ?? null)
-            : typeof selectedMarker.point.categories === 'string'
-              ? (selectedMarker.point.categories.split(',').map((item: string) => item.trim())[0] ??
-                null)
-              : null
-        ),
+            : t('homepage.projects.untitled', 'Untitled project');
+        })(),
+        category: (() => {
+          const { categories: pointCategories } = selectedMarker.point;
+          if (Array.isArray(pointCategories)) {
+            return categoryLabel(pointCategories[0] ?? null);
+          }
+          if (typeof pointCategories === 'string') {
+            const [firstCategory] = pointCategories
+              .split(',')
+              .map((item: string) => item.trim())
+              .filter(Boolean);
+            return categoryLabel(firstCategory ?? null);
+          }
+          return categoryLabel(null);
+        })(),
         description: getDescription(selectedMarker.point),
         image:
           typeof selectedMarker.point.extendedContent?.image === 'string'
@@ -414,6 +464,9 @@ const HomePage: React.FC<HomePageProps> = (props) => {
           onSelectCategory={handleCategorySelect}
           metrics={heroMetrics}
           markers={heroMarkers}
+          arcgisMarkers={heroArcgisMarkers}
+          arcgisCategories={state.categories}
+          arcgisCategoryColors={state.categoryColors}
           selectedMarkerId={selectedProjectId}
           onMarkerSelect={selectProjectById}
           onEditHero={isAuthenticated ? openHeroModal : undefined}
@@ -453,33 +506,31 @@ const HomePage: React.FC<HomePageProps> = (props) => {
         />
 
         {isAuthenticated ? (
-        <HomePageLayout
-          isEnglish={isEnglish}
-          isMobileViewport={isMobileViewport}
-          viewportWidth={viewportWidth}
-          language={i18n.language}
-          i18n={i18n}
-          sidebarClickedItemId={state.sidebarClickedItemId}
-          categories={state.categories}
-          sidebarPoints={points}
-          mapPoints={state.points}
-          isAuthenticated={isAuthenticated}
-          categoryColors={state.categoryColors}
-          setOpenCategories={setOpenCategories}
-          handleSideBarClick={handleSideBarClick}
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          selectedProject={state.selectedProject}
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          tableTemplate={tableTemplate}
-          hideProject={hideProject}
-          onProjectChange={setData}
-          uploadWidget={uploadWidget}
-          addPoint={addPoint}
-          allowAddPoint={state.allowAddPoint}
-          setSelectedProject={setSelectedProject}
-          handleExpandProject={handleExpandProject}
-          openCategories={state.openCategories}
-        />
+          <HomePageLayout
+            isEnglish={isEnglish}
+            isMobileViewport={isMobileViewport}
+            viewportWidth={viewportWidth}
+            language={i18n.language}
+            i18n={i18n}
+            sidebarClickedItemId={state.sidebarClickedItemId}
+            categories={state.categories}
+            sidebarPoints={points}
+            mapPoints={state.points}
+            isAuthenticated={isAuthenticated}
+            categoryColors={state.categoryColors}
+            setOpenCategories={setOpenCategories}
+            handleSideBarClick={handleSideBarClick}
+            selectedProject={state.selectedProject}
+            tableTemplate={tableTemplate}
+            hideProject={hideProject}
+            onProjectChange={setData}
+            uploadWidget={uploadWidget}
+            addPoint={addPoint}
+            allowAddPoint={state.allowAddPoint}
+            setSelectedProject={setSelectedProject}
+            handleExpandProject={handleExpandProject}
+            openCategories={state.openCategories}
+          />
         ) : null}
 
         <Footer position="absolute" />

@@ -171,7 +171,7 @@ const tokens: AppTokens = {
   colorPickerPalette: ['#000000', '#FFFFFF', '#fbc02d', '#53b0a1', '#666665']
 };
 
-export const appTokens = tokens;
+export const appTokens: AppTheme['app'] & { categoryPalette: string[] } = tokens;
 
 const muiTheme = createTheme({
   palette: {

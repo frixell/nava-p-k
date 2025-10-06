@@ -18,7 +18,11 @@ import {
 import type { SeoPayload } from '../../types/seo';
 import type { RootState } from '../../store/configureStore';
 import { DEFAULT_SEO, EMPTY_TEACH, TeachImage, TeachItem, TeachingSeo } from './types';
-import { cloudinaryEnv, isCloudinaryConfigured, logMissingCloudinaryConfig } from '../../constants/cloudinary';
+import {
+  cloudinaryEnv,
+  isCloudinaryConfigured,
+  logMissingCloudinaryConfig
+} from '../../constants/cloudinary';
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
 
@@ -70,20 +74,20 @@ export interface UseTeachingPageResult {
   seoModalOpen: boolean;
   editModalOpen: boolean;
   pageupImageClassName: string;
-  openSeoModal(): void;
-  closeSeoModal(): void;
-  updateSeoField(field: keyof TeachingSeo, value: string): void;
-  saveSeo(): Promise<void>;
-  openTeachEditor(teach?: TeachItem): void;
-  closeTeachEditor(): void;
-  updateDraftTeach(field: keyof TeachItem, value: unknown): void;
-  saveDraftTeach(): Promise<void>;
-  deleteTeach(id: string): Promise<void>;
-  toggleTeachVisibility(id: string, visible: boolean): Promise<void>;
-  changeTeachOrder(id: string, order: number): void;
-  commitTeachOrder(id: string, order: number): Promise<void>;
-  launchImageUpload(): void;
-  logout(): void;
+  openSeoModal: () => void;
+  closeSeoModal: () => void;
+  updateSeoField: (field: keyof TeachingSeo, value: string) => void;
+  saveSeo: () => Promise<void>;
+  openTeachEditor: (teach?: TeachItem) => void;
+  closeTeachEditor: () => void;
+  updateDraftTeach: (field: keyof TeachItem, value: unknown) => void;
+  saveDraftTeach: () => Promise<void>;
+  deleteTeach: (id: string) => Promise<void>;
+  toggleTeachVisibility: (id: string, visible: boolean) => Promise<void>;
+  changeTeachOrder: (id: string, order: number) => void;
+  commitTeachOrder: (id: string, order: number) => Promise<void>;
+  launchImageUpload: () => void;
+  logout: () => void;
 }
 
 type TeachRecord = Record<string, Partial<TeachItem> | null | undefined>;

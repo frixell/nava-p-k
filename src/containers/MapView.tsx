@@ -400,7 +400,7 @@ const MapView: React.FC<MapViewProps> = ({
         return;
       }
 
-      const map = new Map({ basemap: 'streets' });
+      const map = new Map({ basemap: 'gray-vector' });
       const view = new MapView({
         popup: {
           lang: language,

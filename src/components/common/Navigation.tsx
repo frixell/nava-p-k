@@ -28,7 +28,6 @@ const Header = styled('header', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  paddingInline: theme.app.spacing.xxl,
   paddingBlock: theme.app.spacing.md,
   transition: 'box-shadow 0.2s ease, background-color 0.2s ease',
   boxShadow: scrolled ? '0 10px 24px rgba(10, 31, 51, 0.12)' : 'none',
@@ -38,26 +37,27 @@ const Header = styled('header', {
 }));
 
 const HeaderInner = styled('div')(({ theme }) => ({
-  width: 'min(1120px, 100%)',
+  width: '100%',
   marginInline: 'auto',
-  display: 'flex',
+  paddingInline: '47px',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
   alignItems: 'center',
   gap: theme.app.spacing.xl,
-  flexDirection: 'row',
-  justifyContent: 'space-between'
+  boxSizing: 'border-box'
 }));
 
 const HeaderLeft = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isHebrew'
 })<{ isHebrew: boolean }>(({ theme, isHebrew }) => ({
   display: 'flex',
+  order: isHebrew ? 1 : -1,
   alignItems: 'center',
   gap: theme.app.spacing.lg,
   minWidth: 0,
-  flex: 1,
   flexDirection: isHebrew ? 'row-reverse' : 'row',
   justifyContent: isHebrew ? 'flex-end' : 'flex-start',
-  order: isHebrew ? 2 : 1
+  justifySelf: isHebrew ? 'end' : 'start'
 }));
 
 const HeaderRight = styled('div', {
@@ -68,7 +68,17 @@ const HeaderRight = styled('div', {
   gap: theme.app.spacing.md,
   flexDirection: isHebrew ? 'row-reverse' : 'row',
   justifyContent: isHebrew ? 'flex-start' : 'flex-end',
-  order: isHebrew ? 1 : 2
+  justifySelf: isHebrew ? 'start' : 'end'
+}));
+
+const BrandWrapper = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'isHebrew'
+})<{ isHebrew: boolean }>(({ isHebrew }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: isHebrew ? 'flex-end' : 'flex-start',
+  marginInlineStart: isHebrew ? 0 : '0px',
+  marginInlineEnd: isHebrew ? '0px' : '0px'
 }));
 
 const Brand = styled(NavLink)(({ theme }) => ({
@@ -90,6 +100,8 @@ const DesktopNav = styled('nav', {
   alignItems: 'center',
   gap: theme.app.spacing.lg,
   flexDirection: isHebrew ? 'row-reverse' : 'row',
+  marginInlineStart: isHebrew ? 0 : '40px',
+  marginInlineEnd: isHebrew ? '40px' : 0,
   '@media (max-width: 768px)': {
     display: 'none'
   }
@@ -185,6 +197,8 @@ const LanguageButton = styled('button')(({ theme }) => ({
   justifyContent: 'center',
   paddingInline: theme.app.spacing.sm,
   paddingBlock: theme.app.spacing['2xs'],
+  paddingRight: 0,
+  paddingLeft: 0,
   borderRadius: '999px',
   border: `1px solid ${theme.app.colors.border}`,
   background: theme.app.colors.surface,
@@ -250,21 +264,25 @@ const Navigation: React.FC<NavigationProps> = ({ langLink, langLinkEng }) => {
   const pathname = decodePathname(location.pathname);
   const isHebrew = i18n.language === 'he';
 
-  const navLinks: NavLinkDefinition[] = isHebrew
-    ? [
-        { to: '/עב', label: 'ראשי', aliases: ['/'] },
-        { to: '/מחקר', label: 'מחקר' },
-        { to: '/הוראה', label: 'הוראה' },
-        { to: '/פרסומים', label: 'פרסומים' },
-        { to: '/צור-קשר', label: 'צור קשר', aliases: ['/צור קשר'] }
-      ]
-    : [
-        { to: '/en', label: 'Home', aliases: ['/'] },
-        { to: '/research', label: 'Research' },
-        { to: '/teaching', label: 'Teaching' },
-        { to: '/publications', label: 'Publications' },
-        { to: '/contact', label: 'Contact' }
-      ];
+  const navLinks = useMemo<NavLinkDefinition[]>(
+    () =>
+      isHebrew
+        ? [
+            { to: '/עב', label: 'ראשי', aliases: ['/'] },
+            { to: '/מחקר', label: 'מחקר' },
+            { to: '/הוראה', label: 'הוראה' },
+            { to: '/פרסומים', label: 'פרסומים' },
+            { to: '/צור-קשר', label: 'צור קשר', aliases: ['/צור קשר'] }
+          ]
+        : [
+            { to: '/en', label: 'Home', aliases: ['/'] },
+            { to: '/research', label: 'Research' },
+            { to: '/teaching', label: 'Teaching' },
+            { to: '/publications', label: 'Publications' },
+            { to: '/contact', label: 'Contact' }
+          ],
+    [isHebrew]
+  );
 
   const isActive = useCallback(
     (link: NavLinkDefinition) =>
@@ -323,16 +341,27 @@ const Navigation: React.FC<NavigationProps> = ({ langLink, langLinkEng }) => {
 
   const handleChangeLanguage = () => {
     const nextLang = isHebrew ? 'en' : 'he';
-    i18n.changeLanguage(nextLang).then(() => {
-      navigate(nextLang === 'he' ? langLink : langLinkEng);
-    });
+    i18n
+      .changeLanguage(nextLang)
+      .then(() => {
+        navigate(nextLang === 'he' ? langLink : langLinkEng);
+      })
+      .catch((error: unknown) => {
+        if (process.env.NODE_ENV !== 'production') {
+          // eslint-disable-next-line no-console
+          console.error('Language change failed', error);
+        }
+      });
   };
 
   const languageLabel = isHebrew ? 'English' : 'עברית';
+  const brandLabel = isHebrew
+    ? i18n.t('homepage.hero.brand', 'ד"ר נאוה קיינר-פרסוב')
+    : i18n.t('homepage.hero.brand', 'Dr. Nava Kainer-Persov');
 
   const desktopLinks = useMemo(
     () => (
-      <LinksList>
+      <LinksList dir={isHebrew ? 'rtl' : 'ltr'}>
         {navLinks.map((link) => (
           <LinkItem key={link.to}>
             <StyledNavLink to={link.to} data-active={isActive(link)} data-hebrew={isHebrew}>
@@ -350,8 +379,17 @@ const Navigation: React.FC<NavigationProps> = ({ langLink, langLinkEng }) => {
       <Header ref={headerRef} role="banner" scrolled={scrolled}>
         <HeaderInner>
           <HeaderLeft isHebrew={isHebrew}>
-            <Brand to={isHebrew ? '/עב' : '/en'}>Dr. Nava Kainer-Persov</Brand>
-            <DesktopNav isHebrew={isHebrew} aria-label={isHebrew ? 'תפריט ראשי' : 'Main navigation'}>
+            <BrandWrapper isHebrew={isHebrew}>
+              <Brand to={isHebrew ? '/עב' : '/en'}>{brandLabel}</Brand>
+            </BrandWrapper>
+            <DesktopNav
+              isHebrew={isHebrew}
+              aria-label={isHebrew ? 'תפריט ראשי' : 'Main navigation'}
+              style={{
+                marginInlineStart: isHebrew ? 0 : '40px',
+                marginInlineEnd: isHebrew ? '40px' : 0
+              }}
+            >
               {desktopLinks}
             </DesktopNav>
           </HeaderLeft>

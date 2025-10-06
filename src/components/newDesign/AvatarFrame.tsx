@@ -7,6 +7,7 @@ interface AvatarFrameProps {
   size?: number;
   className?: string;
   fallback?: React.ReactNode;
+  isHebrew?: boolean;
 }
 
 const Frame = styled('div', {
@@ -38,7 +39,14 @@ const Initials = styled('span')(({ theme }) => ({
   color: theme.app.colors.accent.primary
 }));
 
-const AvatarFrame: React.FC<AvatarFrameProps> = ({ src, alt, size = 160, className, fallback }) => {
+const AvatarFrame: React.FC<AvatarFrameProps> = ({
+  src,
+  alt,
+  size = 120,
+  className,
+  fallback,
+  isHebrew
+}) => {
   const renderFallback = () => {
     if (fallback) {
       return fallback;
@@ -57,7 +65,11 @@ const AvatarFrame: React.FC<AvatarFrameProps> = ({ src, alt, size = 160, classNa
 
   return (
     <Frame size={size} className={className} aria-live="polite">
-      {src ? <img src={src} alt={alt} /> : renderFallback()}
+      {src ? (
+        <img style={{ transform: isHebrew ? 'none' : 'rotateY(180deg)' }} src={src} alt={alt} />
+      ) : (
+        renderFallback()
+      )}
     </Frame>
   );
 };

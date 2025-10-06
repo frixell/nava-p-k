@@ -125,6 +125,8 @@
 - Navigation bar now respects language directionality: brand + menu align right-to-left in Hebrew while the language toggle anchors to the opposite edge without exceeding the viewport width.
 - Removed the legacy header spacer; layout now relies on natural flow without the extra 64px gap.
 - Hero section top padding reduced to `2rem` so content sits closer to the header while keeping the redesigned spacing rhythm intact.
+- Hero map now renders the live ArcGIS basemap with the classic category dots, restoring the familiar grayscale look while keeping the new layout.
+- The administrative ArcGIS map switches to the same gray basemap so editor and visitor views stay visually consistent.
 
 ## QA, Regression & Launch (1 day)
 - Run full test suite, cross-browser QA, and gather stakeholder feedback.

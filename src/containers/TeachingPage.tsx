@@ -25,7 +25,7 @@ interface TeachingPageProps {
 const TeachingPage: React.FC<TeachingPageProps> = ({ urlLang }) => {
   const { i18n } = useTranslation();
   const teaching = useTeachingPage({ urlLang, i18n });
-  const language = i18n.language;
+  const { language } = i18n;
   const isHebrew = language === 'he';
 
   const isSpacerHidden = teaching.pageupImageClassName === 'pageup__image';

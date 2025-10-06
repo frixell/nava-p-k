@@ -170,7 +170,7 @@ app.get('/sitemap.xml', function (req, res) {
   });
 });
 
-//*** server side rendering -- SEO ***//
+// *** server side rendering -- SEO *** //
 
 // app.get('/:category?/:subCategory?/:event?/:toomuch?', function(request, response, next) {
 //     if (request.params.toomuch) {
@@ -333,7 +333,7 @@ app.get('/sitemap.xml', function (req, res) {
 //     }
 // });
 
-//******    end ssr --- SEO     ******//
+// ******    end ssr --- SEO     ****** //
 
 app.get('*.js', function (request, response, next) {
   if (request.headers['user-agent'].toLowerCase().indexOf('firefox') === -1) {
