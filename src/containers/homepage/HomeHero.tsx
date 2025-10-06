@@ -20,7 +20,7 @@ const HeroSection = styled('section')(({ theme }) => ({
   zIndex: 3,
   width: '100%',
   maxWidth: 'calc(100vw - 42px)',
-  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+  backgroundColor: 'rgba(255, 255, 255, 0.5)',
   paddingInline: '21px',
   paddingTop: theme.app.spacing.sm,
   paddingBottom: theme.app.spacing.sm,

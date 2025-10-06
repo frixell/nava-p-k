@@ -57,8 +57,8 @@ const MapSurface = styled('div')(({ theme }) => ({
 
 const DEFAULT_COLOR: NumericTuple = [226, 119, 40];
 const NUMBER_OF_EDGES = 240;
-const DEFAULT_CENTER: [number, number] = [-20, 35];
-const DEFAULT_ZOOM = 3;
+const DEFAULT_CENTER: [number, number] = [0, 20];
+const DEFAULT_ZOOM = 1.45;
 
 const ZOOM_RADIUS: number[] = [
   1258291.2, 629145.6, 314572.8, 157286.4, 78643.2, 39321.6, 19660.8, 9830.4, 4915.2, 2457.6,
@@ -167,15 +167,6 @@ const calculateYBand = (yValue: number): number => {
   return 0;
 };
 
-const getViewportWidth = () => {
-  if (typeof window === 'undefined') {
-    return 1024;
-  }
-  return (
-    window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth || 1024
-  );
-};
-
 const ArcgisMap: React.FC<HeroArcgisMapProps> = ({
   markers,
   categories,
@@ -189,6 +180,7 @@ const ArcgisMap: React.FC<HeroArcgisMapProps> = ({
   const viewRef = useRef<any>(null);
   const layerRef = useRef<any>(null);
   const graphicCtorRef = useRef<any>(null);
+  const zoomWidgetRef = useRef<any>(null);
   const markerCountRef = useRef<number>(0);
   const markerSignatureRef = useRef<string>('');
   const hasFitRef = useRef<boolean>(false);
@@ -347,12 +339,16 @@ const ArcgisMap: React.FC<HeroArcgisMapProps> = ({
     });
 
     if (!hasFitRef.current && graphicsLayer.fullExtent) {
-      view
-        .goTo(graphicsLayer.fullExtent.expand(1.4), { animate: true })
-        .then(() => {
-          hasFitRef.current = true;
-        })
-        .catch(() => undefined);
+      const extent = graphicsLayer.fullExtent;
+      const height = Math.abs(extent.ymax - extent.ymin);
+      if (height < 120) {
+        view
+          .goTo(extent.expand(1.2), { animate: true })
+          .then(() => {
+            hasFitRef.current = true;
+          })
+          .catch(() => undefined);
+      }
     }
   };
 
@@ -364,10 +360,19 @@ const ArcgisMap: React.FC<HeroArcgisMapProps> = ({
       return () => undefined;
     }
 
-    loadModules(['esri/Map', 'esri/views/MapView', 'esri/layers/GraphicsLayer', 'esri/Graphic'], {
-      css: true
-    })
-      .then(([ArcGISMap, MapView, GraphicsLayer, Graphic]) => {
+    loadModules(
+      [
+        'esri/Map',
+        'esri/views/MapView',
+        'esri/layers/GraphicsLayer',
+        'esri/Graphic',
+        'esri/widgets/Zoom'
+      ],
+      {
+        css: true
+      }
+    )
+      .then(([ArcGISMap, MapView, GraphicsLayer, Graphic, Zoom]) => {
         if (cancelled || !container) {
           return;
         }
@@ -381,8 +386,8 @@ const ArcgisMap: React.FC<HeroArcgisMapProps> = ({
           ui: { components: [] },
           constraints: {
             rotationEnabled: false,
-            snapToZoom: true,
-            minZoom: getViewportWidth() < 768 ? 1 : 2,
+            snapToZoom: false,
+            minZoom: 0,
             maxZoom: 12
           }
         });
@@ -390,6 +395,15 @@ const ArcgisMap: React.FC<HeroArcgisMapProps> = ({
         view.popupEnabled = false;
         view.navigation.mouseWheelZoomEnabled = false;
         view.navigation.browserTouchPanEnabled = false;
+
+        const zoomWidget = new Zoom({ view });
+        view.ui.add(zoomWidget, { position: 'bottom-right', index: 0 });
+        const zoomDomNode = zoomWidget.container as HTMLElement | undefined;
+        if (zoomDomNode?.parentElement) {
+          zoomDomNode.parentElement.style.marginBottom = '67px';
+          zoomDomNode.parentElement.style.marginRight = '21px';
+        }
+        zoomWidgetRef.current = zoomWidget;
 
         const graphicsLayer = new GraphicsLayer();
         map.add(graphicsLayer);
@@ -400,6 +414,9 @@ const ArcgisMap: React.FC<HeroArcgisMapProps> = ({
         markerCountRef.current = 0;
         markerSignatureRef.current = '';
         hasFitRef.current = false;
+
+        view.center = DEFAULT_CENTER;
+        view.zoom = DEFAULT_ZOOM;
 
         drawGraphics();
 
@@ -443,8 +460,18 @@ const ArcgisMap: React.FC<HeroArcgisMapProps> = ({
       markerCountRef.current = 0;
       markerSignatureRef.current = '';
       hasFitRef.current = false;
+      if (zoomWidgetRef.current) {
+        zoomWidgetRef.current.destroy();
+        zoomWidgetRef.current = null;
+      }
     };
   }, []);
+
+  useEffect(() => {
+    if (viewRef.current) {
+      viewRef.current.ui.move('zoom', 'bottom-right');
+    }
+  }, [isHebrew]);
 
   useEffect(() => {
     drawGraphics();
